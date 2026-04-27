@@ -1,0 +1,29 @@
+---
+description: Backend API layering and query efficiency rules
+globs: finance_manager_api/**
+alwaysApply: false
+---
+
+# API Architecture Rules
+
+Apply these rules when editing backend API code.
+
+## Layer Boundaries
+
+- Keep request parsing and response shaping in routing/view modules.
+- Keep business decisions in logic modules.
+- Keep external integrations and subsystem orchestration in services.
+- Keep complex query construction in data access modules.
+- Keep schema and business validation in validators.
+- Keep reusable utilities in shared tools modules.
+
+## Query and Performance Discipline
+
+- Minimize database round trips; prefer bulk loading and set-based operations.
+- Avoid hidden N+1 access patterns; use explicit prefetch/select strategies.
+- Keep transformations close to the most efficient layer (query or logic) to avoid redundant passes.
+
+## Change Hygiene
+
+- Preserve existing API contracts unless the change explicitly requires a contract update.
+- When contracts change, update docs/tests/changelog entries in the same workstream.

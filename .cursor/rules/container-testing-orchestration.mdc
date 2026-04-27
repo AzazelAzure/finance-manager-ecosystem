@@ -1,0 +1,65 @@
+---
+description: Standardized container testing lifecycle and multi-agent runtime ownership
+alwaysApply: true
+---
+
+# Container Testing Orchestration
+
+Apply this rule whenever testing involves container runtime operations.
+
+## Script-Only Runtime Commands
+
+- Use project scripts from `scripts/` as the default interface:
+  - `scripts/fm_docker.sh {start|stop|restart|rebuild|status|clean}`
+  - `scripts/fm_services.sh {start|stop|restart|status}`
+- Do not use ad-hoc compose/runtime commands unless the script path is broken and that blocker is explicitly reported.
+
+## Mandatory Lifecycle Sequence
+
+Before implementation testing:
+
+1. Check status: `scripts/fm_docker.sh status` and `scripts/fm_services.sh status`
+2. Confirm runtime mode (containerized vs local services) and avoid mixed mode.
+3. Perform required stop/restart/rebuild via scripts.
+4. Re-check status after action.
+
+After testing:
+
+1. Record outcomes and failures.
+2. Leave runtime in agreed project state (running for active testing window, or stopped if window ends).
+3. Report handoff state in final output.
+
+## Multi-Agent Runtime Ownership
+
+- Only one agent may control container uptime at a time ("runtime owner").
+- Non-owner agents must not start/stop/rebuild containers.
+- Non-owner agents should continue code work in readonly/non-runtime paths and wait for owner handoff.
+- Track active owner, sublet users, and runtime status in `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
+- Runtime owner handoff must include:
+  - current runtime mode
+  - last lifecycle command run
+  - current status snapshot
+  - known blockers
+- Use `design_docs/30_Releases/Runtime_Owner_Handoff_Template.md` for consistent handoff format.
+- Prefer shared live runtime sessions over repeated shutdown/startup cycles when multiple agents need testing access.
+
+## Testing Breakpoints for Larger Plans
+
+For large plans, enforce named testing breakpoints before continuing to next batch:
+
+- Breakpoint A: baseline spin-up and smoke check
+- Breakpoint B: batch fix validation
+- Breakpoint C: regression sanity pass
+
+At each breakpoint:
+
+1. Pause new implementation work.
+2. Run script-based status + required tests.
+3. Resolve high-severity runtime failures first.
+4. Only continue after pass or explicit blocker documentation.
+
+## Guardrails
+
+- Never run local and containerized stacks simultaneously unless explicitly required and documented.
+- Prioritize root-cause fixes over repeated restart loops.
+- If contention exists between subagents, runtime owner retains control until formal handoff.
