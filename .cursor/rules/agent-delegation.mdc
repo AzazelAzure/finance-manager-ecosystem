@@ -1,0 +1,70 @@
+---
+description: Task classification and subagent delegation workflow
+alwaysApply: true
+---
+
+# Agent Delegation Workflow
+
+Use this rule to decide when and how to delegate work through skills and subagents.
+
+## Classification
+
+- `code review` intent -> use `code-review-risk-triage`.
+- `bug`, `failure`, `broken`, `regression` intent -> use `bugfix-investigation-loop`.
+- `build`, `add`, `implement`, `refactor` intent -> use `feature-implementation-loop`.
+- `tests failing`, `CI red`, `pipeline error` intent -> use `ci-test-triage`.
+- `PR`, `merge`, `branch hygiene`, `changelog` intent -> use `pr-ops-merge-readiness`.
+- `where/how does this work`, architecture discovery intent -> use `repo-exploration-briefing`.
+- `cross-repo`, `API + Reflex`, `multi-repo dependency` intent -> use `multi-repo-orchestration`.
+- `update design docs`, `document change`, `architecture notes` intent -> use `design-docs-sync`.
+- `roadmap`, `phase plan`, `rollout strategy`, `breakpoints/triggers` intent -> use `roadmap-rollout-planning`.
+- `docker`, `podman`, `compose`, `container crash`, `image build failure`, `runtime bottleneck` intent -> use `container-runtime-podman-triage`.
+- `orchestrate plan`, `manage subagents`, `delegate across tasks`, `execution manager` intent -> use `orchestration-manager`.
+- `security review`, `security audit`, `hardening`, `vulnerability`, `auth risk`, `secret exposure` intent -> use `security-audit-hardening`.
+
+## Subagent Routing Defaults
+
+- Prefer `explore` for broad readonly context gathering.
+- Prefer `shell` for command-centric git/gh/test workflows.
+- Prefer `generalPurpose` for implementation and multi-step code tasks.
+- If one subagent result is insufficient, chain to a second subagent with an explicit handoff summary.
+- For multi-repo work, begin with `explore` impact mapping, then execute repo-by-repo with `generalPurpose`.
+- For design docs updates, use `explore` for doc targeting then `generalPurpose` for edits.
+- For roadmap work, use `explore` evidence gathering before `generalPurpose` phased plan authoring.
+- For container runtime issues, use `shell` first for script-driven diagnosis, then `generalPurpose` for durable fixes.
+- For orchestration work, use `generalPurpose` as coordinator and route each task to specialized skills/subagents.
+- For security audits, start with `explore` threat-surface mapping, then use `generalPurpose`/`shell` for fix and verification loops.
+- Standard orchestration launch should use the prompt in `.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md` and must read `.cursor/skills/orchestration-manager/SKILL.md` first.
+
+## Required Delegation Context
+
+Before launching a subagent, provide:
+
+- Active repository path and scope boundary.
+- Active branch name and intended PR target branch.
+- Goal and success criteria.
+- Relevant constraints from existing rules (`core-standards`, `git-repo-workflow`, and scoped rules).
+- Expected deliverable format.
+- If runtime testing is needed, identify the current runtime owner and active testing breakpoint.
+- If PR workflow is expected, include Slack `#pull-requests` notify requirements (repo, branch, PR URL) and expected authorization states.
+
+## Required Handoff Output
+
+Delegated tasks must return:
+
+1. Objective
+2. Assumptions/unknowns
+3. Files reviewed/changed
+4. Verification performed and status
+5. Risks or follow-up items
+6. Recommended next action
+7. Branch/PR status (branch name, PR URL/status, required checks/signoffs state) when git workflow is in scope
+
+## Guardrails
+
+- Respect sub-repo boundaries; do not mix commits across repos.
+- Preserve API/frontend scoped constraints from their dedicated rules.
+- Keep delegation outputs concise and actionable; avoid large raw dumps unless explicitly requested.
+- When implementation changes behavior or rollout assumptions, schedule `design-docs-sync` before final completion.
+- Follow `container-testing-orchestration.mdc` for script-first lifecycle and single-owner runtime control.
+- For delegated PR gates, require periodic reads of Slack `#pull-requests` until automation replies with final authorization state, then reconcile with GitHub mergeability/check state before resuming downstream tasks.
