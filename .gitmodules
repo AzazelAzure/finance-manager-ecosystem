@@ -1,0 +1,15 @@
+[submodule "design_docs"]
+	path = design_docs
+	url = git@github.com:AzazelAzure/finance-manager-design-docs.git
+[submodule "finance_manager_api"]
+	path = finance_manager_api
+	url = git@github.com:AzazelAzure/finance-manager-api.git
+[submodule "finance_manager_cli"]
+	path = finance_manager_cli
+	url = git@github.com:AzazelAzure/finance-manager-cli.git
+[submodule "finance_manager_reflex"]
+	path = finance_manager_reflex
+	url = git@github.com:AzazelAzure/finance-manger-reflex-frontend.git
+[submodule "finance_manager_android"]
+	path = finance_manager_android
+	url = git@github.com:AzazelAzure/finance-manager-andriod.git
