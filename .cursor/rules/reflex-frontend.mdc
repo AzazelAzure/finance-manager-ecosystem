@@ -1,0 +1,26 @@
+---
+description: Reflex frontend workflow and feature tracking expectations
+globs: finance_manager_reflex/**
+alwaysApply: false
+---
+
+# Reflex Frontend Rules
+
+Apply these rules when editing Reflex frontend code.
+
+## Frontend Implementation Expectations
+
+- Keep UI behavior changes aligned with backend contracts and production intent.
+- Prefer reusable UI/state patterns over one-off page-specific logic.
+- Keep presentation concerns separate from data-fetch and transformation concerns.
+
+## Tracking and Documentation
+
+- Record meaningful frontend behavior changes in the relevant changelog/docs.
+- For significant feature work, keep plan artifacts up to date and archive completed plans.
+- When implementation decisions affect deployment readiness, note the production impact in project docs.
+
+## Collaboration Defaults
+
+- Leave clear implementation notes where a choice is non-obvious for other contributors.
+- Escalate missing dependency/tooling needs when they would improve reliability or maintainability.
