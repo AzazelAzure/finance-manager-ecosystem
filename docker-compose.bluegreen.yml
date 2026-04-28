@@ -1,0 +1,134 @@
+services:
+  db:
+    image: docker.io/library/postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-finance_db}
+      POSTGRES_USER: ${DB_USER:-finance_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-finance_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: docker.io/library/redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    expose:
+      - "6379"
+    volumes:
+      - redis_data:/data
+
+  api-blue:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - ALLOWED_HOSTS=api.financemanager.local,api-blue,api-green,localhost,127.0.0.1
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      - db
+      - redis
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  api-green:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - ALLOWED_HOSTS=api.financemanager.local,api-blue,api-green,localhost,127.0.0.1
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      - db
+      - redis
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  reflex-blue:
+    build:
+      context: ./finance_manager_reflex
+      dockerfile: Dockerfile
+    environment:
+      - API_BASE_URL=http://api-blue:8000
+      - REFLEX_API_URL=https://reflex-api.financemanager.local:8443
+      - REFLEX_DEPLOY_URL=https://financemanager.local:8443
+      - HOST=0.0.0.0
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      api-blue:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    expose:
+      - "3000"
+      - "8000"
+
+  reflex-green:
+    build:
+      context: ./finance_manager_reflex
+      dockerfile: Dockerfile
+    environment:
+      - API_BASE_URL=http://api-green:8000
+      - REFLEX_API_URL=https://reflex-api.financemanager.local:8443
+      - REFLEX_DEPLOY_URL=https://financemanager.local:8443
+      - HOST=0.0.0.0
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      api-green:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    expose:
+      - "3000"
+      - "8000"
+
+  proxy:
+    build:
+      context: ./proxy
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./proxy/certs:/etc/nginx/certs:ro,z
+      - ./proxy/nginx.bluegreen.conf:/etc/nginx/nginx.conf:ro,z
+      - ./proxy/active_color.conf:/etc/nginx/conf.d/active_color.conf:ro,z
+    depends_on:
+      - api-blue
+      - api-green
+      - reflex-blue
+      - reflex-green
+      - redis
+    stop_signal: SIGQUIT
+    stop_grace_period: 30s
+
+volumes:
+  postgres_data:
+  redis_data:

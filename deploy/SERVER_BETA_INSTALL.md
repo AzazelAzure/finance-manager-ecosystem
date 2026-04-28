@@ -1,6 +1,6 @@
 # Server beta install (package layout)
 
-This document describes the **initial** install scaffolding under `scripts/server/` and `deploy/`. Full blue-green runtime, proxy cutover, and deploy automation are tracked in later plan tasks (`T03` onward).
+This document describes install scaffolding under `scripts/server/` plus blue/green runtime operations under `scripts/fm_server_beta.sh`.
 
 ## Layout
 
@@ -10,8 +10,11 @@ This document describes the **initial** install scaffolding under `scripts/serve
 | `scripts/server/bootstrap_env.sh` | Copy env template (`--from-example`) or validate secrets presence (`--validate-only`). |
 | `scripts/server/render_env_template.sh` | Render `deploy/server.env.example` to `deploy/generated/server.env` (uses `envsubst` when installed). |
 | `scripts/server/verify_install.sh` | Verify checkout layout (`docker-compose.yml`, subtree dirs). Optional HTTP health probe. |
+| `scripts/fm_server_beta.sh` | Blue/green runtime operations (`status`, `check`, `deploy`, `smoke`, `switch`, `rollback`). |
 | `deploy/server.env.example` | Documented variables; **no real secrets**. |
 | `deploy/generated/` | Local render output directory (tracked empty except `.gitignore`). |
+| `docker-compose.bluegreen.yml` | Blue/green stack (`api-blue`, `api-green`, `reflex-blue`, `reflex-green`) plus shared `db`, `redis`, and `proxy`. |
+| `proxy/nginx.bluegreen.conf` | Proxy config that routes to active color using `proxy/active_color.conf`. |
 
 ## Parameterizing workspace path
 
@@ -43,6 +46,29 @@ The ecosystem supports both; prerequisite checks pass if at least one runtime an
 
 Dry-run variants: append `--dry-run` where documented on each script.
 
+## Blue/green deploy flow
+
+Use script-first operations from repo root:
+
+1. Validate runtime and proxy configuration:
+   - `./scripts/fm_server_beta.sh check`
+2. Inspect active/inactive color and runtime status:
+   - `./scripts/fm_server_beta.sh status`
+3. Deploy candidate color (typically inactive first):
+   - `./scripts/fm_server_beta.sh deploy green --dry-run`
+   - `./scripts/fm_server_beta.sh deploy green`
+4. Smoke-test candidate before cutover:
+   - `./scripts/fm_server_beta.sh smoke --color green`
+5. Promote by proxy-only switch:
+   - `./scripts/fm_server_beta.sh switch --to green`
+6. Re-check active route:
+   - `./scripts/fm_server_beta.sh smoke --color active`
+7. Roll back quickly if required:
+   - `./scripts/fm_server_beta.sh rollback`
+
+Switch/rollback rewrites `proxy/active_color.conf` and reloads Nginx in the proxy container.
+`switch` performs a pre-cutover smoke check on the target color and aborts on failure.
+
 ## Health verification
 
 - Default `verify_install.sh` confirms files and directories only.
@@ -53,3 +79,9 @@ Dry-run variants: append `--dry-run` where documented on each script.
 - Commit **only** `deploy/server.env.example` style templates — never passwords, PEM material, or live tokens.
 - Keep production values in a privileged store or host-managed files under restrictive permissions (`chmod 600`).
 - Scripts do not automatically populate `.secrets/`; follow Phase B guidance in `plans/cursor/server-beta-install-bluegreen-53be/README.md`.
+
+## Redis/session decision (beta)
+
+- Redis is part of the blue/green beta stack and is treated as required shared state for cache/session continuity.
+- Both colors consume the same `REDIS_URL` so cutover does not orphan session/cache data between colors.
+- Current fallback posture: if Redis is down, smoke/cutover should fail and operator should rollback or hold promotion.
