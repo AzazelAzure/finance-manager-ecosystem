@@ -44,5 +44,8 @@ migration_dump*.json
 # Node (if generated at repo root)
 node_modules/
 
+# Local build / release artifacts at repo root (runtime bundles, ad-hoc dist)
+dist/
+
 # Local TLS certificates and keys (generate per dev machine; never commit private material)
 proxy/certs/*.pem
