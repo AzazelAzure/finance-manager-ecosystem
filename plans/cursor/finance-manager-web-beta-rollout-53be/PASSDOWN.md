@@ -1,9 +1,9 @@
-# Passdown — finance_manager_web beta rollout (cloud agent)
+# Passdown — finance_manager_web beta rollout
 
 **Plan root:** `plans/cursor/finance-manager-web-beta-rollout-53be/`  
 **Plan ID:** `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29`  
 **Orchestration branch (ecosystem parent):** `cursor/finance-manager-web-beta-rollout-53be`  
-**Last updated:** 2026-04-29 (Cursor agent session)
+**Last updated:** 2026-04-29 — **local execution** (cloud agent path deprioritized; same file works for any agent)
 
 ---
 
@@ -19,9 +19,10 @@ Ship the Vite/React `finance_manager_web` track: submodule hygiene, CORS/auth di
 |------|---------------------|
 | **Breakpoint 0 — Lane choice** | `runtime_handoff.md`: primary **Lane B** (VPS jsdevtesting + prod API), Lane A optional. |
 | **T01 — Submodule** | Ecosystem `.gitmodules` includes `finance_manager_web` → `git@github.com:AzazelAzure/finance-manager-web.git`. Submodule present; initial `main` pushed; README env section, `.env.example`, `.gitignore` for env files. |
-| **T02 — Code (not necessarily prod)** | **API:** branch `cursor/finance-manager-web-beta-rollout-53be`, commit `7b1f7d4` — default `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS` extended for `http://localhost:5173`, `http://127.0.0.1:5173`, `https://jsdevtesting.thehivemanager.com`; `CHANGELOG.md` updated. **Web:** same branch, commit `2ed4704` — `LoginPage` shows Axios/status/code/body hints in **`import.meta.env.DEV` only**. |
-| **Coordination note** | `CROSS_AGENT_COORDINATION.md` — **Last API changes** lists API branch/PR creation link and deploy caveat. |
-| **Verification (local)** | `npm ci` && `npm run build` succeeded in `finance_manager_web` after changes. |
+| **T02 — Code (not necessarily prod)** | **API:** branch `cursor/finance-manager-web-beta-rollout-53be` — default `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS` include Vite + `jsdevtesting` (ecosystem API submodule at `251cd2d`+ includes these lines; also `django-cors-headers` declared for builds). **Web:** branch `cursor/...`, commits through **`d9a23c4`** — dev-only `LoginPage` diagnostics + **Lane A README** runbook. |
+| **T03 — Lane A docs** | `finance_manager_web/README.md` — “Lane A — local API (SQLite) + Vite”: `uv sync`, migrate, `createsuperuser`, `runserver`, `.env.local` for `VITE_API_BASE_URL`. |
+| **Coordination note** | `CROSS_AGENT_COORDINATION.md` — **Last API changes** (update when PRs merge). |
+| **Verification (local)** | `npm run build` in `finance_manager_web` after README change. |
 
 ---
 
@@ -33,16 +34,16 @@ Ship the Vite/React `finance_manager_web` track: submodule hygiene, CORS/auth di
 | **API deploy** | Until API PR is **merged and deployed**, prod `https://api.thehivemanager.com` may not emit new CORS defaults — local login from `http://localhost:5173` can still fail preflight. Optional: set `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS` on server env without waiting for code merge. |
 | **Parent submodule bump (API)** | Ecosystem parent **intentionally did not** bump `finance_manager_api` submodule (avoid pinning ecosystem to unreleased API SHA). After API PR merges to `main`, decide whether ecosystem PR should bump `finance_manager_api` pointer. |
 | **Breakpoint 2** | Manual: JWT login + snapshot from **actual** browser Origin; log status + `access-control-allow-origin` if failure. |
-| **T03** | Optional Lane A: document local `runserver` + `.env` / `VITE_API_BASE_URL` per task packet. |
+| **T03** | **Done** in web README (2026-04-29). Re-verify if API bootstrapping commands change. |
 | **T04 + Breakpoint 3** | Lane B: DNS, Cloudflare tunnel, nginx static (or container) for `jsdevtesting.thehivemanager.com` — **coordinate** [vps-reflex-bluegreen-recovery-53be](../vps-reflex-bluegreen-recovery-53be/README.md) and `design_docs/30_Releases/Runtime_Signup_Sheet.md` before VPS container/proxy surgery. |
-| **Plan repo hygiene** | Ecosystem commit added only part of this plan folder (e.g. `runtime_handoff.md`, `CROSS_AGENT_COORDINATION.md`). Remaining plan files (`README.md`, `validation_gates.md`, `tasks/`, `AGENT_LAUNCH_PROMPT.md`, this file) may still be untracked in ecosystem — add/commit if you want a single canonical tree. |
+| **Ecosystem plan tree** | Full plan directory is tracked on orchestration branch after `chore(ecosystem): sync submodule pins...` and follow-up doc commits. |
 | **Final gate** | CPPR+D, human login + dashboard smoke, update coordination footer after API lands. |
 
 ---
 
 ## 4. What to do next (ordered)
 
-1. **Cloud agent:** Clone/update ecosystem on `cursor/finance-manager-web-beta-rollout-53be`; `git submodule update --init finance_manager_web`.
+1. **Workspace:** On `cursor/finance-manager-web-beta-rollout-53be`, `git pull` and `git submodule update --init` (especially `finance_manager_web` at **`d9a23c4`** or newer on that branch).
 2. **PR workflow:** Ensure three PRs exist or are merged — ecosystem (submodule + plan snippets), **finance-manager-web**, **finance-manager-api**. Use GitHub “new PR” links if branches exist but PRs are missing:  
    - Ecosystem: `https://github.com/AzazelAzure/finance-manager-ecosystem/pull/new/cursor/finance-manager-web-beta-rollout-53be`  
    - Web: `https://github.com/AzazelAzure/finance-manager-web/pull/new/cursor/finance-manager-web-beta-rollout-53be`  

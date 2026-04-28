@@ -17,7 +17,8 @@ Sibling plan: [vps-reflex-bluegreen-recovery-53be](../vps-reflex-bluegreen-recov
 
 - **Pass when:** Login obtains JWT; dashboard loads snapshot; **CORS** preflight passes for the **actual** browser Origin (verify 5173 vs 4173 vs https jsdevtesting).
 - **Failure triage:** Log API response status + `access-control-allow-origin` header in task notes.
-- **2026-04-29:** **OPEN** — API and web **feature branches** carry CORS defaults + dev login hints; **prod API** must merge/deploy (or env override) before claiming pass against `https://api.thehivemanager.com`. Re-verify after deploy.
+- **2026-04-29:** **OPEN** — **Lane A** path documented in `finance_manager_web/README.md` (local `runserver` + `VITE_API_BASE_URL`); use it to complete this gate without prod. **Prod** preflight to `api.thehivemanager.com` from `http://localhost:5173` may still show no `Access-Control-*` headers (edge/nginx)—treat prod **Lane B** as separate until fixed.
+- **T03 (Lane A docs):** **PASS** (2026-04-29) — see web README “Lane A — local API (SQLite) + Vite”.
 
 ## Breakpoint 3 — Lane B only (VPS JS dev host)
 

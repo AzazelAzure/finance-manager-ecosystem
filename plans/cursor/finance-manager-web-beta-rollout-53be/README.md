@@ -25,20 +25,20 @@ deployment:
 
 ## Execution status (living)
 
-**Last updated:** 2026-04-29
+**Last updated:** 2026-04-29 (local execution continues; ecosystem cleaned/synced on `cursor/finance-manager-web-beta-rollout-53be`)
 
 | Area | Status |
 |------|--------|
-| **Accomplished** | Breakpoint 0 (lane B primary) in `runtime_handoff.md`. T01: `finance_manager_web` submodule wired + pushed; env docs in web README/`.env.example`. T02 **code**: API branch `cursor/finance-manager-web-beta-rollout-53be` (`7b1f7d4`) — CORS/CSRF defaults; web branch (`2ed4704`) — dev-only login diagnostics. Coordination line in `CROSS_AGENT_COORDINATION.md`. |
-| **In flight / blocked on humans** | PR merge + Slack `#pull-requests` gates; **API deploy** so prod reflects new CORS defaults (code is on feature branch, not guaranteed on `api.thehivemanager.com` yet). |
-| **Not started** | T03 (optional Lane A docs). T04 / Breakpoint 3 (DNS + tunnel + nginx for `jsdevtesting`). Breakpoint 2 manual smoke after API is correct for your Origin. Final CPPR + human verification. |
-| **Next** | Merge API + web (+ ecosystem) PRs per repo; deploy API; run Breakpoint 2; then T04 with runtime sheet + sibling plan coordination. **Cloud handoff:** [PASSDOWN.md](./PASSDOWN.md). |
+| **Accomplished** | Breakpoint 0 (lane B primary) in `runtime_handoff.md`. T01: `finance_manager_web` submodule wired. T02: CORS/CSRF + dev login diagnostics (API + web feature branches; API checkout in ecosystem includes those defaults). T03: Lane A runbook in `finance_manager_web/README.md` (migrate, `createsuperuser`, `VITE_API_BASE_URL`, Runtime Signup pointer). `CROSS_AGENT_COORDINATION.md` API note. |
+| **In flight** | Open PRs (per repo) + Slack `#pull-requests` workflow; **prod API** may still not return full CORS headers for browser preflight to `https://api.thehivemanager.com` from all Origins—use **Lane A** to validate app+API, or fix deploy/env. |
+| **Not started** | T04 / Breakpoint 3 (DNS + tunnel + nginx for `jsdevtesting`). Breakpoint 2 (prod or chosen lane) manual JWT + snapshot smoke. Final CPPR + human verification. |
+| **Next** | (1) Bump ecosystem submodule pointer for `finance_manager_web` after README commit. (2) Breakpoint 2 smoke (Lane A or B). (3) T04 with runtime owner + Reflex sibling coordination. (4) Merge PRs. Handoff context: [PASSDOWN.md](./PASSDOWN.md). |
 
 ## Agent startup
 
 1. Paste **[AGENT_LAUNCH_PROMPT.md](./AGENT_LAUNCH_PROMPT.md)** (VPS is `dev@159.198.75.194`; branch `cursor/finance-manager-web-beta-rollout-53be`).
 2. Read **[CROSS_AGENT_COORDINATION.md](./CROSS_AGENT_COORDINATION.md)** — Reflex sibling + API handoff footer.
-3. For handoffs from another execution plane, read **[PASSDOWN.md](./PASSDOWN.md)** first.
+3. Read **[PASSDOWN.md](./PASSDOWN.md)** for branch/SHA state and what to do next (any execution plane).
 
 ## Phase 0 — Choose primary testing lane
 

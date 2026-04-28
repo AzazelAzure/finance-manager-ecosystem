@@ -17,4 +17,4 @@ _Update when pausing, switching Lane A ↔ B, or completing a breakpoint._
 
 ## Local API note
 
-If using Lane A, document exact `manage.py runserver` bind host/port and `.env` file path so the next agent can reproduce.
+**Lane A** commands and `VITE_API_BASE_URL` are documented in [`finance_manager_web/README.md`](../../../finance_manager_web/README.md) (section “Lane A — local API (SQLite) + Vite”). If you use a different bind port, update both the API command and the web env file.
