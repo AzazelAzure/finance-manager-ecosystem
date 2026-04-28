@@ -1,8 +1,0 @@
-/target
-Cargo.lock
-
-# Editor/OS
-.idea/
-.vscode/
-.DS_Store
-Thumbs.db
