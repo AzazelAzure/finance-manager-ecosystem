@@ -9,6 +9,7 @@ description: Coordinate execution against active plans by delegating tasks to wo
 
 Act as the execution manager over active plans:
 
+- **Plan root:** execution-ready plans from `roadmap-rollout-planning` live under `plans/<proposed-git-branch-name>/` (see that skill). Treat that directory as the canonical plan root unless explicitly overridden.
 - read current plan scope and todo state
 - assign work to the correct skill/subagent pathway
 - enforce testing and handoff gates
@@ -38,6 +39,7 @@ Treat orchestration as a dedicated reusable agent profile:
 
 ## Orchestration Workflow
 
+- [ ] Locate the active plan under `plans/<proposed-git-branch-name>/` (or the path given at launch) and read scope/todos.
 - [ ] Read active plan and identify executable task batches.
 - [ ] Classify each task into the routing map above.
 - [ ] Delegate with explicit scope, success criteria, and expected handoff format.
