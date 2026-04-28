@@ -12,6 +12,9 @@ DEFAULT_PROJECT="${FM_BLUEGREEN_PROJECT:-fm-beta}"
 PROJECT_NAME="$DEFAULT_PROJECT"
 DRY_RUN=0
 ROLLBACK_STATE_FILE="${FM_ROLLBACK_STATE_FILE:-$BASE_DIR/.secrets/last_active_color}"
+PUBLIC_APP_HOST="${FM_PUBLIC_APP_HOST:-financemanager.local}"
+PUBLIC_API_HOST="${FM_PUBLIC_API_HOST:-api.financemanager.local}"
+PUBLIC_BASE_URL="${FM_PUBLIC_BASE_URL:-https://localhost:8443}"
 
 usage() {
   cat <<'EOF'
@@ -35,6 +38,9 @@ Environment:
   FM_BLUEGREEN_COMPOSE_FILE          Override compose file path.
   FM_ACTIVE_COLOR_FILE               Override active color include path.
   FM_BLUEGREEN_PROJECT               Override compose project name (default: fm-beta).
+  FM_PUBLIC_APP_HOST                 Host header for frontend smoke probes.
+  FM_PUBLIC_API_HOST                 Host header for API smoke probes.
+  FM_PUBLIC_BASE_URL                 Base URL for proxy smoke probes (default: https://localhost:8443).
 EOF
 }
 
@@ -189,8 +195,8 @@ smoke_cmd() {
   compose_cmd exec -T "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
   compose_cmd exec -T "$reflex_upstream" sh -c "wget -qO- http://localhost:3000 >/dev/null"
 
-  curl -kfsS -H "Host: api.financemanager.local" "https://localhost:8443/api/health/" >/dev/null
-  curl -kfsS -H "Host: financemanager.local" "https://localhost:8443/" >/dev/null
+  curl -kfsS -H "Host: $PUBLIC_API_HOST" "$PUBLIC_BASE_URL/api/health/" >/dev/null
+  curl -kfsS -H "Host: $PUBLIC_APP_HOST" "$PUBLIC_BASE_URL/" >/dev/null
   log "Smoke checks passed for $target ($color)."
 }
 
