@@ -17,7 +17,7 @@ First, read and follow:
 - `.cursor/skills/orchestration-manager/SKILL.md`
 
 Execution context:
-- Active plan file: <path>
+- Active plan root: `plans/<proposed-git-branch-name>/` (primary plan file or manifest inside that folder, e.g. `README.md` or `execution_manifest.md`)
 - Current tasks/todos: <list>
 - Scope boundaries: <repos/paths>
 - Branch/PR targets: <repo -> feature branch -> target branch>
