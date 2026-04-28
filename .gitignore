@@ -3,6 +3,8 @@
 .env.*
 !.env.example
 .secrets/
+deploy/server.env
+deploy/*.env
 
 # Editor / tool-only ignore files (machine-local, not shared)
 .cursorignore

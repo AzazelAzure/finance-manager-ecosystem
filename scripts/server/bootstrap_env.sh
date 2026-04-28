@@ -8,7 +8,7 @@ SERVER_SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=lib/common.sh
 source "${SERVER_SCRIPT_DIR}/lib/common.sh"
 
-DEFAULT_ENV="${REPO_ROOT}/deploy/server.env"
+DEFAULT_ENV="${REPO_ROOT}/.secrets/server.env"
 FM_SERVER_ENV_FILE="${FM_SERVER_ENV_FILE:-$DEFAULT_ENV}"
 EXAMPLE="${REPO_ROOT}/deploy/server.env.example"
 
@@ -53,11 +53,28 @@ REQUIRED_KEYS=(
 
 load_env_file() {
   local f="$1"
+  local line key value
   [[ -f "$f" ]] || fm_die "env file not found: $f"
-  set -a
-  # shellcheck disable=SC1090
-  source "$f"
-  set +a
+
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
+    line="${line#export }"
+    key="${line%%=*}"
+    value="${line#*=}"
+
+    if [[ "$key" == "$line" || ! "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
+      fm_die "invalid env line in $f: $line"
+    fi
+
+    # Strip matching single or double quotes around simple KEY=VALUE entries.
+    if [[ "$value" == \"*\" && "$value" == *\" ]]; then
+      value="${value:1:${#value}-2}"
+    elif [[ "$value" == \'*\' && "$value" == *\' ]]; then
+      value="${value:1:${#value}-2}"
+    fi
+
+    printf -v "$key" '%s' "$value"
+  done < "$f"
 }
 
 validate_loaded_env() {
