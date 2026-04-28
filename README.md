@@ -24,3 +24,12 @@ To initialize the component repositories after cloning:
 ```bash
 git submodule update --init --recursive
 ```
+
+## Parent repository layout (this repo)
+
+- **`docker-compose.yml`** — local stack (Postgres, API, Reflex, nginx proxy). Copy **`.env.example`** to **`.env`** and set secrets locally; **`.env` is gitignored.**
+- **`scripts/`** — lifecycle helpers (`fm_docker.sh`, `fm_services.sh`, DB utilities, etc.). Virtualenvs under `scripts/` (e.g. `hive_venv/`) are ignored.
+- **`proxy/`** — nginx image and config. **TLS material** under `proxy/certs/*.pem` is ignored; generate or copy certs per machine and keep private keys out of git.
+- **`plans/`** — execution plans for orchestration (`plans/<proposed-git-branch-name>/`); see `.cursor/skills/roadmap-rollout-planning/SKILL.md`.
+- **`docs/`** — cross-cutting notes (lockfiles, SPDX, agent pilot).
+- **`.gitignore`** — excludes `.env`, venvs, local dumps, editor ignore files (`.cursorignore`, `.antigravityignore`), and local certificates.

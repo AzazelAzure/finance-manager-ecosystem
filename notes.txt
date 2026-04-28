@@ -1,0 +1,67 @@
+Best course of action
+1) Decide history policy first
+Two choices:
+
+A. Fresh start per repo (simplest, safest now)
+Create new repos and commit each folder as-is.
+B. Preserve old history (best long-term if old repo history is valuable)
+Use git filter-repo/subtree split from original source repo(s), then push split histories.
+If your current checkout is already messy and uncertain, I’d do A now, archive the old repo read-only, and move forward clean.
+
+2) Define cross-repo contracts (critical)
+Before splitting, lock these down in writing:
+
+API endpoint/request/response shapes
+auth/token behavior
+versioning policy (vX.Y.Z)
+compatibility matrix (e.g., CLI >=0.4 needs API >=1.2)
+deprecation window rules
+Without this, interconnected repos drift fast.
+
+3) Versioned integration rules
+API publishes OpenAPI schema and tags releases.
+CLI/Reflex pin against API versions (or schema snapshot tests).
+Add contract tests in clients that fail when API shape changes.
+4) Build/release strategy
+API: deploy artifact/container per tag.
+CLI: package to PyPI/internal index per tag.
+Reflex: deploy per tag/environment.
+Workspace repo tracks “known good” combo of versions.
+5) Local dev workflow after split
+Use workspace repo with:
+
+.env templates
+make/scripts for api up, cli install -e, reflex run
+optional compose for DB/cache
+docs for running everything together
+This keeps “interconnected locally” while repos remain independent.
+
+For the upcoming Rust encryption middleware
+Create it as its own repo now conceptually (finance_manager_crypto) and choose integration mode:
+
+Library mode: Python calls Rust via FFI (pyo3/maturin) for local API usage.
+Service mode: Rust sidecar/microservice over HTTP/gRPC (cleaner isolation, easier multi-client use).
+Gateway mode: sits in front of API/frontends, handles encrypted payload exchange.
+Given your “base layers must still work locally” requirement, I’d start with:
+
+API + clients still plain/local-compatible
+encryption as optional feature flag/environment toggle
+branch-based integration tests in API/Reflex/CLI before making default
+Risks to manage
+Contract drift between API and clients (highest risk)
+Release coordination overhead
+Breaking changes hidden by local editable installs
+Mitigations: schema contract tests, semantic versioning, CI matrix tests across repos, and a workspace “golden versions” file.
+
+Suggested rollout (pragmatic)
+Freeze current features for 1-2 days.
+Split into 3 clean repos (fresh history acceptable).
+Stand up CI per repo.
+Add API schema artifact + client contract checks.
+Create workspace repo for local orchestration.
+After stability, introduce Rust repo behind feature flag.
+If you want, I can give you a concrete step-by-step command checklist for the split path you choose (fresh-history vs preserve-history), including branch/release conventions.
+
+6) Dependency lockfiles (supply chain + reproducibility)
+Open or loosely pinned dependency files are not an “auth backdoor,” but they do make it easier for **unreviewed dependency versions** to enter builds. Move each Python repo toward a **committed lockfile** (uv / Poetry / pip-tools) and use **frozen installs in CI and prod**; add optional **hash pinning** and scanners when ready.
+See: docs/DEPENDENCY_LOCKFILES.md
