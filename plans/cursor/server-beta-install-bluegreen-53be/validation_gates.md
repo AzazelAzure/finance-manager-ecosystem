@@ -1,5 +1,12 @@
 # Validation Gates
 
+## Current Execution Status (Apr 28, 2026)
+- Breakpoint A: **pass** (runtime inventory + VM accessibility + script ownership flow established).
+- Breakpoint B: **pass** (install/bootstrap/verify scripts and dry-run checks pass locally and on VM).
+- Breakpoint C: **pass (dry-run evidence)** for blue/green compose/proxy validation; live cutover still pending real candidate deploy.
+- Breakpoint D: **partial** (`status/check/deploy --dry-run/switch --dry-run/rollback --dry-run` implemented and validated; non-dry-run promote/rollback evidence pending).
+- Final gate: **pending** (feature branch changes not yet committed/PR'd in this execution pass).
+
 ## Breakpoint A: Server inventory and package design
 - Target server assumptions are captured:
   - OS/distribution and package manager

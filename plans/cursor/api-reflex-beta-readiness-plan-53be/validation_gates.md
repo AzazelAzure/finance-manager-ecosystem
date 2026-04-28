@@ -1,5 +1,11 @@
 # Validation Gates
 
+## Current Execution Status (Apr 28, 2026)
+- Breakpoint A: **pass** (runtime mode is containerized; API/Reflex/proxy status and reachability evidence collected on local host and VM).
+- Breakpoint B: **pass** (`manage.py check --deploy` clean with production-like env flags; full API suite currently passing at `171 passed, 4 skipped`).
+- Breakpoint C: **pass (smoke evidence)** (Reflex reachable through proxy on local and VM; no repeating crash loop in recent logs).
+- Final readiness gate: **pending** (API hardening changes are on a feature branch and not yet PR'd; design-doc readiness sync still pending).
+
 ## Breakpoint A: Runtime and bridge baseline
 - `#cli-interface` task with `!cursor` returns a short threaded reply.
 - Runtime mode is confirmed as containerized or local-services, with no mixed mode unless explicitly justified.

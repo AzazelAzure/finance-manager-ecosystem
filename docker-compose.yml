@@ -23,7 +23,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-finance_password}
       - DB_HOST=db
       - DB_PORT=5432
-      - ALLOWED_HOSTS=api.financemanager.local,api,localhost,127.0.0.1
+      - ALLOWED_HOSTS=api.thehivemanager.com,thehivemanager.com,www.thehivemanager.com,api,localhost,127.0.0.1
       - DEBUG=True
     depends_on:
       - db
@@ -42,9 +42,10 @@ services:
     container_name: finance-manager-reflex
     environment:
       - API_BASE_URL=http://api:8000
-      - REFLEX_API_URL=https://reflex-api.financemanager.local:8443
-      - REFLEX_DEPLOY_URL=https://financemanager.local:8443
+      - REFLEX_API_URL=https://reflex-api.thehivemanager.com
+      - REFLEX_DEPLOY_URL=https://thehivemanager.com
       - HOST=0.0.0.0
+    command: ["uv", "run", "reflex", "run", "--env", "prod", "--frontend-port", "3000", "--backend-host", "0.0.0.0"]
     depends_on:
       api:
         condition: service_healthy
