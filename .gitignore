@@ -1,0 +1,41 @@
+# Local secrets (never commit)
+.env
+.env.*
+!.env.example
+
+# Editor / tool-only ignore files (machine-local, not shared)
+.cursorignore
+.antigravityignore
+
+# Python virtual environments
+**/.venv/
+**/venv/
+**/hive_venv/
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Logs
+*.log
+logs/
+
+# Local database / dumps
+*.sqlite3
+db.sqlite3
+migration_dump*.json
+
+# OS / editor
+.DS_Store
+*~
+
+# Node (if generated at repo root)
+node_modules/
+
+# Local TLS certificates and keys (generate per dev machine; never commit private material)
+proxy/certs/*.pem

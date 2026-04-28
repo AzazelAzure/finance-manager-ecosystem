@@ -1,0 +1,11 @@
+# Repo directories relative to workspace root.
+# One entry per line. Blank lines and comments are ignored.
+
+finance_manager_api
+finance_manager_cli
+finance_manager_reflex
+
+# Planned future repos (uncomment when created):
+# finance_manager_rust
+# finance_manager_android
+# finance_manager_ios

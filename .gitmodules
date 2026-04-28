@@ -13,3 +13,9 @@
 [submodule "finance_manager_android"]
 	path = finance_manager_android
 	url = git@github.com:AzazelAzure/finance-manager-andriod.git
+[submodule "finance_manager_rust_middleware"]
+	path = finance_manager_rust_middleware
+	url = git@github.com:AzazelAzure/finance-manager-rust-middleware.git
+[submodule "finance_manager_rust_tools"]
+	path = finance_manager_rust_tools
+	url = git@github.com:AzazelAzure/finance-manager-rust-tools.git

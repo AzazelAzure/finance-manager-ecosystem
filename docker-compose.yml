@@ -1,0 +1,73 @@
+services:
+  db:
+    image: docker.io/library/postgres:15-alpine
+    container_name: finance-manager-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-finance_db}
+      POSTGRES_USER: ${DB_USER:-finance_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-finance_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    container_name: finance-manager-api
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - ALLOWED_HOSTS=api.financemanager.local,api,localhost,127.0.0.1
+      - DEBUG=True
+    depends_on:
+      - db
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  reflex:
+    build:
+      context: ./finance_manager_reflex
+      dockerfile: Dockerfile
+    container_name: finance-manager-reflex
+    environment:
+      - API_BASE_URL=http://api:8000
+      - REFLEX_API_URL=https://reflex-api.financemanager.local:8443
+      - REFLEX_DEPLOY_URL=https://financemanager.local:8443
+      - HOST=0.0.0.0
+    depends_on:
+      api:
+        condition: service_healthy
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    expose:
+      - "3000"
+      - "8000"
+
+  proxy:
+    build:
+      context: ./proxy
+    container_name: finance-manager-proxy
+    ports:
+      - "8080:80"
+      - "8443:443"
+    volumes:
+      - ./proxy/certs:/etc/nginx/certs:ro,z
+    depends_on:
+      - api
+      - reflex
+    stop_signal: SIGQUIT
+    stop_grace_period: 30s
+
+volumes:
+  postgres_data:
