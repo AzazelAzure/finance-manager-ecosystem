@@ -2,6 +2,7 @@
 .env
 .env.*
 !.env.example
+.secrets/
 
 # Editor / tool-only ignore files (machine-local, not shared)
 .cursorignore
@@ -24,6 +25,10 @@ __pycache__/
 # Logs
 *.log
 logs/
+
+# Headless Slack bridge runtime (local machine)
+.cursor_slack_agent_state.json
+.cursor_pr_status_log.jsonl
 
 # Local database / dumps
 *.sqlite3
