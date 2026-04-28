@@ -15,6 +15,7 @@ This document describes install scaffolding under `scripts/server/` plus blue/gr
 | `deploy/generated/` | Local render output directory (tracked empty except `.gitignore`). |
 | `docker-compose.bluegreen.yml` | Blue/green stack (`api-blue`, `api-green`, `reflex-blue`, `reflex-green`) plus shared `db`, `redis`, and `proxy`. |
 | `proxy/nginx.bluegreen.conf` | Proxy config that routes to active color using `proxy/active_color.conf`. |
+| `.secrets/server.env` | Default local/server env file created from the template; ignored by git. |
 
 ## Parameterizing workspace path
 
@@ -38,7 +39,7 @@ The ecosystem supports both; prerequisite checks pass if at least one runtime an
 1. Clone the repo and checkout the intended branch.
 2. `./scripts/server/install_prereqs.sh`
 3. Copy env template: `./scripts/server/bootstrap_env.sh --from-example`  
-   Edit `deploy/server.env` (or override `FM_SERVER_ENV_FILE`).
+   Edit `.secrets/server.env` (or override `FM_SERVER_ENV_FILE`).
 4. `./scripts/server/bootstrap_env.sh --validate-only`
 5. Optional: `./scripts/server/render_env_template.sh` if you substitute template variables outside manual editing.
 6. `./scripts/server/verify_install.sh`  
@@ -78,10 +79,22 @@ Switch/rollback rewrites `proxy/active_color.conf` and reloads Nginx in the prox
 
 - Commit **only** `deploy/server.env.example` style templates — never passwords, PEM material, or live tokens.
 - Keep production values in a privileged store or host-managed files under restrictive permissions (`chmod 600`).
-- Scripts do not automatically populate `.secrets/`; follow Phase B guidance in `plans/cursor/server-beta-install-bluegreen-53be/README.md`.
+- `bootstrap_env.sh --from-example` writes to `.secrets/server.env` by default, which is gitignored.
+- `bootstrap_env.sh --validate-only` parses `KEY=VALUE` lines without sourcing the file, so validation does not execute shell code from the env file.
 
 ## Redis/session decision (beta)
 
 - Redis is part of the blue/green beta stack and is treated as required shared state for cache/session continuity.
 - Both colors consume the same `REDIS_URL` so cutover does not orphan session/cache data between colors.
 - Current fallback posture: if Redis is down, smoke/cutover should fail and operator should rollback or hold promotion.
+
+## Server agent pull/deploy model
+
+For the server beta, keep code changes on local/cloud development machines and in GitHub PRs. The server-side CLI/bridge agent should act as an operations runner:
+
+1. Fetch or pull reviewed commits from GitHub.
+2. Deploy those commits into the inactive blue/green color.
+3. Run health checks and smoke tests.
+4. Promote or roll back by switching proxy routing.
+
+The server runtime should not be used for ad-hoc source edits. If a bug is found on the server, record the failing commit, logs, and reproduction details, then fix through a normal branch/PR flow before pulling the new commit to the server.
