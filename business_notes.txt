@@ -1,0 +1,213 @@
+
+
+# Middleware:
+    # TODO: Create middleware to handle rolling key security
+    # TODO: Create security middleware to handle creating initail security hashes
+
+# Security Validator:
+    # Create security validator that encrypts and decrypts blind uuids
+    # Unlink app profile foriegn keys, use blind uuid decryption to link to profiles
+
+# TODOs for User model abstract
+    # TODO: Force emails to be unique
+    # TODO: Make special pepper in .env for hashing usernames
+
+# TODO: Create security middleware
+    # SecurityTable:
+        # SecurityTable.hash_1 = hash(.env pepper + user plaintext passphrase (caught before ))
+            # Use BIP-39 wordlist generator to make
+                # make sure to pass the list back during creation with a warning that this is the only means of account recovery
+        # SecurityTable.hash_2 = hash(AppProfile.user_id + AppProfile.master_key)
+# TODO: Use hashing of User IP, Agent, Accept Language, and local pepper for security validation fingerprinting
+# TODO: Add locational fingerprinting
+# TODO: Add 2FA for login
+    # See pyotp for middleware implementations
+    # find out how to link authenticators to websites
+
+# TODOS for Security features:
+    # TODO: Create RollingKey model
+        # RollingKey.user = charField that holds encrypted user_id from AppProfile
+        # RollingKey.current_key = uuid hashed with user_id
+        # RollingKey.previous_key = none on creation, then current key each time the current key is used.
+        # RollingKey.refresh = Bool, default False.  Set this to true if a refresh token is used to log in.
+            # What this will do is whenever the current key is used, a new key will be generated.
+            # When the new key is generated, it will set the old current key as the previous key.
+            # The idea is on login, the user is passed the current key.  
+            # The current key will be required for any future requests.
+            # Once a request is made, the current key will be set to the previous key, and a new key generated.
+            # Designed this way to ensure packetloss doesn't lock user out.
+                # If the previous key is used, it will only ever return the current key.
+                # Since any time the current key is used, and the the previous key is overwritten
+                # Ensures even if the previous key is compromised, it cannot be used to decrypt user data.
+                # Also ensures that if the user uses the current key, that compromised key will no longer function.
+        
+        # Proposed Flow:
+            # User signs in with token or password
+            # RollingKey.curent_key is generated and returned to user
+            # For all future requests, the current key will be required.
+                # When a request is made, the current passed is hashed and checked again the rolling keys for user.
+                # If incorrect, returns 403 Forbidden, and no further changes.
+                    # Caveat, if key passed is previous_key, then return current_key.
+                # If correct, request is processed, and a new current key is generated and passed to user. 
+                    # The old current key is then set to previous_key
+
+        # General thoughts:
+            # Since app profile will always be accessible, this could cause some issues, but I cannot solve everything
+            # If the user is verified by login token, that's on them.  
+            # However, this would require both the bearer token and a correct current_key to actually do anything
+            # This would, in theory, make any sort of long term access moot.  
+            # However, should make a session table as well.
+
+    # TODO: Session Model (rename as necessary):
+        # Session.auth_token = charfield for auth token used to sign in.  Used only for Refresh Token Sessions
+        # Session.session_token = new token generated for for future use during interactions
+
+        # Proposed Flow:
+            # User signs in with JWT token and is returned RollingKey.current_key and Session.session_token.
+                # Log in will save the auth_token to the database temporarily, and generate the session_token to return.
+            # For future interactions, the system will check this session table first, then authorize based on the link.
+            # On user logout, table row is deleted.
+
+        # General thoughts
+            # This further minimizes areas of compromise.  
+            # If a bad actor obtains the session token, it is only active for that login.
+                # As soon as the user logs out, it is destroyed.  
+                # Provides only one instance for user auth token to be taken.  
+                # Though this does nothing if the actual tokens are breached in whatever JWT stores them in.
+
+    # TODO: Create session rejections checks
+        # Check session token in Rolling Keys already
+            # If yes, reject the login
+            # If no, generate the rolling key and return the current key (and session key if refresh token is used)
+
+# TODO: Create joint user model
+    # TODO: Probably a many to many relationship with app profile, specficially UUIDs
+        # Would store UUIDs as hashes based on master key, so worthless if hacked.
+    # TODO: Add 'shared accounts' field to App profile to note which accounts are shared.
+        # Probably a Many to Many field for PaymentSource
+            # Would need to figure out how to decrypt data? Possibly not necessary
+        # Potential routing:
+            # JointUser model has fields for totals for the shared accounts
+            # On creation, User A pushes their shared accounts totals to the joint user fields
+                # Perhaps add a 'invite users' end point that generates a new joint user, and sets a field called 'invite_key'
+                    # This key would likely need to be stored in a separate model with the key name and an "accepted" field
+                    # Would alse need a 'created_by' field linked to the user who created it
+                    # also would need a 'accepted_by' field linked to the user who accepted it
+                        # This probably would be set to a decrypted email address
+                    # So invite key can only be used once, and can verify ownership
+            # Joint User model generates a group decrypt key on generation
+                # This key is set to USER A's app profile joint_key field
+            # Updaters update totals for shared accounts from transactions added
+                # Updates that particular users totals in the joint user model
+                # Updates the joint user over all totals when it does asset changes
+            # User A invites User B to the joint user, passing invite key
+            # User B accepts the invite, and generates a new group decrypt key
+                # invite key in its own model accepted field is set to True
+                # invite key in its own model accepted_by field is set to USER B's app profile
+                # This key is set to USER B's app profile joint_key field
+            # When User A signs in and checks joint user, it sees the joint key is different
+                # system then checks invite keys model to verify invite was accepted
+                # If accepted, user can verify 'accepted_by' email address belongs to invited user.
+                # If not, then user can forcefully dump the table.
+            # joint_key is only used to decrypt joint user totals.  
+            # UUIDs stored in JointUser are hashed with users Master key
+            # All calculations to joint user totals are done per user, so their personal accounts are always separate.
+                # Probably clone transactions here for users to their shared accounts, perhaps with a 'shared' flag
+                # This would double all transaction creation times, but would make it so users can see each other transactions for shared accounts.
+                # Might be better to have a 'shared_accounts' model instead.
+            # joint user group_decrypt_key will have to be models.CASCADE to destroy itself if any linked user is deleted
+
+            # Proposed links:
+
+                # APP PROFILE LINKS:
+
+                # AppProfile.shared_accounts = many to many relationship with PaymentSource
+                # AppProfile.invite_key = uuidField that holds an invite key
+
+                # SHARED ACCOUNTS LINKS:
+
+                # SharedAccounts.sources = many to many relationship with AppProfile
+                # SharedAccounts.user = charField that holds encrypted user_id from AppProfile
+                    # This makes it so you need the App Profile master key to decrypt the user_id
+                # SharedAccounts.transactions = many to many relationship with Transaction
+                    # This would be the transactions for the shared accounts by user
+
+                # GROUP INVITE LINKS:
+
+                # GroupInvite.invite_key = uuidField that holds an invite key
+                    # This is the key that is used to invite users to the joint user
+                    # This will be an encrypted field generated by the creators master key and their invite key
+                # GroupInvite.accepted = booleanField that holds if the invite was accepted
+                    # This is set to True when the user accepts the invite
+                # GroupInvite.accepted_by = charField that holds encrypted email address of user who accepted the invite
+                # GroupInvite.created_by = charField that holds the encrypted UUID for the user who created the invite
+
+                # JOINT USER LINKS:
+
+                # JointUser.group_decrypt_key = charField that holds encrypted group_decrypt_key from JointUser
+                    # This is the key used to decrypt the joint user totals
+                        # This is generated on creation of the joint user, and regenerated on every user added.
+                # JointUser.users = listfield with childfield of charField that holds encrypted user_ids for each user.
+                # JointUser.shared_accounts = many to many relationship with SharedAccounts
+                # JointUser.asset_totals = ForeignKey to FinancialSnapshot?
+                    # Will probably need multiple fields to handle this.
+
+
+
+            # New Proposed Routing:
+                # User A uses api end point to generate a new invite key
+                    # Creation follows the following steps:
+                        # New invite key is generated.
+                        # Invite key is encrypted with creators master key.
+                        # New GroupInvite is created
+                        # GroupInvite.invite_key is set to the encrypted invite key.
+                        # GroupInvite created_by is set to User A encrypted UUID.
+                        # New JointUser is generated.
+                        # JointUser.users is updated to include User A encrypted UUID.
+                        # JointUser.invite_key is set to the encrypted invite key.
+                        # Encrypted key is sent to User B.
+                # User A Sets their shared accounts
+                    # Setting this does the following:
+                        # New SharedAccounts is generated.
+                        # SharedAccounts.user is set to User A encrypted UUID.
+                        # SharedAccounts.sources are set based on User A's shared_accounts.
+                            # Will likely changed this to a list of characters, and save encrypt the query sets
+                            # If so, this will be encrypted by the users joint_key
+                        # SharedAccounts.transactions are set based on User A's shared_accounts.
+                            # Will likely changed this to a list of characters, and save encrypt the query sets
+                            # If so, this will be encrypted by the users joint_key
+                            # This is so shared accounts transactions can be mirrored here.
+                # User B accepts the invite
+                    # Accepting the invite does the following:
+                        # GroupInvite is retrieved based on the invite key.
+                        # GroupInvite.accepted is set to True.
+                        # JointUser is retrieved based on the GroupInvite.created_by
+                        # JointUser.users is updated to include User B encrypted UUID.
+                        # GroupInvite create_by is set to None.
+                            # This is done so that the invite key cannot be used again.
+                        # GroupInvite.accepted_by is set to User B email encrypted by the JointUser.group_decrypt_key
+                        # User B AppProfile.
+                # User B sets their shared accounts
+                    # This follows the same process as User A.
+                    # If User B has already set their shared accounts, they will be updated.
+                # On User A login or logout
+                    # Checks invite keys model to see if invite key is accepted.
+                    # If accepted, user verifies 'accepted_by' email address belongs to invited user.
+                    # If not, then user can forcefully dump the table.
+                        # Will need to program the backend to force to user to confirm before anything else is done.
+                        # Probabaly a special reponse validator that checks if the user has outstanding 'accepted' invites.
+                            # If so, will return a message that they must confirm their invites before doing anything else.
+                            # Perhaps a warning on log out, and a requirement on log in.  That's something for front end to handle.
+                    # If verified, automatically deletes the GroupInvite.
+                # User A or B add transactions
+                    # Transactions will check shared accounts to see if they are in the same account.
+                    # If so, they will be added to the shared account along with the users base account.
+                        # If added, will trigger rebalances in the joint user.
+                            # This may not be necessary, depends on how I set this up.
+                # Will require specific get endpoint for joint user. 
+            
+    # TODO: Add is_joint to paymentsources to facilitate edge case of two users having an actual joint account tracked individually
+        # This would be used in Transaction creation/calculation to call different logic to push transaction specifically JointUser
+        # That way any transactions added by either user for the is_joint calculate against the combined total
+            # This removes the edge case of one user updating the joint account, then the other, causing improper balances
+            # I.E. User A sees their version of joint account with User B as Total X, but User B sees it as Total Y
