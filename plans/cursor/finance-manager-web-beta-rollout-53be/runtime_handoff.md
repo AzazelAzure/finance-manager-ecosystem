@@ -12,7 +12,8 @@ _Update when pausing, switching Lane A ↔ B, or completing a breakpoint._
 - **CORS origins added (if any):** T02 — ensure `http://localhost:5173`, `http://127.0.0.1:5173`, and `https://jsdevtesting.thehivemanager.com` in API settings when testing those Origins.
 - **Vite dev URL:** `http://localhost:5173` (default Vite); document if using another port.
 - **Sibling Reflex plan status:** See [../vps-reflex-bluegreen-recovery-53be/validation_gates.md](../vps-reflex-bluegreen-recovery-53be/validation_gates.md) before changing root compose/proxy.
-- **Blockers:** _(none / describe)_
+- **PRs (2026-04-29):** Ecosystem / web / API — branch `cursor/finance-manager-web-beta-rollout-53be`; open from GitHub “new PR” if missing. Slack `#pull-requests` per workspace rule.
+- **Blockers:** Breakpoint 2 blocked on **API merge + deploy** (or prod env CORS) for real-browser preflight against prod API.
 
 ## Local API note
 
