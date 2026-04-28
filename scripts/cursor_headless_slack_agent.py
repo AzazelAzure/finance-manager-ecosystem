@@ -39,6 +39,8 @@ Environment (optional)
                             Long agent output is split into multiple thread messages.
   CURSOR_SLACK_THREAD_TASKS  If "1"/"true", process !cursor/mention tasks in thread
                             replies (default: off; only top-level messages are tasks).
+  CURSOR_SLACK_THREAD_SCAN_LIMIT  Number of parent threads to inspect for new
+                            replies each poll (default: 50; max: 200).
 
 Slack app scopes (bot token)
 ----------------------------
@@ -108,6 +110,15 @@ def _chunk_text(label: str, body: str, max_len: int) -> list[str]:
         chunk_hdr = f"*chunk {i + 1}/{total}*\n" if total > 1 else ""
         out.append(f"{label_line}{chunk_hdr}{part}")
     return out
+
+
+def _thread_scan_limit() -> int:
+    raw = os.environ.get("CURSOR_SLACK_THREAD_SCAN_LIMIT", "50").strip()
+    try:
+        n = int(raw)
+        return max(1, min(n, 200))
+    except ValueError:
+        return 50
 
 
 def _slack_api(token: str, method: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -226,6 +237,7 @@ class SlackBridge:
     task_mode: str
     prefix: str
     top_level_only: bool
+    allow_thread_tasks: bool
     force_agent: bool
     extra_args: list[str]
     agent_timeout: Optional[float]
@@ -264,6 +276,7 @@ class SlackBridge:
 
         prefix = os.environ.get("CURSOR_SLACK_PREFIX", "!cursor")
         top = _env_bool("CURSOR_SLACK_TOP_LEVEL", default=True)
+        allow_thread_tasks = _env_bool("CURSOR_SLACK_THREAD_TASKS", default=False) or not top
         force = _env_bool("CURSOR_AGENT_FORCE", default=False)
         extra = os.environ.get("CURSOR_AGENT_EXTRA_ARGS", "").strip()
         extra_args: list[str] = []
@@ -298,6 +311,7 @@ class SlackBridge:
             task_mode=task_mode,
             prefix=prefix,
             top_level_only=top,
+            allow_thread_tasks=allow_thread_tasks,
             force_agent=force,
             extra_args=extra_args,
             agent_timeout=agent_timeout,
@@ -434,6 +448,57 @@ class SlackBridge:
                 break
         return list(reversed(all_msgs))
 
+    def fetch_new_thread_replies(self, channel_id: str, last_ts: str) -> list[dict[str, Any]]:
+        """Fetch new thread replies after last_ts.
+
+        Thread replies are not consistently discoverable from channel history alone.
+        """
+        data = _slack_api(
+            self.token,
+            "conversations.history",
+            {"channel": channel_id, "limit": _thread_scan_limit()},
+        )
+        parents = data.get("messages", [])
+        candidate_thread_ts: list[str] = []
+        for msg in parents:
+            if not isinstance(msg, dict):
+                continue
+            if int(msg.get("reply_count", 0) or 0) <= 0:
+                continue
+            latest_reply = str(msg.get("latest_reply", "0"))
+            thread_ts = str(msg.get("thread_ts", msg.get("ts", "0")))
+            if float(latest_reply or "0") <= float(last_ts):
+                continue
+            if float(thread_ts or "0") <= 0:
+                continue
+            candidate_thread_ts.append(thread_ts)
+
+        out: list[dict[str, Any]] = []
+        for thread_ts in sorted(set(candidate_thread_ts), key=float):
+            page: Optional[str] = None
+            while True:
+                payload: dict[str, Any] = {
+                    "channel": channel_id,
+                    "ts": thread_ts,
+                    "limit": 200,
+                    "oldest": last_ts,
+                }
+                if page:
+                    payload["cursor"] = page
+                replies = _slack_api(self.token, "conversations.replies", payload)
+                for msg in replies.get("messages", []):
+                    ts = str(msg.get("ts", "0"))
+                    if ts == thread_ts:
+                        continue
+                    if float(ts or "0") <= float(last_ts):
+                        continue
+                    out.append(msg)
+                page = (replies.get("response_metadata") or {}).get("next_cursor") or None
+                if not page:
+                    break
+
+        return sorted(out, key=lambda m: float(str(m.get("ts", "0"))))
+
     def post_thread_reply(self, channel_id: str, thread_ts: str, text: str) -> None:
         max_c = _slack_max_message_chars()
         for i in range(0, len(text), max_c):
@@ -488,7 +553,19 @@ class SlackBridge:
         return "noted"
 
     def process_task_once(self) -> None:
-        for m in self.fetch_new_messages(self.task_channel_id, self.last_task_ts):
+        channel_msgs = self.fetch_new_messages(self.task_channel_id, self.last_task_ts)
+        if self.allow_thread_tasks:
+            thread_msgs = self.fetch_new_thread_replies(self.task_channel_id, self.last_task_ts)
+            by_ts: dict[str, dict[str, Any]] = {}
+            for m in channel_msgs + thread_msgs:
+                ts = str(m.get("ts", ""))
+                if ts:
+                    by_ts[ts] = m
+            messages = [by_ts[k] for k in sorted(by_ts.keys(), key=float)]
+        else:
+            messages = channel_msgs
+
+        for m in messages:
             ts = m.get("ts")
             if not ts or float(ts) <= float(self.last_task_ts):
                 continue
@@ -505,8 +582,15 @@ class SlackBridge:
             if (
                 self.top_level_only
                 and in_thread
-                and not _env_bool("CURSOR_SLACK_THREAD_TASKS", default=False)
+                and not self.allow_thread_tasks
             ):
+                LOG.info(
+                    "Skipping thread task ts=%s because thread intake is disabled "
+                    "(top_level_only=%s allow_thread_tasks=%s)",
+                    ts,
+                    self.top_level_only,
+                    self.allow_thread_tasks,
+                )
                 self._advance_task(ts)
                 continue
             uid = m.get("user")
@@ -606,10 +690,15 @@ class SlackBridge:
 
     def loop(self, interval: float) -> None:
         LOG.info(
-            "Watching task=%s pr=%s workspace=%s",
+            "Watching task=%s pr=%s workspace=%s mode=%s prefix=%s top_level_only=%s allow_thread_tasks=%s thread_scan_limit=%s",
             self.task_channel_id,
             self.pr_channel_id,
             self.workspace,
+            self.task_mode,
+            self.prefix,
+            self.top_level_only,
+            self.allow_thread_tasks,
+            _thread_scan_limit(),
         )
         while not self._stop:
             try:
