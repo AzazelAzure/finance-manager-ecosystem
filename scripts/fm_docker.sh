@@ -3,8 +3,10 @@
 # Finance Manager Docker Management Script
 # Handles docker-compose / podman-compose commands
 
-# Base paths
-BASE_DIR="/home/pproctor/Documents/python/finance_manager"
+# Base paths (portable across host/VM)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR_DEFAULT="$(cd "$SCRIPT_DIR/.." && pwd)"
+BASE_DIR="${FM_BASE_DIR:-$BASE_DIR_DEFAULT}"
 DOCKER_COMPOSE_FILE="$BASE_DIR/docker-compose.yml"
 
 # Detect compose command
@@ -20,6 +22,12 @@ elif docker compose version &> /dev/null; then
 else
     echo "Error: No compose provider found (podman-compose, docker-compose, or docker compose)."
     echo "Note: podman-compose was recently installed to ~/.local/bin. Ensure this is in your PATH."
+    exit 1
+fi
+
+if [[ ! -f "$DOCKER_COMPOSE_FILE" ]]; then
+    echo "Error: docker-compose file not found at '$DOCKER_COMPOSE_FILE'."
+    echo "Hint: set FM_BASE_DIR to your finance_manager repo root."
     exit 1
 fi
 
