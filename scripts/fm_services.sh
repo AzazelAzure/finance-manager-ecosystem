@@ -3,8 +3,10 @@
 # Finance Manager Service Management Script
 # Handles the Django API and Reflex Frontend
 
-# Base paths
-BASE_DIR="/home/pproctor/Documents/python/finance_manager"
+# Base paths (portable across host/VM)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR_DEFAULT="$(cd "$SCRIPT_DIR/.." && pwd)"
+BASE_DIR="${FM_BASE_DIR:-$BASE_DIR_DEFAULT}"
 API_DIR="$BASE_DIR/finance_manager_api"
 REFLEX_DIR="$BASE_DIR/finance_manager_reflex"
 
@@ -18,6 +20,12 @@ mkdir -p "$PID_DIR"
 # Ensure logs directories exist
 mkdir -p "$API_DIR/logs"
 mkdir -p "$REFLEX_DIR/logs"
+
+if [[ ! -d "$API_DIR" || ! -d "$REFLEX_DIR" ]]; then
+    echo "Error: expected service directories not found under '$BASE_DIR'."
+    echo "Hint: set FM_BASE_DIR to your finance_manager repo root."
+    exit 1
+fi
 
 # Service Logs
 API_LOG="$API_DIR/logs/service.log"
