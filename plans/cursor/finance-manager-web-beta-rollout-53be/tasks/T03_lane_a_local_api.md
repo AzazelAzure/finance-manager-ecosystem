@@ -1,5 +1,7 @@
 # T03 — Lane A: local API + SQLite (optional)
 
+**Status (2026-04-29):** Done — see `finance_manager_web/README.md` section *Lane A — local API (SQLite) + Vite*; ecosystem `finance_manager_web` submodule at `d9a23c4`+ on branch `cursor/finance-manager-web-beta-rollout-53be`.
+
 ## Objective
 
 Document and verify a repeatable local path: Django `runserver` + default SQLite + Vite dev server hitting `http://127.0.0.1:8000` (or chosen port).
