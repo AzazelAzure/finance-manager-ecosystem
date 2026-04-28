@@ -18,6 +18,8 @@ Project updates and coordination are shared in Slack channel
 | `finance_manager_cli` | `git@github.com:AzazelAzure/finance-manager-cli.git` |
 | `finance_manager_reflex` | `git@github.com:AzazelAzure/finance-manger-reflex-frontend.git` |
 | `finance_manager_android` | `git@github.com:AzazelAzure/finance-manager-andriod.git` |
+| `finance_manager_rust_middleware` | `git@github.com:AzazelAzure/finance-manager-rust-middleware.git` |
+| `finance_manager_rust_tools` | `git@github.com:AzazelAzure/finance-manager-rust-tools.git` |
 
 To initialize the component repositories after cloning:
 
@@ -32,4 +34,5 @@ git submodule update --init --recursive
 - **`proxy/`** — nginx image and config. **TLS material** under `proxy/certs/*.pem` is ignored; generate or copy certs per machine and keep private keys out of git.
 - **`plans/`** — execution plans for orchestration (`plans/<proposed-git-branch-name>/`); see `.cursor/skills/roadmap-rollout-planning/SKILL.md`.
 - **`docs/`** — cross-cutting notes (lockfiles, SPDX, agent pilot).
+- **`finance_manager_rust_middleware/`** and **`finance_manager_rust_tools/`** — separate repos (see table above); develop Rust work there and bump submodule SHAs when sharing changes with the ecosystem.
 - **`.gitignore`** — excludes `.env`, venvs, local dumps, editor ignore files (`.cursorignore`, `.antigravityignore`), and local certificates.
