@@ -35,6 +35,10 @@ Environment (optional)
   CURSOR_SLACK_PREFIX     Text prefix that marks a task when mode uses prefix (default: "!cursor").
   CURSOR_SLACK_TOP_LEVEL  If "1", ignore thread replies for new tasks (default: 1).
   CURSOR_AGENT_TIMEOUT_SEC Subprocess timeout in seconds (default: 3600; 0 = none).
+  CURSOR_SLACK_MAX_MESSAGE_CHARS  Max chars per Slack thread reply (default: 2400).
+                            Long agent output is split into multiple thread messages.
+  CURSOR_SLACK_THREAD_TASKS  If "1"/"true", process !cursor/mention tasks in thread
+                            replies (default: off; only top-level messages are tasks).
 
 Slack app scopes (bot token)
 ----------------------------
@@ -81,6 +85,29 @@ def _env_bool(name: str, default: bool = False) -> bool:
     if v is None:
         return default
     return v.strip().lower() in ("1", "true", "yes", "on")
+
+
+def _slack_max_message_chars() -> int:
+    raw = os.environ.get("CURSOR_SLACK_MAX_MESSAGE_CHARS", "2400").strip()
+    try:
+        n = int(raw)
+        return max(500, min(n, 3500))
+    except ValueError:
+        return 2400
+
+
+def _chunk_text(label: str, body: str, max_len: int) -> list[str]:
+    """Split body into Slack-sized parts with chunk n/total headers when needed."""
+    if not body:
+        return []
+    total = (len(body) + max_len - 1) // max_len
+    out: list[str] = []
+    label_line = f"*{label}*\n" if label else ""
+    for i in range(total):
+        part = body[i * max_len : (i + 1) * max_len]
+        chunk_hdr = f"*chunk {i + 1}/{total}*\n" if total > 1 else ""
+        out.append(f"{label_line}{chunk_hdr}{part}")
+    return out
 
 
 def _slack_api(token: str, method: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -408,9 +435,9 @@ class SlackBridge:
         return list(reversed(all_msgs))
 
     def post_thread_reply(self, channel_id: str, thread_ts: str, text: str) -> None:
-        chunk = 3500
-        for i in range(0, len(text), chunk):
-            part = text[i : i + chunk]
+        max_c = _slack_max_message_chars()
+        for i in range(0, len(text), max_c):
+            part = text[i : i + max_c]
             if i > 0:
                 part = f"(continued) {part}"
             _slack_api(
@@ -423,6 +450,23 @@ class SlackBridge:
                 },
             )
 
+    def post_thread_messages(self, channel_id: str, thread_ts: str, messages: list[str]) -> None:
+        for msg in messages:
+            if not msg:
+                continue
+            self.post_thread_reply(channel_id, thread_ts, msg)
+
+    def _write_last_run_log(self, code: int, out: str, err: str) -> Path:
+        log_path = self.workspace / ".cursor_slack_agent_last_run.log"
+        try:
+            log_path.write_text(
+                f"exit={code}\n\n--- stdout ---\n{out}\n\n--- stderr ---\n{err}\n",
+                encoding="utf-8",
+            )
+        except OSError as e:
+            LOG.warning("Could not write %s: %s", log_path, e)
+        return log_path
+
     def _advance_task(self, ts: str) -> None:
         if float(ts) > float(self.last_task_ts):
             self.last_task_ts = ts
@@ -434,7 +478,7 @@ class SlackBridge:
         self._save_state()
 
     def _extract_pr_urls(self, text: str) -> list[str]:
-        return re.findall(r"https://github\\.com/[^\\s>]+/pull/\\d+", text or "")
+        return re.findall(r"https://github\.com/[^\s>]+/pull/\d+", text or "")
 
     def _extract_pr_status(self, text: str) -> str:
         t = (text or "").lower()
@@ -455,7 +499,14 @@ class SlackBridge:
             if m.get("type") != "message":
                 self._advance_task(ts)
                 continue
-            if self.top_level_only and m.get("thread_ts") and m.get("thread_ts") != m.get("ts"):
+            in_thread = bool(
+                m.get("thread_ts") and m.get("thread_ts") != m.get("ts")
+            )
+            if (
+                self.top_level_only
+                and in_thread
+                and not _env_bool("CURSOR_SLACK_THREAD_TASKS", default=False)
+            ):
                 self._advance_task(ts)
                 continue
             uid = m.get("user")
@@ -489,9 +540,15 @@ class SlackBridge:
                     timeout=self.agent_timeout,
                 )
                 code, out, err = res.returncode, res.stdout, res.stderr
-            summary = f"*Agent finished* (exit {code})\n```\n{out[:2800]}\n```\n"
+            log_path = self._write_last_run_log(code, out, err)
+            max_c = _slack_max_message_chars()
+            reply_parts: list[str] = [
+                f"*Agent finished* (exit {code}). Full output logged to `{log_path.name}` "
+                f"(~{len(out) + len(err)} chars; see threaded chunks below)."
+            ]
+            reply_parts.extend(_chunk_text("stdout", out, max_c))
             if err:
-                summary += f"*stderr* ```\n{err[:1200]}\n```\n"
+                reply_parts.extend(_chunk_text("stderr", err, max_c))
             urls = self._extract_pr_urls(out + "\n" + err)
             for url in urls:
                 if url not in self.tracked_pr_urls:
@@ -504,7 +561,9 @@ class SlackBridge:
                             "source_channel": self.task_channel_id,
                         }
                     )
-            self.post_thread_reply(self.task_channel_id, thread_ts, summary)
+            self.post_thread_messages(
+                self.task_channel_id, thread_ts, reply_parts
+            )
             self._advance_task(ts)
 
     def process_pr_once(self) -> None:
