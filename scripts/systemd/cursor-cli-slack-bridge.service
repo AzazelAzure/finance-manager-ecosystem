@@ -1,0 +1,22 @@
+# systemd --user unit: copy or symlink to ~/.config/systemd/user/
+#   cp scripts/systemd/cursor-cli-slack-bridge.service ~/.config/systemd/user/
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now cursor-cli-slack-bridge.service
+#
+# For the service to start at boot without an interactive login, enable linger once:
+#   sudo loginctl enable-linger "$USER"
+
+[Unit]
+Description=Cursor headless Slack bridge agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/Documents/python/finance_manager
+ExecStart=%h/Documents/python/finance_manager/scripts/cursor_bridge_daemon.sh
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
