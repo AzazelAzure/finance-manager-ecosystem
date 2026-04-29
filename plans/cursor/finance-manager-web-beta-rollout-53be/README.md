@@ -29,15 +29,14 @@ When the JS app is ready to ride the same **deploy / smoke / switch** path as AP
 
 ## Execution status (living)
 
-**Last updated:** 2026-04-29 (local execution continues; ecosystem cleaned/synced on `cursor/finance-manager-web-beta-rollout-53be`)
+**Last updated:** 2026-04-30 — ecosystem on **`main`** (PR #18 merged); `finance_manager_web` / `finance_manager_api` submodules pinned. **Reflex/API blue/green** runs **in parallel** with the current service; **prod API is up** for this JS track (`https://api.thehivemanager.com`).
 
 | Area | Status |
 |------|--------|
-| **Accomplished** | Breakpoint 0 (lane B primary) in `runtime_handoff.md`. T01: `finance_manager_web` submodule wired. T02: CORS/CSRF + dev login diagnostics (API + web feature branches; API checkout in ecosystem includes those defaults). T03: Lane A runbook in `finance_manager_web/README.md` (migrate, `createsuperuser`, `VITE_API_BASE_URL`, Runtime Signup pointer). `CROSS_AGENT_COORDINATION.md` API note. |
-| **In flight** | Open PRs (per repo) + Slack `#pull-requests` workflow; **prod API** may still not return full CORS headers for browser preflight to `https://api.thehivemanager.com` from all Origins—use **Lane A** to validate app+API, or fix deploy/env. |
-| **In progress** | T04: Cloudflare private URLs **`http://127.0.0.1:5173`** and **`:4173`** on **VPS** `dev@159.198.75.194` — Vite running from `/home/dev/finance_manager_web` via `scripts/vps-serve.sh` (no Reflex/docker changes). **API:** deploy CORS for `https://jsdevprodtest.thehivemanager.com` when testing preview URL. Optional: nginx-only static host later. |
-| **Not started** | Breakpoint 2 / 3 full green: manual JWT + snapshot from `https://jsdevtesting...` (after tunnel) and/or prod; final CPPR + human verification. |
-| **Next** | You: set tunnel private origin to **127.0.0.1:5173** (dev) or **:4173** (preview). Then login smoke with `VITE_API_BASE_URL=https://api.thehivemanager.com`. Merge PRs. [PASSDOWN.md](./PASSDOWN.md). |
+| **Accomplished** | B0, T01–T03, T04 wiring (VPS `vps-serve`, tunnels, CORS in API code). Ecosystem handoff merged to `main`. |
+| **In flight** | **Breakpoint 2 / 3** — run manual login + snapshot smoke from your chosen Origin (`jsdevtesting` / `jsdevprodtest` / local 5173). Confirm preflight CORS for that Origin if anything fails. |
+| **Next** | (1) `.env.local` with `VITE_API_BASE_URL=https://api.thehivemanager.com` for Lane B. (2) E2E smoke. (3) When ready for users, align **web** with blue/green + [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md). [PASSDOWN.md](./PASSDOWN.md). |
+| **Not started** | Final human sign-off + any prod CORS env verification if code defaults are not what deploy uses. |
 
 ## Agent startup
 
