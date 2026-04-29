@@ -34,8 +34,8 @@ When the JS app is ready to ride the same **deploy / smoke / switch** path as AP
 | Area | Status |
 |------|--------|
 | **Accomplished** | B0, T01–T03, T04 wiring (VPS `vps-serve`, tunnels, CORS in API code). Ecosystem handoff merged to `main`. |
-| **In flight** | **Breakpoint 2 / 3** — run manual login + snapshot smoke from your chosen Origin (`jsdevtesting` / `jsdevprodtest` / local 5173). Confirm preflight CORS for that Origin if anything fails. |
-| **Next** | (1) `.env.local` with `VITE_API_BASE_URL=https://api.thehivemanager.com` for Lane B. (2) E2E smoke. (3) When ready for users, align **web** with blue/green + [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md). [PASSDOWN.md](./PASSDOWN.md). |
+| **In flight** | **B2 + B3 (combined):** one manual smoke on **`https://<jsdev / jsdevprod>…thehivemanager.com`**: login + snapshot with prod API. Internal proxy may use **`https://127.0.0.1:[port]`** toward the app with TLS off to Vite; see web README §5–6. |
+| **Next** | Record **PASS** in `validation_gates` when that smoke is green. Then: align **web** with blue/green + [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) when you want user traffic. [PASSDOWN.md](./PASSDOWN.md). |
 | **Not started** | Final human sign-off + any prod CORS env verification if code defaults are not what deploy uses. |
 
 ## Agent startup
