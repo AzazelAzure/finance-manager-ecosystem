@@ -1,11 +1,10 @@
-# Optional merge for one-time cutover from single-stack `finance_manager` on the same host:
-# reuse existing Postgres data volume (see `podman volume ls` — name e.g. finance_manager_postgres_data).
+# Legacy: Postgres reuse was merged here for `docker compose -f ... -f docker-compose.bluegreen.cutover.yml`.
+# `docker-compose.bluegreen.yml` now declares `postgres_data` as external `finance_manager_postgres_data`
+# directly, because podman-compose 1.0.x cannot merge a bare `postgres_data:` key with a mapping
+# (ValueError: can't merge ... NoneType and dict).
 #
-#   podman-compose -f docker-compose.bluegreen.yml -f docker-compose.bluegreen.cutover.yml --env-file .secrets/server.env up -d --build
+# Use only:
+#   podman compose -f docker-compose.bluegreen.yml --env-file .secrets/server.env up -d
 #
-# Omit this file for a greenfield fm-beta install (use default project volumes).
-
-volumes:
-  postgres_data:
-    name: finance_manager_postgres_data
-    external: true
+# Greenfield: create the volume once — `podman volume create finance_manager_postgres_data`.
+services: {}
