@@ -23,6 +23,7 @@ Bundle content (lean runtime only):
   - docker-compose.yml
   - docker-compose.bluegreen.yml
   - docker-compose.bluegreen.parallel.yml
+  - docker-compose.bluegreen.cutover.yml
   - proxy/
   - deploy/server.env.example
   - scripts/fm_docker.sh
@@ -132,6 +133,7 @@ runtime_profile=service-only
 docker-compose.yml
 docker-compose.bluegreen.yml
 docker-compose.bluegreen.parallel.yml
+docker-compose.bluegreen.cutover.yml
 proxy/
 deploy/server.env.example
 scripts/fm_docker.sh
@@ -160,6 +162,7 @@ fi
 copy_path "docker-compose.yml" "docker-compose.yml"
 copy_path "docker-compose.bluegreen.yml" "docker-compose.bluegreen.yml"
 copy_path "docker-compose.bluegreen.parallel.yml" "docker-compose.bluegreen.parallel.yml"
+copy_path "docker-compose.bluegreen.cutover.yml" "docker-compose.bluegreen.cutover.yml"
 copy_path "proxy/" "proxy/"
 copy_path "deploy/server.env.example" "deploy/server.env.example"
 copy_path "scripts/fm_docker.sh" "scripts/fm_docker.sh"
