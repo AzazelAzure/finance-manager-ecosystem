@@ -35,8 +35,9 @@ When the JS app is ready to ride the same **deploy / smoke / switch** path as AP
 |------|--------|
 | **Accomplished** | B0, T01–T03, T04 wiring (VPS `vps-serve`, tunnels, tunnel `http://` to Vite, CORS code + troubleshooting doc). |
 | **Paused (standby)** | **B2 + B3** smoke on `https://jsdev…` / `https://jsdevprod…` — **resume after API is back** and Cloudflare/cache steps applied if needed. |
-| **Next (after alert)** | Re-check `https://api.thehivemanager.com` (OPTIONS preflight has CORS). Run login + snapshot; mark `validation_gates` **PASS**. Then blue/green + [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) when ready for user traffic. |
-| **Not started** | Final human sign-off + any prod CORS env verification if code defaults are not what deploy uses. |
+| **Next (after alert)** | Re-check `https://api.thehivemanager.com` (OPTIONS preflight has CORS). Run login + snapshot; mark `validation_gates` **PASS**. |
+| **Closeout (after sibling blue/green is stable)** | **Wrap `finance_manager_web` into the same ecosystem:** Docker image(s) for static or Node serve, **blue/green (or inactive) slot** + **proxy/nginx** routes, same **deploy / smoke / swap** discipline as API+Reflex. Follow [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md); replace ad-hoc **VPS `vps-serve`** for production paths when cut over. |
+| **Not started** | Final human sign-off; prod CORS env verification if deploy overrides code defaults. |
 
 ## Agent startup
 

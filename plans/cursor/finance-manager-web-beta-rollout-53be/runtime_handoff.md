@@ -21,3 +21,7 @@ _Update when pausing, switching Lane A ↔ B, or completing a breakpoint._
 ## Local API note
 
 **Lane A** commands and `VITE_API_BASE_URL` are documented in [`finance_manager_web/README.md`](../../../finance_manager_web/README.md) (section “Lane A — local API (SQLite) + Vite”). If you use a different bind port, update both the API command and the web env file.
+
+## Closeout — Docker + image swap (planned)
+
+After the **sibling blue/green** work is stable and further testing is green, fold **`finance_manager_web`** into the **same** Docker/compose + **image cycling** model (build `dist`, container, proxy `server_name`, inactive deploy smoke, cutover). See plan **README** *Closeout* and [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md).
