@@ -23,7 +23,9 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-finance_password}
       - DB_HOST=db
       - DB_PORT=5432
-      - ALLOWED_HOSTS=api.thehivemanager.com,thehivemanager.com,www.thehivemanager.com,api,localhost,127.0.0.1
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.thehivemanager.com,thehivemanager.com,www.thehivemanager.com,api,localhost,127.0.0.1}
+      - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS:-https://thehivemanager.com,https://www.thehivemanager.com,https://api.thehivemanager.com,https://reflex-api.thehivemanager.com}
       - DEBUG=True
     depends_on:
       - db
@@ -45,7 +47,9 @@ services:
       - REFLEX_API_URL=https://reflex-api.thehivemanager.com
       - REFLEX_DEPLOY_URL=https://thehivemanager.com
       - HOST=0.0.0.0
-    command: ["uv", "run", "reflex", "run", "--env", "prod", "--frontend-port", "3000", "--backend-host", "0.0.0.0"]
+      - REFLEX_USE_NPM=1
+      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=thehivemanager.com,www.thehivemanager.com,reflex-api.thehivemanager.com
+    command: ["uv", "run", "reflex", "run", "--env", "${REFLEX_ENV:-prod}", "--frontend-port", "3000", "--backend-host", "0.0.0.0"]
     depends_on:
       api:
         condition: service_healthy
