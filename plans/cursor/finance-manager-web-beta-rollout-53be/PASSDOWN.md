@@ -21,6 +21,7 @@ Ship the Vite/React `finance_manager_web` track: submodule hygiene, CORS/auth di
 | **T01 — Submodule** | Ecosystem `.gitmodules` includes `finance_manager_web` → `git@github.com:AzazelAzure/finance-manager-web.git`. Submodule present; initial `main` pushed; README env section, `.env.example`, `.gitignore` for env files. |
 | **T02 — Code (not necessarily prod)** | **API:** branch `cursor/finance-manager-web-beta-rollout-53be` — default `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS` include Vite + `jsdevtesting` (ecosystem API submodule at `251cd2d`+ includes these lines; also `django-cors-headers` declared for builds). **Web:** branch `cursor/...`, commits through **`d9a23c4`** — dev-only `LoginPage` diagnostics + **Lane A README** runbook. |
 | **T03 — Lane A docs** | `finance_manager_web/README.md` — “Lane A — local API (SQLite) + Vite”: `uv sync`, migrate, `createsuperuser`, `runserver`, `.env.local` for `VITE_API_BASE_URL`. |
+| **T04 — jsdevtesting (local tunnel)** | Web `README` + `vite.config.ts`: Cloudflare private URL **`http://127.0.0.1:5173`** (dev) or **`http://127.0.0.1:4173`** (preview); `allowedHosts` for tunnel `Host` header. |
 | **Coordination note** | `CROSS_AGENT_COORDINATION.md` — **Last API changes** (update when PRs merge). |
 | **Verification (local)** | `npm run build` in `finance_manager_web` after README change. |
 

@@ -1,5 +1,17 @@
 # T04 — Lane B: `jsdevtesting.thehivemanager.com` on VPS
 
+## Local tunnel first (ready to test HTTPS hostname)
+
+Before nginx on VPS, you can pipe **`jsdevtesting.thehivemanager.com`** to your laptop with **Cloudflare Tunnel** (`cloudflared`).
+
+- **Private service URL in Cloudflare (localhost pointer):**
+  - **`http://127.0.0.1:5173`** while running `npm run dev` in `finance_manager_web`
+  - **`http://127.0.0.1:4173`** after `npm run build && npm run preview` (production bundle)
+- **Env:** `.env.local` → `VITE_API_BASE_URL=https://api.thehivemanager.com`
+- **Details:** `finance_manager_web/README.md` section *Lane B — jsdevtesting… via Cloudflare Tunnel*; `vite.config.ts` sets `allowedHosts` for the tunnel `Host` header.
+
+VPS static hosting below is still the durable “team” path.
+
 ## Objective
 
 Public HTTPS URL serves the **built** JS app while API remains `https://api.thehivemanager.com` (prod DB, no local DB fork).

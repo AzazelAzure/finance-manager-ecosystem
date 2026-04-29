@@ -31,8 +31,9 @@ deployment:
 |------|--------|
 | **Accomplished** | Breakpoint 0 (lane B primary) in `runtime_handoff.md`. T01: `finance_manager_web` submodule wired. T02: CORS/CSRF + dev login diagnostics (API + web feature branches; API checkout in ecosystem includes those defaults). T03: Lane A runbook in `finance_manager_web/README.md` (migrate, `createsuperuser`, `VITE_API_BASE_URL`, Runtime Signup pointer). `CROSS_AGENT_COORDINATION.md` API note. |
 | **In flight** | Open PRs (per repo) + Slack `#pull-requests` workflow; **prod API** may still not return full CORS headers for browser preflight to `https://api.thehivemanager.com` from all Origins—use **Lane A** to validate app+API, or fix deploy/env. |
-| **Not started** | T04 / Breakpoint 3 (DNS + tunnel + nginx for `jsdevtesting`). Breakpoint 2 (prod or chosen lane) manual JWT + snapshot smoke. Final CPPR + human verification. |
-| **Next** | (1) Bump ecosystem submodule pointer for `finance_manager_web` after README commit. (2) Breakpoint 2 smoke (Lane A or B). (3) T04 with runtime owner + Reflex sibling coordination. (4) Merge PRs. Handoff context: [PASSDOWN.md](./PASSDOWN.md). |
+| **In progress** | T04: **local Cloudflare Tunnel** to `http://127.0.0.1:5173` or `:4173` documented in web README + `vite.config.ts`; user wires Zero Trust public hostname. **VPS** nginx/static for `jsdevtesting` still optional/follow-up (coordinate Reflex + Runtime sheet). |
+| **Not started** | Breakpoint 2 / 3 full green: manual JWT + snapshot from `https://jsdevtesting...` (after tunnel) and/or prod; final CPPR + human verification. |
+| **Next** | You: set tunnel private origin to **127.0.0.1:5173** (dev) or **:4173** (preview). Then login smoke with `VITE_API_BASE_URL=https://api.thehivemanager.com`. Merge PRs. [PASSDOWN.md](./PASSDOWN.md). |
 
 ## Agent startup
 

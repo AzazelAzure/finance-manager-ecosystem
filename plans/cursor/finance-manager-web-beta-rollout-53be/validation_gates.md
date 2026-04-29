@@ -23,7 +23,7 @@ Sibling plan: [vps-reflex-bluegreen-recovery-53be](../vps-reflex-bluegreen-recov
 ## Breakpoint 3 — Lane B only (VPS JS dev host)
 
 - **Pass when:** DNS `jsdevtesting.thehivemanager.com`; tunnel route; nginx location serves JS build; HTTPS; manual smoke from external network.
-- **2026-04-29:** **NOT STARTED** — T04.
+- **2026-04-29 (tunnel-first):** App-side ready for **Cloudflare Tunnel → laptop**: private origin **`http://127.0.0.1:5173`** (`npm run dev`) or **`http://127.0.0.1:4173`** (`npm run preview`). Configure public hostname `jsdevtesting.thehivemanager.com` in Zero Trust to that URL; then run external HTTPS smoke (login + snapshot). **VPS static/nginx** still optional for shared hosting.
 
 ## Final — CPPR + manual verification
 
