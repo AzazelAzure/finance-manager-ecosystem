@@ -44,7 +44,7 @@ services:
     container_name: finance-manager-reflex
     environment:
       - API_BASE_URL=http://api:8000
-      - REFLEX_API_URL=https://reflex-api.thehivemanager.com
+      - REFLEX_API_URL=https://thehivemanager.com
       - REFLEX_DEPLOY_URL=https://thehivemanager.com
       - HOST=0.0.0.0
       - REFLEX_USE_NPM=1
