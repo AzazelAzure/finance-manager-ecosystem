@@ -95,3 +95,11 @@
 1. T01 (shell + CSS breakpoints + stacking)  
 2. T02 (charts + overflow + Recharts sizing)  
 3. Changelog + image validation (Phase D)
+
+---
+
+## Execution log (orchestration)
+
+| Date (UTC) | Actor | Notes |
+|------------|-------|--------|
+| 2026-04-29 | Agent | **T01+T02 implemented** on Reflex branch `fix/reflex-dashboard-ui-regression`: `shell.py` + `index.css` (column shell ≤900px; removed sidebar flatten at 1200px); `view_components.py` pie `width="100%"`; changelog updated. **Gate V3/V4:** run `reflex export` / Docker build + VPS smoke before merge. |
