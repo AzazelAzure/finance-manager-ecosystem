@@ -28,9 +28,10 @@ deployment:
 | **A — Inventory** | **Done** | [`tasks/T01_inventory_results.md`](./tasks/T01_inventory_results.md), [`runtime_handoff.md`](./runtime_handoff.md). VPS = single-stack live + pseudo-BG proxy files on disk. |
 | **B — Reflex stable** | **Open** | Public path smoke (login, dashboard, F5, websocket) not re-run this session. |
 | **C — BG tooling** | **Blocked (T03)** | `check` **passes** on VPS. **`deploy` inactive failed** (host port **5432/8080/8443** vs live single-stack). Partial `fm-beta` **cleaned up**; production stack healthy. See [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). |
-| **D — CPPR + deploy** | **Open** | Bundle in history on `cursor/finance-manager-web-beta-rollout-53be` (`a2e495a`+). Next: **maintenance/migration** or **compose** change before re-trying T03. |
+| **D — CPPR + deploy** | **Open** | Bundle in history on `cursor/finance-manager-web-beta-rollout-53be` (`a2e495a`+). |
+| **E — Parallel deploy + JS** | **Design → implement** | **Product choice:** invest in **parallel** inactive deploy (shared DB, no duplicate host ports) **before** full beta. See [`design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md`](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) for phases A–D, **Reflex → `finance_manager_web`** in the same color/switch model, and coordination with the [sibling web plan](../finance-manager-web-beta-rollout-53be/README.md). |
 
-**Handoff for next agent:** read **[PASSDOWN.md](./PASSDOWN.md)** first.
+**Handoff for next agent:** read **[PASSDOWN.md](./PASSDOWN.md)** first, then the design doc above.
 
 **Execution:** This work is assigned to a **dedicated Reflex/runtime agent**. Phases below are for that agent end-to-end; the orchestrator does not run them inline in chat.
 
@@ -41,6 +42,7 @@ deployment:
 
 ## Context
 
+- **Parallel deploy + future JS UI:** single source of truth for *how* we run inactive color beside active traffic and how **`finance_manager_web`** joins the same blue/green cycle when Reflex is sunset — [`14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md`](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md).
 - VPS has often run **single-stack** [`docker-compose.yml`](../../../docker-compose.yml) + [`proxy/nginx.conf`](../../../proxy/nginx.conf) + [`scripts/fm_docker.sh`](../../../scripts/fm_docker.sh). Blue-green files exist: [`docker-compose.bluegreen.yml`](../../../docker-compose.bluegreen.yml), [`proxy/nginx.bluegreen.conf`](../../../proxy/nginx.bluegreen.conf), [`scripts/fm_server_beta.sh`](../../../scripts/fm_server_beta.sh).
 - Baseline narrative: [`../server-beta-install-bluegreen-53be/known_good_beta_state_apr28.md`](../server-beta-install-bluegreen-53be/known_good_beta_state_apr28.md).
 - Live cutover was previously deferred — do not `switch` without **pre_cutover** gate per [`deployment_protocol.md`](../../_governance/deployment_protocol.md).

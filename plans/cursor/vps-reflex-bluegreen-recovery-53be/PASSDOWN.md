@@ -34,12 +34,18 @@ Use this file as the primary handoff for the **next executor** (host agent or hu
 
 ## What is next (ordered)
 
-1. **Product/ops decision:** one of:
-   - **Maintenance cutover:** agreed window → stop `finance_manager` stack → stand up `fm-beta` (full BG) with DB volume/import plan → smoke → later `pre_cutover` for traffic; or
-   - **Engineering change:** adjust blue-green compose / `fm_server_beta.sh` so **inactive** candidate does not bind the same host ports and/or reuses the existing DB (substantive repo work + review).
-2. **Claim runtime owner** + **`pre_deploy`** (per protocol) before any future stop/migrate.
-3. Re-attempt **T03** only after (1) is decided and implemented. Record results in `tasks/T03_exec_notes_*.md` and `runtime_handoff.md`.
-4. **T04** only after T03 smoke passes + human **`pre_cutover`**.
+**Product choice (locked):** invest in **parallel deploy semantics** before full beta (not a blind maintenance cutover as the only path). The operational and frontend-bridge work is specified here:
+
+- [`design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md`](../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) — **phases A–D:** shared data plane, compose + `fm_server_beta` refactors, optional `web-*` services for `finance_manager_web`, Reflex sunset.
+
+**Implementation order (from that doc, summarized):**
+
+1. **A — Networks + one DB** — no second published `5432` for candidates; one shared network / aliases so `deploy` does not start a duplicate `db`.
+2. **B — Compose + `fm_server_beta.sh`** — `deploy` / `smoke` match the new layout; production `FM_PUBLIC_*` documented.
+3. **C (optional, when ready)** — `web-blue` / `web-green` (or static) + nginx maps so JS can share **inactive smoke** with API; CORS/CSRF per sibling [web plan](../finance-manager-web-beta-rollout-53be/README.md).
+4. **D** — turn down Reflex containers when JS is parity for target surfaces.
+
+**Gates:** claim **runtime owner**, **`pre_deploy`** before risky VPS work, re-attempt **T03** when A/B are implemented; **T04** + **`pre_cutover`** only after T03 smokes pass.
 
 ---
 

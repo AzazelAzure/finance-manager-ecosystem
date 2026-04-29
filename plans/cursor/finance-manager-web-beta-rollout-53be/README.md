@@ -23,6 +23,10 @@ deployment:
 
 **Execution:** Assigned to a **dedicated JS frontend agent**. Phases are run by that agent to completion; orchestrator does not inline-run them.
 
+## Blue/green and production hostname (later)
+
+When the JS app is ready to ride the same **deploy / smoke / switch** path as API+Reflex, follow [`design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md`](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) (optional `web-blue` / `web-green`, nginx maps, bundle pipeline). Sibling: [vps-reflex-bluegreen-recovery-53be](../vps-reflex-bluegreen-recovery-53be/README.md).
+
 ## Execution status (living)
 
 **Last updated:** 2026-04-29 (local execution continues; ecosystem cleaned/synced on `cursor/finance-manager-web-beta-rollout-53be`)
