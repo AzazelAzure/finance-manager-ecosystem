@@ -31,8 +31,8 @@ Use these defaults for all work unless a more specific scoped rule applies.
 - Follow sub-repo git boundaries and commit within the repo you changed.
 - Default to feature-branch + pull-request workflow (avoid direct feature work on `main`/`master`).
 - Ensure required checks and signoffs pass before merge actions.
-- For every opened PR, post to Slack `#pull-requests` and wait/read automation authorization before merge.
-- Reconcile Slack authorization with GitHub mergeability/check state; Slack approval does not override `CONFLICTING`/`DIRTY` PR state.
+- When you open a pull request, **send the PR link(s) to the user in this chat** (repo, branch, full URL) so they can review and merge. Do not rely on Slack for PR notification.
+- Before merge, use **GitHub** mergeability and required checks; `CONFLICTING` or `DIRTY` state remains a blocker until fixed.
 - Flag better dependency/tool options when they materially improve quality.
 - Validate significant changes in Docker-oriented workflows to catch runtime-only issues early.
 

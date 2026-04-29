@@ -54,9 +54,8 @@ This workspace contains multiple independent git repositories. Treat each repo a
 - Keep PR scope reviewable; split large changes into multiple PRs when practical.
 - Link related cross-repo PRs when a contract change requires downstream updates.
 - Resolve review comments with follow-up commits (avoid force-push workflows unless explicitly required).
-- On PR creation, notify Slack channel `#pull-requests` with repo, branch, and PR URL.
-- While awaiting review, read `#pull-requests` for automation final state updates (`approved`, `merged`, `changes_requested`, `blocked`).
-- Before merge, reconcile Slack authorization with GitHub mergeability/check state. Slack approval is not sufficient when GitHub reports `CONFLICTING` or `DIRTY`.
+- On PR creation, **send the PR link to the user in the Cursor chat** (repo, branch, full URL). Do not use Slack for PR notification.
+- Before merge, confirm **GitHub** mergeability and required checks; do not merge when the PR is `CONFLICTING` or in a `DIRTY` / failing-check state.
 
 ## Agent Signoff and Merge Gate
 
