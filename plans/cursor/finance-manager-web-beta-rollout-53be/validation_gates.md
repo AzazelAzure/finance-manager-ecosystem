@@ -21,7 +21,7 @@ Sibling plan: [vps-reflex-bluegreen-recovery-53be](../vps-reflex-bluegreen-recov
 
 ## Breakpoints 2 + 3 — Lane B combined (default)
 
-- **Context:** All tunneled traffic is **HTTPS in the browser**; an **internal proxy** may use **`https://127.0.0.1:[port]`** toward the app with **TLS off** to Vite so edge TLS + correct Origin still work. See [finance_manager_web README](../../../finance_manager_web/README.md) (Lane B §5–6).
+- **Context:** **HTTPS in the browser** to the public hostname; **cloudflared → Vite** must be **`http://127.0.0.1:5173` / `4173`** (Vite is not TLS on those ports). See [finance_manager_web README §4](../../../finance_manager_web/README.md) if you see **502** with `https://` private URLs.
 - **Pass when (single run):** Open the **public** URL (e.g. `https://jsdevtesting…` or `https://jsdevprodtest…`); **POST `/api/token/`** and **GET snapshot** succeed; no CORS failures. This satisfies **B2** and **B3** together.
 - **Alternative — B2 only (Lane A):** local `runserver` + Vite; no public HTTPS; documents **B2** without **B3**.
 - **2026-04-30:** **IN PROGRESS** — set `VITE_API_BASE_URL=https://api.thehivemanager.com` for prod API smoke.
