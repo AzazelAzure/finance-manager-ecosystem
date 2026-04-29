@@ -26,7 +26,7 @@ When this plan changes **API** ([`finance_manager_api/`](../../../finance_manage
 
 ### Last API changes
 
-- **2026-04-29 (web beta rollout):** Default `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS` extended for Vite (`5173`) and `https://jsdevtesting.thehivemanager.com` — branch `cursor/finance-manager-web-beta-rollout-53be`, commit `7b1f7d4`, open PR: https://github.com/AzazelAzure/finance-manager-api/pull/new/cursor/finance-manager-web-beta-rollout-53be — merge and deploy API before relying on prod CORS for those Origins.
+- **2026-04-29 (web beta rollout):** Default `CORS_ALLOWED_ORIGINS` / `CSRF_TRUSTED_ORIGINS` extended for Vite (`5173`) and `https://jsdevtesting.thehivemanager.com` — branch `cursor/finance-manager-web-beta-rollout-53be`, open PR: https://github.com/AzazelAzure/finance-manager-api/pull/new/cursor/finance-manager-web-beta-rollout-53be — merge and deploy API before relying on prod CORS for those Origins. **Add:** `https://jsdevprodtest.thehivemanager.com` (VPS preview tunnel) — API commit `31af0f3`+ on same branch; deploy for prod.
 - _(agent: append dated line: PR, CORS origins added, ALLOWED_HOSTS touch, etc.)_
 
 ## CPPR+D
