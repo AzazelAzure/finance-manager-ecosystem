@@ -2,6 +2,8 @@
 
 This document describes install scaffolding under `scripts/server/` plus blue/green runtime operations under `scripts/fm_server_beta.sh`.
 
+**Change protocol:** **CPPR** = commit, push, pull request. For durable accountability in this repo, use **CPPRD** = add **D**ocumentation (subrepo `CHANGELOG`, `deploy/`, or `design_docs` as fit). See [`CPPR_AND_CPPRD.md`](./CPPR_AND_CPPRD.md).
+
 ## Layout
 
 | Path | Purpose |
@@ -16,7 +18,7 @@ This document describes install scaffolding under `scripts/server/` plus blue/gr
 | `scripts/fm_server_beta.sh` | Blue/green runtime operations (`status`, `check`, `deploy`, `smoke`, `switch`, `rollback`). |
 | `deploy/server.env.example` | Documented variables; **no real secrets**. |
 | `deploy/generated/` | Local render output directory (tracked empty except `.gitignore`). |
-| `docker-compose.bluegreen.yml` | Blue/green stack (`api-blue`, `api-green`, `reflex-blue`, `reflex-green`) plus shared `db`, `redis`, and `proxy`. |
+| `docker-compose.bluegreen.yml` | Blue/green stack (`api-blue`, `api-green`, `web-blue`, `web-green`) plus shared `db`, `redis`, and `proxy`. |
 | `proxy/nginx.bluegreen.conf` | Proxy config that routes to active color using `proxy/active_color.conf`. |
 | `.secrets/server.env` | Default local/server env file created from the template; ignored by git. |
 
@@ -72,6 +74,9 @@ To automate steps 1-3 in one command:
 - This command also runs remote manifest verification and prints release identity after extraction.
 
 ## Blue/green deploy flow
+
+**Canonical runbook (hostnames, active vs inactive, `jsdevtesting`, `api-jsdevtesting`, and API behavior):** see [`deploy/BLUEGREEN_SWITCHOVER.md`](./BLUEGREEN_SWITCHOVER.md).  
+**Where builds run and whether to build on the VPS vs CI:** see [`deploy/DEPLOYMENT_VECTORS.md`](./DEPLOYMENT_VECTORS.md).
 
 Use script-first operations from repo root:
 
