@@ -117,6 +117,37 @@ services:
       - "3000"
       - "8000"
 
+  # React (Vite) static bundle — same color map as API/Reflex for cutover
+  web-blue:
+    build:
+      context: ./finance_manager_web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  web-green:
+    build:
+      context: ./finance_manager_web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
   proxy:
     build:
       context: ./proxy
@@ -132,6 +163,8 @@ services:
       - api-green
       - reflex-blue
       - reflex-green
+      - web-blue
+      - web-green
       - redis
     stop_signal: SIGQUIT
     stop_grace_period: 30s
