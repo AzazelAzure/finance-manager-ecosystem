@@ -6,12 +6,12 @@ _Update this file whenever the Reflex agent pauses, completes a breakpoint, or t
 
 - **Session / plan:** PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29
 - **VPS SSH:** `dev@159.198.75.194` (shared with JS plan agent; coordinate lifecycle via Runtime Signup Sheet)
-- **Stack in use:** `docker-compose.yml` **single-stack** still serving traffic (project `finance_manager`). **Pseudo BG:** `proxy/nginx.bluegreen.conf` + `proxy/active_color.conf` (blue); **live** `proxy/nginx.conf` single-stack. **`docker-compose.bluegreen.yml` present** after bundle sync; `fm_server_beta.sh check` passes (tooling ready; BG stack not deployed yet).
-- **Active color (if BG):** `blue` in `active_color.conf` only; not wired through running nginx/compose BG project yet.
-- **Last lifecycle command:** `push_runtime_bundle` (earlier) + T03 `fm_server_beta.sh deploy green` (failed) + **`podman-compose … down -v`** cleanup of partial `fm-beta` stack.
-- **Last status:** **Single-stack** `finance-manager-*` all **Up**, api **healthy** after T03 cleanup. T03 `deploy` blocked by **port conflict** with legacy stack; see [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). `fm_server_beta check` still expected to pass when re-run.
+- **Stack in use:** `docker-compose.yml` **single-stack** still serving **public** traffic (project `finance_manager`). **Parallel blue/green** app path: `docker-compose.bluegreen.parallel.yml` + `FM_BG_PARALLEL=1` (see [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md)); full `docker-compose.bluegreen.yml` + `fm_server_beta` without parallel still for standalone/edge-complete layouts.
+- **Active color (if BG):** `blue` in `active_color.conf` on disk; live proxy still **single-stack** `nginx.conf` until cutover.
+- **Last lifecycle command:** `push_runtime_bundle.sh` → `/home/dev/finance_manager` — bundle **`finance_manager_runtime_20260429_082826`**, **main** @ **`9495f5b`** (post–PR #18 merge), manifest clean.
+- **Last status:** Ecosystem **main** merged; VPS tree refreshed from bundle. Re-run parallel **`deploy` / `smoke`** after pull if you recycled `fm-beta` containers. **Public `switch`:** still needs edge on `nginx.bluegreen.conf` (not in this bundle’s live path).
 - **Sibling JS plan status:** See [../finance-manager-web-beta-rollout-53be/validation_gates.md](../finance-manager-web-beta-rollout-53be/validation_gates.md) before proxy edits.
-- **Blockers:** **T03** requires **maintenance window or compose design** to avoid dual bind on 5432/8080/8443 while migrating single-stack → `fm-beta`. **Breakpoint C** deploy+smoke incomplete until that is resolved. Cloudflared: not verified (no passwordless sudo).
+- **Blockers:** **Edge cutover** to blue/green nginx for real users; optional **fm-beta** parallel containers recycled — not blockers for dev. Cloudflared: not verified (no passwordless sudo).
 
 ## VPS smoke env (thehivemanager)
 
