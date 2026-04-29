@@ -25,6 +25,7 @@ Use these defaults for all work unless a more specific scoped rule applies.
 
 ## Collaboration and Traceability
 
+- **CPPR / CPPRD:** code changes that ship via PR should follow **CPPR** (commit, push, pull request). For accountability in this workspace, follow **CPPRD** (add **D**ocumentation): a durable summary in subrepo `CHANGELOG`, `deploy/`, or `design_docs/` as appropriate — see `deploy/CPPR_AND_CPPRD.md`.
 - Check the relevant local docs and design notes before major changes.
 - Update the relevant changelog or tracking docs when behavior changes.
 - Follow sub-repo git boundaries and commit within the repo you changed.
