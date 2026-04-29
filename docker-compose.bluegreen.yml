@@ -124,6 +124,8 @@ services:
     stop_grace_period: 30s
 
 volumes:
-  # Named volume for Postgres; on existing hosts use an external name (see deploy notes).
+  # Reuse the same host volume across restarts; create once if missing: `podman volume create finance_manager_postgres_data`
   postgres_data:
+    name: finance_manager_postgres_data
+    external: true
   redis_data:
