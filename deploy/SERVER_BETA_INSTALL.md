@@ -7,6 +7,9 @@ This document describes install scaffolding under `scripts/server/` plus blue/gr
 | Path | Purpose |
 |------|---------|
 | `scripts/server/install_prereqs.sh` | Check host prerequisites (compose, Podman/Docker, `curl`). Does **not** install OS packages. |
+| `scripts/server/create_runtime_bundle.sh` | Build a lean runtime tarball for VPS migration (service-only payload; excludes docs/dev bloat). |
+| `scripts/server/push_runtime_bundle.sh` | Build/upload/extract runtime tarball to VPS over SSH (`scp` + `tar`), no git checkout needed on server. |
+| `scripts/server/verify_release_manifest.sh` | Validate `RELEASE_MANIFEST.txt` and print release identity (bundle, branch, commit) for deploy logs. |
 | `scripts/server/bootstrap_env.sh` | Copy env template (`--from-example`) or validate secrets presence (`--validate-only`). |
 | `scripts/server/render_env_template.sh` | Render `deploy/server.env.example` to `deploy/generated/server.env` (uses `envsubst` when installed). |
 | `scripts/server/verify_install.sh` | Verify checkout layout (`docker-compose.yml`, subtree dirs). Optional HTTP health probe. |
@@ -46,6 +49,27 @@ The ecosystem supports both; prerequisite checks pass if at least one runtime an
    Optionally `FM_VERIFY_HTTP=1` when the stack is up locally or on server.
 
 Dry-run variants: append `--dry-run` where documented on each script.
+
+## Lean VPS package flow (recommended)
+
+When moving from local VM to hosted VPS, package only runtime assets:
+
+1. Build runtime bundle from your dev machine:
+   - `./scripts/server/create_runtime_bundle.sh`
+2. Copy the resulting tarball from `dist/runtime/` to the VPS.
+3. Extract on VPS into the service workspace (for example `/opt/finance_manager`).
+4. Populate secrets (`.secrets/server.env`) and run:
+   - `./scripts/server/install_prereqs.sh`
+   - `./scripts/server/bootstrap_env.sh --validate-only`
+   - `./scripts/fm_docker.sh start`
+
+The bundle intentionally excludes design docs, workspace metadata, and local development artifacts to keep deploy payloads smaller and production-focused.
+Each bundle includes `RELEASE_MANIFEST.txt` with build timestamp, branch, commit SHA, dirty/clean flag, and submodule status for deploy traceability and rollback confidence.
+
+To automate steps 1-3 in one command:
+
+- `./scripts/server/push_runtime_bundle.sh --host <vps-ip-or-domain> --user <ssh-user> --remote-dir /opt/finance_manager`
+- This command also runs remote manifest verification and prints release identity after extraction.
 
 ## Blue/green deploy flow
 

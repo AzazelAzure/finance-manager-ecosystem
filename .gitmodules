@@ -19,3 +19,6 @@
 [submodule "finance_manager_rust_tools"]
 	path = finance_manager_rust_tools
 	url = git@github.com:AzazelAzure/finance-manager-rust-tools.git
+[submodule "finance_manager_web"]
+	path = finance_manager_web
+	url = git@github.com:AzazelAzure/finance-manager-web.git
