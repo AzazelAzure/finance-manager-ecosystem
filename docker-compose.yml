@@ -49,7 +49,8 @@ services:
       - HOST=0.0.0.0
       - REFLEX_USE_NPM=1
       - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=thehivemanager.com,www.thehivemanager.com,reflex-api.thehivemanager.com
-    command: ["uv", "run", "reflex", "run", "--env", "${REFLEX_ENV:-prod}", "--frontend-port", "3000", "--backend-host", "0.0.0.0"]
+    # Must match production single-port run (see finance_manager_reflex/Dockerfile)
+    command: ["uv", "run", "reflex", "run", "--env", "${REFLEX_ENV:-prod}", "--backend-host", "0.0.0.0", "--backend-port", "3000"]
     depends_on:
       api:
         condition: service_healthy
