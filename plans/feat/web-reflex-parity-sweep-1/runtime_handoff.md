@@ -51,6 +51,11 @@ _(append per phase)_
 | Date | Phase | Color | Result | Notes |
 |------|-------|-------|--------|-------|
 | 2026-04-29 | P0 plan freeze | n/a | n/a | Plan committed; no runtime change. |
+| 2026-04-29 | P1 foundations | blue | OK | VPS `~/finance_manager/finance_manager_web`: `git pull origin main` → `53ace4f` (merge #2). `podman compose … build web-blue web-green` + stack up. `GET https://jsdevtesting.thehivemanager.com/` → 200. Ecosystem parent not present on VPS (flat clones). |
+| 2026-04-29 | P2 public surface + cookie/login fix | blue | OK (pulled) | `finance_manager_web` on VPS pulled to `main` after [web #3](https://github.com/AzazelAzure/finance-manager-web/pull/3) merge. User confirmed pull; run `build web-blue web-green` + `up -d` if images not rebuilt yet. BP2 smoke/Lighthouse per `validation_gates.md`. |
+| 2026-04-29 | P3 dashboard parity | blue | OK | VPS web pulled to `main` after merges through [web #7](https://github.com/AzazelAzure/finance-manager-web/pull/7), rebuilt `web-blue` / `web-green`, recreated proxy + web containers, and verified running web container image matches latest build. User BP3 validation: charts and filters work, no duplicate loads on same filter, mobile viewport good. Drill slice behavior currently redirects to Transactions (accepted for this sweep). BP7 follow-up logged for dashboard polish (smart/live reload UX + drill interaction expectations). |
+| 2026-04-29 | P4 transactions suite | green | **PASS** | Follow-up fixes deployed through [web #11](https://github.com/AzazelAzure/finance-manager-web/pull/11) plus category fallback patch in local BP5 workstream. User verified CRUD path operational; blank category now defaults by tx type (Expense/Income/Transfer). BP7 polish items remain: calendar heatmap intensity and optional drillthrough preference mode. |
+| 2026-04-29 | P7 polish + hardening closeout | blue | **PASS** | Final BP7 UX fixes accepted for beta launch. `Quick add -> +Bill` intentionally disabled pending redesign decision (deployed via runtime hotfix rebuild). Proxy traffic pinned to blue web target for `thehivemanager.com` and JS beta hostnames. Reflex containers stopped and removed from live request path (no longer serving production traffic). |
 
 ## Rollback
 
