@@ -1,6 +1,6 @@
 # T03 — Deploy and smoke **inactive** color only
 
-**Status (2026-04-29):** **Attempted, blocked** — `deploy green` failed: `fm-beta` and `finance_manager` both require host **5432** / **8080** / **8443**. Partial stack removed; single-stack healthy. **Next:** maintenance migration or compose/script change. See [`T03_exec_notes_2026-04-29.md`](./T03_exec_notes_2026-04-29.md) and [`../PASSDOWN.md`](../PASSDOWN.md).
+**Status (2026-04-29):** **Unblocked (parallel path)** — use **`FM_BG_PARALLEL=1`** and [`docker-compose.bluegreen.parallel.yml`](../../../docker-compose.bluegreen.parallel.yml) (see repo root: `docker-compose.bluegreen.parallel.yml`) with shared network + `.secrets/server.env` for `SECRET_KEY`. **`deploy` + `smoke --color inactive`** verified on VPS without stopping legacy stack. See [`T03_parallel_impl_notes.md`](./T03_parallel_impl_notes.md). Historical failed attempt: [`T03_exec_notes_2026-04-29.md`](./T03_exec_notes_2026-04-29.md).
 
 ## Objective
 

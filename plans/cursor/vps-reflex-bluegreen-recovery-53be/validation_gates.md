@@ -9,7 +9,7 @@ Sibling plan: [finance-manager-web-beta-rollout-53be](../finance-manager-web-bet
 |------|--------|
 | **A** | **Pass** — inventory and pseudo-BG vs single-stack documented under `tasks/` and `runtime_handoff.md`. |
 | **B** | **Open** — no fresh public user-path sign-off in this session. |
-| **C** | **Partial / blocked** — `check` **passes**; **T03 `deploy green` failed** (port conflict with single-stack; see [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md)); **`smoke --color inactive` not run**; no `switch`. |
+| **C** | **Minimum pass (parallel)** — `FM_BG_PARALLEL=1`: `check`, **`deploy` inactive**, **`smoke --color inactive`** on VPS without legacy shutdown (see [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md)). **No public cutover** (`switch` still N/A for parallel path until edge uses blue/green nginx). |
 | **Final** | **Open** — merge/PR and D-step evidence pending as work completes. |
 
 Next execution steps and cloud-vs-SSH split: **[PASSDOWN.md](./PASSDOWN.md)**.

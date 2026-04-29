@@ -27,9 +27,9 @@ deployment:
 |-------|--------|---------------------------|
 | **A — Inventory** | **Done** | [`tasks/T01_inventory_results.md`](./tasks/T01_inventory_results.md), [`runtime_handoff.md`](./runtime_handoff.md). VPS = single-stack live + pseudo-BG proxy files on disk. |
 | **B — Reflex stable** | **Open** | Public path smoke (login, dashboard, F5, websocket) not re-run this session. |
-| **C — BG tooling** | **Blocked (T03)** | `check` **passes** on VPS. **`deploy` inactive failed** (host port **5432/8080/8443** vs live single-stack). Partial `fm-beta` **cleaned up**; production stack healthy. See [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). |
-| **D — CPPR + deploy** | **Open** | Bundle in history on `cursor/finance-manager-web-beta-rollout-53be` (`a2e495a`+). |
-| **E — Parallel deploy + JS** | **Design → implement** | **Product choice:** invest in **parallel** inactive deploy (shared DB, no duplicate host ports) **before** full beta. See [`design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md`](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) for phases A–D, **Reflex → `finance_manager_web`** in the same color/switch model, and coordination with the [sibling web plan](../finance-manager-web-beta-rollout-53be/README.md). |
+| **C — BG tooling** | **Parallel path done** | `FM_BG_PARALLEL=1` + [`docker-compose.bluegreen.parallel.yml`](../../../docker-compose.bluegreen.parallel.yml): **deploy** + **smoke inactive** on VPS without stopping legacy. See [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md). `switch` still for a later edge cutover. |
+| **D — CPPR + deploy** | **Open** | Re-bundle to ship parallel compose + `fm_server_beta` updates; then CPPR. |
+| **E — Parallel deploy + JS** | **In progress** | **A/B** (parallel + env-file) **implemented** in repo. **C** optional `web-*` + **D** Reflex sunset: follow [design doc](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) + [web plan](../finance-manager-web-beta-rollout-53be/README.md). |
 
 **Handoff for next agent:** read **[PASSDOWN.md](./PASSDOWN.md)** first, then the design doc above.
 
