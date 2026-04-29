@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build a lean server runtime bundle for VPS migration/deploy.
-# Includes only production service pipeline assets (api/reflex/proxy/compose/scripts/deploy template).
+# Includes only production service pipeline assets (api/web/proxy/compose/scripts/deploy template).
 
 set -euo pipefail
 
@@ -30,7 +30,7 @@ Bundle content (lean runtime only):
   - scripts/fm_server_beta.sh
   - scripts/server/
   - finance_manager_api/
-  - finance_manager_reflex/
+  - finance_manager_web/
 
 Notes:
   - Excludes docs, git metadata, local caches, SQLite/db dumps, node/venv artifacts.
@@ -140,7 +140,7 @@ scripts/fm_docker.sh
 scripts/fm_server_beta.sh
 scripts/server/
 finance_manager_api/
-finance_manager_reflex/
+finance_manager_web/
 
 [submodule_status]
 ${submodule_summary}
@@ -169,7 +169,7 @@ copy_path "scripts/fm_docker.sh" "scripts/fm_docker.sh"
 copy_path "scripts/fm_server_beta.sh" "scripts/fm_server_beta.sh"
 copy_path "scripts/server/" "scripts/server/"
 copy_path "finance_manager_api/" "finance_manager_api/"
-copy_path "finance_manager_reflex/" "finance_manager_reflex/"
+copy_path "finance_manager_web/" "finance_manager_web/"
 
 if fm_is_dry_run; then
   fm_log "dry-run: would write RELEASE_MANIFEST.txt in bundle root"

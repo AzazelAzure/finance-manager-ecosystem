@@ -43,6 +43,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+        VITE_STAGING_API_BASE_URL: ${VITE_STAGING_API_BASE_URL:-https://api-jsdevtesting.thehivemanager.com}
     container_name: finance-manager-web
     expose:
       - "80"
@@ -52,30 +53,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
-  reflex:
-    build:
-      context: ./finance_manager_reflex
-      dockerfile: Dockerfile
-    container_name: finance-manager-reflex
-    environment:
-      - API_BASE_URL=http://api:8000
-      - REFLEX_API_URL=https://thehivemanager.com
-      - REFLEX_DEPLOY_URL=https://thehivemanager.com
-      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
-      - HOST=0.0.0.0
-      - REFLEX_USE_NPM=1
-      - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=thehivemanager.com,www.thehivemanager.com,reflex-api.thehivemanager.com
-    # Must match production single-port run (see finance_manager_reflex/Dockerfile)
-    command: ["uv", "run", "reflex", "run", "--env", "${REFLEX_ENV:-prod}", "--backend-host", "0.0.0.0", "--backend-port", "3000"]
-    depends_on:
-      api:
-        condition: service_healthy
-    stop_signal: SIGTERM
-    stop_grace_period: 30s
-    expose:
-      - "3000"
-      - "8000"
 
   proxy:
     build:
@@ -88,7 +65,6 @@ services:
       - ./proxy/certs:/etc/nginx/certs:ro,z
     depends_on:
       - api
-      - reflex
       - web
     stop_signal: SIGQUIT
     stop_grace_period: 30s

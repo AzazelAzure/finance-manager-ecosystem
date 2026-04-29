@@ -65,7 +65,7 @@ check_file "${REPO_ROOT}/scripts/server/create_runtime_bundle.sh"
 check_file "${REPO_ROOT}/scripts/server/push_runtime_bundle.sh"
 check_file "${REPO_ROOT}/scripts/server/verify_release_manifest.sh"
 check_dir "${REPO_ROOT}/finance_manager_api"
-check_dir "${REPO_ROOT}/finance_manager_reflex"
+check_dir "${REPO_ROOT}/finance_manager_web"
 check_dir "${REPO_ROOT}/deploy"
 check_file "${REPO_ROOT}/deploy/server.env.example"
 

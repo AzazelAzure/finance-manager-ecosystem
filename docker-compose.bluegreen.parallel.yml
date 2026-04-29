@@ -1,6 +1,6 @@
 # Blue/green *application* services only, for parallel deploy beside the legacy
 # `docker-compose.yml` stack (project `finance_manager`). Joins the same
-# user-defined network so `api-*` / `reflex-*` use the running Postgres
+# user-defined network so `api-*` / `web-*` use the running Postgres
 # (default container name `finance-manager-db`) and do not publish host
 # 5432/8080/8443.
 #
@@ -87,60 +87,13 @@ services:
       retries: 8
       start_period: 40s
 
-  reflex-blue:
-    build:
-      context: ./finance_manager_reflex
-      dockerfile: Dockerfile
-    environment:
-      - API_BASE_URL=http://api-blue:8000
-      - REFLEX_API_URL=${FM_REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
-      - REFLEX_DEPLOY_URL=${FM_REFLEX_DEPLOY_URL:-https://thehivemanager.com}
-      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
-      - HOST=0.0.0.0
-      - REDIS_URL=redis://redis:6379/0
-    depends_on:
-      api-blue:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    networks:
-      - shared
-    stop_signal: SIGTERM
-    stop_grace_period: 30s
-    expose:
-      - "3000"
-      - "8000"
-
-  reflex-green:
-    build:
-      context: ./finance_manager_reflex
-      dockerfile: Dockerfile
-    environment:
-      - API_BASE_URL=http://api-green:8000
-      - REFLEX_API_URL=${FM_REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
-      - REFLEX_DEPLOY_URL=${FM_REFLEX_DEPLOY_URL:-https://thehivemanager.com}
-      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
-      - HOST=0.0.0.0
-      - REDIS_URL=redis://redis:6379/0
-    depends_on:
-      api-green:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    networks:
-      - shared
-    stop_signal: SIGTERM
-    stop_grace_period: 30s
-    expose:
-      - "3000"
-      - "8000"
-
   web-blue:
     build:
       context: ./finance_manager_web
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+        VITE_STAGING_API_BASE_URL: ${VITE_STAGING_API_BASE_URL:-https://api-jsdevtesting.thehivemanager.com}
     networks:
       - shared
     expose:
@@ -158,6 +111,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+        VITE_STAGING_API_BASE_URL: ${VITE_STAGING_API_BASE_URL:-https://api-jsdevtesting.thehivemanager.com}
     networks:
       - shared
     expose:

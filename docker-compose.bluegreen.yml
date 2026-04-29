@@ -71,59 +71,14 @@ services:
       timeout: 5s
       retries: 5
 
-  reflex-blue:
-    build:
-      context: ./finance_manager_reflex
-      dockerfile: Dockerfile
-    environment:
-      - API_BASE_URL=http://api-blue:8000
-      # Same host as the app (see proxy/nginx): avoids wss to reflex-api when Cloudflare has only the apex
-      - REFLEX_API_URL=${REFLEX_API_URL:-https://thehivemanager.com}
-      - REFLEX_DEPLOY_URL=${REFLEX_DEPLOY_URL:-https://thehivemanager.com}
-      # Avoids WebSocket hitting StaticFiles (assert) on single-port prod; see rxconfig.py
-      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
-      - HOST=0.0.0.0
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
-    depends_on:
-      api-blue:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    stop_signal: SIGTERM
-    stop_grace_period: 30s
-    expose:
-      - "3000"
-      - "8000"
-
-  reflex-green:
-    build:
-      context: ./finance_manager_reflex
-      dockerfile: Dockerfile
-    environment:
-      - API_BASE_URL=http://api-green:8000
-      - REFLEX_API_URL=${REFLEX_API_URL:-https://thehivemanager.com}
-      - REFLEX_DEPLOY_URL=${REFLEX_DEPLOY_URL:-https://thehivemanager.com}
-      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
-      - HOST=0.0.0.0
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
-    depends_on:
-      api-green:
-        condition: service_healthy
-      redis:
-        condition: service_started
-    stop_signal: SIGTERM
-    stop_grace_period: 30s
-    expose:
-      - "3000"
-      - "8000"
-
-  # React (Vite) static bundle — same color map as API/Reflex for cutover
+  # React (Vite) static bundle — same color map as API for cutover
   web-blue:
     build:
       context: ./finance_manager_web
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+        VITE_STAGING_API_BASE_URL: ${VITE_STAGING_API_BASE_URL:-https://api-jsdevtesting.thehivemanager.com}
     expose:
       - "80"
     healthcheck:
@@ -139,6 +94,7 @@ services:
       dockerfile: Dockerfile
       args:
         VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+        VITE_STAGING_API_BASE_URL: ${VITE_STAGING_API_BASE_URL:-https://api-jsdevtesting.thehivemanager.com}
     expose:
       - "80"
     healthcheck:
@@ -161,8 +117,6 @@ services:
     depends_on:
       - api-blue
       - api-green
-      - reflex-blue
-      - reflex-green
       - web-blue
       - web-green
       - redis
