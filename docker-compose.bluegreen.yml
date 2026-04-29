@@ -80,6 +80,8 @@ services:
       # Same host as the app (see proxy/nginx): avoids wss to reflex-api when Cloudflare has only the apex
       - REFLEX_API_URL=${REFLEX_API_URL:-https://thehivemanager.com}
       - REFLEX_DEPLOY_URL=${REFLEX_DEPLOY_URL:-https://thehivemanager.com}
+      # Avoids WebSocket hitting StaticFiles (assert) on single-port prod; see rxconfig.py
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
     depends_on:
@@ -101,6 +103,7 @@ services:
       - API_BASE_URL=http://api-green:8000
       - REFLEX_API_URL=${REFLEX_API_URL:-https://thehivemanager.com}
       - REFLEX_DEPLOY_URL=${REFLEX_DEPLOY_URL:-https://thehivemanager.com}
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
     depends_on:
@@ -134,5 +137,6 @@ services:
     stop_grace_period: 30s
 
 volumes:
-  # postgres_data: defined here for greenfield, or in docker-compose.bluegreen.cutover.yml (external)
+  # Named volume for Postgres; on existing hosts use an external name (see deploy notes).
+  postgres_data:
   redis_data:
