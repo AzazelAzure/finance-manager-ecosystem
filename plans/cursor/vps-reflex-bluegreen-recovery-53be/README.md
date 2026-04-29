@@ -26,10 +26,10 @@ deployment:
 | Phase | State | Notes (as of 2026-04-29) |
 |-------|--------|---------------------------|
 | **A — Inventory** | **Done** | [`tasks/T01_inventory_results.md`](./tasks/T01_inventory_results.md), [`runtime_handoff.md`](./runtime_handoff.md). VPS = single-stack live + pseudo-BG proxy files on disk. |
-| **B — Reflex stable** | **Open** | Public path smoke (login, dashboard, F5, websocket) not re-run this session. |
-| **C — BG tooling** | **Parallel path done** | `FM_BG_PARALLEL=1` + [`docker-compose.bluegreen.parallel.yml`](../../../docker-compose.bluegreen.parallel.yml): **deploy** + **smoke inactive** on VPS without stopping legacy. See [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md). `switch` still for a later edge cutover. |
-| **D — CPPR + deploy** | **Open** | Re-bundle to ship parallel compose + `fm_server_beta` updates; then CPPR. |
-| **E — Parallel deploy + JS** | **In progress** | **A/B** (parallel + env-file) **implemented** in repo. **C** optional `web-*` + **D** Reflex sunset: follow [design doc](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) + [web plan](../finance-manager-web-beta-rollout-53be/README.md). |
+| **B — Reflex stable** | **Open** | Breakpoint B: public login, dashboard, F5, websocket on agreed URL (human/QA); script-first restart note in handoff. |
+| **C — BG tooling** | **Parallel minimum met** | `FM_BG_PARALLEL=1`: `check`, **deploy inactive**, **smoke inactive** on VPS without legacy shutdown ([`T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md)). **Stretch** (cutover drill): T04 + governance. |
+| **D — CPPR + deploy** | **Done (ecosystem)** | PR #18 merged to **main**; runtime bundle pushed to VPS (`finance_manager_runtime_20260429_082826` @ `9495f5b`; handoff commit `c970d38` on `main`). |
+| **E — Parallel deploy + JS** | **Later** | `web-blue` / `web-green` + [design doc](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) + [web plan](../finance-manager-web-beta-rollout-53be/README.md) when the JS app is ready — does not block Reflex/parallel work. |
 
 **Handoff for next agent:** read **[PASSDOWN.md](./PASSDOWN.md)** first, then the design doc above.
 
