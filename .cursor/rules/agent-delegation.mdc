@@ -46,7 +46,7 @@ Before launching a subagent, provide:
 - Relevant constraints from existing rules (`core-standards`, `git-repo-workflow`, and scoped rules).
 - Expected deliverable format.
 - If runtime testing is needed, identify the current runtime owner and active testing breakpoint.
-- If PR workflow is expected, include Slack `#pull-requests` notify requirements (repo, branch, PR URL) and expected authorization states.
+- If PR workflow is expected, include instructions to **send PR link(s) in the parent chat** (repo, branch, URL); do not use Slack for PR notification.
 
 ## Required Handoff Output
 
@@ -67,4 +67,4 @@ Delegated tasks must return:
 - Keep delegation outputs concise and actionable; avoid large raw dumps unless explicitly requested.
 - When implementation changes behavior or rollout assumptions, schedule `design-docs-sync` before final completion.
 - Follow `container-testing-orchestration.mdc` for script-first lifecycle and single-owner runtime control.
-- For delegated PR gates, require periodic reads of Slack `#pull-requests` until automation replies with final authorization state, then reconcile with GitHub mergeability/check state before resuming downstream tasks.
+- For delegated PR gates, reconcile **GitHub** PR state (checks, mergeability, review) before resuming downstream tasks; the human authorizes merge in chat or on GitHub.
