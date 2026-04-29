@@ -1,0 +1,11 @@
+# Optional merge for one-time cutover from single-stack `finance_manager` on the same host:
+# reuse existing Postgres data volume (see `podman volume ls` — name e.g. finance_manager_postgres_data).
+#
+#   podman-compose -f docker-compose.bluegreen.yml -f docker-compose.bluegreen.cutover.yml --env-file .secrets/server.env up -d --build
+#
+# Omit this file for a greenfield fm-beta install (use default project volumes).
+
+volumes:
+  postgres_data:
+    name: finance_manager_postgres_data
+    external: true
