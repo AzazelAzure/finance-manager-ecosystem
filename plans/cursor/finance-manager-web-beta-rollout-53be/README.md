@@ -29,13 +29,13 @@ When the JS app is ready to ride the same **deploy / smoke / switch** path as AP
 
 ## Execution status (living)
 
-**Last updated:** 2026-04-30 — ecosystem on **`main`** (PR #18 merged); `finance_manager_web` / `finance_manager_api` submodules pinned. **Reflex/API blue/green** runs **in parallel** with the current service; **prod API is up** for this JS track (`https://api.thehivemanager.com`).
+**Last updated:** 2026-04-30 — **STANDBY:** stack **shutdown / shift to blue–green**; **prod API down until owner alerts** — good window to **deploy** API (e.g. `CorsMiddleware` first, `docs/CORS_PRODUCTION_TROUBLESHOOTING.md`, Cloudflare **cache bypass** for `api`). Ecosystem on **`main`**; submodules include API **`2d85099`+** and web **`18d9d4d`+**.
 
 | Area | Status |
 |------|--------|
-| **Accomplished** | B0, T01–T03, T04 wiring (VPS `vps-serve`, tunnels, CORS in API code). Ecosystem handoff merged to `main`. |
-| **In flight** | **B2 + B3 (combined):** one manual smoke on **`https://<jsdev / jsdevprod>…thehivemanager.com`**: login + snapshot with prod API. Internal proxy may use **`https://127.0.0.1:[port]`** toward the app with TLS off to Vite; see web README §5–6. |
-| **Next** | Record **PASS** in `validation_gates` when that smoke is green. Then: align **web** with blue/green + [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) when you want user traffic. [PASSDOWN.md](./PASSDOWN.md). |
+| **Accomplished** | B0, T01–T03, T04 wiring (VPS `vps-serve`, tunnels, tunnel `http://` to Vite, CORS code + troubleshooting doc). |
+| **Paused (standby)** | **B2 + B3** smoke on `https://jsdev…` / `https://jsdevprod…` — **resume after API is back** and Cloudflare/cache steps applied if needed. |
+| **Next (after alert)** | Re-check `https://api.thehivemanager.com` (OPTIONS preflight has CORS). Run login + snapshot; mark `validation_gates` **PASS**. Then blue/green + [design doc 14](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) when ready for user traffic. |
 | **Not started** | Final human sign-off + any prod CORS env verification if code defaults are not what deploy uses. |
 
 ## Agent startup
