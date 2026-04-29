@@ -46,6 +46,7 @@ services:
       - API_BASE_URL=http://api:8000
       - REFLEX_API_URL=https://thehivemanager.com
       - REFLEX_DEPLOY_URL=https://thehivemanager.com
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REFLEX_USE_NPM=1
       - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=thehivemanager.com,www.thehivemanager.com,reflex-api.thehivemanager.com

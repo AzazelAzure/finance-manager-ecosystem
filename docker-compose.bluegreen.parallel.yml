@@ -95,6 +95,7 @@ services:
       - API_BASE_URL=http://api-blue:8000
       - REFLEX_API_URL=${FM_REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
       - REFLEX_DEPLOY_URL=${FM_REFLEX_DEPLOY_URL:-https://thehivemanager.com}
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REDIS_URL=redis://redis:6379/0
     depends_on:
@@ -118,6 +119,7 @@ services:
       - API_BASE_URL=http://api-green:8000
       - REFLEX_API_URL=${FM_REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
       - REFLEX_DEPLOY_URL=${FM_REFLEX_DEPLOY_URL:-https://thehivemanager.com}
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REDIS_URL=redis://redis:6379/0
     depends_on:
