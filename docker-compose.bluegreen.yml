@@ -77,7 +77,8 @@ services:
       dockerfile: Dockerfile
     environment:
       - API_BASE_URL=http://api-blue:8000
-      - REFLEX_API_URL=${REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
+      # Same host as the app (see proxy/nginx): avoids wss to reflex-api when Cloudflare has only the apex
+      - REFLEX_API_URL=${REFLEX_API_URL:-https://thehivemanager.com}
       - REFLEX_DEPLOY_URL=${REFLEX_DEPLOY_URL:-https://thehivemanager.com}
       - HOST=0.0.0.0
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
@@ -98,7 +99,7 @@ services:
       dockerfile: Dockerfile
     environment:
       - API_BASE_URL=http://api-green:8000
-      - REFLEX_API_URL=${REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
+      - REFLEX_API_URL=${REFLEX_API_URL:-https://thehivemanager.com}
       - REFLEX_DEPLOY_URL=${REFLEX_DEPLOY_URL:-https://thehivemanager.com}
       - HOST=0.0.0.0
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
