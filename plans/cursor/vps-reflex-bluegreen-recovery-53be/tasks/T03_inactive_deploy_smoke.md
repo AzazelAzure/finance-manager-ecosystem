@@ -1,6 +1,6 @@
 # T03 — Deploy and smoke **inactive** color only
 
-**Status (2026-04-29):** **Not started** — next gated VPS action after runtime owner + optional `pre_deploy`. See [`../PASSDOWN.md`](../PASSDOWN.md).
+**Status (2026-04-29):** **Attempted, blocked** — `deploy green` failed: `fm-beta` and `finance_manager` both require host **5432** / **8080** / **8443**. Partial stack removed; single-stack healthy. **Next:** maintenance migration or compose/script change. See [`T03_exec_notes_2026-04-29.md`](./T03_exec_notes_2026-04-29.md) and [`../PASSDOWN.md`](../PASSDOWN.md).
 
 ## Objective
 

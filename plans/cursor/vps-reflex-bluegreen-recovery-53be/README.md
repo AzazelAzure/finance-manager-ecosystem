@@ -27,8 +27,8 @@ deployment:
 |-------|--------|---------------------------|
 | **A — Inventory** | **Done** | [`tasks/T01_inventory_results.md`](./tasks/T01_inventory_results.md), [`runtime_handoff.md`](./runtime_handoff.md). VPS = single-stack live + pseudo-BG proxy files on disk. |
 | **B — Reflex stable** | **Open** | Public path smoke (login, dashboard, F5, websocket) not re-run this session. |
-| **C — BG tooling** | **In progress** | `docker-compose.bluegreen.yml` on VPS via bundle push; `fm_server_beta.sh check` **passes** with thehivemanager `FM_PUBLIC_*`. **`deploy` + `smoke --color inactive` not run.** |
-| **D — CPPR + deploy** | **Open** | Bundle script committed locally as `a2e495a` on `cursor/finance-manager-web-beta-rollout-53be`; push/PR per workflow. Slack `pre_deploy` / `pre_cutover` before risky VPS steps. |
+| **C — BG tooling** | **Blocked (T03)** | `check` **passes** on VPS. **`deploy` inactive failed** (host port **5432/8080/8443** vs live single-stack). Partial `fm-beta` **cleaned up**; production stack healthy. See [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). |
+| **D — CPPR + deploy** | **Open** | Bundle in history on `cursor/finance-manager-web-beta-rollout-53be` (`a2e495a`+). Next: **maintenance/migration** or **compose** change before re-trying T03. |
 
 **Handoff for next agent:** read **[PASSDOWN.md](./PASSDOWN.md)** first.
 

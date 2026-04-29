@@ -9,7 +9,7 @@ Sibling plan: [finance-manager-web-beta-rollout-53be](../finance-manager-web-bet
 |------|--------|
 | **A** | **Pass** — inventory and pseudo-BG vs single-stack documented under `tasks/` and `runtime_handoff.md`. |
 | **B** | **Open** — no fresh public user-path sign-off in this session. |
-| **C** | **Partial** — `fm_server_beta.sh check` **passes** on VPS (`dev@159.198.75.194`, `/home/dev/finance_manager`) with production `FM_PUBLIC_*`; **`deploy` + `smoke --color inactive` not executed**; no `switch`. |
+| **C** | **Partial / blocked** — `check` **passes**; **T03 `deploy green` failed** (port conflict with single-stack; see [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md)); **`smoke --color inactive` not run**; no `switch`. |
 | **Final** | **Open** — merge/PR and D-step evidence pending as work completes. |
 
 Next execution steps and cloud-vs-SSH split: **[PASSDOWN.md](./PASSDOWN.md)**.

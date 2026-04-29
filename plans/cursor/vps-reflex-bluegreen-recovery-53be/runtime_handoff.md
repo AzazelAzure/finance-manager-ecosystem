@@ -8,10 +8,10 @@ _Update this file whenever the Reflex agent pauses, completes a breakpoint, or t
 - **VPS SSH:** `dev@159.198.75.194` (shared with JS plan agent; coordinate lifecycle via Runtime Signup Sheet)
 - **Stack in use:** `docker-compose.yml` **single-stack** still serving traffic (project `finance_manager`). **Pseudo BG:** `proxy/nginx.bluegreen.conf` + `proxy/active_color.conf` (blue); **live** `proxy/nginx.conf` single-stack. **`docker-compose.bluegreen.yml` present** after bundle sync; `fm_server_beta.sh check` passes (tooling ready; BG stack not deployed yet).
 - **Active color (if BG):** `blue` in `active_color.conf` only; not wired through running nginx/compose BG project yet.
-- **Last lifecycle command:** `push_runtime_bundle.sh` → `/home/dev/finance_manager` (bundle `finance_manager_runtime_20260429_073503`).
-- **Last status:** Single-stack `finance_manager` still serving. `docker-compose.bluegreen.yml` on disk after bundle. `FM_PUBLIC_*` for thehivemanager: `fm_server_beta.sh status` + `check` **pass** (compose config ok, nginx blue/green `nginx -t` ok). No `deploy` / `switch` run this session.
+- **Last lifecycle command:** `push_runtime_bundle` (earlier) + T03 `fm_server_beta.sh deploy green` (failed) + **`podman-compose … down -v`** cleanup of partial `fm-beta` stack.
+- **Last status:** **Single-stack** `finance-manager-*` all **Up**, api **healthy** after T03 cleanup. T03 `deploy` blocked by **port conflict** with legacy stack; see [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). `fm_server_beta check` still expected to pass when re-run.
 - **Sibling JS plan status:** See [../finance-manager-web-beta-rollout-53be/validation_gates.md](../finance-manager-web-beta-rollout-53be/validation_gates.md) before proxy edits.
-- **Blockers:** None for `fm_server_beta.sh check`. Inactive-color **deploy/smoke** (Breakpoint C) not run yet; cutover still gated. Cloudflared config not verified (no passwordless sudo).
+- **Blockers:** **T03** requires **maintenance window or compose design** to avoid dual bind on 5432/8080/8443 while migrating single-stack → `fm-beta`. **Breakpoint C** deploy+smoke incomplete until that is resolved. Cloudflared: not verified (no passwordless sudo).
 
 ## VPS smoke env (thehivemanager)
 

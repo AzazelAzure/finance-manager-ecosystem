@@ -2,9 +2,9 @@
 
 **Plan:** `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29`  
 **Plan root:** `plans/cursor/vps-reflex-bluegreen-recovery-53be/`  
-**Last updated:** 2026-04-29 (host/workspace agent session)
+**Last updated:** 2026-04-29 (host session; T03 attempt + cleanup)
 
-Use this file as the primary handoff for a **cloud agent** or a later **execution-plane** session. Re-read [`CROSS_AGENT_COORDINATION.md`](./CROSS_AGENT_COORDINATION.md) and [`../../_governance/deployment_protocol.md`](../../_governance/deployment_protocol.md) before any VPS lifecycle work.
+Use this file as the primary handoff for the **next executor** (host agent or human). Re-read [`CROSS_AGENT_COORDINATION.md`](./CROSS_AGENT_COORDINATION.md) and [`../../_governance/deployment_protocol.md`](../../_governance/deployment_protocol.md) before any VPS lifecycle work.
 
 ---
 
@@ -18,35 +18,28 @@ Use this file as the primary handoff for a **cloud agent** or a later **executio
 | **VPS sync (bundle push)** | `push_runtime_bundle.sh --host 159.198.75.194 --user dev --remote-dir /home/dev/finance_manager` ran successfully; bundle `finance_manager_runtime_20260429_073503` extracted; remote `verify_release_manifest.sh` passed. |
 | **T02 — Smoke host env** | Verified on VPS: `FM_PUBLIC_APP_HOST`, `FM_PUBLIC_API_HOST`, `FM_PUBLIC_BASE_URL` for **thehivemanager.com**; `fm_server_beta.sh check` passes. Export block copied into [`runtime_handoff.md`](./runtime_handoff.md). |
 | **`fm_server_beta.sh check` on VPS** | Compose `config` OK; nginx blue/green `nginx -t` OK (via ephemeral container mounts). |
+| **T03 `deploy green` attempt** | **Failed:** host **5432** (and would also conflict on **8080/8443**) with live `finance-manager-*` stack. Partial `fm-beta` state **removed**; single-stack healthy. See [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). |
 
 ---
 
 ## Where we left off
 
-- **Live user traffic** is still the **original single-stack**: `docker-compose.yml` / project `finance_manager`, containers `finance-manager-{db,api,reflex,proxy}`. Nothing was **`deploy`**, **`switch`**, or **`smoke --color inactive`** for the **fm-beta** blue-green project in this session.
-- **`fm_server_beta.sh status`** shows logical colors (active **blue**, inactive **green**) and only lists the legacy `finance-manager-*` containers in its filtered view — **inactive color services are not running yet**.
-- **Breakpoint B** (public login / dashboard / F5 / websocket stability) was **not** re-validated in this pass.
-- **Breakpoint C** is **partially** satisfied: **`check` passes**; **`deploy` + `smoke --color inactive` are not done** (see `validation_gates.md`).
-- **Runtime Signup Sheet** was not re-claimed for this session; coordinate before any `fm_docker.sh` / `fm_server_beta.sh deploy` on VPS.
-- **Slack gates** (`pre_deploy`, `pre_cutover`) were **not** posted; required per deployment protocol before VPS writes that promote risk (deploy to inactive is still a VPS write — follow org practice on `pre_deploy`).
+- **Live user traffic** unchanged: **single-stack** `finance_manager` / `finance-manager-*` all **Up**, api **healthy** after T03 cleanup.
+- **`fm_server_beta` inactive deploy is blocked** while single-stack owns **5432** and **8443/8080** on the same host. T03 is **not** “side-by-side with legacy”; it needs a **migration / maintenance** design (see T03 notes).
+- **Breakpoint B** (public user path) still not re-validated this session.
+- **Breakpoint C** remains **partial** (`check` only; **deploy+smoke inactive** not achieved).
+- **Current parent git branch (workspace):** `cursor/finance-manager-web-beta-rollout-53be` @ `cb66e48` (includes bundle commit `a2e495a` in history; synced with `origin`).
 
 ---
 
 ## What is next (ordered)
 
-1. **Claim runtime owner** on [`design_docs/30_Releases/Runtime_Signup_Sheet.md`](../../../design_docs/30_Releases/Runtime_Signup_Sheet.md); confirm no conflict with [sibling JS plan](../finance-manager-web-beta-rollout-53be/README.md).
-2. **`pre_deploy` gate** (if your org requires it for this host): post per [`deployment_protocol.md`](../../_governance/deployment_protocol.md) §3 before `deploy`.
-3. **T03 — Inactive color only** ([`tasks/T03_inactive_deploy_smoke.md`](./tasks/T03_inactive_deploy_smoke.md)):
-   - SSH: `dev@159.198.75.194`
-   - `cd /home/dev/finance_manager`
-   - Export smoke hosts (see below).
-   - `./scripts/fm_server_beta.sh status` → confirm inactive color (**green** as of last check).
-   - `./scripts/fm_server_beta.sh deploy green` (or dry-run first if recovering from failure).
-   - `./scripts/fm_server_beta.sh smoke --color inactive`
-   - **Do not** `switch` / `promote` inside T03.
-4. Record commands, timestamps, and smoke outcome in `runtime_handoff.md` or `tasks/T03_notes.md` (create if needed).
-5. **Breakpoint B** if not yet satisfied: human or scripted checks on public URL (login, dashboard, F5, websocket).
-6. **T04 / cutover** only after **T03** success + human **`pre_cutover`** approval ([`tasks/T04_optional_cutover.md`](./tasks/T04_optional_cutover.md)).
+1. **Product/ops decision:** one of:
+   - **Maintenance cutover:** agreed window → stop `finance_manager` stack → stand up `fm-beta` (full BG) with DB volume/import plan → smoke → later `pre_cutover` for traffic; or
+   - **Engineering change:** adjust blue-green compose / `fm_server_beta.sh` so **inactive** candidate does not bind the same host ports and/or reuses the existing DB (substantive repo work + review).
+2. **Claim runtime owner** + **`pre_deploy`** (per protocol) before any future stop/migrate.
+3. Re-attempt **T03** only after (1) is decided and implemented. Record results in `tasks/T03_exec_notes_*.md` and `runtime_handoff.md`.
+4. **T04** only after T03 smoke passes + human **`pre_cutover`**.
 
 ---
 
@@ -70,18 +63,16 @@ export FM_PUBLIC_BASE_URL=https://127.0.0.1:8443
 
 ---
 
-## Cloud agent vs execution plane
+## Execution plane
 
-- Workspace rules + [`deployment_protocol.md`](../../_governance/deployment_protocol.md): **cloud / planning agents** should treat **SSH and deploy** as **execution-plane** work unless your session is explicitly waived in as execution plane.
-- This passdown assumes a **host-trusted agent** or human runs SSH, `push_runtime_bundle.sh`, `fm_server_beta.sh deploy/smoke`.
-- **Cloud agent** can still: update plans, open/refresh PRs, reconcile validation gates text, draft Slack gate messages, and sequence tasks for the execution plane.
+- Use a **host-trusted agent** or human for SSH, bundle push, and `fm_server_beta` lifecycle. Follow [`deployment_protocol.md`](../../_governance/deployment_protocol.md) for gates.
 
 ---
 
 ## Git / PR follow-up
 
-- Parent repo commit **`a2e495a`** (`create_runtime_bundle.sh`): push and include in a PR if not already on remote; plan README names branch `cursor/vps-reflex-bluegreen-recovery-53be` for *this* plan’s feature work — reconcile branch naming with whatever branch actually carries the bundle change when opening PRs.
-- Plan markdown edits under `plans/cursor/vps-reflex-bluegreen-recovery-53be/` may be uncommitted until you commit them on an appropriate branch.
+- Bundle work is on **`cursor/finance-manager-web-beta-rollout-53be`** (includes `a2e495a`); current tip `cb66e48` was **pushed** to `origin` as of this session’s `git` check.
+- Plan docs under `plans/cursor/vps-reflex-bluegreen-recovery-53be/` should be committed on an appropriate feature branch when ready.
 
 ---
 
