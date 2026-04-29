@@ -15,7 +15,7 @@ _Update when pausing, switching Lane A ↔ B, or completing a breakpoint._
 - **VPS (`dev@159.198.75.194`):** Vite on **127.0.0.1:5173** / **4173** at `/home/dev/finance_manager_web` — **`./scripts/vps-serve.sh`**. Tunnels: `jsdevtesting` → 5173, `jsdevprodtest` → 4173 (or your internal proxy in front of those ports).
 - **Sibling Reflex plan status:** See [../vps-reflex-bluegreen-recovery-53be/validation_gates.md](../vps-reflex-bluegreen-recovery-53be/validation_gates.md) before changing root compose/proxy.
 - **Merge status (2026-04-30):** Ecosystem **PR #18** merged to `main` (this plan + submodule pins). Per-repo follow-ups: merge or align **finance-manager-web** and **finance-manager-api** default branches as needed; post PR links to `#pull-requests` for any new work.
-- **Blockers:** None for **API availability** (parallel blue/green). If login fails, triage CORS + `VITE_API_BASE_URL` + tunnel Origin first.
+- **Blockers / triage (2026-04-30):** If **ERR_NETWORK** on login from `https://jsdev…` but **Reflex** works: `OPTIONS` to **public** `api.thehivemanager.com` may lack CORS (edge cache). **Direct** `https://127.0.0.1:8443` on the VPS can still be correct. See `finance_manager_api/docs/CORS_PRODUCTION_TROUBLESHOOTING.md` — **Cloudflare: bypass cache** for `api` + purge. Deploy API with `CorsMiddleware` first (commit `2d85099`+).
 
 ## Local API note
 
