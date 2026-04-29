@@ -6,7 +6,25 @@
 set -euo pipefail
 
 BASE_DIR="${FM_WORKSPACE:-${FM_WORKSPACE_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}}"
-COMPOSE_FILE="${FM_BLUEGREEN_COMPOSE_FILE:-$BASE_DIR/docker-compose.bluegreen.yml}"
+# Parallel stack: docker-compose.bluegreen.parallel.yml (shared network, no extra DB/proxy on host).
+if [[ -n "${FM_BLUEGREEN_COMPOSE_FILE:-}" ]]; then
+  COMPOSE_FILE="$FM_BLUEGREEN_COMPOSE_FILE"
+elif [[ "${FM_BG_PARALLEL:-0}" == "1" ]]; then
+  COMPOSE_FILE="$BASE_DIR/docker-compose.bluegreen.parallel.yml"
+else
+  COMPOSE_FILE="$BASE_DIR/docker-compose.bluegreen.yml"
+fi
+
+# Same as scripts/fm_docker.sh: pass --env-file so ${SECRET_KEY} and friends interpolate for api services.
+COMPOSE_ENV_FILE_ARGS=()
+if [[ -n "${FM_ENV_FILE:-}" ]]; then
+  COMPOSE_ENV_FILE_ARGS=(--env-file "$FM_ENV_FILE")
+elif [[ -f "$BASE_DIR/.secrets/server.env" ]]; then
+  COMPOSE_ENV_FILE_ARGS=(--env-file "$BASE_DIR/.secrets/server.env")
+elif [[ -f "$BASE_DIR/.env" ]]; then
+  COMPOSE_ENV_FILE_ARGS=(--env-file "$BASE_DIR/.env")
+fi
+
 ACTIVE_COLOR_FILE="${FM_ACTIVE_COLOR_FILE:-$BASE_DIR/proxy/active_color.conf}"
 DEFAULT_PROJECT="${FM_BLUEGREEN_PROJECT:-fm-beta}"
 PROJECT_NAME="$DEFAULT_PROJECT"
@@ -36,12 +54,24 @@ Commands:
 Environment:
   FM_WORKSPACE / FM_WORKSPACE_ROOT   Optional absolute repo root.
   FM_BLUEGREEN_COMPOSE_FILE          Override compose file path.
+  FM_BG_PARALLEL                     If 1, default compose is docker-compose.bluegreen.parallel.yml
+                                     (app services + redis on FM_STACK_NETWORK_NAME; uses FM_DB_HOST).
+  FM_STACK_NETWORK_NAME              Podman/Docker network of the live stack (default: finance_manager_default).
+  FM_DB_HOST                         Postgres hostname for parallel mode (default: finance-manager-db).
+  FM_ENV_FILE                        Optional env file for compose var substitution (default: .secrets/server.env or .env).
   FM_ACTIVE_COLOR_FILE               Override active color include path.
   FM_BLUEGREEN_PROJECT               Override compose project name (default: fm-beta).
   FM_PUBLIC_APP_HOST                 Host header for frontend smoke probes.
   FM_PUBLIC_API_HOST                 Host header for API smoke probes.
   FM_PUBLIC_BASE_URL                 Base URL for proxy smoke probes (default: https://localhost:8443).
 EOF
+}
+
+using_parallel_compose() {
+  case "$COMPOSE_FILE" in
+    *parallel.y* | *parallel.yaml) return 0 ;;
+    *) return 1 ;;
+  esac
 }
 
 log() { printf '%s\n' "$*"; }
@@ -79,7 +109,7 @@ detect_runtime_bin() {
 
 compose_cmd() {
   # shellcheck disable=SC2086
-  ${COMPOSE_CMD[@]} -p "$PROJECT_NAME" -f "$COMPOSE_FILE" "$@"
+  ${COMPOSE_CMD[@]} -p "$PROJECT_NAME" -f "$COMPOSE_FILE" "${COMPOSE_ENV_FILE_ARGS[@]}" "$@"
 }
 
 require_paths() {
@@ -163,7 +193,12 @@ deploy_cmd() {
   require_color "$color"
   local api_service="api-$color"
   local reflex_service="reflex-$color"
-  local command=(up -d db "$api_service" "$reflex_service" proxy)
+  local command
+  if using_parallel_compose; then
+    command=(up -d redis "$api_service" "$reflex_service")
+  else
+    command=(up -d db "$api_service" "$reflex_service" proxy)
+  fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
     log "dry-run: would run compose ${command[*]}"
@@ -193,14 +228,21 @@ smoke_cmd() {
 
   compose_cmd exec -T redis redis-cli ping >/dev/null
   compose_cmd exec -T "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
-  compose_cmd exec -T "$reflex_upstream" sh -c "wget -qO- http://localhost:3000 >/dev/null"
+  compose_cmd exec -T "$reflex_upstream" sh -c "curl -fsS http://localhost:3000/ >/dev/null"
 
-  curl -kfsS -H "Host: $PUBLIC_API_HOST" "$PUBLIC_BASE_URL/api/health/" >/dev/null
-  curl -kfsS -H "Host: $PUBLIC_APP_HOST" "$PUBLIC_BASE_URL/" >/dev/null
+  if using_parallel_compose; then
+    log "Parallel stack: public edge still serves legacy single-stack; skipped Host-header curls to $PUBLIC_BASE_URL"
+  else
+    curl -kfsS -H "Host: $PUBLIC_API_HOST" "$PUBLIC_BASE_URL/api/health/" >/dev/null
+    curl -kfsS -H "Host: $PUBLIC_APP_HOST" "$PUBLIC_BASE_URL/" >/dev/null
+  fi
   log "Smoke checks passed for $target ($color)."
 }
 
 reload_proxy() {
+  if using_parallel_compose; then
+    die "reload_proxy: parallel compose has no 'proxy' service. Point edge at blue/green or use full docker-compose.bluegreen.yml for switch."
+  fi
   compose_cmd exec -T proxy nginx -t >/dev/null
   compose_cmd exec -T proxy nginx -s reload >/dev/null
 }
