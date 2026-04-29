@@ -133,5 +133,5 @@ services:
     stop_grace_period: 30s
 
 volumes:
-  postgres_data:
+  # postgres_data: defined here for greenfield, or in docker-compose.bluegreen.cutover.yml (external)
   redis_data:
