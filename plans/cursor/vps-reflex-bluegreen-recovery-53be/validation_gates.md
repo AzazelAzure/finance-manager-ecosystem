@@ -8,7 +8,7 @@ Sibling plan: [finance-manager-web-beta-rollout-53be](../finance-manager-web-bet
 | Gate | Result |
 |------|--------|
 | **A** | **Pass** — inventory and pseudo-BG vs single-stack documented under `tasks/` and `runtime_handoff.md`. |
-| **B** | **Open** — no fresh public user-path sign-off in this session. |
+| **B** | **Pass (caveat)** — 2026-04-30: public Dashboard loads; **websocket** reported up; scalar metric (e.g. transactions this month) populates. **Chart / flow widgets** empty — **deferred** data-population work, not a blue/green blocker. |
 | **C** | **Minimum pass (parallel)** — `FM_BG_PARALLEL=1`: `check`, **`deploy` inactive**, **`smoke --color inactive`** on VPS without legacy shutdown (see [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md)). **No public cutover** (`switch` still N/A for parallel path until edge uses blue/green nginx). |
 | **Final** | **Partial** — ecosystem **merged** + **bundle deploy** to VPS done; **human** Breakpoint B sign-off and optional **T04** / `pre_cutover` when edge cutover is scheduled. |
 

@@ -2,7 +2,7 @@
 
 **Plan:** `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29`  
 **Plan root:** `plans/cursor/vps-reflex-bluegreen-recovery-53be/`  
-**Last updated:** 2026-04-29 (host session; T03 attempt + cleanup)
+**Last updated:** 2026-04-30 — parallel T03 done, Breakpoint B signed, main + bundle current
 
 Use this file as the primary handoff for the **next executor** (host agent or human). Re-read [`CROSS_AGENT_COORDINATION.md`](./CROSS_AGENT_COORDINATION.md) and [`../../_governance/deployment_protocol.md`](../../_governance/deployment_protocol.md) before any VPS lifecycle work.
 
@@ -18,30 +18,27 @@ Use this file as the primary handoff for the **next executor** (host agent or hu
 | **VPS sync (bundle push)** | `push_runtime_bundle.sh --host 159.198.75.194 --user dev --remote-dir /home/dev/finance_manager` ran successfully; bundle `finance_manager_runtime_20260429_073503` extracted; remote `verify_release_manifest.sh` passed. |
 | **T02 — Smoke host env** | Verified on VPS: `FM_PUBLIC_APP_HOST`, `FM_PUBLIC_API_HOST`, `FM_PUBLIC_BASE_URL` for **thehivemanager.com**; `fm_server_beta.sh check` passes. Export block copied into [`runtime_handoff.md`](./runtime_handoff.md). |
 | **`fm_server_beta.sh check` on VPS** | Compose `config` OK; nginx blue/green `nginx -t` OK (via ephemeral container mounts). |
-| **T03 `deploy green` attempt** | **Failed:** host **5432** (and would also conflict on **8080/8443**) with live `finance-manager-*` stack. Partial `fm-beta` state **removed**; single-stack healthy. See [`tasks/T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). |
+| **T03 (legacy compose conflict)** | Superseded by **parallel** path; historical: [`T03_exec_notes_2026-04-29.md`](./tasks/T03_exec_notes_2026-04-29.md). |
+| **T03 (parallel)** | **Done** — [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md). |
+| **Breakpoint B (2026-04-30)** | **Pass (caveat)** — [`tasks/B_breakpoint_signoff_2026-04-30.md`](./tasks/B_breakpoint_signoff_2026-04-30.md); charts/data population **deferred**. |
 
 ---
 
-## Where we left off
+## Where we left off (2026-04-30)
 
-- **Live user traffic** unchanged: **single-stack** `finance_manager` / `finance-manager-*` all **Up**, api **healthy** after T03 cleanup.
-- **`fm_server_beta` inactive deploy is blocked** while single-stack owns **5432** and **8443/8080** on the same host. T03 is **not** “side-by-side with legacy”; it needs a **migration / maintenance** design (see T03 notes).
-- **Breakpoint B** (public user path) still not re-validated this session.
-- **Breakpoint C** remains **partial** (`check` only; **deploy+smoke inactive** not achieved).
-- **Current parent git branch (workspace):** `cursor/finance-manager-web-beta-rollout-53be` @ `cb66e48` (includes bundle commit `a2e495a` in history; synced with `origin`).
+- **Live traffic:** still **single-stack** `finance_manager` on the public host; **API healthy** for sibling work.
+- **Parallel `fm-beta`:** optional; can run **`FM_BG_PARALLEL=1`** `deploy` / `smoke inactive` without taking legacy down.
+- **Remaining for “real” blue/green in front of users:** **edge proxy** uses `nginx.bluegreen.conf` + [`T04`](./tasks/T04_optional_cutover.md) + **`pre_cutover`** (governance). Not started.
+- **Parent branch:** work landed on **`main`** (ecosystem); latest plan commits on `main` as of session.
 
 ---
 
-## What is next (ordered)
+## What is next (blue/green focus)
 
-**Product choice (locked):** invest in **parallel deploy semantics** before full beta. **Repo status (2026-04-29):** **A + B** implemented — see [`docker-compose.bluegreen.parallel.yml`](../../docker-compose.bluegreen.parallel.yml), `FM_BG_PARALLEL=1` in `fm_server_beta.sh`, compose `--env-file` aligned with `fm_docker.sh`, VPS **deploy + smoke inactive** without legacy shutdown. [`tasks/T03_parallel_impl_notes.md`](./tasks/T03_parallel_impl_notes.md).
-
-**Still from [design doc](../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md):**
-
-- **C** — optional `web-blue` / `web-green` + nginx when JS is ready to share the cycle; CORS/CSRF per [web plan](../finance-manager-web-beta-rollout-53be/README.md).
-- **D** — Reflex sunset; **public cutover** — live proxy must adopt `nginx.bluegreen.conf` / `active_color` before `switch` applies to user traffic (parallel path currently **skips** public 8443 smokes by design).
-
-**Gates:** claim **runtime owner**, **`pre_deploy`** before risky VPS work, re-attempt **T03** when A/B are implemented; **T04** + **`pre_cutover`** only after T03 smokes pass.
+1. **Optional:** periodic **`FM_BG_PARALLEL=1`** `check` and **`smoke --color inactive`** after material API/reflex image changes.
+2. **When ready for traffic cutover:** `pre_cutover` gate → reconfigure **live** nginx to blue/green (or maintenance window) → `fm_server_beta` **`switch`** — see [design doc](../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) and [`deployment_protocol.md`](../../_governance/deployment_protocol.md).
+3. **JS / `web-*` colors:** coordinate with [web plan](../finance-manager-web-beta-rollout-53be/README.md) when the React app is ready; does not block Reflex.
+4. **Deferred product work:** dashboard **chart** data population — not tracked as this plan’s exit criteria.
 
 ---
 

@@ -11,6 +11,7 @@ _Update this file whenever the Reflex agent pauses, completes a breakpoint, or t
 - **Last lifecycle command:** `push_runtime_bundle.sh` → `/home/dev/finance_manager` — bundle **`finance_manager_runtime_20260429_082826`**, **main** @ **`9495f5b`** (post–PR #18 merge), manifest clean.
 - **Last status:** Ecosystem **main** merged; VPS tree refreshed from bundle. Re-run parallel **`deploy` / `smoke`** after pull if you recycled `fm-beta` containers. **Public `switch`:** still needs edge on `nginx.bluegreen.conf` (not in this bundle’s live path).
 - **Sibling JS plan status:** See [../finance-manager-web-beta-rollout-53be/validation_gates.md](../finance-manager-web-beta-rollout-53be/validation_gates.md) before proxy edits.
+- **Breakpoint B (2026-04-30):** **Pass** for blue/green scope — public **Dashboard** reachable, **websocket** up, at least one **scalar** metric populated. **Deferred:** chart/flow data population (separate from this plan).
 - **Blockers:** **Edge cutover** to blue/green nginx for real users; optional **fm-beta** parallel containers recycled — not blockers for dev. Cloudflared: not verified (no passwordless sudo).
 
 ## VPS smoke env (thehivemanager)
