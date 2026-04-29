@@ -37,6 +37,22 @@ services:
       timeout: 5s
       retries: 5
 
+  web:
+    build:
+      context: ./finance_manager_web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+    container_name: finance-manager-web
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
   reflex:
     build:
       context: ./finance_manager_reflex
@@ -46,6 +62,7 @@ services:
       - API_BASE_URL=http://api:8000
       - REFLEX_API_URL=https://thehivemanager.com
       - REFLEX_DEPLOY_URL=https://thehivemanager.com
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REFLEX_USE_NPM=1
       - __VITE_ADDITIONAL_SERVER_ALLOWED_HOSTS=thehivemanager.com,www.thehivemanager.com,reflex-api.thehivemanager.com
@@ -72,6 +89,7 @@ services:
     depends_on:
       - api
       - reflex
+      - web
     stop_signal: SIGQUIT
     stop_grace_period: 30s
 

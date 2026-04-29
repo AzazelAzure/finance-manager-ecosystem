@@ -95,6 +95,7 @@ services:
       - API_BASE_URL=http://api-blue:8000
       - REFLEX_API_URL=${FM_REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
       - REFLEX_DEPLOY_URL=${FM_REFLEX_DEPLOY_URL:-https://thehivemanager.com}
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REDIS_URL=redis://redis:6379/0
     depends_on:
@@ -118,6 +119,7 @@ services:
       - API_BASE_URL=http://api-green:8000
       - REFLEX_API_URL=${FM_REFLEX_API_URL:-https://reflex-api.thehivemanager.com}
       - REFLEX_DEPLOY_URL=${FM_REFLEX_DEPLOY_URL:-https://thehivemanager.com}
+      - REFLEX_TRANSPORT=${REFLEX_TRANSPORT:-polling}
       - HOST=0.0.0.0
       - REDIS_URL=redis://redis:6379/0
     depends_on:
@@ -132,6 +134,40 @@ services:
     expose:
       - "3000"
       - "8000"
+
+  web-blue:
+    build:
+      context: ./finance_manager_web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+    networks:
+      - shared
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 8
+      start_period: 15s
+
+  web-green:
+    build:
+      context: ./finance_manager_web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.thehivemanager.com}
+    networks:
+      - shared
+    expose:
+      - "80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 30s
+      timeout: 5s
+      retries: 8
+      start_period: 15s
 
 volumes:
   bg_parallel_redis_data:

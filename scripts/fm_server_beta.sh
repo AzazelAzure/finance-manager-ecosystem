@@ -158,7 +158,7 @@ status_cmd() {
   log "Active color: $active"
   log "Inactive color: $inactive"
   log "Runtime containers (filtered):"
-  local filter='fm-beta|api-blue|api-green|reflex-blue|reflex-green|proxy|db|redis'
+  local filter='fm-beta|api-blue|api-green|reflex-blue|reflex-green|web-blue|web-green|proxy|db|redis'
   if [[ "$RUNTIME_BIN" == "podman" ]]; then
     if have_cmd rg; then
       podman ps -a --format '{{.Names}}\t{{.Status}}\t{{.Ports}}' | rg "$filter" || true
@@ -193,11 +193,12 @@ deploy_cmd() {
   require_color "$color"
   local api_service="api-$color"
   local reflex_service="reflex-$color"
+  local web_service="web-$color"
   local command
   if using_parallel_compose; then
-    command=(up -d redis "$api_service" "$reflex_service")
+    command=(up -d redis "$api_service" "$reflex_service" "$web_service")
   else
-    command=(up -d db "$api_service" "$reflex_service" proxy)
+    command=(up -d db "$api_service" "$reflex_service" "$web_service" proxy)
   fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
@@ -224,11 +225,13 @@ smoke_cmd() {
 
   local api_upstream="api-$color"
   local reflex_upstream="reflex-$color"
+  local web_upstream="web-$color"
   log "Smoke target color: $color"
 
   compose_cmd exec -T redis redis-cli ping >/dev/null
   compose_cmd exec -T "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
   compose_cmd exec -T "$reflex_upstream" sh -c "curl -fsS http://localhost:3000/ >/dev/null"
+  compose_cmd exec -T "$web_upstream" sh -c "wget -qO- http://127.0.0.1/ >/dev/null"
 
   if using_parallel_compose; then
     log "Parallel stack: public edge still serves legacy single-stack; skipped Host-header curls to $PUBLIC_BASE_URL"
