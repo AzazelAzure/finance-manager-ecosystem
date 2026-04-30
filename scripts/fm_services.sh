@@ -1,35 +1,31 @@
 #!/usr/bin/env bash
 
 # Finance Manager Service Management Script
-# Handles the Django API and Reflex Frontend
+# Handles local Django API process lifecycle.
 
 # Base paths (portable across host/VM)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR_DEFAULT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BASE_DIR="${FM_BASE_DIR:-$BASE_DIR_DEFAULT}"
 API_DIR="$BASE_DIR/finance_manager_api"
-REFLEX_DIR="$BASE_DIR/finance_manager_reflex"
 
 # PID management
 PID_DIR="$HOME/.fm_services"
 API_PID_FILE="$PID_DIR/api.pid"
-REFLEX_PID_FILE="$PID_DIR/reflex.pid"
 
 mkdir -p "$PID_DIR"
 
-# Ensure logs directories exist
+# Ensure logs directory exists
 mkdir -p "$API_DIR/logs"
-mkdir -p "$REFLEX_DIR/logs"
 
-if [[ ! -d "$API_DIR" || ! -d "$REFLEX_DIR" ]]; then
-    echo "Error: expected service directories not found under '$BASE_DIR'."
+if [[ ! -d "$API_DIR" ]]; then
+    echo "Error: expected API directory not found under '$BASE_DIR'."
     echo "Hint: set FM_BASE_DIR to your finance_manager repo root."
     exit 1
 fi
 
 # Service Logs
 API_LOG="$API_DIR/logs/service.log"
-REFLEX_LOG="$REFLEX_DIR/logs/service.log"
 
 stop_services() {
     echo "Stopping Finance Manager services..."
@@ -52,24 +48,8 @@ stop_services() {
         rm "$API_PID_FILE"
     fi
     
-    # Stop Reflex
-    if [ -f "$REFLEX_PID_FILE" ]; then
-        PID=$(cat "$REFLEX_PID_FILE")
-        if kill -0 "$PID" 2>/dev/null; then
-            kill -TERM "$PID" 2>/dev/null
-            echo "Sent SIGTERM to Reflex (PID: $PID)"
-            sleep 1
-            if kill -0 "$PID" 2>/dev/null; then
-                kill -KILL "$PID" 2>/dev/null
-                echo "Sent SIGKILL to Reflex (PID: $PID)"
-            fi
-        fi
-        rm "$REFLEX_PID_FILE"
-    fi
-    
     # Fallback to pkill for lingering processes
     pkill -f "manage.py runserver" 2>/dev/null
-    pkill -f "reflex run" 2>/dev/null
     
     echo "Services stopped."
 }
@@ -90,28 +70,14 @@ start_services() {
         echo "API started (PID: $(cat "$API_PID_FILE"))"
     fi
     
-    if [ -f "$REFLEX_PID_FILE" ] && kill -0 "$(cat "$REFLEX_PID_FILE")" 2>/dev/null; then
-        echo "Reflex is already running (PID: $(cat "$REFLEX_PID_FILE"))"
-    else
-        echo "Starting Reflex..."
-        cd "$REFLEX_DIR" || exit 1
-        # Reflex default is 8000 for backend, but Django is there.
-        # Running Reflex backend on 8001.
-        # Ensure frontend websocket/event traffic targets Reflex backend (8001),
-        # not Django API on 8000, to avoid repeated /_event 404 loops.
-        nohup env REFLEX_DIR=.reflex REFLEX_API_URL=http://127.0.0.1:8001 uv run reflex run --env dev --backend-port 8001 > "$REFLEX_LOG" 2>&1 &
-        echo $! > "$REFLEX_PID_FILE"
-        echo "Reflex started (PID: $(cat "$REFLEX_PID_FILE"))"
-    fi
-    
-    echo "Services started."
+    echo "API service started."
     
     if [ "$HEADLESS" = false ]; then
         echo ""
         echo "--------------------------------------------------"
         echo "Tailing logs (Ctrl+C to stop tailing, services will keep running)"
         echo "--------------------------------------------------"
-        tail -f "$API_LOG" "$REFLEX_LOG"
+        tail -f "$API_LOG"
     fi
 }
 
@@ -141,11 +107,6 @@ case "$1" in
             echo "  API: Running (PID: $(cat "$API_PID_FILE"))"
         else
             echo "  API: Stopped"
-        fi
-        if [ -f "$REFLEX_PID_FILE" ] && kill -0 "$(cat "$REFLEX_PID_FILE")" 2>/dev/null; then
-            echo "  Reflex: Running (PID: $(cat "$REFLEX_PID_FILE"))"
-        else
-            echo "  Reflex: Stopped"
         fi
         ;;
     *)
