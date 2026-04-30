@@ -45,7 +45,7 @@ VPS:
   Active color: blue (web-blue, api-blue, reflex-blue serve traffic)
   Compose: podman compose -f docker-compose.bluegreen.yml --env-file
            .secrets/server.env up -d
-  jsdev hostnames: https://jsdevtesting.thehivemanager.com  (and jsdevprodtest)
+  jsdev hostnames: https://jsdevtesting.thehivemanager.com  (and api-jsdevtesting for staging API)
 
 Slack:
   Channel #pull-requests — post on every PR open; wait/read for automation
