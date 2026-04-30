@@ -22,7 +22,7 @@ Sibling plan: [vps-reflex-bluegreen-recovery-53be](../vps-reflex-bluegreen-recov
 ## Breakpoints 2 + 3 — Lane B combined (default)
 
 - **Context:** **HTTPS in the browser** to the public hostname; **cloudflared → Vite** must be **`http://127.0.0.1:5173` / `4173`** (Vite is not TLS on those ports). See [finance_manager_web README §4](../../../finance_manager_web/README.md) if you see **502** with `https://` private URLs.
-- **Pass when (single run):** Open the **public** URL (e.g. `https://jsdevtesting…` or `https://jsdevprodtest…`); **POST `/api/token/`** and **GET snapshot** succeed; no CORS failures. This satisfies **B2** and **B3** together.
+- **Pass when (single run):** Open the **public** URL (e.g. `https://jsdevtesting…` or `https://api-jsdevtesting…`); **POST `/api/token/`** and **GET snapshot** succeed; no CORS failures. This satisfies **B2** and **B3** together.
 - **Alternative — B2 only (Lane A):** local `runserver` + Vite; no public HTTPS; documents **B2** without **B3**.
 - **2026-04-30:** **PAUSED (standby)** — blue–green cutover; **API down** until owner resumes. **IN PROGRESS** when API is back: set `VITE_API_BASE_URL=https://api.thehivemanager.com`, then smoke.
 

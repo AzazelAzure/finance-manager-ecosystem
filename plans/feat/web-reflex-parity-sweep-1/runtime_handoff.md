@@ -12,7 +12,7 @@ COMPOSE_PROJECT_NAME=fm-beta \
 
 Public hostnames in scope:
 - `https://jsdevtesting.thehivemanager.com/` (web)
-- `https://jsdevprodtest.thehivemanager.com/` (web preview)
+- `https://api-jsdevtesting.thehivemanager.com/` (staging API; Vite preview tunnel name may use this hostname per ops)
 - `https://api.thehivemanager.com/` (API)
 
 ## Per-phase deploy + smoke recipe
