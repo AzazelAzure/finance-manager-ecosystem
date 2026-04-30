@@ -71,9 +71,9 @@ This gate is the **safety net** that makes the rest of the roadmap possible. Kno
 **Process (≤30 minutes):**
 
 1. Owner answers, in writing, three questions:
-   - *Did I miss anything important with my child or partner this quarter because of the project?*
-   - *Was my sleep, exercise, or mood meaningfully worse this quarter than last?*
-   - *Would I be embarrassed to tell my child, in 10 years, how I spent my time this quarter?*
+  - *Did I miss anything important with my child or partner this quarter because of the project?*
+  - *Was my sleep, exercise, or mood meaningfully worse this quarter than last?*
+  - *Would I be embarrassed to tell my child, in 10 years, how I spent my time this quarter?*
 2. If "yes" to two or more: trigger 2-week reduced-scope mode (passive maintenance only).
 3. If "yes" to all three twice in a row: trigger §1 master kill gate evaluation.
 
@@ -99,4 +99,33 @@ These fire automatically based on metrics, not deliberation:
 
 (Append below; do not modify entries above.)
 
-- *No gates fired yet. First entry will appear at S1 → S2 evaluation, ~2026-12 to 2027-03.*
+### 2026-04-30 — S1.A → S1.B transition (post-beta huddle)
+
+**Implicit boundary shift logged:** original Strategic Plan framed S1 as a single Phase with one set of exit triggers. Reality post-beta-launch revealed S1 needs 4 internal Stages (A/B/C/D). Stage breakdown locked at huddle Topic 4 Q2.
+
+**Locks (full detail in huddle DECISIONS.md, migrated content captured in `00_strategic_context.md` §3, §4, §6, §7):**
+
+- **JS pivot complete** (was framed as S2 work; landed in S1.A in 3-day sprint). `web` is flagship.
+- **Reflex archived** as full product; repo retained as historical evidence only.
+- **PH-first market focus locked** (US passive; re-engagement deferred behind P-6 trigger).
+- **Ads as revenue vector rejected.**
+- **User-data monetization rejected.**
+- **ZK middleware (S5) elevated** from "magnum opus / clout" to "structural revenue defense."
+- **Mobile wallet payment as hard constraint** (no credit-card-only path for PH users).
+- **Android pull-forward** to S1.B/C (was original S3 timing).
+- **AI tier (Pro+ AI) timing** pulled forward to S1.C tentative; deep-dive required in S1.B.
+- **Desktop product stream** registered as `desktop:Concept` (was original Track E; archived/deferred).
+
+**Velocity ceiling operationalized:** 10hr/day, 55hr/week during Sprints; 6hr/day, 30hr/week during decompression. Cursor monthly cap as forcing function (no overages). Local time-clock agent setup queued for S1.B.
+
+**Lessons learned captured:** 7 lessons documented in `00_strategic_context.md` §6, ranging from "AI-orchestrated frontend dev is feasible at velocity" to "automation is not always desirable; manual gates as protection feature."
+
+**Personal operating constraints captured:** baby due 2026-06-15, ADHD overwork pattern, ₱100/mo runtime cap, monthly savings target cycle, etc. Documented in `00_strategic_context.md` §7.
+
+**Outcome:** S1.A formally completed; S1.B entered. Strategic Plan content revised to match reality. No master kill gate fired.
+
+### 2026-06-30 — First quarterly self-review (scheduled)
+
+Per §6 quarterly review protocol. First execution date locked at huddle 2026-04-30.
+
+*To be filled in on 2026-06-30 with HitM written answers.*

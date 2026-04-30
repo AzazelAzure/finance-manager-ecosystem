@@ -1,104 +1,111 @@
-# Phase S2: PH Vertical Hardening
+# Phase S2: PH Public Launch + Scaling
+
+**Re-scoped 2026-04-30 post-beta huddle.** Original framing was "PH Vertical Hardening" with three pillars: GCash/Maya, AI tier, JS pivot. The JS pivot landed in S1.A; AI tier launches in S1.C. S2 is now about **active distribution and scaling**.
 
 ## Objective
 
-Take a wedge that has been validated by S1 retention and **build the PH-vertical-specific moat** around it: GCash/Maya ingestion (free for PH), AI-assisted planning tier (paid), and the Reflex→JS pivot to lift the polish bar.
+Convert the Founding Beta + Soft Public Open momentum into **active PH market presence**: real distribution effort, content cadence, micro-influencer partnerships, retention investment, and the GCash/Maya direct-integration deepening.
 
-This is the phase where the product becomes structurally hard to copy without local PH presence and where the AI-credits monetization model proves itself.
+This is the phase where the wedge moves from "validated by 30+ Founding/Soft Public users" to "actively pursued PH market."
 
 ## Entry Criteria
 
-- S1 exit met (per `validation_gates.md` S1 exit triggers).
-- S2-specific feature list capped to: GCash/Maya ingestion, AI tier MVP, JS pivot kickoff. Anything else is rejected.
-- AI cost cap model from `01_unit_economics_and_costs.md` §3 validated against current LLM pricing.
+- S1.D exit met (≥10 paying PH users active OR ≥50 active free PH users with retention day-30 ≥30%).
+- S2-specific feature roadmap drafted (Topic 11 deliverable).
+- Velocity controls operational and proven through S1 (Cursor cap discipline; sprint duration minimums; family/health gate functioning).
 
 ## Exit Criteria (all required)
 
-- GCash/Maya ingestion live and accurate (≥95% test transactions correctly parsed).
-- AI tier MVP live with ≥3 paid Pro+ AI subscribers.
-- ≥30 paying users total.
-- JS pivot at "feature parity demo" milestone OR explicitly deferred to S3 with documented reason.
+- GCash/Maya **direct integration** live and accurate (≥95% test transactions correctly parsed). Not just CSV import — full SMS parsing pipeline (per `_governance/branching_guidelines.md` for multi-repo coordination).
+- AI tier mature with ≥10 paid Pro+ AI subscribers.
+- ≥100 paying users total.
+- Active PH content cadence sustained for ≥3 months (≥2 PH-local touchpoints per week).
+- PH-local distribution showing ≥20% of new users from non-direct channels.
 
 ## Workstreams
 
-### 1. GCash/Maya Ingestion (P0)
+### W1 — GCash/Maya Direct Integration (P0)
 
-- [ ] Decide ingestion source: SMS parsing, email parsing, manual CSV import, screenshot OCR. Most likely combo: CSV-friendly export workflow + SMS parsing on Android (S3).
-- [ ] Implement parser per chosen source with high test coverage (sample real transactions).
-- [ ] IP + user-declared region gating to make GCash/Maya feature visible only to PH users.
-- [ ] Privacy review: no GCash/Maya credentials handled by PFM. Owner does not become a money-services entity.
+S1.B/C had CSV import (free for PH users). S2 brings **full direct integration** — SMS parsing on Android (web continues with CSV).
+
+- [ ] SMS parser per sender (GCash, Maya, BPI, BDO, etc.) — versioned, server-pushed updates.
+- [ ] Permissions handling: minimal SMS read scoped to known sender IDs.
+- [ ] Privacy guardrails: parsed transaction data lives locally first, syncs only on user opt-in.
 - [ ] Edge cases: failed parses, deduplication, transaction reversals, ambiguous merchant names.
+- [ ] No GCash/Maya credentials handled by PFM. HitM does not become a money-services entity.
 
-### 2. AI Planning Tier (P0)
+### W2 — AI Tier Maturation (P0)
 
-- [ ] Tier structure live per `01_unit_economics_and_costs.md` §2: Pro+ AI, AI Credits PAYG.
-- [ ] Per-user AI cost cap enforcement at API gateway (not in model call).
-- [ ] Model tier rotation: small for free, mid for Pro, mid+large for Pro+ AI planning sessions.
-- [ ] Caching: merchant→category cache (forever), recurring-prediction cache (24h), safe-to-spend forecast cache (1h).
-- [ ] Batched weekly digest job (off-peak hours) instead of per-action calls where possible.
-- [ ] Free-tier 10-prompts/mo limit enforced; throttle + top-up offer when exceeded.
-- [ ] System-level monthly cap monitor + auto-trigger from `kill_commit_gates.md` §7.
+Pro+ AI shipped in S1.C; S2 deepens.
 
-### 3. Reflex → JS Pivot (P0–P1)
+- [ ] Refine free tier limit based on S1.C usage data (10/mo holds, or adjust).
+- [ ] Add "AI planning sessions" feature (named tier upgrade per pricing).
+- [ ] Caching effectiveness measured and improved (target: ≥60% prompts cache-served).
+- [ ] Per-user AI cost cap holding for ≥95% of paying users.
+- [ ] Free tier subsidy ceiling: ≤30% of paid MRR (per `01_unit_economics_and_costs.md` §3.2).
 
-Decision to fully pivot or partially pivot is itself a workstream item.
+### W3 — Distribution Scaling (P0, sustained)
 
-- [ ] Choose target: Next.js + TypeScript, SvelteKit, or Astro+islands. Anchor decision in: hireability, AI agent productivity (current LLMs strongest at React/Next.js), polish ceiling.
-- [ ] Spike: build one screen (probably the dashboard with safe-to-spend KPI) in chosen stack. Compare side-by-side with Reflex equivalent.
-- [ ] Decision: full pivot vs hybrid (Reflex for admin/internal, JS for marketing/dashboard).
-- [ ] Migration plan: API contract is unchanged. JS frontend re-implements against same OpenAPI surface.
-- [ ] Sequencing: marketing pages → public dashboard → authenticated dashboard → settings → onboarding.
+Founder content cadence established in S1.C; S2 grows it.
 
-### 4. Pricing & Billing Hardening (P1)
+- [ ] PH micro-influencer outreach: identify ≥10 PH personal-finance creators on TikTok/YouTube/FB. Co-marketing pitches, not paid placements.
+- [ ] Affiliate program (PH-friendly): 30% revenue share for first 3 months of referred user.
+- [ ] Founder content cadence increased: ≥2 PH-local touchpoints per week.
+- [ ] First long-form content piece: blog post or YouTube short on "how safe-to-spend math actually works" — timeless, persona-honest.
+- [ ] PH-local community presence in r/phinvest, OFW FB groups, Filipino freelancer Discord/FB groups, etc. (specific channels per S1.B research output).
+
+### W4 — Pricing & Billing Hardening (P1)
 
 - [ ] Annual plan auto-renew with reminder.
 - [ ] Pro+ AI tier billing reconciliation including credit pack upgrades.
-- [ ] PH payment alternatives evaluated (Xendit, PayMongo, GCash direct) — Stripe-only may be friction for PH users.
+- [ ] PH payment alternatives evaluated and live (Xendit, PayMongo, GCash direct) per S1.B research.
 - [ ] Family-share plan (up to 3 members) — operationalized.
+- [ ] Honorary US Founder asymmetric pricing path live (USD-equivalent if AI tier opens to US per P-6 trigger).
 
-### 5. Retention Investment (P1)
+### W5 — Retention Investment (P1)
 
 - [ ] Day-7 onboarding email/notification series.
 - [ ] Weekly digest "smart predictions" (uses cached batch job).
 - [ ] Re-engagement flow for users who lapse at day-30.
 - [ ] In-app "what's safe to spend this week?" notification (push for mobile, email for web).
 
-### 6. Distribution Scaling (P0–P1, sustained)
+### W6 — Android Continuity (P1)
 
-- [ ] PH micro-influencer outreach: identify ≥10 PH personal-finance creators on TikTok/YouTube. Co-marketing pitches, not paid placements.
-- [ ] Affiliate program (PH micro-influencer-friendly): 30% revenue share for first 3 months of referred user.
-- [ ] Founder content cadence increased: ≥2 PH-local touchpoints per week.
-- [ ] First long-form content piece: blog post or YouTube short on "how safe-to-spend math actually works" — timeless, SEO-friendly, persona-honest.
+Android shipped in S1.B/C. S2 maintains and grows it but doesn't make it primary (S3 does that).
 
-### 7. Mobile Architecture Design (P1, gates S3)
+- [ ] Android continues feature parity work; web is still flagship.
+- [ ] Crash-free rate ≥99% maintained.
+- [ ] Sync reliability validated against expanded scenarios.
 
-- [ ] Sync architecture document drafted (does not require implementation in S2).
-- [ ] SQLite schema design for offline-first.
-- [ ] Conflict resolution rules drafted.
-- [ ] Battery/data budget research for PH context.
+### W7 — S3 + S4 Prep (P1)
 
-### 8. Documentation Sync (P1, at exit)
+- [ ] S3 entry (Android scaling): when S2 paying user count + PH-local growth signals readiness.
+- [ ] S4 entry (Trust & Reputation): early prep — security baseline, threat model drafting.
+
+### W8 — Documentation Sync (P1, at exit)
 
 - [ ] Update `design_docs/api_docs/` with GCash/Maya ingestion contracts.
-- [ ] Update `design_docs/reflex_docs/` (or create `design_docs/web_docs/` if pivot complete) with new frontend architecture.
+- [ ] Update `design_docs/web_docs/` (or equivalent) with retention infrastructure.
 - [ ] Update `design_docs/20_Roadmap/` to reflect S2 outcomes.
 
 ## Constraints
 
 - **AI cost cap is non-negotiable.** Free-tier LLM cost ≤30% of paid MRR.
-- **JS pivot may slip to S3 if AI tier or GCash/Maya are at risk.** Document the deferral; do not suppress it.
 - **No new product personas in S2.** Wedge stays as written.
-- **Owner velocity assumption:** still post-baby (≤6 months). Continue reduced-scope cadence assumption.
+- **PH-only market focus continues.** US re-engagement deferred behind P-6 trigger.
+- **One feature at a time on inactive color** per `_governance/branching_guidelines.md`.
+- **Velocity ceiling holds:** 10hr/day, 55hr/week (Sprint); 6hr/day, 30hr/week (decompression).
 
 ## Risks and Mitigations
 
 | Risk | Mitigation |
 |---|---|
 | LLM costs exceed cap with growing free users | Auto-trigger halves prompts per `kill_commit_gates.md` §7. |
-| GCash/Maya parsing is unreliable, damages user trust | Privacy-respecting opt-in; clear "verify with bank" disclaimer; feedback path for parse errors. |
-| JS pivot drains S2 velocity | Time-box spike; allow deferral to S3. |
-| Pro+ AI tier doesn't convert | Re-evaluate AI features against actual user requests; reposition AI value prop if needed. |
-| Distribution doesn't scale beyond owner posting | Introduce micro-influencer affiliate; slow founder pace if exhaustion shows. |
+| GCash/Maya parsing unreliable, damages user trust | Privacy-respecting opt-in; clear "verify with bank" disclaimer; feedback path for parse errors. |
+| Pro+ AI tier doesn't convert at expected rate | Re-evaluate AI features against actual user requests; reposition AI value prop. |
+| Distribution doesn't scale beyond founder posting | Introduce micro-influencer affiliate; slow founder pace if exhaustion shows. |
+| PH micro-influencer outreach has low conversion | Acceptable; expand channel list rather than pour effort into low-yielding channels. |
+| Founding members churn at higher rate than expected | Investigate at S1 → S2 transition; not S2 problem if S1 retention validated. |
 
 ## Verification Gate
 
@@ -110,3 +117,4 @@ Per `validation_gates.md` Phase S2 exit triggers.
 - AI cost discipline auto-triggers have not fired more than once during the phase.
 - PH-local distribution shows ≥20% of new users from non-direct channels.
 - S3 entry decision recorded in `kill_commit_gates.md` outcomes log.
+- US re-engagement P-6 trigger evaluated (may not fire; document either way).

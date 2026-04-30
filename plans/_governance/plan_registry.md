@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-04-29
+**Last updated:** 2026-04-30 (post-beta huddle close-out)
 
 ## Update protocol
 
@@ -19,28 +19,19 @@ On status change:
 |---|---|---|---|
 | `PLAN_STRATEGIC_ROADMAP_REFRAME_2026-04-28` | `active` | (root) | `plans/cursor/strategic-roadmap-reframe-53be/` |
 
-Active strategic phase: **S1**.
+Active strategic phase: **S1**, Stage **S1.A → S1.B** transition.
 
 ## In Progress
 
-These plans are actively executing against the running VPS under a separate (pre-governance) agent workstream. Do not pick up; do not modify their plan files; do not register conflicting work. Their actual dependencies and conflicts are managed outside this governance system pending close-out.
-
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| `PLAN_API_REFLEX_BETA_READINESS_2026-04-28` | P0 | S1 | `cursor/api-reflex-beta-readiness-plan-53be` | external_agent | — | `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28` | `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28` | 2026-04-29 | pre-governance; active on VPS |
-| `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | P0 | S1 | `cursor/server-beta-install-bluegreen-53be` | external_agent | — | — | review needed | 2026-04-29 | pre-governance; active on VPS |
-| `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28` | P0 | S1 | `cursor/vps-beta-rollout-ops` | external_agent | `PLAN_API_REFLEX_BETA_READINESS_2026-04-28`, `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | — | — | 2026-04-29 | pre-governance; active on VPS |
-| `PLAN_SECURITY_HARDENING_MIDDLEWARE_ALIGNMENT_2026-04-28` | P0 | S1 + S4/S5 prep | `cursor/security-hardening-plan-53be` | external_agent | — | — | `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28` | 2026-04-29 | pre-governance; active on VPS |
-| `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28` | P1 | S1 (UX polish) | `feat/dashboard-transactions-i18n-calendar-month` | external_agent | — | — | most | 2026-04-29 | pre-governance; active on VPS |
-
-> **Pre-governance plans** (those marked `pre-governance` above) were authored before this governance system existed. They are being executed under prior conventions by a separate agent workstream. Their close-out will retrofit governance metadata if needed; until close, do not invalidate their progress with concurrent work that would conflict.
+| _(empty — pre-governance plans closed; S1.B sub-plans pending creation)_ | | | | | | | | | |
 
 ## Ready for Execution
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29` | P0 | S1 | `cursor/vps-reflex-bluegreen-recovery-53be` | `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | — | `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29` | uncoordinated `proxy/` + root compose edits | delegated agent; see plan `AGENT_LAUNCH_PROMPT.md` |
-| `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29` | P0 | S1 | `cursor/finance-manager-web-beta-rollout-53be` | — | — | `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29` | same | submodule + CORS/VPS jsdev host; `AGENT_LAUNCH_PROMPT.md` |
+| _(empty — S1.B Sprint Brief plans created during Topic 11 close-out will land here as authored)_ | | | | | | | | |
 
 ## Draft / Planning
 
@@ -62,9 +53,17 @@ These plans are actively executing against the running VPS under a separate (pre
 
 ## Recently Completed (last 30 days)
 
+Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They executed under prior conventions; their contributions are folded into the S1.A → S1.B transition state.
+
 | plan_id | phase | completed_date | strategic_impact | pr_url(s) |
 |---|---|---|---|---|
-| _(empty)_ | | | | |
+| `PLAN_API_REFLEX_BETA_READINESS_2026-04-28` | S1.A | 2026-04-30 (close) | API hardening shipped; Reflex archived; web is flagship | (multiple — see API repo PRs #16-18) |
+| `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | S1.A | 2026-04-30 (close) | Blue-green runtime deployed; CPPR+D pipeline live | (parent repo PRs) |
+| `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28` | S1.A | 2026-04-30 (close) | VPS go-live successful; bug-report intake operational | (parent repo PRs) |
+| `PLAN_SECURITY_HARDENING_MIDDLEWARE_ALIGNMENT_2026-04-28` | S1.A | 2026-04-30 (close) | HSTS, log redaction, env hygiene shipped; ZK middleware deferred to S5 | (multiple) |
+| `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28` | S1.A | 2026-04-30 (close) | Reflex i18n + calendar (now archived with Reflex) | (multiple) |
+| `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29` | S1.A | 2026-04-30 (close) | Reflex blue-green recovery completed; subsequently archived per Topic 2 | (parent repo PRs) |
+| `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29` | S1.A | 2026-04-30 (close) | JS web rollout shipped; web is now flagship; BP1-BP7 complete | (web repo PRs #2-11+) |
 
 ## Abandoned
 
@@ -74,9 +73,38 @@ These plans are actively executing against the running VPS under a separate (pre
 
 ## Archived (Index Only — files at `plans/archived/`)
 
+Older plans from prior cycles. Not retroactively migrated to this registry. Future archives appear here.
+
 | plan_id | archived_date | phase | notes |
 |---|---|---|---|
 | _(future archives appear here)_ | | | |
+
+## Hierarchical plan structure (Topic 11 lock)
+
+New plans use the hierarchical pattern per `_governance/branching_guidelines.md`:
+
+```
+plans/cursor/<phase-stage>/                          ← Stage umbrella
+  ├── README.md                                       Stage summary + sub-plan index
+  ├── <sub-plan-name>/                                Sub-plan
+  │   ├── README.md                                   Plan metadata + body
+  │   ├── tasks/
+  │   │   └── T<NN>_<slug>.md
+  │   └── validation_gates.md
+  └── feat/<feature-name>/                            Feature-track sub-plan (optional)
+      ├── README.md
+      └── tasks/
+```
+
+Branch names follow the hierarchy:
+
+```
+cursor/s1b/<sub-plan-name>                            (sub-plan branch)
+cursor/s1b/feat/<feature-name>                        (feature branch)
+cursor/s1b/feat/<feature-name>/t<NN>-<slug>           (task branch)
+```
+
+Pre-existing plans NOT retroactively moved. Stay at `plans/cursor/<branch>/` per their original paths.
 
 ## Conflict pre-check (read before authoring)
 
@@ -93,3 +121,5 @@ For each currently-active plan (In Progress + Ready):
 ```
 
 See `_governance/execution_protocols.md` §8 for canonical conflict signatures.
+
+See `_governance/branching_guidelines.md` §5 for color-cycle concurrency rules (one feature at a time).
