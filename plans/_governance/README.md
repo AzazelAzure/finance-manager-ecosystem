@@ -16,6 +16,8 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `plan_lifecycle.md`      | State machine + transition actions         | At every status transition                                  |
 | `execution_protocols.md` | Exact Slack gate + handoff templates       | Producing any HitM-facing message                           |
 | `deployment_protocol.md` | CPPR+D cycle, blue-green deploy, SSH rules | Plan has `deployment.required: true`                        |
+| `branching_guidelines.md`| Per-feature color-cycle workflow           | Producing or executing a feature on inactive color          |
+| `glossary.md`            | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.) | First, every session |
 
 
 ## Reading sequences

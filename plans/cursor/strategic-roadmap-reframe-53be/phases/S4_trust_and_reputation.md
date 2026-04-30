@@ -1,12 +1,16 @@
 # Phase S4: Trust & Reputation Building
 
+**Minor revision 2026-04-30 post-beta huddle:** dev-channel reputation work feeds US re-engagement alignment in S5 (per huddle Topic 4 Q5 + P-6).
+
 ## Objective
 
 Convert the live PFM into a **trust signal** that compounds — both for end users (security disclosure, audit transparency) and for developers (open-source artifacts, bounty program, public engineering posts).
 
-This phase is the **gate before** the ZK middleware "magnum opus" effort (S5). It is where the dev-channel relationships are built that make S5 a story worth telling.
+This phase is the **gate before** the ZK middleware "structural revenue defense" effort (S5; elevated from "magnum opus / clout" at huddle). It is where the dev-channel relationships are built that make S5 a story worth telling AND make US re-engagement viable.
 
 S4 runs in parallel with S2/S3 to some degree — the *prep work* (security baseline, threat model drafts, disclosure policy) starts as soon as PFM has real users. The *public launch* of bounty + security writing waits until ≥50 paying users.
+
+**Strategic note:** dev-channel reputation built in S4 is the marketing fuel for both ZK release (S5 W5) AND US re-engagement (S5 W6). They use the same audience (Hacker News, security Twitter, r/django). Doing the marketing work once for both events is more efficient than doing it twice.
 
 ## Entry Criteria
 

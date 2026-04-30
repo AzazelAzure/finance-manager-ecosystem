@@ -1,5 +1,7 @@
 # Phase S6: Sari-Sari B2B Vertical (Conditional)
 
+**Minor revision 2026-04-30 post-beta huddle:** PH-only by definition; PH-first market focus across S1–S5 directly enables S6. Founding interest seed (S1.C) includes 1 sari-sari owner — earliest viewport into S6 readiness.
+
 ## Status
 
 **Conditional.** Entry gated by `kill_commit_gates.md` §5. Defer or abandon is an explicit option.
@@ -8,7 +10,9 @@
 
 Convert the trust + technical infrastructure built across S1–S5 into a **B2B SaaS for Filipino sari-sari store operators**. The product handles inventory, customer tabs ("utang"), simple POS, and (long-term aspiration) automated supplier resupply.
 
-This is a **separate product** that **reuses the PFM data layer + encryption**, not a feature of the PFM. Distribution motion is fundamentally different (B2B local feet-on-the-ground, not B2C online).
+This is a **separate product** that **reuses the PFM data layer + encryption (ZK middleware from S5)**, not a feature of the PFM. Distribution motion is fundamentally different (B2B local feet-on-the-ground, not B2C online).
+
+**Strategic positioning:** Sari-Sari B2B is the *expansion vector within PH*, not a separate market. PH-first focus across S1–S5 establishes the trust + ZK + dev-reputation that lets S6 launch with credibility. The HitM family's existing sari-sari owner (per huddle Topic 6 Q6.3 founding interest seed) is an early-validator viewport that pre-S6 work can leverage informally.
 
 ## Entry Criteria (all required)
 
