@@ -17,7 +17,6 @@ This document aligns **Nginx** (`proxy/nginx.bluegreen.conf`), **`proxy/active_c
 | `api.thehivemanager.com` | — | **Active** (`api-{active}`) |
 | `jsdevtesting.thehivemanager.com` | **Inactive** (`web-{inactive}`) | **Inactive** via `api-jsdevtesting.*` (see below) |
 | `api-jsdevtesting.thehivemanager.com` | — | **Inactive** (`api-{inactive}`) — pair with the staging web host |
-| `jsdevprodtest.thehivemanager.com` | **Active** (mirrors production web) | *Browser uses `VITE_API_BASE_URL` → active API* |
 
 **Rule you asked for:** After a **swap** (e.g. promote `green` → active), **regular traffic** takes the **new** active color, and **`jsdevtesting` automatically points at the new inactive color** (implemented via `$js_devtesting_web_backend` in `nginx.bluegreen.conf`).
 
@@ -87,7 +86,7 @@ If **`jsdevtesting` looks unchanged**, typical causes are:
 
 | File | Role |
 |------|------|
-| `proxy/nginx.bluegreen.conf` | Apex + `api` + `api-jsdevtesting` + `jsdevtesting` + `jsdevprodtest`. |
+| `proxy/nginx.bluegreen.conf` | Apex + `api` + `api-jsdevtesting` + `jsdevtesting`. |
 | `proxy/active_color.conf` | `map $request_uri $fm_active_color { default <blue\|green>; }` — **single source of truth** for which color is active. |
 | `finance_manager_web/src/lib/apiBaseUrl.ts` | Picks staging API base URL on `jsdevtesting` host only. |
 | `scripts/fm_server_beta.sh` | Updates `active_color.conf`, reloads proxy, `deploy` / `smoke` / `switch` / `rollback`. |
