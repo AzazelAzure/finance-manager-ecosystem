@@ -3,7 +3,7 @@
 ## 0) Metadata
 
 - Plan ID: `PLAN_STRATEGIC_ROADMAP_REFRAME_2026-04-28`
-- Status: `active` (Phase S1; Stage S1.A → S1.B transition)
+- Status: `active` (Phase S1; Stage S1.B)
 - Priority: `P0` strategic anchor; supersedes informal long-term planning
 - Plan root: `plans/cursor/strategic-roadmap-reframe-53be/`
 - Target areas: business positioning, monetization, product sequencing across PFM core, Android, ZK middleware, and future Sari-Sari B2B vertical
@@ -125,4 +125,3 @@ When commissioning new work:
 3. Read the Stage-level README under `plans/cursor/<phase-stage>/README.md`.
 4. Hand off to an agent with the Phase + Stage context; agent uses `_governance/plan_template.md` to author a new tactical plan.
 5. Slack confirmation gates per `_governance/execution_protocols.md` §1 keep HitM in the loop without requiring desktop attention for routine progress.
-

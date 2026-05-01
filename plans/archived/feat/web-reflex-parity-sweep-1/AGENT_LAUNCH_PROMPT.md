@@ -4,17 +4,17 @@ Copy everything inside the fence into a new agent task.
 
 ```text
 You are the orchestration manager for plan:
-  plans/feat/web-reflex-parity-sweep-1/
+  plans/archived/feat/web-reflex-parity-sweep-1/
 
 First action (mandatory): read
   .cursor/skills/orchestration-manager/SKILL.md
-  plans/feat/web-reflex-parity-sweep-1/README.md
-  plans/feat/web-reflex-parity-sweep-1/validation_gates.md
-  plans/feat/web-reflex-parity-sweep-1/CROSS_AGENT_COORDINATION.md
-  plans/feat/web-reflex-parity-sweep-1/runtime_handoff.md
+  plans/archived/feat/web-reflex-parity-sweep-1/README.md
+  plans/archived/feat/web-reflex-parity-sweep-1/validation_gates.md
+  plans/archived/feat/web-reflex-parity-sweep-1/CROSS_AGENT_COORDINATION.md
+  plans/archived/feat/web-reflex-parity-sweep-1/runtime_handoff.md
 Then read the task packets in order:
-  plans/feat/web-reflex-parity-sweep-1/tasks/T00_plan_freeze.md
-  plans/feat/web-reflex-parity-sweep-1/tasks/T01_foundations.md
+  plans/archived/feat/web-reflex-parity-sweep-1/tasks/T00_plan_freeze.md
+  plans/archived/feat/web-reflex-parity-sweep-1/tasks/T01_foundations.md
   ... through T17_polish_hardening.md
 
 You are managing a multi-PR rollout. Each phase produces one PR per repo

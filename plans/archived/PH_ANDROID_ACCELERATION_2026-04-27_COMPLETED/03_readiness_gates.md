@@ -23,8 +23,8 @@
 - Critical-path coverage surface: `finance_manager_reflex/README.md`
 - PH/US locale contract source: `design_docs/03_Localization_Strategy.md`
 - Android gate source: `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md`
-- A1 packet readiness source: `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/01_delegation_packets.md`
-- Translation decision source: `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/04_L1_translation_decision_memo.md`
+- A1 packet readiness source: `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/01_delegation_packets.md`
+- Translation decision source: `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/04_L1_translation_decision_memo.md`
 - Critical frontend surfaces with hardcoded copy (needs translation path):  
   - `finance_manager_reflex/finance_manager_reflex/features/auth/view.py`  
   - `finance_manager_reflex/finance_manager_reflex/features/profile/view.py`  
@@ -40,16 +40,16 @@
   - `finance_manager_reflex/finance_manager_reflex/features/upcoming_expenses/view_components.py`
   - `finance_manager_reflex/finance_manager_reflex/features/profile/view.py`
 - L1-T1 implementation evidence (Cycle 4 additions):
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/05_L1_translation_key_inventory.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/05_L1_translation_key_inventory.md`
   - `finance_manager_reflex/finance_manager_reflex/features/profile/view.py`
   - `finance_manager_reflex/finance_manager_reflex/features/transactions/view_components.py`
   - `finance_manager_reflex/finance_manager_reflex/features/upcoming_expenses/view_components.py`
 - L1-T1 implementation evidence (Cycle 5 additions):
   - `finance_manager_reflex/finance_manager_reflex/features/agentdash/view_components.py`
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/05_L1_translation_key_inventory.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/05_L1_translation_key_inventory.md`
 - Gate A closure evidence:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/06_L1_tagalog_glossary_v0.md`
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/07_L1_gateA_evidence_pack.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/06_L1_tagalog_glossary_v0.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/07_L1_gateA_evidence_pack.md`
 
 ### Gate A Decision Log
 
@@ -76,7 +76,7 @@
 
 - A2 ownership blocker has been cleared at planning level via:
   - `finance_manager_android/docs/A2_runtime_ownership_bootstrap.md`
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/08_A2_ownership_unblock_packet.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/08_A2_ownership_unblock_packet.md`
 - A2-S1 implementation verification passed:
   - `finance_manager_android/tools/validate_a2_scaffold.py` -> `a2_scaffold_ok`
 - P1 preflight docs complete:

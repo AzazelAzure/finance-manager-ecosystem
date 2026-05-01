@@ -24,7 +24,7 @@ Accelerate PH localization and Android delivery without breaking active hosted-b
 ## Orchestration Prompt Pointer
 
 Use:
-- `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/01_delegation_packets.md`
+- `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/01_delegation_packets.md`
 
 ## Orchestration Cycle Status (Cycle 1, 2026-04-27)
 

@@ -290,7 +290,7 @@ The S1–S6 *structure* survives this huddle, but the *content* of nearly every 
 - `finance_manager_reflex/` repo: kept as historical artifact; add `ARCHIVED.md` at root with date + reason + pointer to `00_strategic_context.md` archival decision. Submodule pointer in parent repo stays frozen at last commit.
 - All historical CHANGELOG entries.
 - `finance_manager_web/src/lib/breakpoints.ts` Reflex-style breakpoint patterns (code is fine; remove "current"-implying comments).
-- All historical execution plans referencing Reflex (`plans/feat/web-reflex-parity-sweep-1/`, etc.).
+- All historical execution plans referencing Reflex (`plans/archived/feat/web-reflex-parity-sweep-1/`, etc.).
 
 **Branch handling:**
 

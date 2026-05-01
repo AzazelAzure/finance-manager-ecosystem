@@ -60,7 +60,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Type:** bug
 - **Description:** Calendar heatmap shipped but per-day intensity coloring isn't working — days don't visually encode spending magnitude.
 - **Likely shared root cause with #7.**
-- **Existing context:** BP7 polish list per `plans/feat/web-reflex-parity-sweep-1/runtime_handoff.md`.
+- **Existing context:** BP7 polish list per `plans/archived/feat/web-reflex-parity-sweep-1/runtime_handoff.md`.
 - **User impact:** Users won't know heatmap is "supposed to" do this, but they'll perceive a visual feature that's flat and wonder why.
 
 ### Issue 6 (S2): Mobile dashboard quick buttons should be top-of-page

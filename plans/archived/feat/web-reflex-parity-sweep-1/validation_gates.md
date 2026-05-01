@@ -13,7 +13,7 @@ its phase gate is not green.
 
 - **Pass when:** README + validation gates + AGENT_LAUNCH_PROMPT +
 CROSS_AGENT_COORDINATION + runtime_handoff exist under
-`plans/feat/web-reflex-parity-sweep-1/`; tasks T00–T17 present.
+`plans/archived/feat/web-reflex-parity-sweep-1/`; tasks T00–T17 present.
 - **Status:** **PASS** on commit of this plan.
 
 ## BP1 — Foundations

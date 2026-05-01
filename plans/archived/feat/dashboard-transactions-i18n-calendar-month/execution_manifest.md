@@ -72,6 +72,6 @@
 
 ## Orchestration handoff
 
-- **Plan root:** `plans/feat/dashboard-transactions-i18n-calendar-month/`
+- **Plan root:** `plans/archived/feat/dashboard-transactions-i18n-calendar-month/`
 - **Owner:** Reflex feature track; API only if calendar contract extension required.
 - **Next action after plan approval:** create branch, implement Phase 1, then run Reflex compile + targeted manual tests.

@@ -5,7 +5,7 @@
 - **Ecosystem / API:** Submodule bump and `api-green` promotion are **separate** workstreams; do not mix commits.
 
 ## Handoff to orchestration-manager
-- **Plan root:** `plans/fix/reflex-dashboard-ui-regression/`
+- **Plan root:** `plans/archived/fix/reflex-dashboard-ui-regression/`
 - **Read first:** `README.md` (phases), `validation_gates.md`, then task packets under `tasks/`.
 - **Runtime:** Single owner for VPS smoke per `container-testing-orchestration.mdc`.
 

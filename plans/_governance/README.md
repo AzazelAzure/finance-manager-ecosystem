@@ -149,7 +149,7 @@ These values are normative. AI agents must use only these strings. Validation fa
 
 ## What this directory does not contain
 
-- Actual plans. Plans live in `plans/cursor/<branch-name>/` or `plans/feat/<branch-name>/` or `plans/archived/<plan_id>/`.
+- Actual plans. **Active tactical plans** live under `plans/cursor/<phase-stage>/<sub-plan>/` (see `branching_guidelines.md`). **Closed or superseded plans** live under `plans/archived/` (flat `PLAN_*.md`, huddle folders like `post_beta_huddle_2026-04-30/`, or nested `archived/feat/`, `archived/fix/`, `archived/volatile/`, `archived/volatile_standby/` from the 2026-05-01 layout consolidation).
 - Strategic context. That lives in `plans/cursor/strategic-roadmap-reframe-53be/`.
 - Tooling. Governance is documentation, not enforcement code.
 

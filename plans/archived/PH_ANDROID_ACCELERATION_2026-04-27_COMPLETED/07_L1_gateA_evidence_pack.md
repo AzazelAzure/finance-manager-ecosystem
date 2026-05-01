@@ -7,11 +7,11 @@ Provide deterministic evidence that L1 localization v0 execution is sufficient t
 ## Evidence Links
 
 - Decision memo:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/04_L1_translation_decision_memo.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/04_L1_translation_decision_memo.md`
 - Key inventory:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/05_L1_translation_key_inventory.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/05_L1_translation_key_inventory.md`
 - Tagalog glossary v0:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/06_L1_tagalog_glossary_v0.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/06_L1_tagalog_glossary_v0.md`
 - Implemented code surfaces:
   - `finance_manager_reflex/finance_manager_reflex/core/i18n.py`
   - `finance_manager_reflex/finance_manager_reflex/app/shell.py`

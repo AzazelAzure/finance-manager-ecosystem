@@ -106,7 +106,7 @@ These are **closed decisions**. Re-opening them requires a kill/commit gate revi
 
 - HitM intent: "lifetime access to all future features" with AI features specifically gated and potentially tiered for founders (with discounts on credit packs).
 - Industry-comparable framing offered as alternative: "lifetime Pro tier + lifetime access to Pro+ AI features with PAYG consumption at 50% discount; new product streams negotiated at launch."
-- **Final commitment pending AI Economics Deep-Dive** (16 questions per `_governance/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` S1.B workstream).
+- **Final commitment pending AI Economics Deep-Dive** (16 questions per `plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` S1.B workstream).
 
 ## 4) What Was Rejected and Why
 

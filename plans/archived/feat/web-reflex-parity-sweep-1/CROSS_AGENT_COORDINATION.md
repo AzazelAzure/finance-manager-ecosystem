@@ -48,6 +48,6 @@ opens an API PR if needed)_
 
 | Date | Repo | Change | PR |
 |------|------|--------|----|
-| 2026-04-29 | finance_manager (ecosystem) | Plan freeze: `plans/feat/web-reflex-parity-sweep-1/` | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/20 |
+| 2026-04-29 | finance_manager (ecosystem) | Plan freeze: `plans/archived/feat/web-reflex-parity-sweep-1/` | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/20 |
 
 _(append on every PR open)_

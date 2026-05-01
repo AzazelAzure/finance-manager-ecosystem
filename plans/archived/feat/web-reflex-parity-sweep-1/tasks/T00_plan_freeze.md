@@ -8,7 +8,7 @@
 ## Objective
 
 Commit and push the planning artifacts under
-`plans/feat/web-reflex-parity-sweep-1/` so the orchestrator and reviewers have a
+`plans/archived/feat/web-reflex-parity-sweep-1/` so the orchestrator and reviewers have a
 single source of truth.
 
 ## Definition of done

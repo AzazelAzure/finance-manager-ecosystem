@@ -77,14 +77,14 @@ If selector implementation cannot fit current slice safely:
 - Add glossary and reviewer signoff checklist.
 - Acceptance: critical paths are readable in Tagalog and pass walkthrough checks.
 - Status: **complete (v0)** with glossary artifact:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/06_L1_tagalog_glossary_v0.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/06_L1_tagalog_glossary_v0.md`
 
 ### L1-T4: evidence pack for Gate A
 - Capture before/after screenshots for each critical path in both locales.
 - Link checklist results and unresolved terms.
 - Acceptance: Gate A evidence checklist is complete and reviewable.
 - Status: **complete** with artifact:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/07_L1_gateA_evidence_pack.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/07_L1_gateA_evidence_pack.md`
 
 ## Gate A Impact
 
