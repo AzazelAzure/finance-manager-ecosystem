@@ -1,12 +1,14 @@
 ---
-description: Reflex frontend workflow and feature tracking expectations
+description: Legacy Reflex (archived) frontend rules — use finance_manager_web for new UI
 globs: finance_manager_reflex/**
 alwaysApply: false
 ---
 
-# Reflex Frontend Rules
+# Reflex Frontend Rules (archived product)
 
-Apply these rules when editing Reflex frontend code.
+> **`finance_manager_reflex` is archived (2026-04-30).** New work belongs in **`finance_manager_web/`** (see ecosystem `AGENTS.md` and `plans/cursor/strategic-roadmap-reframe-53be/`). Apply this file only when touching the historical Reflex tree.
+
+Apply these rules when editing **legacy** Reflex frontend code.
 
 ## Frontend Implementation Expectations
 

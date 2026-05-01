@@ -38,10 +38,10 @@ The database should **never be hit more than 12 times maximum** for any single c
 Keep things as senior as possible. Write production-ready code. **If a tool or dependency isn't currently in the ecosystem but would be better for what we need, say something so it can be added.** Don't hack together inferior solutions when a proper standard dependency exists.
 
 ### 8. Agent Collaboration and Change Logging
-To ensure multiple agents can work together without causing conflicts, you **must check the `CHANGELOG.md`** (or equivalent tracking file) for the specific subsection of the project (e.g., `api`, `reflex`) before starting work. **Whenever a change is made, you must add a log entry** detailing what was done. This preserves context and prevents agents from accidentally reverting or stepping on each other's work.
+To ensure multiple agents can work together without causing conflicts, you **must check the `CHANGELOG.md`** (or equivalent tracking file) for the specific subsection of the project (e.g., `api`, `web`, `cli`) before starting work. **Whenever a change is made, you must add a log entry** detailing what was done. This preserves context and prevents agents from accidentally reverting or stepping on each other's work.
 
 ### 9. Feature Tracking and Production Alignment
-Any changes and feature creations should be updated in the relevant files for that subsection. For example, a change to how data is loaded in the Reflex frontend must be noted in the changelog, and you must either update the relevant files in the production pipeline or tag the creation to the relevant phase of production. This ensures that features are correctly tracked through their lifecycle and ready for deployment.
+Any changes and feature creations should be updated in the relevant files for that subsection. For example, a change to how data is loaded in the **`finance_manager_web`** frontend must be noted in that repo’s changelog, and you must either update the relevant files in the production pipeline or tag the creation to the relevant phase of production. This ensures that features are correctly tracked through their lifecycle and ready for deployment.
 
 ### 10. Root Cause Resolution ("Fix it Forever")
 All fixes must follow the principle of **"Don't fix it for now, fix it forever."** We do not accept bandaid solutions that only solve the immediate symptom. You must identify and resolve the root cause of the problem to ensure the solution is robust and permanent, preventing "gushing wounds" from reappearing later in the production cycle.

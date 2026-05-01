@@ -15,7 +15,7 @@ Use this rule to decide when and how to delegate work through skills and subagen
 - `tests failing`, `CI red`, `pipeline error` intent -> use `ci-test-triage`.
 - `PR`, `merge`, `branch hygiene`, `changelog` intent -> use `pr-ops-merge-readiness`.
 - `where/how does this work`, architecture discovery intent -> use `repo-exploration-briefing`.
-- `cross-repo`, `API + Reflex`, `multi-repo dependency` intent -> use `multi-repo-orchestration`.
+- `cross-repo`, `API + Web`, `multi-repo dependency` intent -> use `multi-repo-orchestration`.
 - `update design docs`, `document change`, `architecture notes` intent -> use `design-docs-sync`.
 - `roadmap`, `phase plan`, `rollout strategy`, `breakpoints/triggers` intent -> use `roadmap-rollout-planning`.
 - `docker`, `podman`, `compose`, `container crash`, `image build failure`, `runtime bottleneck` intent -> use `container-runtime-podman-triage`.

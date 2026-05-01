@@ -1,6 +1,6 @@
 ---
 name: multi-repo-orchestration
-description: Coordinate tasks that span API, Reflex, and CLI repositories while preserving repo boundaries and explicit handoffs. Use when changes require cross-repo sequencing, dependency notes, or staged execution across multiple subprojects.
+description: Coordinate tasks that span API, Web (flagship SPA), and CLI repositories while preserving repo boundaries and explicit handoffs. Use when changes require cross-repo sequencing, dependency notes, or staged execution across multiple subprojects.
 ---
 
 # Multi-Repo Orchestration
@@ -10,8 +10,9 @@ description: Coordinate tasks that span API, Reflex, and CLI repositories while 
 Use this skill when a request affects two or more repos:
 
 - `finance_manager_api/`
-- `finance_manager_reflex/`
+- `finance_manager_web/`
 - `finance_manager_cli/`
+- (optional / archived) `finance_manager_reflex/`
 
 ## Orchestration Routine
 
