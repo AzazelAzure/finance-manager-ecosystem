@@ -10,6 +10,9 @@ deploy/*.env
 .cursorignore
 .antigravityignore
 
+# Cursor hooks local runtime state (agent transcript / continual-learning; not shared)
+.cursor/hooks/state/
+
 # Python virtual environments
 **/.venv/
 **/venv/
