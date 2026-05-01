@@ -205,16 +205,18 @@ Action: log the constraint in plan body §10 Risks/notes. Comply during executio
 
 ## 4) Channel routing
 
-| Message type | Channel | Thread? |
-|---|---|---|
-| `pre_execution` gate | `#cli-interface` | new thread or existing plan thread |
-| `pre_merge` PR announcement | `#pull-requests` | new top-level |
-| `pre_merge` reconciliation | `#pull-requests` | thread reply on PR announcement |
-| `pre_close` gate | `#cli-interface` | plan task thread |
-| `in_plan` handoff | `#cli-interface` | plan task thread |
-| `cross_plan` handoff | `#cli-interface` | source plan task thread |
-| `failure` handoff | `#cli-interface` | plan task thread |
-| `close_summary` | `#cli-interface` (+ thread); cross-post if P0 | plan task thread + new top-level for cross-post |
+
+| Message type                | Channel                                       | Thread?                                         |
+| --------------------------- | --------------------------------------------- | ----------------------------------------------- |
+| `pre_execution` gate        | `#cli-interface`                              | new thread or existing plan thread              |
+| `pre_merge` PR announcement | `#pull-requests`                              | new top-level                                   |
+| `pre_merge` reconciliation  | `#pull-requests`                              | thread reply on PR announcement                 |
+| `pre_close` gate            | `#cli-interface`                              | plan task thread                                |
+| `in_plan` handoff           | `#cli-interface`                              | plan task thread                                |
+| `cross_plan` handoff        | `#cli-interface`                              | source plan task thread                         |
+| `failure` handoff           | `#cli-interface`                              | plan task thread                                |
+| `close_summary`             | `#cli-interface` (+ thread); cross-post if P0 | plan task thread + new top-level for cross-post |
+
 
 ## 5) Slack message length
 
@@ -227,13 +229,15 @@ HitM replies on chunk 1 (the message starting with `[GATE: ...]` or `[PR]` or `[
 
 ## 6) Wait + timeout policy
 
-| Gate | Wait? | Timeout | On timeout |
-|---|---|---|---|
-| `pre_execution` required | yes | 24h | status: `paused`, paused_reason set |
-| `pre_execution` optional | no | — | proceed after posting |
-| `pre_merge` required | yes | indefinite (workspace rule) | stay `in_progress`; do not merge |
-| `pre_close` required | yes | 24h | status stays `in_progress` |
-| `pre_close` optional | no | — | proceed after posting |
+
+| Gate                     | Wait? | Timeout                     | On timeout                          |
+| ------------------------ | ----- | --------------------------- | ----------------------------------- |
+| `pre_execution` required | yes   | 24h                         | status: `paused`, paused_reason set |
+| `pre_execution` optional | no    | —                           | proceed after posting               |
+| `pre_merge` required     | yes   | indefinite (workspace rule) | stay `in_progress`; do not merge    |
+| `pre_close` required     | yes   | 24h                         | status stays `in_progress`          |
+| `pre_close` optional     | no    | —                           | proceed after posting               |
+
 
 ## 7) Parallel execution rules
 

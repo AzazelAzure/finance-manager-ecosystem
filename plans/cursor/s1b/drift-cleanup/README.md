@@ -1,10 +1,10 @@
 ---
 
 plan_id: PLAN_OPS_DRIFT_CLEANUP_2026-04-30
-status: draft
+status: completed
 priority: P0
 created: 2026-04-30
-updated: 2026-04-30
+updated: 2026-05-01
 owner: pproctor
 
 plan_root: plans/cursor/s1b/drift-cleanup/
@@ -47,6 +47,8 @@ deployment:
 standalone_notes: ""
 
 # S1.B Sub-Plan — Drift Cleanup
+
+**Completion note (2026-05-01):** HitM confirmed **W1 drift-cleanup scope delivered**. Evidence in tree: e.g. `finance_manager_api` email uniqueness paths (`EmailUniqueRegisterSerializer`, `UserView.post` duplicate checks, `finance/tests/user_tests/test_email_uniqueness.py`), `finance_manager_reflex/ARCHIVED.md` (Topic 2 archival), and related drift tasks merged per repo history. If any **plan_registry** / **validation_gates** checkboxes still show open, reconcile in a single hygiene pass.
 
 ## 0) Strategic Inheritance
 

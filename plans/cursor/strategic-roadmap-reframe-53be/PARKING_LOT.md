@@ -156,6 +156,27 @@ Each item has one of three eventual dispositions:
 
 ---
 
+## P-8: Pro free trial + wallet / PSP verification behavior
+
+**Raised:** 2026-05-01 by HitM (pricing and growth mechanics; depends on S1.B feature roadmap).
+
+**Description:** Evaluate offering a **first-month-free Pro trial** (or similar) with **payment instrument saved up front**, clear **pre-billing cancellation** rights, and **automatic renewal** thereafter—industry-standard pattern. Parallel research: how **PH e-wallet flows** through aggregators (e.g. PayMongo-class) support **trial authorization**, **verification that a wallet can pay**, versus **attempt first charge at period end** and **downgrade on failure**.
+
+**Why deferred:**
+
+- **Feature-level free vs paid split** must be decided after the **S1.B feature roadmap** is solid; trial value prop only makes sense once “what Pro gives you” is stable (`01_unit_economics_and_costs.md` §2 deferred block).
+- Abuse, churn-from-downgrade, and support burden trade-offs need a concrete **entitlement matrix**, not pricing in isolation.
+- PSP-specific behavior is an output of **payment provider research**, not a guess.
+
+**Trigger to revisit:**
+
+- S1.B **Group D** feature scope is stable enough to lock entitlements per tier, **and**
+- Payment provider shortlist / integration approach is known (same window as `payment-provider-research` closing).
+
+**Owner:** HitM (product + legal copy); payment research informs technical options.
+
+---
+
 ## Update protocol
 
 - New parking-lot items are added with a clear `Raised:` date.
