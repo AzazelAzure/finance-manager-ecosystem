@@ -15,7 +15,7 @@
 The original `design_docs/` framing (Phase 1 Alpha / Phase 2 Beta Prep / Tracks A–E) was a target list, not a strategy. This roadmap encodes the strategic reframe captured at huddles 2026-04-28 and 2026-04-30, anchored to:
 
 - A sharper wedge (`safe-to-spend for thin-margin households, mobile-first, PH-local`).
-- Realistic success criteria (`break-even at ~$100/mo overhead → ~45 PH paying subs`; personal-replacement target ₱100k/mo take-home).
+- Realistic success criteria (`break-even` scales with **affordability-locked Pro price** — see `01_unit_economics_and_costs.md` §2 pricing discipline + §4.1 sensitivity; **paying-user gate minimums** re-index when Pro list is below **₱199** anchor per `validation_gates.md`; personal-replacement target ₱100k/mo take-home).
 - Real constraints (solo HitM + AI workforce; baby due 2026-06-15; ₱100/mo runtime cap; VA disability income floor; FEIE tax cliff).
 - An ordered theory: PFM trust → bounty/ZK clout → Sari-Sari B2B vertical, with US market deferred behind explicit trigger.
 
@@ -51,7 +51,7 @@ Read in this order when revisiting the plan:
 | Stage    | Title                  | What it covers                                                                                                                                                                            | Status (2026-04-30)   |
 | -------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
 | **S1.A** | Tight Invite Beta      | Owner + small invite cohort; flagship product committed; infra stable                                                                                                                     | **Completed**         |
-| **S1.B** | Distribution Readiness | S0 fixes; Reflex archival; entity formation research; payment provider research; AI Economics Deep-Dive; landing polish; founding member program backend; "worth paying for" feature work | **Active** (entering) |
+| **S1.B** | Distribution Readiness | S0 fixes; Reflex archival; entity formation research; payment provider research; AI Economics Deep-Dive; landing polish; founding member program backend; "worth paying for" feature work; flagship **PWA** (decisions under `plans/cursor/s1b/pwa-install-offline-sync-research/`, sprint index `plans/cursor/s1b/README.md#pwa-sprint-activation-index`) | **Active** (entering) |
 | **S1.C** | Founding Beta          | Founding-member program open; first 50–100 paying lifetime seats; AI tier launches PH-only                                                                                                | Pending (~Aug 2026)   |
 | **S1.D** | Soft Public Open       | Anyone can sign up (PH); pricing visible; low-key promotion only                                                                                                                          | Pending (~Nov 2026)   |
 

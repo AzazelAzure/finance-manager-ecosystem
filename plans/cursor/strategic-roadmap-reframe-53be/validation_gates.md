@@ -4,6 +4,20 @@
 
 Each Phase / Stage has explicit *quantitative* triggers for entry, mid-Stage health, and exit. Where a metric is unmeasurable yet (e.g. before any users exist), the gate is qualitative and explicit about that fact.
 
+### Indexing paying-user gates to affordability (policy)
+
+Pure **paying-user headcounts** below assume a **healthy mix** including Pro PH at roughly **mid-band affordability**, not maximal list price—see `01_unit_economics_and_costs.md` §2 (affordability vs margin) and **§4.1 sensitivity table**.
+
+- **Gate anchor ASP (until S1.B lock):** assume **₱199/mo Pro list** (and the same ~0.85 illustrative net shortcut as §4.1) when interpreting headcount thresholds. This is **not** a promise to charge ₱199; it is the **economics normalization** for “how many users is this gate worth.” **List lock 2026-05-01:** Pro **₱249/mo** — when reconciling headcount-only gates to **revenue**, scale per the formula below or prefer an explicit **minimum net ₱ MRR** criterion at next registry pass.
+- **If HitM locks Pro lower** for conversion (still **≤₱250** positioning cap), **revenue-equivalent scaling** for headcount-only gates:
+
+`N_adjusted = ceil(N_document × (gate_anchor_price / locked_Pro_list))` using **gate_anchor_price = ₱199** until updated.
+
+Examples (illustrative, **₱149** Pro lock vs **₱199** anchor; always `ceil`): **S1.C exit ≥30 → ≥41**; **S2 exit ≥100 → ≥134**; **S4 entry ≥50 → ≥67**; **S5 entry ≥100 → ≥134**. **Round up**; recompute when anchor or locked price changes.
+
+- **Obligation:** at **S1.B pricing + payment provider decision**, HitM reconciles documented gate numbers—either revise counts in this file or add parallel **minimum net ₱ MRR** exit criteria so traction cannot satisfy a headcount bar with unsustainable ASP.
+- Mixed cohorts (Founding lifetime treated separately from MRR, Pro+ AI uplift) refine but do not eliminate this check; prefer a **spreadsheet snapshot** tied to launch pricing.
+
 ---
 
 ## Phase S1: Public Beta Launch + Position Lock-in
@@ -49,11 +63,12 @@ Each Phase / Stage has explicit *quantitative* triggers for entry, mid-Stage hea
 - Founding member program backend ready (seat cap + lifetime SKU + badge system).
 - "Worth paying for" feature work complete (Pro tier demonstrably worth ₱200/mo vs notebook substitute).
 - ToS + Privacy + Refund policies drafted and live.
+- Flagship **`web` PWA “install as app”** meets the production checklist in `plans/cursor/s1b/pwa-install-offline-sync-research/README.md` **§6** (manifest, HTTPS, install + standalone launch, service worker + update strategy, tier-appropriate offline behavior — **Advanced** per that file **§1.1**). Sub-plan `pwa-install-offline-sync-research` **completed** with **D0–D4** decision log and **D4-exec** smoke pass on deployed `:8443` per **§1.6 / §6** of that README. **Rationale + cross-links for implementation:** same README **§1.1–§1.7** (browser matrix **D0**, API/outbox **D2**, auth/offline **D3**, smoke/ADR **D4**, **3-month seed + offline window UX + atomicity**), plus artifact index `plans/cursor/s1b/pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md` and S1.B sprint index `plans/cursor/s1b/README.md` section **“Sprint activation index — PWA (install, offline, resync)”**. **Progress to S1.C is blocked until this bullet is satisfied** (it is part of S1.B exit, which S1.C entry already requires).
 
 ### S1.C — Founding Beta
 
 **Entry triggers (all required):**
-- S1.B exit met.
+- S1.B exit met (includes flagship PWA install bar above).
 - Pricing live with PHP-anchored Pro tier and Founding Lifetime SKU.
 - Mobile wallet payment (GCash/Maya) functional as primary payment method.
 - AI tier (Pro+ AI) launches — final commitment per AI Economics Deep-Dive outcome.
@@ -64,7 +79,7 @@ Each Phase / Stage has explicit *quantitative* triggers for entry, mid-Stage hea
 - AI per-user cost within tier cap for ≥95% of users.
 
 **Exit triggers (all required):**
-- ≥30 paying users total (Founding members + Pro PH).
+- ≥30 paying users total (Founding members + Pro PH), **unless re-indexed per "Indexing paying-user gates" above** when Pro list is locked below the ₱199 gate anchor (e.g. **≥41** at **₱149** Pro lock, illustrative).
 - Founding seat cap reached OR 6-month founding window elapsed.
 - Retention day-60 ≥25% on Founding cohort.
 
@@ -101,7 +116,7 @@ S2 entry = S1.D exit met. **PH-only market focus continues into S2.** US re-enga
 ### Exit triggers (all required)
 - GCash/Maya direct integration live and accurate (≥95% test transactions correctly parsed).
 - AI tier mature with ≥10 paid Pro+ AI subscribers.
-- ≥100 paying users total.
+- ≥100 paying users total (**re-index per "Indexing paying-user gates"** when Pro ASP is locked below gate anchor—e.g. **≥134** at **₱149** vs **₱199** anchor, illustrative).
 - Active PH content cadence sustained for ≥3 months.
 
 ---
@@ -130,7 +145,7 @@ S2 entry = S1.D exit met. **PH-only market focus continues into S2.** US re-enga
 ## Phase S4: Trust & Reputation Building
 
 ### Entry triggers (any one of)
-- PFM ≥50 paying users.
+- PFM ≥50 paying users (**re-index per "Indexing paying-user gates"** when Pro ASP is below anchor—e.g. **≥67** at **₱149** vs **₱199**, illustrative).
 - HitM has authored security disclosure policy and `SECURITY.md` for PFM repos.
 - Bounty program scope drafted and reviewed.
 
@@ -152,7 +167,7 @@ S2 entry = S1.D exit met. **PH-only market focus continues into S2.** US re-enga
 
 ### Entry triggers (all required)
 - S4 exit met.
-- PFM ≥100 paying users.
+- PFM ≥100 paying users (**re-index per "Indexing paying-user gates"** when Pro ASP is below anchor—e.g. **≥134** at **₱149** vs **₱199**, illustrative).
 - Audit-grade prep: threat model published, dependency hygiene score acceptable, no open P0 security findings.
 
 ### Mid-phase health checks (quarterly)
@@ -193,7 +208,7 @@ These gates run **regardless of active Phase/Stage** and override Phase-specific
 
 ### Cost discipline gate
 - Free-tier LLM monthly cost ≤30% of paid MRR.
-- Total infrastructure (VPS+domain+TLS) ≤$100/mo (per HitM hard constraint) unless paid users justify.
+- Total infrastructure (VPS+domain+TLS) stays within **`01_unit_economics_and_costs.md` §1** buffered planning range unless paid users justify overshoot (HitM personal **₱100/mo** cap is separate; see strategic context §7).
 - Cursor Pro+ usage stays under 100% of monthly cap (no overages).
 - Cursor cap re-evaluated at every Phase transition.
 
