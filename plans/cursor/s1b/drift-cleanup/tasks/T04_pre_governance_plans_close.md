@@ -16,15 +16,17 @@ This is paperwork only — code already shipped via those plans during S1.A. The
 
 Per `_governance/plan_registry.md` Recently Completed section (already updated at huddle close-out):
 
-| plan_id | plan_root | Action |
-|---|---|---|
-| `PLAN_API_REFLEX_BETA_READINESS_2026-04-28` | `plans/cursor/api-reflex-beta-readiness-plan-53be/` | Add closure marker file |
-| `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | `plans/cursor/server-beta-install-bluegreen-53be/` | Add closure marker file |
-| `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28` | `plans/cursor/vps-beta-rollout-ops/` | Add closure marker file |
-| `PLAN_SECURITY_HARDENING_MIDDLEWARE_ALIGNMENT_2026-04-28` | `plans/cursor/security-hardening-plan-53be/` | Add closure marker file |
-| `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28` | `plans/feat/dashboard-transactions-i18n-calendar-month/` | Add closure marker file |
-| `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29` | `plans/cursor/vps-reflex-bluegreen-recovery-53be/` | Add closure marker file |
-| `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29` | `plans/cursor/finance-manager-web-beta-rollout-53be/` | Add closure marker file |
+
+| plan_id                                                   | plan_root                                                | Action                  |
+| --------------------------------------------------------- | -------------------------------------------------------- | ----------------------- |
+| `PLAN_API_REFLEX_BETA_READINESS_2026-04-28`               | `plans/cursor/api-reflex-beta-readiness-plan-53be/`      | Add closure marker file |
+| `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28`           | `plans/cursor/server-beta-install-bluegreen-53be/`       | Add closure marker file |
+| `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28`                    | `plans/cursor/vps-beta-rollout-ops/`                     | Add closure marker file |
+| `PLAN_SECURITY_HARDENING_MIDDLEWARE_ALIGNMENT_2026-04-28` | `plans/cursor/security-hardening-plan-53be/`             | Add closure marker file |
+| `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28`            | `plans/feat/dashboard-transactions-i18n-calendar-month/` | Add closure marker file |
+| `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29`           | `plans/cursor/vps-reflex-bluegreen-recovery-53be/`       | Add closure marker file |
+| `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29`        | `plans/cursor/finance-manager-web-beta-rollout-53be/`    | Add closure marker file |
+
 
 ## Implementation
 

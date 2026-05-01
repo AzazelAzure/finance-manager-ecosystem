@@ -15,14 +15,16 @@
 
 Sub-plans under this Stage. Each follows the canonical Execution Plan template (`plans/_governance/plan_template.md`) with hierarchical metadata.
 
-| Sub-plan | Status | Owner | Dependencies | Notes |
-|---|---|---|---|---|
-| `drift-cleanup/` | `draft` | unassigned | none | Group B from huddle Topic 9; small/urgent items first (+Bill, email uniqueness S0, Reflex archival, bug triage). Order locked. |
-| `entity-formation-research/` | `draft` | unassigned (HitM-led decisions) | none | US LLC vs OPC. Gates everything financial. |
-| `payment-provider-research/` | `draft` | unassigned (HitM-led decisions) | `entity-formation-research` (entity choice constrains options) | Stripe vs PayMongo vs Xendit vs hybrid. Mobile-wallet primary path. |
-| `ai-economics-deep-dive/` | `draft` | unassigned (HitM-led decisions) | none | 16 questions per `phases/S1_*` Appendix A. Gates S1.C entry. |
-| `distribution-channel-research/` | `draft` | unassigned (HitM-led decisions) | none | PH-local channels (FB primary, AI video framing, family/friend WOM seed). |
-| `wedge-consistency-audit/` | `draft` | unassigned | landing polish underway | ~1 hour slip-in audit per huddle Topic 7 Q7.3. |
+
+| Sub-plan                         | Status  | Owner                           | Dependencies                                                   | Notes                                                                                                                          |
+| -------------------------------- | ------- | ------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `drift-cleanup/`                 | `draft` | unassigned                      | none                                                           | Group B from huddle Topic 9; small/urgent items first (+Bill, email uniqueness S0, Reflex archival, bug triage). Order locked. |
+| `entity-formation-research/`     | `draft` | unassigned (HitM-led decisions) | none                                                           | US LLC vs OPC. Gates everything financial.                                                                                     |
+| `payment-provider-research/`     | `draft` | unassigned (HitM-led decisions) | `entity-formation-research` (entity choice constrains options) | Stripe vs PayMongo vs Xendit vs hybrid. Mobile-wallet primary path.                                                            |
+| `ai-economics-deep-dive/`        | `draft` | unassigned (HitM-led decisions) | none                                                           | 16 questions per `phases/S1_`* Appendix A. Gates S1.C entry.                                                                   |
+| `distribution-channel-research/` | `draft` | unassigned (HitM-led decisions) | none                                                           | PH-local channels (FB primary, AI video framing, family/friend WOM seed).                                                      |
+| `wedge-consistency-audit/`       | `draft` | unassigned                      | landing polish underway                                        | ~1 hour slip-in audit per huddle Topic 7 Q7.3.                                                                                 |
+
 
 ## Branch naming convention
 
