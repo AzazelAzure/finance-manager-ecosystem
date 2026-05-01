@@ -8,9 +8,11 @@ By default, the file includes:
 
 - `finance_manager_api`
 - `finance_manager_cli`
-- `finance_manager_reflex`
+- `finance_manager_web`
+- `finance_manager_android`
+- `finance_manager_reflex` (archived; optional if present)
 
-To add a new repo (for example Rust later), add one directory name per line in `scripts/repos.txt`.
+To add a new repo (for example more Rust tooling), add one directory name per line in `scripts/repos.txt`.
 Blank lines and `# comments` are ignored.
 
 All scripts continue safely when a directory is missing or not initialized as a Git repository.

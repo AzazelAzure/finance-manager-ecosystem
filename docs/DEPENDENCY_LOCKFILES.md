@@ -1,6 +1,6 @@
 # Dependency lockfiles: why, what, and how to move there
 
-This document is a **roadmap** for tightening dependency management across API, CLI, Reflex, and (later) Rust. It complements `notes.txt` (repo split, contracts, releases).
+This document is a **roadmap** for tightening dependency management across API, CLI, **web** (npm/Vite lockfiles), and (later) Rust. `finance_manager_reflex` is **archived**. It complements `notes.txt` (repo split, contracts, releases).
 
 ## What lockfiles actually change (security framing)
 
@@ -19,7 +19,8 @@ So the goal is **reproducible, reviewable installs**—harder for dependency cha
 |------|--------|--------------------------------|
 | `finance_manager_api/` | `pyproject.toml` + `uv.lock` with runtime deps and a `dev` dependency group. | Keep lock refreshed via `uv lock`; use `uv sync --frozen --group dev` in CI. |
 | `finance_manager_cli/` | `pyproject.toml` + `uv.lock` are in place. | Continue resolving via `uv lock`; install with `uv sync --frozen`. |
-| `finance_manager_reflex/` | `pyproject.toml` + `uv.lock` are in place. | Continue resolving via `uv lock`; install with `uv sync --frozen`. |
+| `finance_manager_web/` | `package-lock.json` (or project lockfile) for the Vite SPA. | Install with `npm ci` (or equivalent) in CI/images; fail if lock drifts. |
+| `finance_manager_reflex/` (archived) | Historical `pyproject.toml` + `uv.lock` may remain. | No longer a production delivery surface. |
 | Future Rust crate | N/A | Commit **`Cargo.lock`** for binaries/services you deploy; library crates sometimes omit it—pick a policy per artifact type. |
 
 ## Recommended directions (pick one stack per repo, stay consistent)
@@ -46,7 +47,7 @@ So the goal is **reproducible, reviewable installs**—harder for dependency cha
 
 - For anything you **ship** (middleware binary, sidecar, CLI): **commit `Cargo.lock`** and build with `--locked` in CI/release so dependency graphs cannot shift silently.
 
-### Reflex / JS (if you add a `package.json`)
+### Web / JS (`finance_manager_web`)
 
 - Commit **`package-lock.json`** (npm), **`pnpm-lock.yaml`**, or **`yarn.lock`**—never rely on unconstrained installs in CI or production images.
 

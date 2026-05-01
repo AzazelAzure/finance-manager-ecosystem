@@ -24,21 +24,24 @@ This workspace contains multiple independent git repositories. Treat each repo a
 
 ## Cross-Project Dependencies
 
-- When a fix in one subproject depends on another (for example Reflex needing an API contract change), record a clear handoff note for the host agent.
+- When a fix in one subproject depends on another (for example **web** needing an API contract change), record a clear handoff note for the host agent.
 - Convert cross-project dependency notes into explicit follow-up plans before starting work in the second repo.
 - Keep the current task deliverable bounded to the active subproject unless the task explicitly authorizes multi-repo execution.
 
 ## Current Repo Map
 
 - API repo: `finance_manager_api/`
-- Reflex repo: `finance_manager_reflex/`
+- Web repo (flagship): `finance_manager_web/`
 - CLI repo: `finance_manager_cli/`
+- Design vault (submodule): `design_docs/`
+- Reflex repo: `finance_manager_reflex/` (**archived** — historical only; not in production architecture)
 
 ## Changelog Discipline
 
 - For API changes, update `finance_manager_api/CHANGELOG.md` in the same workstream.
-- For Reflex changes, update `finance_manager_reflex/CHANGELOG.md` in the same workstream.
+- For Web changes, update `finance_manager_web/CHANGELOG.md` in the same workstream.
 - For CLI changes, create and maintain `finance_manager_cli/CHANGELOG.md` once CLI feature work begins.
+- For legacy Reflex-only archaeology, update `finance_manager_reflex/CHANGELOG.md` only if you intentionally change that archived tree.
 
 ## Commit Quality
 
@@ -49,7 +52,7 @@ This workspace contains multiple independent git repositories. Treat each repo a
 
 ## Pull Request Hygiene
 
-- PR title should state intent and target repo (API/Reflex/CLI).
+- PR title should state intent and target repo (API/Web/CLI/design_docs/parent).
 - PR body must include: summary, why, validation run, and risks/known follow-ups.
 - Keep PR scope reviewable; split large changes into multiple PRs when practical.
 - Link related cross-repo PRs when a contract change requires downstream updates.

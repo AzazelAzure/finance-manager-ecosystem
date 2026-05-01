@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 """Simple SPDX header checker for this workspace.
 
-Checks source/doc files under API/CLI/Reflex repos and reports files
-that do not contain the required SPDX identifier.
+Checks source/doc files under API, CLI, and (if present) archived Reflex trees;
+reports files that do not contain the required SPDX identifier.
+
+The flagship **`finance_manager_web`** repo should follow the license policy in
+`docs/SPDX_COMPLIANCE.md`, but is not included in this scan until headers are
+rolled out consistently (avoid noisy thousands of findings).
 """
 
 from __future__ import annotations

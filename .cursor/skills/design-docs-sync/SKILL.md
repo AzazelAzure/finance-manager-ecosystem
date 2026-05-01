@@ -10,8 +10,8 @@ description: Keep design_docs aligned with implementation changes by updating ar
 Prioritize updates in:
 
 - `design_docs/api_docs/`
-- `design_docs/reflex_docs/`
 - `design_docs/cli_docs/`
+- `design_docs/reflex_docs/` (archived **Reflex** product — historical reference only; flagship UI is `finance_manager_web/`)
 - `design_docs/20_Roadmap/`
 - `design_docs/40_System_Design/`
 - `design_docs/10_Current_State/`

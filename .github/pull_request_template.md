@@ -2,7 +2,7 @@
 
 - What changed:
 - Why this change is needed:
-- Target repo: API | Reflex | CLI | docs/ops
+- Target repo: API | Web | CLI | design_docs | deploy/ops | parent (plans)
 
 ## Scope
 
@@ -27,7 +27,7 @@
 
 ## Changelog / Docs
 
-- [ ] Updated changelog for touched sub-repo (API/Reflex/CLI)
+- [ ] Updated changelog for touched sub-repo (API/Web/CLI) or parent `CHANGELOG.md` when ecosystem metadata changes
 - [ ] No changelog needed (docs-only or internal non-behavioral change)
 - [ ] Updated related docs/contracts/runbooks where applicable
 

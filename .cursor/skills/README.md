@@ -7,7 +7,7 @@ This project uses shared skills in `.cursor/skills/` plus delegation rules in `.
 - `core-standards.mdc` -> global quality defaults; every workflow skill inherits correctness-first, root-cause fixes, and maintainability.
 - `git-repo-workflow.mdc` -> repo boundaries, feature-branch + PR defaults, and changelog discipline; all execution-oriented skills include explicit repo/branch confirmation.
 - `api-architecture.mdc` -> backend layering constraints; referenced by `feature-implementation-loop` and `bugfix-investigation-loop` when working in API paths.
-- `reflex-frontend.mdc` -> frontend implementation expectations; referenced by `feature-implementation-loop` and `bugfix-investigation-loop` when working in Reflex paths.
+- `reflex-frontend.mdc` -> **legacy** Reflex paths only (archived product). For active UI work, follow `finance_manager_web/` conventions and `feature-implementation-loop` / `bugfix-investigation-loop` in that repo.
 - `agent-delegation.mdc` -> task classification, routing defaults, handoff contract, and verification expectations.
 
 ## Task Routing Defaults
