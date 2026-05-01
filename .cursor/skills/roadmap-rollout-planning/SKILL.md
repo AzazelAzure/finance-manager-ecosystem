@@ -9,9 +9,9 @@ description: Build phased roadmaps and feature rollout plans with clear breakpoi
 
 When a rollout plan is **ready to execute** (not while still brainstorming in chat), materialize it on disk for `/orchestration-manager`:
 
-- **Path:** `plans/<proposed-git-branch-name>/`
-- **`<proposed-git-branch-name>`** is the primary feature branch you intend to use for that execution batch (one directory per plan/batch). Mirror git’s `/` segments as nested folders (e.g. branch `fix/reflex-login-form` → `plans/fix/reflex-login-form/`). If you prefer a single segment, flatten with hyphens (e.g. `plans/fix-reflex-login-form/`) but stay consistent within the workspace.
-- Put the phased plan, task packets, checkpoints, and any manifest files **inside** that folder so the orchestrator has a single root to read.
+- **Path:** `plans/cursor/<phase-stage>/<sub-plan>/` (hierarchical layout locked 2026-04-30; see `plans/_governance/branching_guidelines.md` and `plans/cursor/strategic-roadmap-reframe-53be/README.md` §8). Example: Stage S1.B drift cleanup → `plans/cursor/s1b/drift-cleanup/`. Git branch names follow the same hierarchy (e.g. `cursor/s1b/drift-cleanup`).
+- Legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/` trees were moved under `plans/archived/` on 2026-05-01; do not add new plans there.
+- Put the phased plan, task packets, checkpoints, and any manifest files **inside** that folder so the orchestrator has a single root to read. Use `plans/_governance/plan_template.md` for required metadata fields.
 
 This is **implicit** for all roadmap outputs that transition from planning to execution: do not leave execution-ready plans only in chat or ad hoc paths.
 
@@ -30,7 +30,7 @@ This is **implicit** for all roadmap outputs that transition from planning to ex
 - [ ] Capture required implementation artifacts and ownership.
 - [ ] Add validation checkpoints for each phase.
 - [ ] Document rollback/mitigation paths for high-risk steps.
-- [ ] When the plan is execution-ready, create `plans/<proposed-git-branch-name>/` and write artifacts there for orchestration manager consumption.
+- [ ] When the plan is execution-ready, create `plans/cursor/<phase-stage>/<sub-plan>/` and write artifacts there for orchestration manager consumption; register in `plans/_governance/plan_registry.md` when promoting past `draft`.
 
 ## Deliverable Format
 
@@ -50,6 +50,6 @@ This is **implicit** for all roadmap outputs that transition from planning to ex
 ## Delegation Defaults
 
 - Use `explore` to gather architecture/current-state evidence.
-- Use `generalPurpose` to author phased rollout updates and to create the `plans/<proposed-git-branch-name>/` tree when moving to execution.
+- Use `generalPurpose` to author phased rollout updates and to create the `plans/cursor/<phase-stage>/<sub-plan>/` tree when moving to execution.
 - Feed outputs into `design-docs-sync` when plan requires doc edits.
-- Hand execution to `orchestration-manager` with the plan root path under `plans/<proposed-git-branch-name>/`.
+- Hand execution to `orchestration-manager` with the plan root path under `plans/cursor/<phase-stage>/<sub-plan>/`.
