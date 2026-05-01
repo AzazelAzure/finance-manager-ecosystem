@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-01 — Submodule pins: track `design_docs` + `finance_manager_web` `main` merge commits
+
+- **`design_docs` submodule:** **`15045e1`** (`main`, includes design-docs PR [#16](https://github.com/AzazelAzure/finance-manager-design-docs/pull/16) squash merge onto `main`; supersedes ecosystem pin **`94b2fbf`**).
+- **`finance_manager_web` submodule:** **`a5d5f80`** (`main`, merge of web PR [#34](https://github.com/AzazelAzure/finance-manager-web/pull/34); supersedes pin **`39398ae`**).
+
+Keeps the parent checkout aligned with each child’s canonical `main` after GitHub merge, so future submodule updates are a simple fast-forward.
+
 ### 2026-05-01 — S1.B CPPRD batch: PWA plans, strategic/governance research, vault + web submodule pins
 
 - **`plans/cursor/s1b/pwa-install-offline-sync-research/`:** New sub-plan (README §1.1–§1.7, §6 bar, D0/D2/D3/D4 specs, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`, `RESEARCH_ARTIFACTS.md`, smoke/ADR).
