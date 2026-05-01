@@ -15,20 +15,22 @@ hotfix: (none) ──birth──> in_progress  (skips draft, ready)
 
 ## Transition table
 
-| From | To | Trigger | Required actions | Slack gate |
-|---|---|---|---|---|
-| `(none)` | `draft` | New work identified | §A Birth actions | none |
-| `(none)` | `in_progress` | Hotfix only | §A Birth + §A.HF hotfix variant | none for pre_execution |
-| `draft` | `ready` | Validation passes | §B Validation actions | none |
-| `ready` | `in_progress` | Agent picks up | §C Pre-execution actions | `pre_execution` if required |
-| `in_progress` | `paused` | Voluntary hold | §D.P Pause actions | none |
-| `in_progress` | `blocked` | External blocker | §D.B Block actions | none |
-| `paused` | `in_progress` | Resume condition met | Update registry, update `updated:` | none |
-| `blocked` | `in_progress` | Blocker resolved | Update registry, update `updated:` | none |
-| `in_progress` | `completed` | PR merged + verification (+ deploy if `deployment.required: true`) | §E Close actions | `pre_close` if required; `pre_deploy` and `pre_cutover` if `deployment.required: true` |
-| `in_progress` | `abandoned` | Decision to stop | §F Abandon actions | none |
-| `completed` | `archived` | ≥30 days idle, not referenced | §G Archive actions | none |
-| `abandoned` | `archived` | ≥30 days idle | §G Archive actions | none |
+
+| From          | To            | Trigger                                                            | Required actions                   | Slack gate                                                                             |
+| ------------- | ------------- | ------------------------------------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------- |
+| `(none)`      | `draft`       | New work identified                                                | §A Birth actions                   | none                                                                                   |
+| `(none)`      | `in_progress` | Hotfix only                                                        | §A Birth + §A.HF hotfix variant    | none for pre_execution                                                                 |
+| `draft`       | `ready`       | Validation passes                                                  | §B Validation actions              | none                                                                                   |
+| `ready`       | `in_progress` | Agent picks up                                                     | §C Pre-execution actions           | `pre_execution` if required                                                            |
+| `in_progress` | `paused`      | Voluntary hold                                                     | §D.P Pause actions                 | none                                                                                   |
+| `in_progress` | `blocked`     | External blocker                                                   | §D.B Block actions                 | none                                                                                   |
+| `paused`      | `in_progress` | Resume condition met                                               | Update registry, update `updated:` | none                                                                                   |
+| `blocked`     | `in_progress` | Blocker resolved                                                   | Update registry, update `updated:` | none                                                                                   |
+| `in_progress` | `completed`   | PR merged + verification (+ deploy if `deployment.required: true`) | §E Close actions                   | `pre_close` if required; `pre_deploy` and `pre_cutover` if `deployment.required: true` |
+| `in_progress` | `abandoned`   | Decision to stop                                                   | §F Abandon actions                 | none                                                                                   |
+| `completed`   | `archived`    | ≥30 days idle, not referenced                                      | §G Archive actions                 | none                                                                                   |
+| `abandoned`   | `archived`    | ≥30 days idle                                                      | §G Archive actions                 | none                                                                                   |
+
 
 ## Forbidden transitions
 
@@ -201,16 +203,19 @@ Then:
 
 ## Quick reference — what to do at each transition
 
-| If status is | And event is | Do |
-|---|---|---|
-| `(none)` | New work | Run §A Birth |
-| `draft` | Authoring complete | Run §B Validation |
-| `ready` | Picked up | Run §C Pre-execution |
-| `in_progress` | Tasks complete + tests pass | Open PR, run §E Close pre-conditions |
-| `in_progress` | HitM unavailable >24h | Stay in_progress unless work cannot proceed → §D.P Pause |
-| `in_progress` | External blocker | Run §D.B Block |
-| `paused` | Resume condition true | Set in_progress, update registry |
-| `blocked` | Blocker resolved | Set in_progress, update registry |
-| `completed` | 30+ days idle | Run §G Archive |
-| `abandoned` | 30+ days idle | Run §G Archive |
-| any | Conflict detected mid-flight | Pause this plan; resolve via plan_template.md §7 |
+
+| If status is  | And event is                 | Do                                                       |
+| ------------- | ---------------------------- | -------------------------------------------------------- |
+| `(none)`      | New work                     | Run §A Birth                                             |
+| `draft`       | Authoring complete           | Run §B Validation                                        |
+| `ready`       | Picked up                    | Run §C Pre-execution                                     |
+| `in_progress` | Tasks complete + tests pass  | Open PR, run §E Close pre-conditions                     |
+| `in_progress` | HitM unavailable >24h        | Stay in_progress unless work cannot proceed → §D.P Pause |
+| `in_progress` | External blocker             | Run §D.B Block                                           |
+| `paused`      | Resume condition true        | Set in_progress, update registry                         |
+| `blocked`     | Blocker resolved             | Set in_progress, update registry                         |
+| `completed`   | 30+ days idle                | Run §G Archive                                           |
+| `abandoned`   | 30+ days idle                | Run §G Archive                                           |
+| any           | Conflict detected mid-flight | Pause this plan; resolve via plan_template.md §7         |
+
+

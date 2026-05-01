@@ -66,8 +66,9 @@ These are **closed decisions**. Re-opening them requires a kill/commit gate revi
 
 ### 3.5 AI Credits Model (Cursor-Pattern); Tier Ships at S1.C
 
-- Free tier: ~10 AI prompts/month using a small/cheap model. Hard cost cap per user (see `01_unit_economics_and_costs.md`).
-- Paid tier: monthly subscription includes baseline AI credits; PAYG top-ups available.
+- Free tier: **~10 AI credits/month** (mini-only paths; see `01_unit_economics_and_costs.md` §3.1).
+- Paid tier: monthly subscription includes baseline AI credits; **PAYG** top-ups at **floor SKU ₱99 → 100 credits** (2026-05-01 lock). **Optional larger credit bundles** remain **unlocked** until volume economics + PSP fees are modeled (`plans/cursor/s1b/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`).
+- **List prices locked 2026-05-01:** Pro **₱249/mo**, Pro+ AI **₱349/mo** (`01_unit_economics_and_costs.md` §2.0).
 - "Smart predictions" rotate model tier by subscription level. Always cache, always batch where possible.
 - **2026-04-30 timing update:** Pro+ AI tier pulls forward from S2 to **S1.C** (Founding Beta entry), tentative pending the AI Economics Deep-Dive resolution within S1.B.
 
@@ -102,11 +103,12 @@ These are **closed decisions**. Re-opening them requires a kill/commit gate revi
 - **S1.C entry trigger** (additive, locked): "Product is demonstrably worth ₱200/mo paid tier vs free tier vs notebook substitute." On top of the original S1.C entry triggers (S1.B exit met, AI economics deep-dive complete, billing infra live).
 - Implication: S1.B includes feature work, not just research.
 
-### 3.11 Lifetime Founding Beta Definition (locked 2026-04-30, deep-dive pending)
+### 3.11 Lifetime Founding Beta Definition (locked 2026-04-30; commercial terms extended 2026-05-01)
 
 - HitM intent: "lifetime access to all future features" with AI features specifically gated and potentially tiered for founders (with discounts on credit packs).
 - Industry-comparable framing offered as alternative: "lifetime Pro tier + lifetime access to Pro+ AI features with PAYG consumption at 50% discount; new product streams negotiated at launch."
-- **Final commitment pending AI Economics Deep-Dive** (16 questions per `plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` S1.B workstream).
+- **Locked for planning (2026-05-01):** **≤100 founding seats**, **₱999–₱1,499** one-time band, **canonical PAYG floor ₱99 → 100 credits** unchanged; **volume PAYG bundles** and **exact founder pack discount application** across SKUs remain in Appendix A / `PAYG_VOLUME_BUNDLES_RESEARCH.md`.
+- **Legal/marketing precision** (lifetime definition, ToS): still **finalize** via Appendix A **Q14–Q16** and counsel — not the same as commercial **cap + price band** lock above.
 
 ## 4) What Was Rejected and Why
 
@@ -128,7 +130,7 @@ These are **closed decisions**. Re-opening them requires a kill/commit gate revi
 
 ## 5) Success Criteria
 
-- **Floor / break-even:** Cover ~$100/mo overhead (Cursor + VPS). ≈45 PH paying subs at PHP-anchored pricing OR mix.
+- **Floor / break-even:** Cover **~$115–130/mo** all-in overhead (buffered; see `01_unit_economics_and_costs.md` §1, §4.1). Subscriber count **depends on locked Pro price:** **lower list for affordability → more paying users** for the same USD overhead. Illustrative **mid-band Pro (₱199)** ≈ **~41** subs at **$125/mo** all-in; **floor Pro (₱149)** ≈ **~55** (see §4.1 table). **Validation gate** headcounts **scale** when Pro is locked below the **₱199** gate anchor (`validation_gates.md` intro).
 - **Personal success target:** ₱100k/mo in business take-home (matches HitM's current personal income).
 - **Win:** $1k MRR within 3–5 years.
 - **Bust gate:** 3–5 years sustained net negative → wind down formally (see `kill_commit_gates.md` §1).

@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-05-01 (design-docs sync; legacy `plans/feat|fix|volatile*` moved under `plans/archived/`)
+**Last updated:** 2026-05-01 (S1.B PWA research sub-plan registered)
 
 ## Update protocol
 
@@ -37,7 +37,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `plans/cursor/strategic-road
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
-| _(empty)_ | | | | |
+| `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/cursor/s1b/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/cursor/s1b/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
 
 ## Paused
 

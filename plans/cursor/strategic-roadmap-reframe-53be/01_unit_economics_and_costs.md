@@ -1,18 +1,20 @@
 # Unit Economics, Cost Caps, and Tax Structuring
 
-**Originally captured:** 2026-04-28. **Major revision:** 2026-04-30 post-beta huddle (PH-first market lock; revenue path constrained to subscription + Sari-Sari B2B + curated partners; ads + user-data sales rejected).
+**Originally captured:** 2026-04-28. **Major revision:** 2026-04-30 post-beta huddle (PH-first market lock; revenue path constrained to subscription + Sari-Sari B2B + curated partners; ads + user-data sales rejected). **Overhead baseline:** revised 2026-05-01 (Cursor/VPS/domain actuals; Slack bridge on hiatus). **List-price lock (PH subscription + PAYG floor + founding cap):** 2026-05-01 — see §2 intro.
 
 This file is the financial guardrail for the roadmap. Re-read before any tier/pricing/feature change.
 
 ## 1) Current Overhead Baseline
 
-| Item | Cost (USD/mo) | Notes |
-|---|---|---|
-| Cursor Pro+ | ~$20 | Required for current dev velocity; non-negotiable in S1–S2. Current cycle: 57% used as of 2026-04-30, refresh 2026-05-28. |
-| VPS (Hostinger or similar PH-friendly) | ~$5–15 | Beta scale. May rise to ~$30 at S2 if scale demands. |
-| Domain + TLS | ~$1–2 | Baseline. |
-| Slack/CLI bridge LLM API costs (currently bundled with Cursor) | ~$0–20 | Treated as part of Cursor budget. |
-| **Approx. total operating overhead** | **~$30–60/mo** | HitM-stated overhead figure of ~$100/mo includes buffer. |
+
+| Item                                   | Cost (USD/mo)     | Notes                                                                                                                                                                                                                          |
+| -------------------------------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Cursor Pro+                            | **~$60**          | Required for current dev velocity; non-negotiable in S1–S2.                                                                                                                                                                    |
+| VPS (Hostinger or similar PH-friendly) | **~$40**          | Current production-adjacent tier; revise if scale demands.                                                                                                                                                                     |
+| Domain + TLS                           | **~$2** (~$20/yr) | Registration + certs amortized monthly.                                                                                                                                                                                        |
+| Slack/CLI bridge                       | **$0**            | **Temporary hiatus** while integration options settle. No separate Slack subscription HitM-paid—any future bridge is expected to ride **Cursor Pro+** tooling/entitlements only; no incremental line item unless that changes. |
+| **Approx. total operating overhead**   | **~$100–105/mo**  | Sum of Cursor + VPS + domain; rounded. Add buffer for spikes (LLM PAYG outside Cursor, incidentals) → planning **~$115–130/mo** conservative.                                                                                  |
+
 
 **Hard cap:** ₱100/mo (≈$1.80/mo at current FX) runtime cost cap per HitM personal constraint (`00_strategic_context.md` §7). New infrastructure proposals must fit this cap or are blocked.
 
@@ -22,41 +24,75 @@ This file is the financial guardrail for the roadmap. Re-read before any tier/pr
 
 Anchored to PH purchasing power. **PH-first market focus locked 2026-04-30** (`00_strategic_context.md` §3.8).
 
-| Tier | PHP/mo | USD/mo | What's included |
-|---|---|---|---|
-| **Free (PH primary)** | ₱0 | $0 | Safe-to-spend dashboard, manual entry, single account, GCash/Maya CSV import for PH users only, ~10 free AI prompts/month (small model). |
-| **Pro (PH)** | ₱149–₱249 | ~$2.50–$4.50 | Multi-account, automatic GCash/Maya parsing (PH only), 100 AI prompts/month (smart model), priority support, family-share (up to 3 members). |
-| **Pro Annual (PH)** | ₱1,499–₱2,499 | ~$25–$45 | 40% discount vs monthly. Cuts churn dramatically. |
-| **Pro+ AI (PH)** | ₱349 | ~$6.50 | Pro plus 500 AI prompts/month, "AI planning sessions" feature, advanced predictions. |
-| **AI Credits PAYG** | ₱49 / 100 prompts | ~$0.99 / 100 | Top-up sold to all paid tiers. |
-| **Founding Lifetime (PH)** | ₱999–₱1,499 one-time | ~$18–$28 one-time | First 50–100 seats only. PH-region pricing. Hard cap. **Tentative includes Pro+ AI tier access** pending AI Economics Deep-Dive (`00_strategic_context.md` §3.11). |
-| **Honorary Founder (US grandfathered)** | $0 | $0 | Existing US testers grandfathered with free Pro tier access; founder badge; no payment. AI tier deferred until US re-engagement trigger fires (P-6). |
-| **Pro (US)** — *deferred* | – | $7.99 | NOT live in S1. Activates if/when P-6 trigger fires for US re-engagement. Same as Pro PH minus GCash/Maya. |
+### 2.0 Locked list prices — PH subscription, PAYG floor, founding cohort (2026-05-01)
+
+
+| Item                  | Lock                                               | Notes                                                                                                                                                                                                                                          |
+| --------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Pro (monthly)**     | **₱249/mo** list                                   | Within published band **₱149–₱249**; humane pricing vs **₱250** negligible. Gate headcount normalization in `validation_gates.md` may still cite **₱199** anchor until that file is updated—recompute equivalents when reconciling milestones. |
+| **Pro+ AI (monthly)** | **₱349/mo** list                                   | Included **250 credits/mo**.                                                                                                                                                                                                                   |
+| **PAYG price floor**  | **₱99 → 100 credits**                              | Canonical **~₱0.99/credit**; parity anchor vs subscription allowances.                                                                                                                                                                         |
+| **Founding Lifetime** | **₱999–₱1,499** one-time · **≤100 seats** hard cap | Seat count **locked at 100** for planning; entitlement text still ToS-ready per Appendix A founder questions.                                                                                                                                  |
+
+
+**Not locked:** **Pro Annual** SKU math (still table band); optional **larger PAYG bundles** — see `**plans/cursor/s1b/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`** before adding SKUs.
+
+
+| Tier                                    | PHP/mo                   | USD/mo            | What's included                                                                                                                                                                                                                                                                                         |
+| --------------------------------------- | ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Free (PH primary)**                   | ₱0                       | $0                | Safe-to-spend dashboard, manual entry, single account, GCash/Maya CSV import for PH users only, **~10 AI credits/month** (wallet debits **1× mini** baseline; **T2+ blocked** — see metering §2.5).                                                                                                     |
+| **Pro (PH)**                            | **₱249/mo** list         | ~$4.45            | Multi-account, automatic GCash/Maya parsing (PH only), **100 AI credits/month**, priority support, family-share (up to 3 members). Stronger flows **burn >1 debit/credit**. Band **₱149–₱249** remains for future promos or regional variation unless strategy reopens.                                 |
+| **Pro Annual (PH)**                     | ₱1,499–₱2,499            | ~$25–$45          | 40% discount vs monthly. Cuts churn dramatically. **Shelf prices** still tentative until PSP + annual cohort behavior validated.                                                                                                                                                                        |
+| **Pro+ AI (PH)**                        | **₱349/mo** list         | ~$6.50            | Pro plus **250 AI credits/month**, “AI planning sessions,” advanced predictions. Same **BC ledger**; scaled debits.                                                                                                                                                                                     |
+| **AI Credits PAYG**                     | **₱99 → 100 credits**    | **~$1.77 / pack** | **Floor SKU locked.** Top-up: **~₱0.99/credit** list (**1 peso ≈ 1 credit** UX). **Larger bundles** — if offered — must pass volume-discount economics (`PAYG_VOLUME_BUNDLES_RESEARCH.md`); baseline pack remains parity anchor. Ledger: `**AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` §2.5, §8**. |
+| **Founding Lifetime (PH)**              | **₱999–₱1,499** one-time | ~$18–$28 one-time | **First 100 seats** (hard cap for planning). **Pro+ entitlement + founder PAYG discount band** (`00_strategic_context.md` §3.11, Appendix A) — legal/marketing wording still finalized in ToS.                                                                                                          |
+| **Honorary Founder (US grandfathered)** | $0                       | $0                | Existing US testers grandfathered with free Pro tier access; founder badge; no payment. AI tier deferred until US re-engagement trigger fires (P-6).                                                                                                                                                    |
+| **Pro (US)** — *deferred*               | –                        | $7.99             | NOT live in S1. Activates if/when P-6 trigger fires for US re-engagement. Same as Pro PH minus GCash/Maya.                                                                                                                                                                                              |
+
+
+**Included credits / month:** **10 / 100 / 250** (Free / Pro / **Pro+**). **Parity shorthand:** implied PAYG-parity of included AI bucket alone at list floor ≈ **~₱99 / ~₱248 / month** equivalents for Free / Pro / Pro+ allowances (still not full product COGS story). See `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`.
 
 **Critical constraints:**
 
 - **GCash/Maya as primary payment method, not fallback** (per `00_strategic_context.md` §3.9). S1.B billing infra design must support direct GCash/Maya. Forcing PH users to have a credit card is a non-starter.
 - **Mobile wallet billing legality for US-incorporated business** is part of the S1.B research workstream.
-- **Pricing decisions still pending S1.B research:** exact Pro PH price within ₱149–₱249 range, AI economics validation, currency handling.
+- **Still pending at PSP / implementation detail:** exact **annual** SKUs, **multi-currency display**, **optional PAYG volume packs** (must follow `PAYG_VOLUME_BUNDLES_RESEARCH.md`), and **real MDR** replacing **0.85** placeholder.
+
+**Affordability vs margin (pricing discipline):**
+
+- **Goal:** balance **affordability** (common PH user still willing to upgrade) with **sustainable margin** after PSP take-rate and AI variable cost.
+- **Pro list lock:** **₱249/mo** (2026-05-01) sits at the top of the **₱149–₱249** band—still consistent with the original **ceiling** intent; reopen only via strategic context if conversions fail.
+- **Implication for gates:** break-even and Phase **paying-user minimums** are **not fixed magic numbers**. They must be **reconciled at S1.B pricing + PSP lock** to the **net PHP (and USD) per paying sub** implied by the chosen list price. **Lower Pro price for conversion → fewer pesos per sub → more paying users required** for the same overhead and revenue-equivalent milestones (see §4.1 table).
+- **Procedure:** when Pro list + blended PSP net % is locked, update `validation_gates.md` headcount triggers per the indexing rule there, and refresh §4.1 worked examples.
+
+**Deferred until S1.B feature roadmap is solid (then revisit in one pass):**
+
+- **Free vs paid feature map:** do **not** treat the tier table above as final entitlements row-by-row until HitM’s **S1.B feature backlog** (what ships in S1.B / what seeds S1.C) is clear. Come back for a deliberate **heads-up pass:** which capabilities keep users **sticky and daily-active on Free** (wedge + trust) versus which **meaningfully justify Pro / Pro+ AI** without gutting the free hook. Reconcile outcomes with AI variable cost (`§3`) and affordability rules above.
+- **Pro free-trial pattern (candidate, not locked):** later consider **first month free Pro** with **payment method on file** and copy that matches common SaaS norms: user may **cancel before first charge**; **renewal billing automatic** afterward. Requires explicit **risk/reward** work: downgrade shock and **churn entirely** vs **taste of paid** driving willing conversion. Decision depends on the finalized feature split (what trial actually demonstrates).
+- **PSP / wallet behavior for trials:** investigate how chosen rails (e.g. PayMongo-class aggregators, GCash/Maya) handle **authorization vs first charge**, **wallet verification**, and **failed renewal**—either **prove funding** up front or accept **failed charge → downgrade / stop paid features** with clear UX (see `PARKING_LOT.md` **P-8**).
 
 ## 3) AI Cost Cap Model
 
 LLM inference is the single largest variable cost as you scale free users. Without a cap, free tier eats the project.
 
-### 3.1 Per-User AI Cost Budget
+### 3.1 Per-user AI allowance (billing credits) & cost budget
 
-| Tier | AI calls/mo | Model class | Per-call cost (est.) | Per-user cost cap (mo) |
-|---|---|---|---|---|
-| Free | 10 | Small (Haiku, GPT-mini, local Llama) | $0.001–$0.005 | **$0.05** |
-| Pro | 100 | Mid (Sonnet, GPT-4-mini) | $0.005–$0.02 | **$2.00** |
-| Pro+ AI | 500 | Mid → Large for "planning sessions" | $0.005–$0.05 | **$10.00** |
+Included **wallet credits**/month (**same numeric caps** as legacy prompt allowances). **1 credit ≈ 1.0× mini Short‑S** debit baseline; routed models/long sessions multiply debits (**§2.5** metering doc).
 
-**Hard rule:** if any user crosses 2× their tier cap in a billing period, request is throttled and user is offered a credits top-up. Implement this at the API gateway, not in the model call itself.
+
+| Tier    | Credits / mo | Default / ceiling routing (policy)                                                                  | Typical variable API envelope (still validate in prod)                                                                     |
+| ------- | ------------ | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Free    | **10**       | **Mini-only**, T0/T1; **no T2+**                                                                    | Order **~$0.04–$0.05**/mo at full **1×** draw                                                                              |
+| Pro     | **100**      | T2+ allowed; blended mini → Sonnet on gated flows                                                   | **~$0.38–$0.52**/mo @ full bucket (1× vs **~1.39×** effective debit — see `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`) |
+| Pro+ AI | **250**      | Planning-grade routes; **2.5×** Pro bucket size → scale COGS linearly vs Pro rows at same debit mix |                                                                                                                            |
+
+
+**Hard rule:** if **rated debits** (after multipliers, in **1× equivalents**) exceed **2× nominal monthly allowance** in a billing period, throttle and offer **₱99 → 100** top-up. Enforce at **API gateway** with ledger, not raw model internals.
 
 ### 3.2 System-Level AI Cost Cap
 
 - **Free tier monthly LLM spend cap:** $50/mo at S1.C launch, scales to $200/mo at S2 if paid users >100, $500/mo at S3.
-- **Trigger:** if free-tier LLM spend > 30% of MRR in any month, free tier prompts/mo is reduced (5 → 3 → 1) until paid conversion catches up.
+- **Trigger:** if free-tier LLM spend > 30% of MRR in any month, free tier **included credits**/mo is reduced (**10 → 5 → 3 → 1** analog) until paid conversion catches up.
 - **Caching is mandatory:**
   - Merchant-name → category mapping cached forever.
   - Recurring transaction predictions cached for 24h.
@@ -67,13 +103,55 @@ LLM inference is the single largest variable cost as you scale free users. Witho
 
 Required S1.B sub-Sprint before S1.C opens. 16 interlocking decisions, captured in `phases/S1_public_beta_position.md`. Final Pro+ AI commitment (currently `S1.C tentative` per Topic 4 Q4) depends on this deep-dive's outcome.
 
+**Model-vs-price sanity check:** `plans/cursor/s1b/ai-economics-deep-dive/LLM_PROVIDER_COST_SNAPSHOT.md` — full **bucket** usage vs tariff (still uses **completion** framing; aligns to **debit multipliers** in metering doc).
+
+**Metering / BC ledger:** `plans/cursor/s1b/ai-economics-deep-dive/AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` — **tier ceilings**, debit multipliers, PAYG **₱99 → 100**.
+
+**Floor vs subscription vs founder discounts:** `plans/cursor/s1b/ai-economics-deep-dive/CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md` — **net $/credit**, **COGS/credit**, Pro **100** vs Pro+ **250**, breakeven **discount vs PAYG**.
+
+### 3.4 AI usage observability (S1.C implementation — required for financial health)
+
+Ship **privacy-respecting usage telemetry** alongside the AI gateway so margins stay evidence-based (not guesswork). **Default posture:** **aggregate and/or strongly pseudonymous** metrics suitable for **COGS and product** decisions—avoid storing raw chat content in analytics pipes.
+
+**Minimum dimensions to plan for in the AI implementation phase:**
+
+
+| Area                                      | Why                                                                                                                                                                       |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Invocations / DAU / WAU**               | Baseline load vs paying mix.                                                                                                                                              |
+| **Multi-turn sessions**                   | Conversation length drives token growth; long “financial health” sessions should be **rare** if product is tight—**validate** with data.                                  |
+| **Credits debited per interaction**       | Reconcile wallet drains to **tiered multipliers** (`AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` §2.5): baseline **1× mini** vs **scaled** Sonnet / long / multi-turn. |
+| **T0–T3 bucket counts**                   | Route roadmap and pricing to **actual** use-case mix (see `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` §1).                                                           |
+| **Model_id + token histograms (p50/p95)** | Catch blend drift; tune caps and **dynamic list prices** later.                                                                                                           |
+| **Top-up purchase vs burn rates**         | Sanity-check ₱99→100 pack economics over time.                                                                                                                            |
+
+
+**Outcome:** After baseline telemetry exists, **re-price** packs or subscription allowances using measured distributions (still subject to PSP + positioning gates)—see metering doc §9 checklist.
+
 ## 4) Break-Even and Win Math
 
 ### 4.1 Break-even (cover overhead only)
 
-- Overhead: ~$60/mo conservative, ~$100/mo with buffer.
-- Effective gross margin per Pro PH sub: ₱149/mo × 0.85 (Stripe + AI cost) ≈ ₱127/mo ≈ $2.20/mo.
-- **Break-even at $100/mo overhead → ~45 Pro PH subs OR a mix.**
+- Overhead: **~$102/mo** recurring baseline (§1); **~$115–130/mo** with buffer and incidentals.
+- **Modeling shortcut (until PSP MDR replaces 0.85):** **Pro list locked ₱249** (2026-05-01, §2.0); use **~0.85 × list** as “net PHP after processor + rough AI allowance” for **Pro-only** napkin math. USD column uses **illustrative ₱56/$1**; refresh FX at lock.
+- **Sensitivity — Pro list price vs break-even headcount** (all Pro PH, ~0.85 net, $125/mo all-in overhead, illustrative FX):
+
+
+| Pro list (₱/mo) | Net ₱/mo (×0.85) | ~USD/sub/mo @₱56:$1 | ~Pro subs for $125/mo |
+| --------------- | ---------------- | ------------------- | --------------------- |
+| 149             | 127              | 2.26                | **~55**               |
+| 179             | 152              | 2.72                | **~46**               |
+| 199             | 169              | 3.02                | **~41**               |
+| 249             | 212              | 3.78                | **~33**               |
+
+
+- **Affordability choice:** locking Pro at the **lower** end of the band **raises** the subscriber count needed to cover the same USD overhead; **profit maximization** via higher list price **lowers** required N but must stay within the **upgrade psychology cap** (see §2 pricing discipline).
+- **Mix:** Founding one-time, Pro+ AI, and PAYG credits change blended ARPU—gates that count “paying users” should still be **re-indexed** when Pro ASP moves (see `validation_gates.md`).
+
+**Anchors used elsewhere until revised at S1.B lock**
+
+- **Mid-band illustration (₱199 list):** net **~$3.02/mo**/sub → **~41** Pro subs for **$125/mo** overhead; **~34** subs for **$102/mo** baseline.
+- **Floor price illustration (₱149 list):** net **~$2.26/mo**/sub → **~55** subs for **$125/mo**; **~45** for **$102/mo**.
 
 ### 4.2 Personal-replacement target (₱100k/mo take-home)
 
@@ -128,7 +206,7 @@ Per `PARKING_LOT.md` P-2: HFM US / HFM PH dual-entity structure may need to be c
 - **Daily / weekly work ceiling:** 10 hours/day max; 55 hours/week max. Local Cursor "time clock" agent enforces (Topic 8 Q8.3 lock).
 - **Decompression ceiling:** 6 hours/day, 30 hours/week during decompression weeks (Topic 8 Q8.3 lock).
 - **VPS sizing rule:** stay one tier below "comfortable" until paid users justify the upgrade.
-- **Free LLM tier rule:** if free-tier LLM cost exceeds 30% of paid-tier MRR for two consecutive months, prompts/mo is halved.
+- **Free LLM tier rule:** if free-tier LLM cost exceeds 30% of paid-tier MRR for two consecutive months, **included free credits**/mo is halved.
 - **No paid ads pre-S5.** No exceptions. (Locked + reinforced 2026-04-30; see `00_strategic_context.md` §4.)
 
 ## 7) Revenue Recognition (Simple Model)
@@ -141,18 +219,20 @@ Per `PARKING_LOT.md` P-2: HFM US / HFM PH dual-entity structure may need to be c
 
 The combination of locked decisions has narrowed the revenue surface:
 
-| Path | Status | Source |
-|---|---|---|
-| **Subscription (Pro / Pro+ AI)** | Primary | All sections above |
-| **Founding Beta lifetime** | One-time capital, S1.C only, hard cap | §7, `00_strategic_context.md` §3.11 |
-| **PAYG AI credits** | Supplement to subscription | §2 |
-| **Sari-Sari B2B (S6+)** | Future revenue stream | `00_strategic_context.md` §3.6 |
-| **Curated affiliate / partner** | Future, conditional | `PARKING_LOT.md` P-4 |
-| **Sponsored partnership** | Future, scale-dependent | `PARKING_LOT.md` P-5 |
-| **GCash/Maya partnership** | Future, partnership-only | `PARKING_LOT.md` P-1 |
-| ~~Ads~~ | **Rejected** | `00_strategic_context.md` §4 |
-| ~~User-data monetization~~ | **Rejected** | `00_strategic_context.md` §4 |
-| ~~US market acquisition (S1)~~ | **Deferred to P-6 trigger** | `00_strategic_context.md` §3.8 |
+
+| Path                             | Status                                | Source                              |
+| -------------------------------- | ------------------------------------- | ----------------------------------- |
+| **Subscription (Pro / Pro+ AI)** | Primary                               | All sections above                  |
+| **Founding Beta lifetime**       | One-time capital, S1.C only, hard cap | §7, `00_strategic_context.md` §3.11 |
+| **PAYG AI credits**              | Supplement to subscription            | §2                                  |
+| **Sari-Sari B2B (S6+)**          | Future revenue stream                 | `00_strategic_context.md` §3.6      |
+| **Curated affiliate / partner**  | Future, conditional                   | `PARKING_LOT.md` P-4                |
+| **Sponsored partnership**        | Future, scale-dependent               | `PARKING_LOT.md` P-5                |
+| **GCash/Maya partnership**       | Future, partnership-only              | `PARKING_LOT.md` P-1                |
+| ~~Ads~~                          | **Rejected**                          | `00_strategic_context.md` §4        |
+| ~~User-data monetization~~       | **Rejected**                          | `00_strategic_context.md` §4        |
+| ~~US market acquisition (S1)~~   | **Deferred to P-6 trigger**           | `00_strategic_context.md` §3.8      |
+
 
 Without ads or user-data, ZK middleware (S5) is the structural revenue defense — premium subscription pricing is justified by "we genuinely cannot read your data," which is only credible with ZK shipped.
 
@@ -163,3 +243,4 @@ Without ads or user-data, ZK middleware (S5) is the structural revenue defense �
 - **Wife / fiancée does not work.** Household has zero second-income buffer. Treat any personal capital injection into the project as a clearly-tracked loan, not an investment.
 - **Monthly savings target cycle:** HitM pay arrives end of month; the constrained spending applies to the *next* month. May 2026 currently constrained; future months TBD. New project costs that breach this cycle are blocked until cleared.
 - **Personal-business income separation:** treat business and personal as distinct streams; pay self a wage from business if/when entity exists. Confirmed at huddle 2026-04-30.
+

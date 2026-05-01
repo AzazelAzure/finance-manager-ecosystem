@@ -6,13 +6,15 @@ This protocol assumes the operating model in `design_docs/40_System_Design/13_Se
 
 ## 1) CPPR+D cycle
 
-| Step | Action | Where | Who | Slack gate |
-|---|---|---|---|---|
-| C | Commit | local feature branch | author agent | none |
-| P | Push | origin remote | author agent | none |
-| PR | Open PR | GitHub via `gh` | author agent | `pre_merge` (workspace rule) |
-| M | Merge | GitHub | author agent or HitM | reconciles `#pull-requests` + GitHub state |
-| **D** | Deploy to VPS inactive color | local Slack bridge runner | execution plane | **`pre_deploy`, `pre_cutover`** (this protocol) |
+
+| Step  | Action                       | Where                     | Who                  | Slack gate                                      |
+| ----- | ---------------------------- | ------------------------- | -------------------- | ----------------------------------------------- |
+| C     | Commit                       | local feature branch      | author agent         | none                                            |
+| P     | Push                         | origin remote             | author agent         | none                                            |
+| PR    | Open PR                      | GitHub via `gh`           | author agent         | `pre_merge` (workspace rule)                    |
+| M     | Merge                        | GitHub                    | author agent or HitM | reconciles `#pull-requests` + GitHub state      |
+| **D** | Deploy to VPS inactive color | local Slack bridge runner | execution plane      | `**pre_deploy`, `pre_cutover`** (this protocol) |
+
 
 For docs-only or pure-governance plans: the D step is skipped. The plan's metadata `deployment.required: false` declares this.
 
@@ -81,6 +83,7 @@ Execute in order. Each command is run via the local Slack bridge runner (host-lo
 ```
 
 If any step fails:
+
 - Status: `in_progress → blocked`
 - Post `[HANDOFF: failure]` per `execution_protocols.md` §2.3 with `failure_category: infra` or `runtime`
 - Do not cutover
@@ -133,11 +136,13 @@ Cutover is proxy-only (rewrites `proxy/active_color.conf`, reloads nginx). No co
 
 Plan does not transition `completed` immediately after cutover. Plan stays `in_progress` for a monitoring window:
 
-| Plan priority | Monitoring window |
-|---|---|
-| P0 | 60 minutes minimum |
-| P1 | 30 minutes minimum |
-| P2 | 15 minutes minimum |
+
+| Plan priority | Monitoring window  |
+| ------------- | ------------------ |
+| P0            | 60 minutes minimum |
+| P1            | 30 minutes minimum |
+| P2            | 15 minutes minimum |
+
 
 During the window, the execution plane:
 
@@ -322,18 +327,20 @@ Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/fm_server_b
 
 ## 15) References
 
-| Need | File |
-|---|---|
-| Operating model (control vs execution plane) | `design_docs/40_System_Design/13_Server_Runtime_Agent_Operations_Contract.md` |
-| Server install runbook | `deploy/SERVER_BETA_INSTALL.md` |
-| Blue-green commands | `scripts/fm_server_beta.sh` |
-| Runtime bundle build/push | `scripts/server/create_runtime_bundle.sh`, `scripts/server/push_runtime_bundle.sh` |
-| Manifest verification | `scripts/server/verify_release_manifest.sh` |
-| Compose layout | `docker-compose.bluegreen.yml` |
-| Active color state | `proxy/active_color.conf` |
-| Runtime ownership tracking | `design_docs/30_Releases/Runtime_Signup_Sheet.md` |
-| Slack gate templates | `_governance/execution_protocols.md` §1 |
-| Status transitions | `_governance/plan_lifecycle.md` |
+
+| Need                                         | File                                                                               |
+| -------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Operating model (control vs execution plane) | `design_docs/40_System_Design/13_Server_Runtime_Agent_Operations_Contract.md`      |
+| Server install runbook                       | `deploy/SERVER_BETA_INSTALL.md`                                                    |
+| Blue-green commands                          | `scripts/fm_server_beta.sh`                                                        |
+| Runtime bundle build/push                    | `scripts/server/create_runtime_bundle.sh`, `scripts/server/push_runtime_bundle.sh` |
+| Manifest verification                        | `scripts/server/verify_release_manifest.sh`                                        |
+| Compose layout                               | `docker-compose.bluegreen.yml`                                                     |
+| Active color state                           | `proxy/active_color.conf`                                                          |
+| Runtime ownership tracking                   | `design_docs/30_Releases/Runtime_Signup_Sheet.md`                                  |
+| Slack gate templates                         | `_governance/execution_protocols.md` §1                                            |
+| Status transitions                           | `_governance/plan_lifecycle.md`                                                    |
+
 
 ## 16) Quick reference — deploy decision tree
 
@@ -352,3 +359,4 @@ elif plan reaches pre-merge state:
     8. On window complete + no rollback: post pre_close gate with deploy evidence (§9)
     9. On 👍: status → completed
 ```
+

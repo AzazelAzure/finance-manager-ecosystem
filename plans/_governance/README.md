@@ -8,16 +8,16 @@ This manual defines how AI agents author and execute plans **consistently** acro
 ## Files in this directory
 
 
-| File                     | Purpose                                    | Read when                                                   |
-| ------------------------ | ------------------------------------------ | ----------------------------------------------------------- |
-| `README.md`              | Router, canonical enums, reading sequences | First, every session                                        |
-| `plan_template.md`       | Schema for new plans                       | Authoring a plan                                            |
-| `plan_registry.md`       | Portfolio status of all plans              | Before authoring or executing (conflict + dependency check) |
-| `plan_lifecycle.md`      | State machine + transition actions         | At every status transition                                  |
-| `execution_protocols.md` | Exact Slack gate + handoff templates       | Producing any HitM-facing message                           |
-| `deployment_protocol.md` | CPPR+D cycle, blue-green deploy, SSH rules | Plan has `deployment.required: true`                        |
-| `branching_guidelines.md`| Per-feature color-cycle workflow           | Producing or executing a feature on inactive color          |
-| `glossary.md`            | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.) | First, every session |
+| File                      | Purpose                                                                    | Read when                                                   |
+| ------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| `README.md`               | Router, canonical enums, reading sequences                                 | First, every session                                        |
+| `plan_template.md`        | Schema for new plans                                                       | Authoring a plan                                            |
+| `plan_registry.md`        | Portfolio status of all plans                                              | Before authoring or executing (conflict + dependency check) |
+| `plan_lifecycle.md`       | State machine + transition actions                                         | At every status transition                                  |
+| `execution_protocols.md`  | Exact Slack gate + handoff templates                                       | Producing any HitM-facing message                           |
+| `deployment_protocol.md`  | CPPR+D cycle, blue-green deploy, SSH rules                                 | Plan has `deployment.required: true`                        |
+| `branching_guidelines.md` | Per-feature color-cycle workflow                                           | Producing or executing a feature on inactive color          |
+| `glossary.md`             | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.) | First, every session                                        |
 
 
 ## Reading sequences
@@ -160,3 +160,4 @@ These values are normative. AI agents must use only these strings. Validation fa
 - Skipping validation (`draft → in_progress` directly) outside hotfix variant.
 - Merging without Slack `#pull-requests` authorization (workspace rule, reinforced here).
 - Authoring plans without `strategic_phase` and `strategic_link` populated.
+

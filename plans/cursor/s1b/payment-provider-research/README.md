@@ -3,7 +3,7 @@ plan_id: PLAN_RESEARCH_PAYMENT_PROVIDER_2026-04-30
 status: draft
 priority: P0
 created: 2026-04-30
-updated: 2026-04-30
+updated: 2026-05-01
 owner: pproctor
 
 plan_root: plans/cursor/s1b/payment-provider-research/
@@ -42,6 +42,20 @@ standalone_notes: ""
 - **Locked decisions touched:** §3.9 (mobile wallet primary), §3.4 (GCash/Maya free PH ingestion), `01_unit_economics_and_costs.md` §2 (PHP-anchored pricing tiers).
 - **Cost cap impact:** payment processor fees affect per-sub margin; AI cost cap unaffected.
 - **Validation gates affected:** S1.B exit requires payment provider decision made; S1.C entry requires billing infra live with mobile wallet primary path.
+
+## 0.5) Context bridge (HitM research threads — 2026-05-01)
+
+Use this section when **context drifts** between payment work and adjacent S1.B topics. It does **not** replace deliverables in §4; it links conversations.
+
+| Thread | How it connects to *this* plan |
+|--------|--------------------------------|
+| **PayMongo / PH aggregators (e.g. Xendit)** | Primary candidate path for **GCash/Maya-first** checkout; trades **MDR off-the-top** for faster integration. Output of this research must feed **`01_unit_economics_and_costs.md` §2**: replace the **~0.85** placeholder with a **blended net %** (list → settlement after PSP). |
+| **Affordability vs margin + gate indexing** | Lower Pro list for conversion **raises** paying-user bars (`validation_gates.md` **Indexing paying-user gates**). PSP fees **lower net per sub** for the same list price—same mechanical effect. Payment research + pricing lock happen **together** at S1.B. |
+| **Feature roadmap before final tiering** | **`01_unit_economics_and_costs.md` §2 (deferred block):** free vs paid entitlements are **not** final until S1.B **Group D** scope is stable. Payment flows (SKUs, one-time Founding vs recurring Pro) still land here as **provider capabilities**. |
+| **`PARKING_LOT.md` P-8 (Pro trial)** | **Trial + wallet verification:** industry pattern is first period free with **instrument on file**; copy and law are HitM—but **technical** questions (auth vs first charge, **failed renewal → downgrade**, whether wallet can be “verified” like a card) are **processor-specific**. This plan’s comparison matrix should include **subscription + trial** behavior for each short-listed PSP. |
+| **Charge failure policy** | Acceptable fallback discussed: **failed charge → stop paid entitlements** (vs strong pre-verification). Document what each provider supports and how it affects UX/refund language. |
+| **Entity formation (`depends_on`)** | Some wallet rails **require or favor a PH counterparty**; ties to **`PARKING_LOT.md` P-2** if US-only entity blocks the desired flow. |
+| **AI economics (parallel plan)** | PSP affects **net subscription revenue**; AI provider pricing affects **variable LLM cost**. Together they bound **true** Pro / Pro+ margin—see `../ai-economics-deep-dive/LLM_PROVIDER_COST_SNAPSHOT.md` for the LLM side. |
 
 ## 1) Objective
 
