@@ -4,6 +4,28 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-01 — S1.B PWA research CPPRD: plans tree, sprint index, strategic links, design vault bridge
+
+- **`plans/cursor/s1b/pwa-install-offline-sync-research/`:** New sub-plan (README §1.1–§1.7, §6 bar, D0/D2/D3/D4 specs, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`, `RESEARCH_ARTIFACTS.md`, smoke/ADR).
+- **`plans/cursor/s1b/README.md`:** **Sprint activation index — PWA** (`#pwa-sprint-activation-index`), sub-plan table pointers, exit summary tied to D4-exec.
+- **`plans/cursor/strategic-roadmap-reframe-53be/`:** `validation_gates.md`, `phases/S1_public_beta_position.md`, `README.md` — PWA exit language, W2/W6 handoffs, Advanced tier reference.
+- **`plans/_governance/plan_registry.md`:** `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` notes (sprint anchor, `validation_gates`).
+- **`AGENTS.md`:** PWA §1.7 seeding file + sprint activation path.
+- **`design_docs` submodule:** Pinned to **`f4e1ebd`** (branch `cursor/s1b/design-web-pwa-plans-bridge`, design-docs PR [#16](https://github.com/AzazelAzure/finance-manager-design-docs/pull/16)) — adds `40_System_Design/12_Web_PWA_Install_Offline_Sync.md` and Android doc cross-ref + vault `CHANGELOG`.
+
+### 2026-05-01 — Strategic PH pricing lock + PAYG bundle research
+
+- **`plans/cursor/strategic-roadmap-reframe-53be/`:** `01_unit_economics_and_costs.md` **§2.0** locks **Pro ₱249/mo**, **Pro+ ₱349/mo**, **PAYG floor ₱99→100 credits**, **≤100 founding seats** (₱999–₱1,499); PAYG **volume bundles** explicitly **research** (`PAYG_VOLUME_BUNDLES_RESEARCH.md`). `00_strategic_context.md` §3.5 / §3.11, `validation_gates.md` indexing note, `phases/S1_public_beta_position.md` Appendix A snapshot + Q4–Q6 updates.
+- **`plans/cursor/s1b/ai-economics-deep-dive/`:** `PAYG_VOLUME_BUNDLES_RESEARCH.md`; `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` **§8.5**; README link; `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md` assumes **§2.0** locks.
+- **`design_docs` submodule:** `01_Business_Vision.md` tier table aligned to **₱249** Pro list and **100**-seat founding cap (commit in design_docs repo when batching vault changes).
+
+### 2026-05-01 — S1.B plan hygiene: drift-cleanup complete, AI economics shelved
+
+- **`plans/cursor/s1b/drift-cleanup/README.md`:** `status: completed`; completion note (HitM-confirmed W1; evidence pointers).
+- **`plans/cursor/s1b/ai-economics-deep-dive/README.md`:** `status: shelved`; `depends_on` entity + payment plans; status section explains resume trigger.
+- **`plans/cursor/s1b/README.md`:** sub-plan table — drift-cleanup **completed**, ai-economics-deep-dive **shelved** with deps; Group C sequencing + personal constraint line updated.
+- **`plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`:** W2 AI Economics bullet + S1.B exit line note **shelved** until entity + payment research (exit still requires Appendix A closure).
+
 ### 2026-05-01 — Canonical web stack: docs, Cursor rules, scripts
 
 - **Docs:** `docs/agent-delegation-pilot.md`, `docs/SPDX_COMPLIANCE.md`, `docs/DEPENDENCY_LOCKFILES.md` — flagship **`finance_manager_web`**; Reflex framed as archived.
