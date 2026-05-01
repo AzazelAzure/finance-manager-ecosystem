@@ -4,6 +4,12 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-01 — Plans archive, governance hygiene, design_docs CPPRD (ecosystem)
+
+- **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `plans/_governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.
+- **Cursor skills:** `huddle-facilitation` and `roadmap-rollout-planning` aligned with `plans/cursor/<phase-stage>/<sub-plan>/` and archived volatile conventions.
+- **Submodules:** `design_docs` pinned to `6f0ba75` on branch `cursor/strategic-doc-sync-2026-05-01` (vault strategic alignment + `design_docs/CHANGELOG.md` for CPPRD traceability).
+
 ### 2026-05-01 — Plans, deploy runbook, submodule sync
 
 - **Plans:** S1.B drift-cleanup and strategic roadmap README/context updates; T04/T06 task note refresh; governance branching doc table and list formatting.
