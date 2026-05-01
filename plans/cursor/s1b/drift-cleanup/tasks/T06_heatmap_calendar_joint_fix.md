@@ -86,11 +86,13 @@ ssh dev@159.198.75.194 'curl -kfsS https://api.thehivemanager.com/api/transactio
 
 ## Risks / Rollback
 
-| Risk | Trigger | Rollback |
-|---|---|---|
+
+| Risk                                                     | Trigger                                 | Rollback                                                   |
+| -------------------------------------------------------- | --------------------------------------- | ---------------------------------------------------------- |
 | Joint fix turns out to fix one issue but break the other | Smoke shows one improved, one regressed | Color flip rollback; re-investigate as two separate issues |
-| Timezone fix breaks other date handling elsewhere | Other parts of UI show wrong dates | Color flip rollback; isolate the fix to calendar path only |
-| API aggregation change breaks calendar list view | List view (different surface) regresses | Color flip rollback; investigate scope creep |
+| Timezone fix breaks other date handling elsewhere        | Other parts of UI show wrong dates      | Color flip rollback; isolate the fix to calendar path only |
+| API aggregation change breaks calendar list view         | List view (different surface) regresses | Color flip rollback; investigate scope creep               |
+
 
 ## Slack Gates
 

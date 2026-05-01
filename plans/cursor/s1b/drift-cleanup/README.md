@@ -1,4 +1,5 @@
 ---
+
 plan_id: PLAN_OPS_DRIFT_CLEANUP_2026-04-30
 status: draft
 priority: P0
@@ -10,11 +11,12 @@ plan_root: plans/cursor/s1b/drift-cleanup/
 intended_branch: cursor/s1b/drift-cleanup
 parent_plan: plans/cursor/s1b/
 target_repos:
-  - finance_manager (parent)
-  - finance_manager_api
-  - finance_manager_web
-  - finance_manager_reflex
-  - design_docs
+
+- finance_manager (parent)
+- finance_manager_api
+- finance_manager_web
+- finance_manager_reflex
+- design_docs
 
 strategic_phase: S1
 strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
@@ -40,9 +42,9 @@ deployment:
     - GET /api/schema/ (OpenAPI surface intact)
   notes: "Multi-task plan; each task may or may not deploy. See task list."
 
-standalone: true
+## standalone: true
+
 standalone_notes: ""
----
 
 # S1.B Sub-Plan — Drift Cleanup
 
@@ -91,14 +93,16 @@ Close drift accumulated during S1.A launch sprint. Ship six concrete fixes (`+Bi
 
 ## 4) Task List
 
-| Task | Branch | Files Touched | Severity | Type |
-|---|---|---|---|---|
-| `tasks/T01_bill_disable_retro_commit.md` | `cursor/s1b/drift-cleanup/t01-bill-disable-retro-commit` | `finance_manager_web/src/components/dashboard/QuickActions.tsx` | S2 | Retroactive commit |
-| `tasks/T02_email_uniqueness_s0_fix.md` | `cursor/s1b/drift-cleanup/t02-email-uniqueness-s0-fix` | API User model, signup serializer, auth views, UI | **S0** | Bug — distribution-blocker |
-| `tasks/T03_reflex_archival.md` | `cursor/s1b/drift-cleanup/t03-reflex-archival` | `docker-compose*.yml`, `proxy/`, `scripts/`, `deploy/`, `finance_manager_api/finance_api/settings.py`, `finance_manager_reflex/ARCHIVED.md` | n/a | Architectural cleanup |
-| `tasks/T04_pre_governance_plans_close.md` | `cursor/s1b/drift-cleanup/t04-pre-governance-plans-close` | `plans/cursor/api-reflex-beta-readiness-plan-53be/`, etc. | n/a | Formal registry close-out |
-| `tasks/T05_recurring_expense_edit_fix.md` | `cursor/s1b/drift-cleanup/t05-recurring-expense-edit-fix` | API upcoming expenses serializer + web edit modal | S1 | Bug |
-| `tasks/T06_heatmap_calendar_joint_fix.md` | `cursor/s1b/drift-cleanup/t06-heatmap-calendar-joint-fix` | Web calendar + heatmap rendering + likely API aggregation | S1/S2 | Bug (joint investigation) |
+
+| Task                                      | Branch                                                    | Files Touched                                                                                                                               | Severity | Type                       |
+| ----------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------- |
+| `tasks/T01_bill_disable_retro_commit.md`  | `cursor/s1b/drift-cleanup/t01-bill-disable-retro-commit`  | `finance_manager_web/src/components/dashboard/QuickActions.tsx`                                                                             | S2       | Retroactive commit         |
+| `tasks/T02_email_uniqueness_s0_fix.md`    | `cursor/s1b/drift-cleanup/t02-email-uniqueness-s0-fix`    | API User model, signup serializer, auth views, UI                                                                                           | **S0**   | Bug — distribution-blocker |
+| `tasks/T03_reflex_archival.md`            | `cursor/s1b/drift-cleanup/t03-reflex-archival`            | `docker-compose*.yml`, `proxy/`, `scripts/`, `deploy/`, `finance_manager_api/finance_api/settings.py`, `finance_manager_reflex/ARCHIVED.md` | n/a      | Architectural cleanup      |
+| `tasks/T04_pre_governance_plans_close.md` | `cursor/s1b/drift-cleanup/t04-pre-governance-plans-close` | `plans/cursor/api-reflex-beta-readiness-plan-53be/`, etc.                                                                                   | n/a      | Formal registry close-out  |
+| `tasks/T05_recurring_expense_edit_fix.md` | `cursor/s1b/drift-cleanup/t05-recurring-expense-edit-fix` | API upcoming expenses serializer + web edit modal                                                                                           | S1       | Bug                        |
+| `tasks/T06_heatmap_calendar_joint_fix.md` | `cursor/s1b/drift-cleanup/t06-heatmap-calendar-joint-fix` | Web calendar + heatmap rendering + likely API aggregation                                                                                   | S1/S2    | Bug (joint investigation)  |
+
 
 ## 5) Execution Order
 
@@ -115,11 +119,11 @@ Each task ships via per-feature color cycle per `_governance/branching_guideline
 
 Per task, plus overall plan-level gate:
 
-- [ ] All six tasks status `completed`.
-- [ ] No regression in production smoke after T03 (Reflex archival shouldn't affect web/API; verify).
-- [ ] `auth_user` table audited for duplicate emails before T02 deploys (per huddle Topic 1 operational consequence).
-- [ ] Plan registry reflects all pre-governance plans as `completed` after T04.
-- [ ] Production state verified post-T06 (heatmap + calendar working end-to-end).
+- All six tasks status `completed`.
+- No regression in production smoke after T03 (Reflex archival shouldn't affect web/API; verify).
+- `auth_user` table audited for duplicate emails before T02 deploys (per huddle Topic 1 operational consequence).
+- Plan registry reflects all pre-governance plans as `completed` after T04.
+- Production state verified post-T06 (heatmap + calendar working end-to-end).
 
 ## 7) Documentation Sync Required
 
@@ -131,11 +135,11 @@ Per task, plus overall plan-level gate:
 
 When this plan closes, executor must:
 
-- [ ] Update `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B exit criteria checkboxes for all completed items.
-- [ ] Append entry to `plans/cursor/strategic-roadmap-reframe-53be/kill_commit_gates.md` outcomes log noting drift cleanup complete.
-- [ ] Update `plans/_governance/plan_registry.md` status to `completed`.
-- [ ] Run `design-docs-sync` per task list above.
-- [ ] Post completion summary to Slack `#cli-interface` thread.
+- Update `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B exit criteria checkboxes for all completed items.
+- Append entry to `plans/cursor/strategic-roadmap-reframe-53be/kill_commit_gates.md` outcomes log noting drift cleanup complete.
+- Update `plans/_governance/plan_registry.md` status to `completed`.
+- Run `design-docs-sync` per task list above.
+- Post completion summary to Slack `#cli-interface` thread.
 
 ## 9) Completion Criteria
 
@@ -147,9 +151,10 @@ When this plan closes, executor must:
 
 ## 10) Risks and Rollback
 
-| Risk | Trigger | Rollback action | Owner |
-|---|---|---|---|
-| T02 email uniqueness migration corrupts existing user data | DB migration runs against duplicate emails without dedup | `git revert` migration; restore from pre-migration backup; redo with explicit dedup step | HitM |
-| T03 Reflex archival breaks something dependent on Reflex routes | post-deploy 502 on web or API | Color flip rollback per `deployment_protocol.md` §8 | HitM (manual verification) |
-| T06 calendar/heatmap shared root not actually shared | Fixing one breaks the other | Roll back; investigate as two separate issues; ship sequentially | Agent |
-| Cumulative deploys deplete Cursor budget | Cap hit mid-execution | Pause; resume on cycle reset 2026-05-28; T05/T06 may slip | HitM |
+
+| Risk                                                            | Trigger                                                  | Rollback action                                                                          | Owner                      |
+| --------------------------------------------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------------------------- | -------------------------- |
+| T02 email uniqueness migration corrupts existing user data      | DB migration runs against duplicate emails without dedup | `git revert` migration; restore from pre-migration backup; redo with explicit dedup step | HitM                       |
+| T03 Reflex archival breaks something dependent on Reflex routes | post-deploy 502 on web or API                            | Color flip rollback per `deployment_protocol.md` §8                                      | HitM (manual verification) |
+| T06 calendar/heatmap shared root not actually shared            | Fixing one breaks the other                              | Roll back; investigate as two separate issues; ship sequentially                         | Agent                      |
+| Cumulative deploys deplete Cursor budget                        | Cap hit mid-execution                                    | Pause; resume on cycle reset 2026-05-28; T05/T06 may slip                                | HitM                       |

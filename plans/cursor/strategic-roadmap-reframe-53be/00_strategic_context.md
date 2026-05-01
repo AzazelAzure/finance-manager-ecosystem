@@ -110,19 +110,21 @@ These are **closed decisions**. Re-opening them requires a kill/commit gate revi
 
 ## 4) What Was Rejected and Why
 
-| Rejected option | Why |
-|---|---|
-| "Premium-feeling general-purpose PFM with widgets" (original docs framing) | War with Monarch/Copilot is unwinnable for solo dev. Wedge replaces this. |
-| Owner-led Rust learning during S1–S3 | Time/energy crowd-out during baby year + distribution-critical window. AI-orchestrated for now. |
-| Plaid integration in S1–S2 | Per-MAU cost ($0.30–$1.00) breaks the unit economics for free PH tier. Defer until paid US/EU expansion considered (post-S5). |
-| US market as primary in S1 | Crowded, high CAC, no unique distribution. Reframed as PH-first per §3.8; US re-engagement deferred behind P-6 trigger. |
-| Mobile PWA as Android substitute | Insufficient for spotty PH connectivity + offline-first requirement. |
-| ZK encryption as Beta launch blocker | Customer-shrug feature pre-PMF. Adds support burden (forgot password = data loss). Delayed to S5. |
-| "Account Deletion = Full Wipe" as ZK justification | This is GDPR/CCPA hygiene, not a ZK requirement. Don't conflate them. |
-| **Ads as revenue vector** (locked 2026-04-30) | Trust erosion in thin-margin persona is severe; PH ad networks lean predatory; untargeted CPM too low without financial-data targeting which ZK position rejects; brand consistency. See `PARKING_LOT.md` P-3. |
-| **User-data monetization** (locked 2026-04-30) | "Relatively deplorable" per HitM. Brand inconsistent with ZK position. ZK middleware (S5) becomes structural revenue defense. |
-| **Desktop standalone product (now `desktop:Concept`)** (locked 2026-04-30) | Tracked as future product stream; no scheduled work; revisit at S5+ or specific user demand. Original Track E. |
-| **Reflex frontend** (archived 2026-04-30) | JS pivot completed; Reflex no longer carries polish bar; maintaining two frontends doubles cost without revenue offset. Repo retained as historical artifact. |
+
+| Rejected option                                                            | Why                                                                                                                                                                                                            |
+| -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Premium-feeling general-purpose PFM with widgets" (original docs framing) | War with Monarch/Copilot is unwinnable for solo dev. Wedge replaces this.                                                                                                                                      |
+| Owner-led Rust learning during S1–S3                                       | Time/energy crowd-out during baby year + distribution-critical window. AI-orchestrated for now.                                                                                                                |
+| Plaid integration in S1–S2                                                 | Per-MAU cost ($0.30–$1.00) breaks the unit economics for free PH tier. Defer until paid US/EU expansion considered (post-S5).                                                                                  |
+| US market as primary in S1                                                 | Crowded, high CAC, no unique distribution. Reframed as PH-first per §3.8; US re-engagement deferred behind P-6 trigger.                                                                                        |
+| Mobile PWA as Android substitute                                           | Insufficient for spotty PH connectivity + offline-first requirement.                                                                                                                                           |
+| ZK encryption as Beta launch blocker                                       | Customer-shrug feature pre-PMF. Adds support burden (forgot password = data loss). Delayed to S5.                                                                                                              |
+| "Account Deletion = Full Wipe" as ZK justification                         | This is GDPR/CCPA hygiene, not a ZK requirement. Don't conflate them.                                                                                                                                          |
+| **Ads as revenue vector** (locked 2026-04-30)                              | Trust erosion in thin-margin persona is severe; PH ad networks lean predatory; untargeted CPM too low without financial-data targeting which ZK position rejects; brand consistency. See `PARKING_LOT.md` P-3. |
+| **User-data monetization** (locked 2026-04-30)                             | "Relatively deplorable" per HitM. Brand inconsistent with ZK position. ZK middleware (S5) becomes structural revenue defense.                                                                                  |
+| **Desktop standalone product (now `desktop:Concept`)** (locked 2026-04-30) | Tracked as future product stream; no scheduled work; revisit at S5+ or specific user demand. Original Track E.                                                                                                 |
+| **Reflex frontend** (archived 2026-04-30)                                  | JS pivot completed; Reflex no longer carries polish bar; maintaining two frontends doubles cost without revenue offset. Repo retained as historical artifact.                                                  |
+
 
 ## 5) Success Criteria
 
@@ -169,18 +171,20 @@ Manual merge-after-confirmation is a verification gate, not bureaucracy. For sol
 
 Captured at huddle 2026-04-30. These are inputs to plan decisions, not separate plan items. Future agents inherit these so proposals that conflict with them get caught early.
 
-| Constraint | Status | Effect |
-|---|---|---|
-| Baby due 2026-06-15 | Pre-baby through ~mid-June; full velocity available | Front-load deep-focus research workstreams (entity, payments, AI economics) into May–early June pre-baby window |
-| Velocity post-baby | 30–50% loss assumption | Implementation work and feature additions are interruption-tolerant; can land post-baby |
-| HitM overwork pattern | ADHD-driven hyper-fixation tendency | Cursor cap + daily 10hr / weekly 55hr ceiling enforced via local time-clock agent |
-| First quarterly self-review | 2026-06-30 (calendar quarter aligned) | Per `kill_commit_gates.md` §6 — three written questions; triggers continued / reduced / kill-gate evaluation |
-| Visa trip | Date TBD (one day) | Calendar block when scheduled |
-| Wedding day | Legal marriage in process; date TBD | Calendar block when scheduled |
-| ₱100/mo runtime cost cap | Hard ceiling | New infrastructure proposals must fit; otherwise blocked |
-| Monthly savings target cycle | Pay arrives end-of-month; constrained spending applies to NEXT month | May 2026 is currently constrained; June onward TBD per actual needs |
-| Exercise routine / gym | Cost-blocked currently | Future concern; not infrastructure-blocking |
-| Solo HitM, AI workforce | Sole human in the org | Governance designed for single-human + many-agents; no team/handoff structure assumed unless HitM explicitly tells otherwise |
+
+| Constraint                   | Status                                                               | Effect                                                                                                                       |
+| ---------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Baby due 2026-06-15          | Pre-baby through ~mid-June; full velocity available                  | Front-load deep-focus research workstreams (entity, payments, AI economics) into May–early June pre-baby window              |
+| Velocity post-baby           | 30–50% loss assumption                                               | Implementation work and feature additions are interruption-tolerant; can land post-baby                                      |
+| HitM overwork pattern        | ADHD-driven hyper-fixation tendency                                  | Cursor cap + daily 10hr / weekly 55hr ceiling enforced via local time-clock agent                                            |
+| First quarterly self-review  | 2026-06-30 (calendar quarter aligned)                                | Per `kill_commit_gates.md` §6 — three written questions; triggers continued / reduced / kill-gate evaluation                 |
+| Visa trip                    | Date TBD (one day)                                                   | Calendar block when scheduled                                                                                                |
+| Wedding day                  | Legal marriage in process; date TBD                                  | Calendar block when scheduled                                                                                                |
+| ₱100/mo runtime cost cap     | Hard ceiling                                                         | New infrastructure proposals must fit; otherwise blocked                                                                     |
+| Monthly savings target cycle | Pay arrives end-of-month; constrained spending applies to NEXT month | May 2026 is currently constrained; June onward TBD per actual needs                                                          |
+| Exercise routine / gym       | Cost-blocked currently                                               | Future concern; not infrastructure-blocking                                                                                  |
+| Solo HitM, AI workforce      | Sole human in the org                                                | Governance designed for single-human + many-agents; no team/handoff structure assumed unless HitM explicitly tells otherwise |
+
 
 ## 8) Owner Operating Model
 

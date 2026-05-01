@@ -81,9 +81,9 @@ Default: **continuous** if inactive color is reachable (e.g. `jsdevtesting.thehi
 When all tasks for the feature are merged into the feature branch:
 
 1. Final feature-branch verification:
-   - All tests pass on the feature branch.
-   - Inactive color smoke per `_governance/deployment_protocol.md` §6.
-   - Feature behaves end-to-end (manual review on inactive color).
+  - All tests pass on the feature branch.
+  - Inactive color smoke per `_governance/deployment_protocol.md` §6.
+  - Feature behaves end-to-end (manual review on inactive color).
 2. Open PR: feature branch → `main`.
 3. Apply `pre_deploy` Slack gate (HitM authorization to deploy).
 4. On approval: merge PR.
@@ -131,8 +131,8 @@ If no feature is currently active: open a "maintenance feature branch" (`cursor/
 5. Apply hotfix-specific Slack gates (`pre_deploy` required; `pre_cutover` required; per `_governance/deployment_protocol.md`).
 6. On approval: merge + color flip.
 7. **After hotfix lands:** the previously-paused feature branch needs the hotfix re-rolled into it before resumption:
-   - Either rebase the feature branch on the new main (clean), or
-   - Cherry-pick the hotfix commit into the feature branch (also fine).
+  - Either rebase the feature branch on the new main (clean), or
+  - Cherry-pick the hotfix commit into the feature branch (also fine).
 8. Resume feature work from §3.2.
 
 **Hotfix Sprint duration override:** can be shorter than the standard 1-week minimum (per `_governance/glossary.md` §6) because hotfixes are reactive, not planned.
@@ -150,6 +150,7 @@ These follow the incident triage flow per `design_docs/40_System_Design/15_Beta_
 **One feature in flight at a time per inactive color.** Multiple features cannot accumulate on the same inactive color.
 
 If an agent attempts to start a new feature while one is in flight:
+
 - Block the start.
 - Notify HitM: "Feature X is in flight on inactive color; new feature deferred until X ships."
 
@@ -165,12 +166,14 @@ Hotfix interrupts the active feature (per §4.2). Only one hotfix at a time.
 
 ## 6) Color flip authorization (Slack gate cadence)
 
-| Event | `pre_deploy` gate | `pre_cutover` gate |
-|---|---|---|
-| Feature complete → ship | Required | Required |
-| Hotfix → ship | Required | Required |
-| Maintenance batch → ship | Required | Required |
-| Inactive-color rebuild (no flip) | Optional (informational only) | N/A |
+
+| Event                            | `pre_deploy` gate             | `pre_cutover` gate |
+| -------------------------------- | ----------------------------- | ------------------ |
+| Feature complete → ship          | Required                      | Required           |
+| Hotfix → ship                    | Required                      | Required           |
+| Maintenance batch → ship         | Required                      | Required           |
+| Inactive-color rebuild (no flip) | Optional (informational only) | N/A                |
+
 
 Per `_governance/deployment_protocol.md` §3 and §5; this section reinforces that the cadence applies per feature flip, not per Sprint.
 
@@ -235,11 +238,14 @@ If a feature branch has had no commits for >1 week:
 
 ## 10) Cross-references
 
-| Concept | File |
-|---|---|
-| Slack gate templates (`pre_deploy`, `pre_cutover`) | `_governance/execution_protocols.md` §1 |
-| VPS deployment commands | `_governance/deployment_protocol.md` §4-§6 |
-| Plan template metadata | `_governance/plan_template.md` |
-| Status transitions | `_governance/plan_lifecycle.md` |
-| Vocabulary (Sprint types, etc.) | `_governance/glossary.md` |
-| Incident triage | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
+
+| Concept                                            | File                                                                                            |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Slack gate templates (`pre_deploy`, `pre_cutover`) | `_governance/execution_protocols.md` §1                                                         |
+| VPS deployment commands                            | `_governance/deployment_protocol.md` §4-§6                                                      |
+| Plan template metadata                             | `_governance/plan_template.md`                                                                  |
+| Status transitions                                 | `_governance/plan_lifecycle.md`                                                                 |
+| Vocabulary (Sprint types, etc.)                    | `_governance/glossary.md`                                                                       |
+| Incident triage                                    | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
+
+

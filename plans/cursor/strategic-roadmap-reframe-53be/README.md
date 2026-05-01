@@ -34,23 +34,27 @@ Read in this order when revisiting the plan:
 
 ## 3) Phase Map
 
-| Phase | Title | Trigger to Enter | Trigger to Exit | Calendar Estimate |
-|---|---|---|---|---|
-| **S1** | Public Beta Launch + Position Lock-in (PH-only) | Beta runtime live; flagship product committed | S1.D exit met | Apr 2026 → ~Feb 2027 |
-| **S2** | PH Public Launch + Scaling | S1.D exit met | GCash/Maya direct integration live; AI tier mature; ≥100 paying users | Mar 2027 → Sep 2027 |
-| **S3** | Android Scaling and Feature Parity | S2 exit met (Android already pulled forward to Tight Beta in S1.B/C) | Android Play Store; ≥30% users on Android; sync stability | Q4 2027 → Q2 2028 (overlaps S2) |
-| **S4** | Trust & Reputation Building | PFM ≥50 paying users | Bounty program live; ZK spec public; dev-channel inbound | Q3 2027 → Q3 2028 (overlaps S2/S3) |
-| **S5** | ZK Middleware (structural revenue defense) + US re-engagement alignment | PFM ≥100 paying users; S4 exit | `django-zk` released + audited; US re-engagement decision per P-6 | Q3 2028 → Q3 2029 (conditional) |
-| **S6** | Sari-Sari B2B Vertical | PFM ≥$1k MRR sustained 6mo; ≥3 sari-sari operators interested | ≥10 paying operators; supplier prototype operational | Q1 2029 → Q2 2030 (conditional) |
+
+| Phase  | Title                                                                   | Trigger to Enter                                                     | Trigger to Exit                                                       | Calendar Estimate                  |
+| ------ | ----------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------- | ---------------------------------- |
+| **S1** | Public Beta Launch + Position Lock-in (PH-only)                         | Beta runtime live; flagship product committed                        | S1.D exit met                                                         | Apr 2026 → ~Feb 2027               |
+| **S2** | PH Public Launch + Scaling                                              | S1.D exit met                                                        | GCash/Maya direct integration live; AI tier mature; ≥100 paying users | Mar 2027 → Sep 2027                |
+| **S3** | Android Scaling and Feature Parity                                      | S2 exit met (Android already pulled forward to Tight Beta in S1.B/C) | Android Play Store; ≥30% users on Android; sync stability             | Q4 2027 → Q2 2028 (overlaps S2)    |
+| **S4** | Trust & Reputation Building                                             | PFM ≥50 paying users                                                 | Bounty program live; ZK spec public; dev-channel inbound              | Q3 2027 → Q3 2028 (overlaps S2/S3) |
+| **S5** | ZK Middleware (structural revenue defense) + US re-engagement alignment | PFM ≥100 paying users; S4 exit                                       | `django-zk` released + audited; US re-engagement decision per P-6     | Q3 2028 → Q3 2029 (conditional)    |
+| **S6** | Sari-Sari B2B Vertical                                                  | PFM ≥$1k MRR sustained 6mo; ≥3 sari-sari operators interested        | ≥10 paying operators; supplier prototype operational                  | Q1 2029 → Q2 2030 (conditional)    |
+
 
 ### S1 Stage breakdown
 
-| Stage | Title | What it covers | Status (2026-04-30) |
-|---|---|---|---|
-| **S1.A** | Tight Invite Beta | Owner + small invite cohort; flagship product committed; infra stable | **Completed** |
+
+| Stage    | Title                  | What it covers                                                                                                                                                                            | Status (2026-04-30)   |
+| -------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| **S1.A** | Tight Invite Beta      | Owner + small invite cohort; flagship product committed; infra stable                                                                                                                     | **Completed**         |
 | **S1.B** | Distribution Readiness | S0 fixes; Reflex archival; entity formation research; payment provider research; AI Economics Deep-Dive; landing polish; founding member program backend; "worth paying for" feature work | **Active** (entering) |
-| **S1.C** | Founding Beta | Founding-member program open; first 50–100 paying lifetime seats; AI tier launches PH-only | Pending (~Aug 2026) |
-| **S1.D** | Soft Public Open | Anyone can sign up (PH); pricing visible; low-key promotion only | Pending (~Nov 2026) |
+| **S1.C** | Founding Beta          | Founding-member program open; first 50–100 paying lifetime seats; AI tier launches PH-only                                                                                                | Pending (~Aug 2026)   |
+| **S1.D** | Soft Public Open       | Anyone can sign up (PH); pricing visible; low-key promotion only                                                                                                                          | Pending (~Nov 2026)   |
+
 
 **Phases overlap.** S2 and S3 run partially in parallel. S4 prep work happens during S2/S3 (security baseline, audit prep). Hard sequencing applies only to **entry triggers**, not work cadence.
 
@@ -97,16 +101,18 @@ Active Stage (S1.B) handoff:
 
 Tactical plans that execute against this strategic roadmap follow the **plan governance layer** at `plans/_governance/`:
 
-| File | Read when |
-|---|---|
-| `plans/_governance/README.md` | First, every session |
-| `plans/_governance/glossary.md` | First, every session — canonical vocabulary |
-| `plans/_governance/plan_template.md` | Authoring a plan |
-| `plans/_governance/plan_registry.md` | Before authoring or starting work |
-| `plans/_governance/plan_lifecycle.md` | At every status transition |
-| `plans/_governance/execution_protocols.md` | Producing HitM-facing Slack messages |
-| `plans/_governance/deployment_protocol.md` | Plan ships code to VPS |
+
+| File                                        | Read when                                          |
+| ------------------------------------------- | -------------------------------------------------- |
+| `plans/_governance/README.md`               | First, every session                               |
+| `plans/_governance/glossary.md`             | First, every session — canonical vocabulary        |
+| `plans/_governance/plan_template.md`        | Authoring a plan                                   |
+| `plans/_governance/plan_registry.md`        | Before authoring or starting work                  |
+| `plans/_governance/plan_lifecycle.md`       | At every status transition                         |
+| `plans/_governance/execution_protocols.md`  | Producing HitM-facing Slack messages               |
+| `plans/_governance/deployment_protocol.md`  | Plan ships code to VPS                             |
 | `plans/_governance/branching_guidelines.md` | Producing or executing a feature on inactive color |
+
 
 **Hierarchical plan structure (locked 2026-04-30):** new plans live under `plans/cursor/<phase-stage>/<sub-plan>/` (e.g. `plans/cursor/s1b/drift-cleanup/`). Strategic Plan stays at top level (`plans/cursor/strategic-roadmap-reframe-53be/`); not Stage-scoped.
 
@@ -119,3 +125,4 @@ When commissioning new work:
 3. Read the Stage-level README under `plans/cursor/<phase-stage>/README.md`.
 4. Hand off to an agent with the Phase + Stage context; agent uses `_governance/plan_template.md` to author a new tactical plan.
 5. Slack confirmation gates per `_governance/execution_protocols.md` §1 keep HitM in the loop without requiring desktop attention for routine progress.
+
