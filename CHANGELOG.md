@@ -4,6 +4,14 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-01 — Canonical web stack: docs, Cursor rules, scripts
+
+- **Docs:** `docs/agent-delegation-pilot.md`, `docs/SPDX_COMPLIANCE.md`, `docs/DEPENDENCY_LOCKFILES.md` — flagship **`finance_manager_web`**; Reflex framed as archived.
+- **PR template:** `.github/pull_request_template.md` — target repos and changelog line use **Web** instead of Reflex.
+- **Scripts:** `scripts/repos.txt`, `scripts/README.md`, `scripts/check_spdx.py` — include **web** (and Android) in multi-repo helpers; SPDX checker docstring notes **web** policy (web not bulk-scanned until headers are consistent).
+- **Cursor:** `.cursor/rules/git-repo-workflow.mdc`, `agent-delegation.mdc`, `reflex-frontend.mdc`; `.cursor/skills/multi-repo-orchestration/SKILL.md`, `design-docs-sync/SKILL.md`, `.cursor/skills/README.md` — align with canonical **API + web + CLI** and archived Reflex.
+- **Submodules:** `design_docs` pinned to **`8c4dc65`** (`main`, includes design-docs PR [#15](https://github.com/AzazelAzure/finance-manager-design-docs/pull/15) beta cutline + runtime sheet).
+
 ### 2026-05-01 — Plans archive, governance hygiene, design_docs CPPRD (ecosystem)
 
 - **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `plans/_governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.

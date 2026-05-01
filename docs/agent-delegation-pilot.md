@@ -5,9 +5,9 @@ Use this to validate and tune skill/subagent efficiency across repos.
 ## Pilot Matrix
 
 1. API task (`finance_manager_api/`): bugfix or feature touching service/logic boundaries.
-2. Reflex task (`finance_manager_reflex/`): UI behavior change with backend contract dependency awareness.
+2. Web task (`finance_manager_web/`): flagship SPA UI/UX with API contract dependency awareness (`finance_manager_reflex/` is **archived**).
 3. CLI task (`finance_manager_cli/`): command flow or output behavior update.
-4. Multi-repo task: one API contract shift with downstream Reflex or CLI adaptation.
+4. Multi-repo task: one API contract shift with downstream **web** or CLI adaptation.
 5. Documentation sync task: implementation change followed by `design_docs` updates.
 6. Planning task: phase/rollout design with breakpoints and trigger definition.
 

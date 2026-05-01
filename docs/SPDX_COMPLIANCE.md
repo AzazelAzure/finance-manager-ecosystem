@@ -4,7 +4,8 @@ This workspace currently uses **AGPL-3.0-or-later** for:
 
 - `finance_manager_api`
 - `finance_manager_cli`
-- `finance_manager_reflex`
+- `finance_manager_web` (flagship SPA; follow web repo policy for JS/TS header style)
+- `finance_manager_reflex` (**archived**; SPDX still applies if you touch legacy paths)
 
 ## Why SPDX headers
 
