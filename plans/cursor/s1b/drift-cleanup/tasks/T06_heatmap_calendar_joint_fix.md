@@ -14,7 +14,7 @@ Fix Issues #4 (heatmap days don't light up by spending intensity) and #7 (calend
 
 - Issue #4 (heatmap intensity): days don't visually encode spending magnitude.
 - Issue #7 (calendar daily active): daily activity indicators don't populate.
-- BP7 polish list per `plans/feat/web-reflex-parity-sweep-1/runtime_handoff.md` flagged calendar heatmap intensity as a follow-up.
+- BP7 polish list per `plans/archived/feat/web-reflex-parity-sweep-1/runtime_handoff.md` flagged calendar heatmap intensity as a follow-up.
 - HitM hypothesis: shared root cause likely.
 
 ## Investigation Steps (do BEFORE implementation)

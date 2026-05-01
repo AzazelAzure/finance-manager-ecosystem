@@ -27,9 +27,9 @@
 - `VIS_REFLEX_2`: Added deep-dive routes/pages for transaction and upcoming-expense visualization and date-range driven drill UI.
   - Verified by: `uv run python -m compileall finance_manager_reflex`
 - `PERF_3`: Captured baseline timing and hotspot evidence in task artifact.
-  - Artifact: `plans/volatile_standby/API_REFLEX_CALENDAR_VIS_2026-04-27/tasks/PERF_3_baseline_and_hotspots.md`
+  - Artifact: `plans/archived/volatile_standby/API_REFLEX_CALENDAR_VIS_2026-04-27/tasks/PERF_3_baseline_and_hotspots.md`
 - `RUST_4`: Candidate offload ranking documented from PERF evidence.
-  - Artifact: `plans/volatile_standby/API_REFLEX_CALENDAR_VIS_2026-04-27/tasks/RUST_4_candidate_offload_map.md`
+  - Artifact: `plans/archived/volatile_standby/API_REFLEX_CALENDAR_VIS_2026-04-27/tasks/RUST_4_candidate_offload_map.md`
 - `PERF_3` update: reran seeded benchmark at 20k fixture scale.
   - Verified by: `uv run python manage.py benchmark_calendar_visualization --seed --users 1 --transactions-per-user 20000 --iterations 10 --window-days 30`
 - `RUST_4` update: retained reducer-first Rust sequencing with ORM boundary in Python.

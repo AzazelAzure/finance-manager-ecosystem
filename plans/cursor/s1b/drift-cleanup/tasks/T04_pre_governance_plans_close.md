@@ -23,7 +23,7 @@ Per `_governance/plan_registry.md` Recently Completed section (already updated a
 | `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28`           | `plans/cursor/server-beta-install-bluegreen-53be/`       | Add closure marker file |
 | `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28`                    | `plans/cursor/vps-beta-rollout-ops/`                     | Add closure marker file |
 | `PLAN_SECURITY_HARDENING_MIDDLEWARE_ALIGNMENT_2026-04-28` | `plans/cursor/security-hardening-plan-53be/`             | Add closure marker file |
-| `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28`            | `plans/feat/dashboard-transactions-i18n-calendar-month/` | Add closure marker file |
+| `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28`            | `plans/archived/feat/dashboard-transactions-i18n-calendar-month/` | Add closure marker file |
 | `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29`           | `plans/cursor/vps-reflex-bluegreen-recovery-53be/`       | Add closure marker file |
 | `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29`        | `plans/cursor/finance-manager-web-beta-rollout-53be/`    | Add closure marker file |
 
@@ -50,7 +50,7 @@ This plan was authored before the plan governance system at `plans/_governance/`
 ## Reference
 
 Strategic Plan canonical: `plans/cursor/strategic-roadmap-reframe-53be/`.
-Closure decision: `plans/volatile/post_beta_huddle_2026-04-30/DECISIONS.md` (Topic 9 close).
+Closure decision: `plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md` (Topic 9 close).
 ```
 
 ## Acceptance Criteria
@@ -67,7 +67,7 @@ for d in plans/cursor/api-reflex-beta-readiness-plan-53be \
          plans/cursor/server-beta-install-bluegreen-53be \
          plans/cursor/vps-beta-rollout-ops \
          plans/cursor/security-hardening-plan-53be \
-         plans/feat/dashboard-transactions-i18n-calendar-month \
+         plans/archived/feat/dashboard-transactions-i18n-calendar-month \
          plans/cursor/vps-reflex-bluegreen-recovery-53be \
          plans/cursor/finance-manager-web-beta-rollout-53be; do
   test -f "$d/CLOSED.md" && echo "OK: $d" || echo "MISSING: $d"

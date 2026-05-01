@@ -11,7 +11,7 @@
 ## Ownership/Unblock Evidence
 
 - `finance_manager_android/docs/A2_runtime_ownership_bootstrap.md`
-- `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/08_A2_ownership_unblock_packet.md`
+- `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/08_A2_ownership_unblock_packet.md`
 
 ## Next Slice (A2-S1)
 

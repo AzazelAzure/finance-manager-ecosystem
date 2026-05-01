@@ -33,12 +33,12 @@ Facilitate a structured strategic-planning huddle with the HitM. Use when HitM c
 
 8. **Close-out produces real artifacts.** Final topic of a huddle is "Lock and consolidate" — convert the huddle outputs into Strategic Plan updates, governance changes, plan packets, design doc syncs. The huddle isn't over until the artifacts exist on disk.
 
-9. **Archive volatile huddle directory at close.** Move `plans/volatile/<huddle-name>/` to `plans/archived/<huddle-name>/` after Topic 11 close-out.
+9. **Archive volatile huddle directory at close.** If the huddle used `plans/archived/volatile/<huddle-name>/`, move it to `plans/archived/<huddle-name>/` after Topic 11 close-out (same pattern as post-beta huddle 2026-04-30). Do **not** recreate removed top-level `plans/volatile/`; new governed work belongs under `plans/cursor/<phase-stage>/<sub-plan>/` per `plans/_governance/`.
 
 ## Standard huddle structure
 
 ```
-plans/volatile/<huddle-name>/                    ← created at huddle open
+plans/archived/volatile/<huddle-name>/         ← optional short-lived mirror during huddle (or use cursor/<stage>/ per governance)
 ├── README.md                                     ← agenda + exit criteria + scope guardrails
 ├── TALKING_POINTS.md                             ← per-topic status + discussion notes
 ├── DECISIONS.md                                  ← append-only locked decisions log

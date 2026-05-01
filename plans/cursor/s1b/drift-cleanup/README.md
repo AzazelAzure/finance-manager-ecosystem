@@ -86,8 +86,8 @@ Close drift accumulated during S1.A launch sprint. Ship six concrete fixes (`+Bi
 
 ## 3) Source Evidence
 
-- `plans/volatile/post_beta_huddle_2026-04-30/KNOWN_ISSUES.md` — full triage of issues.
-- `plans/volatile/post_beta_huddle_2026-04-30/DECISIONS.md` — Topic 2 Reflex archival per-file scope.
+- `plans/archived/post_beta_huddle_2026-04-30/KNOWN_ISSUES.md` — full triage of issues.
+- `plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md` — Topic 2 Reflex archival per-file scope.
 - `design_docs/10_Current_State/01_Runtime_Validation_Checklist.md` §H — BP7 snapshot showing `+Bill` runtime hotfix.
 - `_governance/plan_registry.md` — Recently Completed section showing pre-governance plans pending formal close.
 

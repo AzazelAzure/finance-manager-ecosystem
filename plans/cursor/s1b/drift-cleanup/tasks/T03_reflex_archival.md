@@ -53,7 +53,7 @@ Execute the per-file Reflex archival scope locked at huddle Topic 2 (2026-04-30)
 - `finance_manager_reflex/CHANGELOG.md` (historical record).
 - `finance_manager_web/CHANGELOG.md` Reflex-parity historical entries.
 - `finance_manager_web/src/lib/breakpoints.ts` (Reflex-style breakpoint patterns are fine; just remove "current"-implying comments if any).
-- All historical execution plans referencing Reflex (`plans/feat/web-reflex-parity-sweep-1/`, etc.).
+- All historical execution plans referencing Reflex (`plans/archived/feat/web-reflex-parity-sweep-1/`, etc.).
 - Submodule pointer in parent repo: leave frozen at last commit.
 
 ## ARCHIVED.md Content (proposed)

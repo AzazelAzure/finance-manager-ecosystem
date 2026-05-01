@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-04-30 (post-beta huddle close-out)
+**Last updated:** 2026-05-01 (design-docs sync; legacy `plans/feat|fix|volatile*` moved under `plans/archived/`)
 
 ## Update protocol
 
@@ -19,7 +19,7 @@ On status change:
 |---|---|---|---|
 | `PLAN_STRATEGIC_ROADMAP_REFRAME_2026-04-28` | `active` | (root) | `plans/cursor/strategic-roadmap-reframe-53be/` |
 
-Active strategic phase: **S1**, Stage **S1.A → S1.B** transition.
+Active strategic phase: **S1**, Stage **S1.B** (per `plans/cursor/strategic-roadmap-reframe-53be/README.md` §3).
 
 ## In Progress
 
@@ -77,7 +77,7 @@ Older plans from prior cycles. Not retroactively migrated to this registry. Futu
 
 | plan_id | archived_date | phase | notes |
 |---|---|---|---|
-| _(future archives appear here)_ | | | |
+| `LAYOUT_LEGACY_FEAT_FIX_VOLATILE_2026-05-01` | 2026-05-01 | S1.B | Workspace hygiene: former top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, `plans/volatile_standby/` moved under `plans/archived/`; cross-links updated. New work must not resurrect removed top-level paths. |
 
 ## Hierarchical plan structure (Topic 11 lock)
 

@@ -37,15 +37,15 @@
   - `finance_manager_reflex/finance_manager_reflex/features/transactions/view_components.py`
   - `finance_manager_reflex/finance_manager_reflex/features/upcoming_expenses/view_components.py`
 - L1 decision memo and execution slices:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/04_L1_translation_decision_memo.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/04_L1_translation_decision_memo.md`
 - L1 translation key inventory for onboarding:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/05_L1_translation_key_inventory.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/05_L1_translation_key_inventory.md`
 
 ## Validation Stub
 
 - Gate A evidence bundle is complete for v0.
 - Gate decision source:
-  - `plans/volatile/PH_ANDROID_ACCELERATION_2026-04-27/07_L1_gateA_evidence_pack.md`
+  - `plans/archived/PH_ANDROID_ACCELERATION_2026-04-27_COMPLETED/07_L1_gateA_evidence_pack.md`
 
 ## Cycle 3+ Progress (Execution)
 

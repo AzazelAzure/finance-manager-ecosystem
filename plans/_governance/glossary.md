@@ -1,6 +1,6 @@
 # Glossary — Canonical Vocabulary
 
-**Locked:** 2026-04-30 in post-beta huddle (originally drafted in `plans/volatile/post_beta_huddle_2026-04-30/GLOSSARY.md`, migrated here as persistent governance artifact).
+**Locked:** 2026-04-30 in post-beta huddle (originally drafted in `plans/archived/post_beta_huddle_2026-04-30/GLOSSARY.md`, migrated here as persistent governance artifact).
 
 This file is the **single source of truth** for vocabulary across all plans, design docs, and agent operations. Conflicts in other files get resolved against this glossary.
 
@@ -99,7 +99,7 @@ Five plan-type categories, each with distinct scope and lifecycle:
 | Type | Scope | Lifecycle | Location |
 |---|---|---|---|
 | **Strategic Plan** | Multi-year. Phases S1–S6, locked decisions, success criteria, kill gates. ONE per project. | Permanent; updated at Phase transitions. | `plans/cursor/strategic-roadmap-reframe-53be/` |
-| **Execution Plan** | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates. | Lives `draft → ready → in_progress → completed → archived`. | `plans/cursor/<phase-stage>/<sub-plan>/` (hierarchical, per Topic 11 lock) or `plans/cursor/<branch>/` (legacy/standalone) |
+| **Execution Plan** | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates. | Lives `draft → ready → in_progress → completed → archived`. | `plans/cursor/<phase-stage>/<sub-plan>/` (hierarchical, per Topic 11 lock), `plans/cursor/<branch>/` (pre-hierarchy standalone), or closed trees under `plans/archived/` (including `archived/feat/`, `archived/fix/`, `archived/volatile*`) |
 | **Feature Roadmap** | Per-surface backlog (e.g. "Dashboard feature roadmap"). Lists features, priorities, target Phase. NOT execution-ready. | Permanent; updated as features ship or get queued. | `design_docs/<surface>_docs/feature_roadmap.md` |
 | **Implementation Guide** | Agent-facing how-to for repeatable work patterns. | Permanent; revised when patterns change. | `design_docs/40_System_Design/implementation_guides/` |
 | **Branching Guideline** | Specific to deploy/branch strategy. Extends `_governance/deployment_protocol.md`. | Permanent; revised when deploy strategy changes. | `_governance/branching_guidelines.md` |
