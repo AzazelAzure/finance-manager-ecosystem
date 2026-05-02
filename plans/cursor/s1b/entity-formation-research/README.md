@@ -140,7 +140,7 @@ This is **HitM-led research**; agent role is to compile structure, questions, an
 
 - HitM signoff on locks in [DECISION_MATRIX.md](./DECISION_MATRIX.md).
 - Documentation sync complete.
-- [RESEARCH_ARTIFACTS.md](./RESEARCH_ARTIFACTS.md) reflects **completed** status for each artifact section.
+- [RESEARCH_ARTIFACTS.md](./RESEARCH_ARTIFACTS.md) reflects **draft vs completed** per artifact section once HitM signs off.
 
 ## 9) Risks
 

@@ -25,7 +25,7 @@
 
 ## Suggested HitM ordering (hypothesis — validate)
 
-- **Before B1:** Decide **timeline branch** ([TIMELINE_BRANCHES.md](./TIMELINE_BRANCHES.md)); pick **spouse-led PH**, **US bridge**, or **wait** based on velocity vs risk tolerance.
+- **Before B1:** Confirm **entity scenario** with [DECISION_MATRIX.md](./DECISION_MATRIX.md) (HitM locks + counsel) and PSP KYB; do not treat research drafts as final structure.
 - **At B1:** Entity must match **PSP onboarding** ([US_ENTITY_PH_OPERATIONS.md](./US_ENTITY_PH_OPERATIONS.md) + payment plan).
 - **Before B6:** Entity aligned with **ToS / Privacy / Refund** signatory (S1.B exit).
 

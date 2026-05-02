@@ -19,7 +19,7 @@
 
 **Section 3(a)** defines a BMBE as an enterprise engaged in production, processing, manufacturing, trading, or **services**, with **total assets** (including assets from loans) **not more than ₱3,000,000**, **excluding the land** on which office, plant, and equipment are situated. The definition notes possible **review and upward adjustment** by the SMED Council under RA 6977 / RA 8289 — treat the **operative ceiling** as whatever **current DTI/BIR guidance** states when you register.
 
-**Section 3(a)** also excludes, from the BMBE definition of “service,” services rendered by anyone **duly licensed** after a **government licensure examination** in connection with exercising a **profession**. Whether a given **SaaS / software subscription** business is classified as an excluded professional service is a **fact-specific** question for DTI/BIR and counsel—not something to infer from Gemini alone.
+**Section 3(a)** also excludes, from the BMBE definition of “service,” services rendered by anyone **duly licensed** after a **government licensure examination** in connection with exercising a **profession**. Whether a given **SaaS / software subscription** business is classified as an excluded professional service is a **fact-specific** question for DTI/BIR and counsel—not something to infer from informal LLM summaries alone.
 
 ### 1.2 Core incentive (income tax)
 

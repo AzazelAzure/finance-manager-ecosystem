@@ -59,28 +59,27 @@ Use this section when **context drifts** between payment work and adjacent S1.B 
 
 ## 0.6) Entity scenario coupling (L1 time gate)
 
-**Entity plan hub:** [`../entity-formation-research/README.md`](../entity-formation-research/README.md) (see **§0.2** there). **Matrix 2 (timeline branch)** on the entity side may remain **`TIME_GATED`** until **marriage → US license in hand → BI validation** (~two months from marriage month; HitM refines dates in [`../entity-formation-research/HITM_LOCAL_CONTEXT.md`](../entity-formation-research/HITM_LOCAL_CONTEXT.md) §1.1).
+**Entity plan hub:** [`../entity-formation-research/README.md`](../entity-formation-research/README.md) (see **§0.2** there). **Matrix 2 (timeline branch)** may remain **`TIME_GATED`** until **marriage → US license in hand → BI validation** (see [`../entity-formation-research/HITM_LOCAL_CONTEXT.md`](../entity-formation-research/HITM_LOCAL_CONTEXT.md) §1.1).
 
 **How payment research proceeds anyway**
 
 1. **Comparison matrix columns** (minimum): `US entity (bridge)`, `PH entity (HitM-owned when eligible)`, `PH spouse-led interim`, `No entity yet` (only if [REGISTRATION_BREAKPOINTS.md](../entity-formation-research/REGISTRATION_BREAKPOINTS.md) allows).
 2. **Rows:** each short-listed PSP × KYB docs, settlement currency, wallet rails, recurring + trial behavior, known blockers for non-PH legal persons.
-3. **Outputs before L1 locks:** conditional recommendation (“**If** branch A … **then** …”; “**If** branch B … **then** …”) plus **single preferred** path if HitM must pick a default for engineering spikes.
-4. **After L1 = `LOCKED`:** collapse to primary + optional secondary PSP aligned with locked entity path; sync [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2/L3.
-
-5. **PH tax / VAT registration:** If the operating assumption is a **PH entity**, map gross receipts to **VAT vs non-VAT** using [PH_TAX_BMBE_AND_DEDUCTIONS.md](../entity-formation-research/PH_TAX_BMBE_AND_DEDUCTIONS.md) (₱3M threshold and cites)—PSP settlement and invoice type must match BIR registration.
+3. **Working artifacts:** [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md) and [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md) document **hypothesis scenarios** for PSP evaluation—they are **not** HitM locks until [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) and this README’s verification gates are satisfied.
+4. **Outputs before L1 locks:** conditional recommendation (“**If** branch A … **then** …”; “**If** branch B … **then** …”) plus a **default engineering spike** path if HitM must pick one PSP for a prototype.
+5. **PH tax / VAT registration:** If the working assumption is a **PH settlement entity**, map gross receipts to **VAT vs non-VAT** using [PH_TAX_BMBE_AND_DEDUCTIONS.md](../entity-formation-research/PH_TAX_BMBE_AND_DEDUCTIONS.md) (threshold discussion and cites)—PSP settlement and invoice type must match BIR registration **once** that entity path is locked.
 
 Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` means **coherent cross-links and scenario answers** in both folders—not “freeze payment research until BI.”
 
 ## 1) Objective
 
-Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate well with the **entity scenario** from `entity-formation-research` (final pairing after L1 lock; until then **conditional** per **§0.6**).
+Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate well with the **entity scenario** from `entity-formation-research` (final pairing after HitM signoff and any L1/L2 locks).
 
 ## 2) Scope
 
 ### In scope
 
-- Comparison: Stripe (international, USD settlement) vs PayMongo (PH-native) vs Xendit (regional including PH) vs GCash direct (if API access feasible).
+- Comparison: **Stripe** (international, card + evolving wallet rails) vs **PayMongo** (PH-native) vs **Xendit** (regional including PH) vs GCash direct (if API access feasible).
 - Entity-type compatibility (some processors require local entity).
 - Settlement currency: PHP-direct vs USD-converted.
 - Per-transaction fees + monthly fees + chargeback policies.
@@ -96,17 +95,17 @@ Decide payment processor strategy: which provider(s) accept PH users, support mo
 
 ## 3) Source Evidence
 
-- Stripe PH availability + GCash support (Stripe added GCash 2024–2025).
+- Stripe PH availability + GCash support (verify current product pages).
 - PayMongo product / pricing page.
 - Xendit product / pricing page.
-- HFM legal posture: **per entity scenario** until [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L1/L2 lock; default narrative line in docs may stay “US entity” only if that remains the engineering placeholder.
+- HFM legal posture: **per entity scenario** until [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) HitM locks; cite chosen structure in final write-up.
 
 ## 4) Deliverables
 
 Research document with:
 
-- Provider comparison matrix **with entity-scenario columns** (§0.6); conditional recommendation acceptable until L1 `LOCKED`.
-- Recommended primary + secondary provider (e.g. "Primary: PayMongo for PH; Secondary: Stripe for international/US Honorary Founders").
+- Provider comparison matrix **with entity-scenario columns** (§0.6); conditional recommendation acceptable until HitM locks entity + timeline branch.
+- Recommended primary + optional secondary provider, **after** signoff.
 - Mobile wallet integration path (specific API/SDK).
 - Estimated per-transaction effective margin at PHP-anchored prices.
 - HitM final lock decision (signoff).
@@ -124,7 +123,7 @@ Research document with:
 
 ## 7) Strategic Phase Impact
 
-- S1.B exit: payment provider decision check-box ✅
+- S1.B exit: payment provider decision check-box (pending HitM signoff).
 - Feeds W5 founding member program backend (S1.C entry prep).
 
 ## 8) Risks
@@ -132,7 +131,7 @@ Research document with:
 | Risk | Trigger | Rollback |
 |---|---|---|
 | All US-entity-friendly providers reject mobile-wallet primary | Research surfaces no viable option | Escalate to PARKING_LOT.md P-2 (PH entity may be needed earlier than planned) |
-| PayMongo / Xendit have minimum revenue requirements (some PH processors have ₱X/mo minimums) | Provider declines below minimum | Defer to Stripe + manual GCash/Maya as workaround; note in implementation plan |
+| PayMongo / Xendit have minimum revenue requirements (some PH processors have ₱X/mo minimums) | Provider declines below minimum | Document workaround path; revisit matrix |
 | Entity-formation outcome makes a previously-good provider unworkable | Mismatch surfaces during research | Iterate; entity decision may need re-review |
 
 ## Estimated Effort

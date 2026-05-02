@@ -13,7 +13,7 @@
 
 **Branch A vs B cannot be chosen on evidence until roughly two months after marriage work starts** (order of magnitude; refine with real dates):
 
-1. **Marriage** — scheduled **next month** from last update (slip actual calendar date here when fixed).
+1. **Marriage** — target **before baby due date (2026-06-15)**; confirm **firm calendar date** with the county and embassy timeline.
 2. **US license** — processing and **shipping** time after solemnization until documents are in hand.
 3. **BI** — in-person trip to **validate** that the package will be **recognized** for the intended immigration path.
 
@@ -55,4 +55,4 @@ Until step 3 completes, treat **L1 (timeline branch)** in [DECISION_MATRIX.md](.
 1. Exact **BI checklist** for the intended visa/residency route with Utah-online marriage (document list, authentication chain).
 2. Whether **SEC/DTI foreign equity rules** for the chosen PH vehicle require HitM’s specific status vs 100% Filipino-owned interim structure.
 3. Whether **US LLC income** from PH customers creates **PH tax nexus** or **permanent establishment** exposure at low revenue — threshold research.
-4. **Stripe / PayMongo / Xendit** KYB requirements for US vs PH entity serving PH wallets — **seated jointly** with [`../payment-provider-research/README.md`](../payment-provider-research/README.md) (see entity plan README **0.2** and payment plan **0.6**). Payment matrix columns should stay **scenario-based** until L1 is no longer time-gated.
+4. **Stripe / PayMongo / Xendit** KYB requirements for US vs PH entity serving PH wallets — **seated jointly** with `[../payment-provider-research/README.md](../payment-provider-research/README.md)` (see entity plan README **0.2** and payment plan **0.6**). Payment matrix columns should stay **scenario-based** until L1 is no longer time-gated.
