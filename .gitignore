@@ -10,7 +10,7 @@ deploy/server.env
 deploy/*.env
 
 # Editor / tool-only ignore files (machine-local, not shared)
-# `.cursorignore` is tracked at repo root to scope Cursor index vs Antigravity/agent dirs.
+.cursorignore
 .antigravityignore
 
 # Cursor hooks local runtime state (agent transcript / continual-learning; not shared)
