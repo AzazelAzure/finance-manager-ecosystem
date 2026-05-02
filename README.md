@@ -36,4 +36,4 @@ git submodule update --init --recursive
 - **`plans/`** — execution plans for orchestration (`plans/<proposed-git-branch-name>/`); see `.cursor/skills/roadmap-rollout-planning/SKILL.md`.
 - **`docs/`** — cross-cutting notes (lockfiles, SPDX, agent pilot).
 - **`finance_manager_rust_middleware/`** and **`finance_manager_rust_tools/`** — separate repos (see table above); develop Rust work there and bump submodule SHAs when sharing changes with the ecosystem.
-- **`.gitignore`** — excludes `.env`, venvs, local dumps, **`.antigravityignore`** (machine-local), and local certificates. **`.cursorignore`** is **tracked** so Cursor skips Antigravity/agent dirs consistently across clones.
+- **`.gitignore`** — excludes `.env`, venvs, local dumps, editor ignore files (`.cursorignore`, `.antigravityignore`), and local certificates.

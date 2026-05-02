@@ -4,6 +4,14 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-02 — S1.B entity/payment research governance + continual-learning memory
+
+- **`plans/cursor/s1b/entity-formation-research/`:** Gemini-sourced drafts reconciled to plan governance (no premature `LOCKED` without HitM signoff); `DECISION_MATRIX`, `US_ENTITY_PH_OPERATIONS`, `PH_SPOUSE_LED_AND_TRANSFER`, `REGISTRATION_BREAKPOINTS`, `HITM_LOCAL_CONTEXT`, `SPOUSE_INVOLVEMENT_REQUIREMENTS.md`, `RESEARCH_ARTIFACTS`, plan `README` **draft** status restored; FIA / minimum-capital framed as activity-specific counsel verification.
+- **`plans/cursor/s1b/payment-provider-research/`:** `README` §0.6 restored to **L1 time-gated** scenario coupling; Stripe back in scope; `PSP_COMPARISON_MATRIX.md` + `PAYMENT_ARCHITECTURE_SPLIT.md` as labeled research drafts with verify-on-provider disclaimers.
+- **`plans/cursor/strategic-roadmap-reframe-53be/`:** Reverted unintended Gemini edits to `01_unit_economics_and_costs.md`, `PARKING_LOT.md` P-2, and phase files (locks belong in entity plan after HitM signoff, not in strategic locks from chat).
+- **`.gitignore` / `README.md`:** `.cursorignore` is **local-only** again (not tracked); Antigravity/agent ignore patterns live in the untracked file for per-machine Cursor index hygiene.
+- **`AGENTS.md`:** Continual-learning memory — normalize parallel-assistant tagged research before CPPRD; add overlapping agent trees to `.cursorignore`.
+
 ### 2026-05-01 — Submodule pins: track `design_docs` + `finance_manager_web` `main` merge commits
 
 - **`design_docs` submodule:** **`15045e1`** (`main`, includes design-docs PR [#16](https://github.com/AzazelAzure/finance-manager-design-docs/pull/16) squash merge onto `main`; supersedes ecosystem pin **`94b2fbf`**).
