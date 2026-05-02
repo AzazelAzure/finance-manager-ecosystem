@@ -3,7 +3,7 @@ plan_id: PLAN_RESEARCH_PAYMENT_PROVIDER_2026-04-30
 status: draft
 priority: P0
 created: 2026-04-30
-updated: 2026-05-01
+updated: 2026-05-02
 owner: pproctor
 
 plan_root: plans/cursor/s1b/payment-provider-research/
@@ -54,12 +54,25 @@ Use this section when **context drifts** between payment work and adjacent S1.B 
 | **Feature roadmap before final tiering** | **`01_unit_economics_and_costs.md` §2 (deferred block):** free vs paid entitlements are **not** final until S1.B **Group D** scope is stable. Payment flows (SKUs, one-time Founding vs recurring Pro) still land here as **provider capabilities**. |
 | **`PARKING_LOT.md` P-8 (Pro trial)** | **Trial + wallet verification:** industry pattern is first period free with **instrument on file**; copy and law are HitM—but **technical** questions (auth vs first charge, **failed renewal → downgrade**, whether wallet can be “verified” like a card) are **processor-specific**. This plan’s comparison matrix should include **subscription + trial** behavior for each short-listed PSP. |
 | **Charge failure policy** | Acceptable fallback discussed: **failed charge → stop paid entitlements** (vs strong pre-verification). Document what each provider supports and how it affects UX/refund language. |
-| **Entity formation (`depends_on`)** | Some wallet rails **require or favor a PH counterparty**; ties to **`PARKING_LOT.md` P-2** if US-only entity blocks the desired flow. |
+| **Entity formation (`depends_on`)** | Some wallet rails **require or favor a PH counterparty**; ties to **`PARKING_LOT.md` P-2** if US-only entity blocks the desired flow. **While L1 is time-gated** (BI validation after marriage + license), treat this dependency as **scenario documentation**, not a hard stop — see **§0.6** below. |
 | **AI economics (parallel plan)** | PSP affects **net subscription revenue**; AI provider pricing affects **variable LLM cost**. Together they bound **true** Pro / Pro+ margin—see `../ai-economics-deep-dive/LLM_PROVIDER_COST_SNAPSHOT.md` for the LLM side. |
+
+## 0.6) Entity scenario coupling (L1 time gate)
+
+**Entity plan hub:** [`../entity-formation-research/README.md`](../entity-formation-research/README.md) (see **§0.2** there). **Matrix 2 (timeline branch)** on the entity side may remain **`TIME_GATED`** until **marriage → US license in hand → BI validation** (~two months from marriage month; HitM refines dates in [`../entity-formation-research/HITM_LOCAL_CONTEXT.md`](../entity-formation-research/HITM_LOCAL_CONTEXT.md) §1.1).
+
+**How payment research proceeds anyway**
+
+1. **Comparison matrix columns** (minimum): `US entity (bridge)`, `PH entity (HitM-owned when eligible)`, `PH spouse-led interim`, `No entity yet` (only if [REGISTRATION_BREAKPOINTS.md](../entity-formation-research/REGISTRATION_BREAKPOINTS.md) allows).
+2. **Rows:** each short-listed PSP × KYB docs, settlement currency, wallet rails, recurring + trial behavior, known blockers for non-PH legal persons.
+3. **Outputs before L1 locks:** conditional recommendation (“**If** branch A … **then** …”; “**If** branch B … **then** …”) plus **single preferred** path if HitM must pick a default for engineering spikes.
+4. **After L1 = `LOCKED`:** collapse to primary + optional secondary PSP aligned with locked entity path; sync [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2/L3.
+
+Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` means **coherent cross-links and scenario answers** in both folders—not “freeze payment research until BI.”
 
 ## 1) Objective
 
-Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate well with the entity choice from `entity-formation-research` plan.
+Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate well with the **entity scenario** from `entity-formation-research` (final pairing after L1 lock; until then **conditional** per **§0.6**).
 
 ## 2) Scope
 
@@ -84,13 +97,13 @@ Decide payment processor strategy: which provider(s) accept PH users, support mo
 - Stripe PH availability + GCash support (Stripe added GCash 2024–2025).
 - PayMongo product / pricing page.
 - Xendit product / pricing page.
-- HFM legal posture: US entity (per entity-formation-research outcome).
+- HFM legal posture: **per entity scenario** until [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L1/L2 lock; default narrative line in docs may stay “US entity” only if that remains the engineering placeholder.
 
 ## 4) Deliverables
 
 Research document with:
 
-- Provider comparison matrix.
+- Provider comparison matrix **with entity-scenario columns** (§0.6); conditional recommendation acceptable until L1 `LOCKED`.
 - Recommended primary + secondary provider (e.g. "Primary: PayMongo for PH; Secondary: Stripe for international/US Honorary Founders").
 - Mobile wallet integration path (specific API/SDK).
 - Estimated per-transaction effective margin at PHP-anchored prices.

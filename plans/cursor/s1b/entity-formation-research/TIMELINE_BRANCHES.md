@@ -3,6 +3,14 @@
 **Read with:** [HITM_LOCAL_CONTEXT.md](./HITM_LOCAL_CONTEXT.md)  
 **Purpose:** Decision tree for sequencing entity work without pretending a single timeline exists.
 
+## Work while branch unknown (L1 time-gated)
+
+HitM cannot lock **Branch A vs B** until **after BI validation** following Utah marriage + county-facilitated **embassy SF → PH** document flow and **license in hand** (see [HITM_LOCAL_CONTEXT.md](./HITM_LOCAL_CONTEXT.md) §1.1). Until then:
+
+- **Do:** Fill [DECISION_MATRIX.md](./DECISION_MATRIX.md) **Matrix 3** (vehicles) and payment-provider matrices with **conditional columns**: US entity / PH entity HitM-owned / PH spouse-led interim, per provider KYB notes.
+- **Do:** Advance [REGISTRATION_BREAKPOINTS.md](./REGISTRATION_BREAKPOINTS.md) so first paid revenue does not ambush you.
+- **Do not:** Block payment research on L1; **final** PSP + entity pairing may remain **conditional** until Matrix 2 moves to `LOCKED`.
+
 ## Branch A — BI accepts US marriage package “enough” for residency path
 
 **Trigger (definition):** BI (or relevant issuing authority) accepts documentation sufficient for the **intended residency status** without waiting for full PH civil-registry completion.
@@ -27,14 +35,16 @@
 
 ## Branch selection — how to know which branch you are on
 
-| Signal | Branch A lean | Branch B lean |
-| ------ | ------------- | ------------- |
-| BI / counsel confirms doc package complete | ✓ | |
-| Embassy / PSA / local civil registry step still blocking “married for PH purposes” | | ✓ |
-| HitM can obtain TIN / open business bank as intended owner | ✓ | |
-| Only spouse can KYB for PH PSP in near term | | ✓ |
 
-**Action:** Record **branch call + date + evidence** in [DECISION_MATRIX.md](./DECISION_MATRIX.md) under “Timeline branch lock.”
+| Signal                                                                             | Branch A lean | Branch B lean |
+| ---------------------------------------------------------------------------------- | ------------- | ------------- |
+| BI / counsel confirms doc package complete                                         | ✓             |               |
+| Embassy / PSA / local civil registry step still blocking “married for PH purposes” |               | ✓             |
+| HitM can obtain TIN / open business bank as intended owner                         | ✓             |               |
+| Only spouse can KYB for PH PSP in near term                                        |               | ✓             |
+
+
+**Action:** When BI evidence exists, set Matrix 2 **Status** to `LOCKED`, fill branch + date + evidence. Until then Matrix 2 stays `TIME_GATED` per [HITM_LOCAL_CONTEXT.md](./HITM_LOCAL_CONTEXT.md) §1.1.
 
 ## Dependencies on other S1.B work
 

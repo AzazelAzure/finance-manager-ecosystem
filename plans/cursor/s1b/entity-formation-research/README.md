@@ -63,6 +63,16 @@ standalone_notes: ""
 
 **Disclaimer:** This sub-plan contains **research scaffolding and questions**, not legal, tax, or immigration advice. Confirm with qualified advisors in PH and US before acting.
 
+## 0.2) Payment provider research — joint seating (entity × PSP)
+
+**L1 (timeline branch)** may stay **`TIME_GATED`** for ~**two months** after the marriage month until **BI validates** recognition ([HITM_LOCAL_CONTEXT.md](./HITM_LOCAL_CONTEXT.md) §1.1, [DECISION_MATRIX.md](./DECISION_MATRIX.md) Matrix 2). That does **not** idle payment work.
+
+- **Run in parallel:** [`../payment-provider-research/README.md`](../payment-provider-research/README.md) with a comparison matrix keyed to **entity scenarios** (US LLC bridge, PH entity HitM-owned, PH spouse-led interim, delay entity). Capture **KYB / onboarding** requirements per PSP per scenario.
+- **Feed back:** PSP constraints update [DECISION_MATRIX.md](./DECISION_MATRIX.md) Matrix 3 (vehicle shortlist) and [REGISTRATION_BREAKPOINTS.md](./REGISTRATION_BREAKPOINTS.md) B1.
+- **Final lock:** When L1 becomes `LOCKED`, collapse PSP recommendation from conditional rows to a single **primary path** (or explicit hybrid), still subject to counsel.
+
+YAML on the payment plan still lists `depends_on: entity-formation`; interpret that as **shared scenario documentation + breakpoints**, not “block all payment research until BI returns.”
+
 ## 1) Objective
 
 Research and **decide** (HitM signoff):
@@ -83,7 +93,7 @@ This is **HitM-led research**; agent role is to compile structure, questions, an
 - Entity and jurisdiction comparison aligned to **PH-first revenue** and optional **US sister** later.
 - Tax and compliance **question lists** for US citizen living in PH (FEIE interactions; cross-border SaaS — advisor targets, not conclusions).
 - Cost of formation + ongoing compliance (US and PH paths).
-- Payment infrastructure compatibility (which legal person PSPs accept for GCash/Maya-heavy flows — overlaps `payment-provider-research`).
+- Payment infrastructure compatibility (which legal person PSPs accept for GCash/Maya-heavy flows — **joint task** with [`../payment-provider-research/`](../payment-provider-research/README.md); see **§0.2** above).
 - Immigration **timing as input** to corporate sequencing (not visa legal work product).
 
 ### Out of scope

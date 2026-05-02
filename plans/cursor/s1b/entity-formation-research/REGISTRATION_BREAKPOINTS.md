@@ -10,16 +10,18 @@
 
 ## Breakpoint table (fill as verified)
 
-| # | Gate | Typical blocker if unincorporated | PH-local entity? | US entity? | Notes / source target |
-| --- | ---- | --------------------------------- | ---------------- | ------------ | ----------------------- |
-| B1 | Collect **subscription revenue** from strangers | PSP merchant agreement requires business KYB | Often yes for wallet-first | Sometimes yes (Stripe etc.) | Tie to payment-provider research |
-| B2 | **App store** merchant / legal seller of record | Google Play / Apple legal entity fields | Depends on account country | Often US acceptable | Store console terms |
-| B3 | **Hire employees** (PH or US) | Employer of record / SSS PhilHealth etc. | Yes for PH hires | US for US hires | EOR vs own entity |
-| B4 | **Sign B2B contracts** (schools, banks) | Counterparty requires corp seal, AOI, SEC cert | Usually PH or foreign branch | US LLC often accepted | Redlines |
-| B5 | **VAT / OSS** style obligations | Revenue threshold or local digital VAT rules | TBD with tax advisor | TBD | BIR circulars |
-| B6 | **Founding member** / **refunds** program | Consumer protection, chargeback entity | As per ToS draft | As per ToS draft | S1.F legal docs |
-| B7 | **Open business bank account** for settlement | Bank KYB | PH corp common | US corp + international banking | Bank checklist |
-| B8 | **Hold IP** (trademark, codebase assignee) | Clean acquisition / investor diligence | Any stable jurisdiction | US common | IP assignment agreement |
+
+| #   | Gate                                            | Typical blocker if unincorporated              | PH-local entity?             | US entity?                      | Notes / source target            |
+| --- | ----------------------------------------------- | ---------------------------------------------- | ---------------------------- | ------------------------------- | -------------------------------- |
+| B1  | Collect **subscription revenue** from strangers | PSP merchant agreement requires business KYB   | Often yes for wallet-first   | Sometimes yes (Stripe etc.)     | Tie to payment-provider research |
+| B2  | **App store** merchant / legal seller of record | Google Play / Apple legal entity fields        | Depends on account country   | Often US acceptable             | Store console terms              |
+| B3  | **Hire employees** (PH or US)                   | Employer of record / SSS PhilHealth etc.       | Yes for PH hires             | US for US hires                 | EOR vs own entity                |
+| B4  | **Sign B2B contracts** (schools, banks)         | Counterparty requires corp seal, AOI, SEC cert | Usually PH or foreign branch | US LLC often accepted           | Redlines                         |
+| B5  | **VAT / OSS** style obligations                 | Revenue threshold or local digital VAT rules   | TBD with tax advisor         | TBD                             | BIR circulars                    |
+| B6  | **Founding member** / **refunds** program       | Consumer protection, chargeback entity         | As per ToS draft             | As per ToS draft                | S1.F legal docs                  |
+| B7  | **Open business bank account** for settlement   | Bank KYB                                       | PH corp common               | US corp + international banking | Bank checklist                   |
+| B8  | **Hold IP** (trademark, codebase assignee)      | Clean acquisition / investor diligence         | Any stable jurisdiction      | US common                       | IP assignment agreement          |
+
 
 ## Suggested HitM ordering (hypothesis — validate)
 
@@ -37,3 +39,4 @@ Document explicit reasons if HitM stays **pre-entity**:
 
 - [HITM_LOCAL_CONTEXT.md](./HITM_LOCAL_CONTEXT.md)
 - [DECISION_MATRIX.md](./DECISION_MATRIX.md) — add “Breakpoint first hit” row when known.
+

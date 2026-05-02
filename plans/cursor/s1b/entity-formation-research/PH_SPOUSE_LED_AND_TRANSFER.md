@@ -18,12 +18,14 @@
 
 ## Risk register (conceptual)
 
-| Risk | Mitigation direction |
-| ---- | -------------------- |
-| Sham nominee structure | Counsel-approved structure only |
-| IP owned by wrong entity | Early written assignment or license |
-| PSP KYB mismatch (beneficial owner ≠ account owner) | Disclose true BO per PSP rules |
-| Transfer tax shock later | Model transfer now vs later with advisor |
+
+| Risk                                                | Mitigation direction                     |
+| --------------------------------------------------- | ---------------------------------------- |
+| Sham nominee structure                              | Counsel-approved structure only          |
+| IP owned by wrong entity                            | Early written assignment or license      |
+| PSP KYB mismatch (beneficial owner ≠ account owner) | Disclose true BO per PSP rules           |
+| Transfer tax shock later                            | Model transfer now vs later with advisor |
+
 
 ## Links
 

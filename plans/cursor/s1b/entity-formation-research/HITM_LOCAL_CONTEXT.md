@@ -5,8 +5,19 @@
 
 ## 1) Marriage plan (working)
 
-- **Intent:** Utah online wedding, with documentation routed for Philippine recognition (e.g. embassy / civil registry path — exact channel to be confirmed with counsel and embassy checklists).
-- **Effect on research:** Two timelines are possible depending on **how quickly Philippine authorities treat the marriage as effective for immigration and civil purposes** (see [TIMELINE_BRANCHES.md](./TIMELINE_BRANCHES.md)).
+- **Intent:** Utah **county online marriage** process (solemnization online), then post-marriage **fees** to activate the full document package the county coordinates.
+- **Automated pipe (HitM-described):** The county service routes documentation to the **Philippine embassy in San Francisco** for forwarding into the **Philippines**; HitM receives a **physical** marriage license and a **digital** copy. Exact fee schedule, turnaround SLAs, and checklist URLs are **TBD** (HitM to paste authoritative links or PDF names into this file when available).
+- **Effect on research:** Two timelines remain possible depending on **BI** (and related steps) treating that package as sufficient for the intended residency route vs requiring further PH-side registry delay (see [TIMELINE_BRANCHES.md](./TIMELINE_BRANCHES.md)).
+
+## 1.1) L1 timeline branch — time gate (HitM)
+
+**Branch A vs B cannot be chosen on evidence until roughly two months after marriage work starts** (order of magnitude; refine with real dates):
+
+1. **Marriage** — scheduled **next month** from last update (slip actual calendar date here when fixed).
+2. **US license** — processing and **shipping** time after solemnization until documents are in hand.
+3. **BI** — in-person trip to **validate** that the package will be **recognized** for the intended immigration path.
+
+Until step 3 completes, treat **L1 (timeline branch)** in [DECISION_MATRIX.md](./DECISION_MATRIX.md) as **TIME_GATED** — parallel research continues ([TIMELINE_BRANCHES.md](./TIMELINE_BRANCHES.md) “Work while branch unknown”), but do not pretend L1 is locked.
 
 ## 2) PH business ownership constraint (assumption to verify)
 
@@ -44,4 +55,4 @@
 1. Exact **BI checklist** for the intended visa/residency route with Utah-online marriage (document list, authentication chain).
 2. Whether **SEC/DTI foreign equity rules** for the chosen PH vehicle require HitM’s specific status vs 100% Filipino-owned interim structure.
 3. Whether **US LLC income** from PH customers creates **PH tax nexus** or **permanent establishment** exposure at low revenue — threshold research.
-4. **Stripe / PayMongo / Xendit** KYB requirements for US vs PH entity serving PH wallets (feeds payment-provider research).
+4. **Stripe / PayMongo / Xendit** KYB requirements for US vs PH entity serving PH wallets — **seated jointly** with [`../payment-provider-research/README.md`](../payment-provider-research/README.md) (see entity plan README **0.2** and payment plan **0.6**). Payment matrix columns should stay **scenario-based** until L1 is no longer time-gated.
