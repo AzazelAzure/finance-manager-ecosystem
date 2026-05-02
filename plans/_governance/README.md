@@ -18,6 +18,8 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `deployment_protocol.md`  | CPPR+D cycle, blue-green deploy, SSH rules                                 | Plan has `deployment.required: true`                        |
 | `branching_guidelines.md` | Per-feature color-cycle workflow                                           | Producing or executing a feature on inactive color          |
 | `glossary.md`             | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.) | First, every session                                        |
+| `HITM_SCHEDULE_AND_TASKS.md` | khal + todoman paths, sprint/absence workflow, how to refresh agent snapshot | Before dense sprint planning or availability assumptions |
+| `HITM_SCHEDULE_SNAPSHOT.md` | **Generated** (`./scripts/schedule_agent_sync.sh`); gitignored | When present locally: calendar window + open tasks for agents |
 
 
 ## Reading sequences
@@ -160,4 +162,3 @@ These values are normative. AI agents must use only these strings. Validation fa
 - Skipping validation (`draft → in_progress` directly) outside hotfix variant.
 - Merging without Slack `#pull-requests` authorization (workspace rule, reinforced here).
 - Authoring plans without `strategic_phase` and `strategic_link` populated.
-
