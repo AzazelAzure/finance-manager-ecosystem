@@ -19,6 +19,20 @@ All scripts continue safely when a directory is missing or not initialized as a 
 
 ## Scripts
 
+### `./scripts/schedule_agent_sync.sh`
+
+Writes **`plans/_governance/HITM_SCHEDULE_SNAPSHOT.md`** (gitignored) with:
+
+- `khal list` for the next **90** days (override with `SCHEDULE_DAYS`)
+- `todo list` (todoman) across configured task lists
+
+Requires **khal**, **todoman** (`todo` on `PATH`), and **python3**. See **`plans/_governance/HITM_SCHEDULE_AND_TASKS.md`** for disk paths (`~/.local/share/calendars/work/`, tasks glob) and agent reading order.
+
+```bash
+./scripts/schedule_agent_sync.sh
+SCHEDULE_DAYS=120 ./scripts/schedule_agent_sync.sh
+```
+
 ### `./scripts/status.sh`
 Shows branch and `git status -s` output for each repo in `repos.txt`.
 
