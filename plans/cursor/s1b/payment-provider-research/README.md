@@ -68,6 +68,8 @@ Use this section when **context drifts** between payment work and adjacent S1.B 
 3. **Outputs before L1 locks:** conditional recommendation (“**If** branch A … **then** …”; “**If** branch B … **then** …”) plus **single preferred** path if HitM must pick a default for engineering spikes.
 4. **After L1 = `LOCKED`:** collapse to primary + optional secondary PSP aligned with locked entity path; sync [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2/L3.
 
+5. **PH tax / VAT registration:** If the operating assumption is a **PH entity**, map gross receipts to **VAT vs non-VAT** using [PH_TAX_BMBE_AND_DEDUCTIONS.md](../entity-formation-research/PH_TAX_BMBE_AND_DEDUCTIONS.md) (₱3M threshold and cites)—PSP settlement and invoice type must match BIR registration.
+
 Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` means **coherent cross-links and scenario answers** in both folders—not “freeze payment research until BI.”
 
 ## 1) Objective

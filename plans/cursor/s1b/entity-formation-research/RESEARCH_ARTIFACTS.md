@@ -16,6 +16,7 @@ All deliverables for this sub-plan live **under this folder only**. Cross-links 
 | [PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md) | Research scaffold: spouse-led PH entity, later transfer — legality and mechanics |
 | [REGISTRATION_BREAKPOINTS.md](./REGISTRATION_BREAKPOINTS.md)     | When a formal business entity becomes *necessary* vs optional                    |
 | [DECISION_MATRIX.md](./DECISION_MATRIX.md)                       | Decision matrices and signoff slots (fill as research lands)                     |
+| [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md)   | PH tax: BMBE (RA 9178), VAT/₱3M breakpoints, CIT/OSD, NIRC Sec. 34 — verified links |
 
 
 **Disclaimer:** These files organize **research questions and evidence targets**. They are not legal, tax, or immigration advice. Philippines Bureau of Immigration, SEC, BIR, and embassy rules change; confirm with qualified PH and US advisors before acting.

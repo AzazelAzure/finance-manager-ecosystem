@@ -60,6 +60,7 @@ standalone_notes: ""
 | [US_ENTITY_PH_OPERATIONS.md](./US_ENTITY_PH_OPERATIONS.md) | US entity primarily serving PH — cost and feasibility scaffold |
 | [PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md) | Spouse-led PH entity and later transfer — counsel checklist |
 | [DECISION_MATRIX.md](./DECISION_MATRIX.md) | Matrices and signoff slots |
+| [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md) | PH entity assumption: BMBE law text, VAT/CIT breakpoints, deductions (NIRC Sec. 34), primary links |
 
 **Disclaimer:** This sub-plan contains **research scaffolding and questions**, not legal, tax, or immigration advice. Confirm with qualified advisors in PH and US before acting.
 
@@ -93,6 +94,7 @@ This is **HitM-led research**; agent role is to compile structure, questions, an
 - Entity and jurisdiction comparison aligned to **PH-first revenue** and optional **US sister** later.
 - Tax and compliance **question lists** for US citizen living in PH (FEIE interactions; cross-border SaaS — advisor targets, not conclusions).
 - Cost of formation + ongoing compliance (US and PH paths).
+- **Philippine tax:** BMBE vs regular domestic corporation, revenue registration breakpoints (e.g. VAT), deductible expenses — [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md) (statute + PwC summaries; counsel for application).
 - Payment infrastructure compatibility (which legal person PSPs accept for GCash/Maya-heavy flows — **joint task** with [`../payment-provider-research/`](../payment-provider-research/README.md); see **§0.2** above).
 - Immigration **timing as input** to corporate sequencing (not visa legal work product).
 
