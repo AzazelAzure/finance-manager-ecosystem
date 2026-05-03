@@ -4,7 +4,7 @@ plan_id: PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01
 status: draft
 priority: P0
 created: 2026-05-01
-updated: 2026-05-01
+updated: 2026-05-03
 owner: pproctor
 
 plan_root: plans/cursor/s1b/pwa-install-offline-sync-research/
@@ -245,6 +245,7 @@ Version windowing and related framework notes live **only under this sub-plan** 
 
 - `[RESEARCH_ARTIFACTS.md](./RESEARCH_ARTIFACTS.md)` (index)
 - `[API_VERSION_AND_CLIENT_WINDOW.md](./API_VERSION_AND_CLIENT_WINDOW.md)` (framework)
+- `[OFFLINE_MINIMAL_EXCHANGE_RATES.md](./OFFLINE_MINIMAL_EXCHANGE_RATES.md)` (parking: minimal FX matrix from user sources + roadmap hook; web “mostly offline” until Android)
 
 ## 12) Effort guidance (indicative — HitM vs AI hours)
 
