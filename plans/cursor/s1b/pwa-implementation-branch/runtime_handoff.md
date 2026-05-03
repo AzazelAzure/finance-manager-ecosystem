@@ -30,7 +30,9 @@ scripts/fm_services.sh restart
 | **Mode** | VPS containerized blue/green (`~/finance_manager`, Podman) |
 | **Last lifecycle command** | **2026-05-03:** `fm_server_beta.sh rebuild-color green` (active); `smoke --color active` **PASS** after web **#48** (PWA online continuous drain loop fix) merged to `main` and pulled on VPS `~/finance_manager/finance_manager_web`. |
 | **Last :8443 / D4 checkpoint** | **OPEN** for full D4-exec signoff — web **#48** fixes **continuous sync while online** (`isApiReachabilityRecovery` gating in `OfflineRoot`); prior parity batch items unchanged for evidence. |
-| **Active / inactive** | **Live:** confirm on VPS (`fm_server_beta.sh active` / proxy). **Intent after fix window:** align both colors to the same good build. |
+| **Active / inactive** | **Live:** confirm on VPS (`fm_server_beta.sh active` / proxy). **Intent:** keep active color on good `main` builds; rebuild inactive color when convenient so both sides match. |
+| **Sync UX vs MVP** | **Enough for MVP:** sync feels **slightly more responsive** after #48 (no tight drain/refetch loop while online). Remaining sync-bar copy, error-phase edge cases, and lie-fi quirks are **documented below as deferrable** unless they block D4. |
+| **Next execution priority** | **Offline cache coherence:** anything the user **sees and stores** must **read through the same cached + outbox-overlay path** so **lists, KPIs, charts, flows, and derived numbers stay correct offline** — extend materialized-cache / overlay discipline beyond the surfaces already merged until graphs and aggregates match online behavior within the seeded window. |
 
 ### Breakpoint checklist (agent)
 
@@ -55,16 +57,16 @@ scripts/fm_services.sh restart
 
 Operational / product (HitM):
 
-1. **Blue/green:** Green holds broken PWA; cannot undo user-facing release — treat as reset, ship fixes, then **sync good build to active color** (see `deploy/BLUEGREEN_SWITCHOVER.md`).
-2. **Sync banner / status:** Banner and copy felt wrong offline and after reconnect; **stuck “error”** phase after a failed drain until the next successful reachability transition. **Update:** **#48** stops **continuous drain/refetch while online** (recovery-only `fm-api-reachable` handling).
-3. **Outbox “once”:** Suspected **reachability module** not aligned on `offline` / lie-fi transitions — second offline spell did not enqueue as expected until a failing request flipped `lastReachable`.
-4. **Offline tx not on dashboard:** Data **does** persist in **IndexedDB** (Dexie); dashboard reads `fetchAppSnapshot` → `applyTransactionOutboxToSnapshot`. Gaps are usually **filter window** (e.g. tx date not in dashboard’s current-month slice), **stale React Query view**, or **enqueue path** not firing — not “browser cannot store.”
-5. **Parity:** Full offline parity (except password / account delete) remains the sprint bar — calendar, viz, upcoming, data hub, etc. need the same outbox + cache discipline as transactions.
+1. **Blue/green:** Keep **active** color on merged `main` builds; **rebuild inactive** when convenient so blue/green stay in sync (see `deploy/BLUEGREEN_SWITCHOVER.md`). Prior “broken build on green” crisis is **superseded** by #48 + deploy; still avoid long-lived drift between colors.
+2. **Sync banner / status (defer post-MVP unless D4-blocking):** Banner and copy can still feel wrong offline / after reconnect; **stuck “error”** phase after a failed drain until the next successful reachability transition. **Done for MVP loop:** **#48** stops **continuous drain/refetch while online** (recovery-only `fm-api-reachable` handling).
+3. **Outbox “once” (defer):** Suspected **reachability** edge on `offline` / lie-fi — second offline spell sometimes did not enqueue until a failing request flipped `lastReachable`.
+4. **Dashboard vs offline tx (often diagnosis, not storage):** Data **does** persist in **IndexedDB**; `fetchAppSnapshot` + `applyTransactionOutboxToSnapshot` path exists. Gaps are often **filter window**, **stale RQ view**, or **read path not using overlay** — rolls into **Next execution priority** (cache coherence across all surfaces).
+5. **Parity / graphs (active work, not defer):** Full offline parity (except password / account delete) remains the bar — **numbers, graphs, aggregates, and every ledger-adjacent read** must go through **cached + overlay** logic so offline matches what the user already stored.
 
-Agent / web (this workspace batch):
+### Deferred polish — agent / web (post-MVP unless escalated)
 
 - **`markApiReachable(false)` on `window.offline`** in `OfflineRoot` and `SyncStatusBar` so `lastReachable` matches browser offline immediately (helps second offline enqueue + UI).
-- **`SyncStatusBar`:** hide when **browser offline** + idle + empty outbox + no reconnect prompt; **clear `error` → `idle`** when `fm-api-reachable` reports `ok`; split copy for **offline + queue** vs **reachable-but-API-down + no queue**; add missing i18n keys `sync.status.queuedWillSync`, `sync.status.offlineNoQueue`; clear stale `syncDetail` when phase returns to `idle`.
+- **`SyncStatusBar`:** hide when **browser offline** + idle + empty outbox + no reconnect prompt; **clear `error` → `idle`** when `fm-api-reachable` reports `ok`; split copy for **offline + queue** vs **reachable-but-API-down + no queue**; i18n keys `sync.status.queuedWillSync`, `sync.status.offlineNoQueue`; clear stale `syncDetail` when phase returns to `idle`.
 
 ## Previously resolved batch (2026-05-03) — keep for history
 
