@@ -3,7 +3,7 @@ plan_id: PLAN_RESEARCH_DISTRIBUTION_CHANNEL_2026-04-30
 status: draft
 priority: P1
 created: 2026-04-30
-updated: 2026-04-30
+updated: 2026-05-05
 owner: pproctor
 
 plan_root: plans/cursor/s1b/distribution-channel-research/
@@ -49,20 +49,16 @@ standalone_notes: ""
 
 ## 1) Objective
 
-Research and lock PH-local distribution channels + founder content cadence. Specifically: which Facebook groups, subreddits, OFW communities, micro-influencer audiences are real-PH-engagement-rich and persona-appropriate. Define cadence: how often, what shape, where.
-
-This is **HitM-led research** with strong cultural-context judgment required. Agent role is to compile candidates + structured pros/cons; HitM picks.
+Research and lock the long-term marketing strategy, specifically focusing on Facebook API automation for drip-feeding content, AI video monetization viability to offset costs, and aligning marketing pushes with the 6-12 month development timeline. This replaces short-term tactical posting.
 
 ## 2) Scope
 
 ### In scope
 
-- PH-relevant Facebook groups (size, engagement, moderation rules).
-- PH-relevant subreddits (r/phinvest, r/Philippines, r/buhaymayaman, etc.).
-- OFW community spaces (where do PH expats hang out online?).
-- PH micro-influencer landscape: TikTok, YouTube, FB Reels personal-finance creators.
-- AI video story format viability test (per PARKING_LOT P-7).
-- Founder content cadence design (monthly AI video + weekly educational + ad-hoc personal narrative as default; revise per outcome).
+- **Facebook Automation**: Graph API capabilities for Pages vs Groups.
+- **AI Video Monetization**: Payout rates and eligibility for TikTok, YT Shorts, and FB Reels in the Philippines.
+- **Paid Ads & SEO**: CPC/CPA benchmarks for the finance niche in the PH.
+- **Timeline Gating**: Mapping marketing actions to the dev cycle (Alpha -> Public Beta) to prevent premature hype.
 
 ### Out of scope
 
@@ -77,13 +73,17 @@ This is **HitM-led research** with strong cultural-context judgment required. Ag
 
 ## 4) Deliverables
 
-Research document with:
+Research documents tracking:
 
-- Channel inventory: 10–20 candidate channels with engagement assessment.
-- Top 3–5 channels selected for S1.C posting cadence.
-- AI video story format decision: framing 1 (product-integrated) vs framing 2 (founder/trust) vs framing 3 (skip AI video). HitM signoff.
-- Cadence locked: how often, what shape, where, who.
-- First-post drafts for top 1–2 channels (HitM voice; ready for S1.C).
+- [DECISION_MATRIX.md](./DECISION_MATRIX.md) tracking Automation Tooling, AI Video Platform, and Timeline Gates.
+- [DISTRIBUTION_RESEARCH_NOTES.md](./DISTRIBUTION_RESEARCH_NOTES.md) containing raw data on API limits, RPM benchmarks, and CPC costs.
+
+SEO optimization guides (reference during every feature sprint touching public pages):
+
+- [SEO_GUIDE_01_FOUNDATIONS.md](./SEO_GUIDE_01_FOUNDATIONS.md) — From-zero intro to SEO concepts, YMYL/E-E-A-T, SPA challenges, and keyword intent types.
+- [SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) — Actionable code changes for `finance_manager_web` (meta tags, structured data, sitemap, prerendering, Core Web Vitals).
+- [SEO_GUIDE_03_CONTENT_AND_KEYWORDS.md](./SEO_GUIDE_03_CONTENT_AND_KEYWORDS.md) — PH PFM keyword clusters, content calendar, blog post templates, link building, and per-sprint SEO checklists.
+- [SEO_PRIORITY_MATRIX.md](./SEO_PRIORITY_MATRIX.md) — Phase-gated SEO task backlog (P0–P3) with sprint links. **Start here** for SEO work.
 
 ## 5) Verification Gates
 

@@ -2,7 +2,7 @@
 
 **Purpose:** Single place for **PSP comparisons**, **capability tradeoffs**, and **HitM signoff** once research closes. Product numbers (MDR, minimums) **change** — confirm on each provider’s current pricing and docs before locking margin in `01_unit_economics_and_costs.md` §2.
 
-**Governance:** Rows labeled **PROPOSED** or **research hypothesis** are **not** HitM locks. Only rows under **HitM locks (payment)** with **HitM-confirmed** dates count as this plan’s exit deliverable. External tools (Gemini, etc.) must **not** set payment locks without explicit HitM signoff — see [`../GEMINI_RESEARCH_README.md`](../GEMINI_RESEARCH_README.md).
+**Governance:** Rows labeled **PROPOSED** or **research hypothesis** are **not** HitM locks. Only rows under **HitM locks (payment)** with **HitM-confirmed** dates count as this plan’s exit deliverable. External tools (Gemini, etc.) must **not** set payment locks without explicit HitM signoff — see [`../GEMINI_RESEARCH_README.md`](../GEMINI_RESEARCH_README.md). **CPPRD (2026-05-05):** HitM merged Gemini-assisted research on branch `cursor/s1b/gemini-research-cpprd` and confirmed **PM1–PM4**; re-verify fees and KYB checklists on PSP sites before go-live.
 
 **Entity coupling:** PH **spouse-led** merchant of record + HitM **US LLC** vendor is **locked** in [`../entity-formation-research/DECISION_MATRIX.md`](../entity-formation-research/DECISION_MATRIX.md) **L2–L4** (2026-05-03). This file owns **PSP choice** and **billing mechanics**, not corporate structure.
 
@@ -14,41 +14,40 @@
 
 | Option | GCash / Maya as **primary** path | Recurring subscriptions | KYB on **PH** MoR (spouse-led) | Notes |
 | ------ | -------------------------------- | ------------------------ | ------------------------------ | ----- |
-| **PayMongo** | Verify current product matrix | Verify Subscriptions / invoices vs one-time | Strong fit for PH-native SME path | Default **research** column per [`README.md`](./README.md) §0.6 |
-| **Xendit** | Verify PH wallet coverage | Verify recurring / tokenization vs card | Regional API; confirm PH catalog rules | Primary alternative column |
-| **Stripe** (PH context) | Verify wallet vs card emphasis for PH users | Strong subscriptions story historically | US LLC **not** PH wedge MoR — contingency / US-later only | See [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md) Phase 2 |
-| **Hybrid** (e.g. PH PSP + Stripe later for US) | Per-region routing | Engineering + compliance cost | After P-6 / split-repos gates | **Future** — do not assume for wedge |
+| **PayMongo** | Yes | Yes (Maya native, GCash invoice workaround) | Yes (DTI supported) | **SELECTED PRIMARY** - Better e-wallet rates (Maya 1.79%, GCash 2.23%) |
+| **Xendit** | Yes | Yes (Maya native, GCash restricted) | Yes (DTI supported) | Secondary alternative |
+| **Stripe** | No | No (GCash/Maya recurring unsupported) | No (US entity required) | **DEFERRED ENTIRELY** until US deployment gates. |
 
-**Selection column:** HitM fills **`PRIMARY_CANDIDATE`** / **`SELECTED`** here or in **HitM locks** below when signoff happens.
+**Selection column:** HitM fills **`SELECTED`** for PayMongo in the HitM locks below.
 
 ---
 
-## Matrix 2 — PSP × operating capabilities (fill from research)
+## Matrix 2 — PSP × operating capabilities
 
-Use for **P-8 trial**, **failed renewal**, and **wallet vs card** behavior. Replace `TBD` with verified notes + source date.
+Use for **P-8 trial**, **failed renewal**, and **wallet vs card** behavior. Values below reflect **May 2026** research — **re-verify** with PayMongo / Xendit product docs before shipping.
 
 | Capability | PayMongo | Xendit | Stripe (as applicable) | HitM minimum? |
 | ---------- | -------- | ------ | ---------------------- | ------------- |
-| GCash — one-time checkout | TBD | TBD | TBD | Required for wedge |
-| Maya — one-time checkout | TBD | TBD | TBD | Required for wedge |
-| GCash / Maya — **recurring** | TBD | TBD | TBD | Required for Pro subscription |
-| Native subscription object vs invoice-only | TBD | TBD | TBD | |
-| **Trial** period + instrument / wallet on file | TBD | TBD | TBD | Tie to `PARKING_LOT.md` P-8 |
-| **Failed renewal** → downgrade / dunning | TBD | TBD | TBD | Per [`README.md`](./README.md) §0.5 |
-| Refund / partial refund API | TBD | TBD | TBD | |
-| Webhook reliability / idempotency story | TBD | TBD | TBD | Align with PWA D2 outbox where relevant |
+| GCash — one-time checkout | Yes (2.23%) | Yes (2.3%) | N/A | Required for wedge |
+| Maya — one-time checkout | Yes (1.79%) | Yes (1.8%) | N/A | Required for wedge |
+| GCash / Maya — **recurring** | Maya Yes, GCash No | Maya Yes, GCash No | N/A | Required for Pro subscription |
+| Native subscription object vs invoice-only | Subscription API (Maya/Cards) + Links | Subscription API (Maya/Cards) + Invoices | N/A | |
+| **Trial** period + instrument / wallet on file | Yes for Maya/Cards, No for GCash | Yes for Maya/Cards, No for GCash | N/A | Tie to `PARKING_LOT.md` P-8 |
+| **Failed renewal** → downgrade / dunning | Subscription API dunning / webhooks | Subscription API webhooks | N/A | Per [`README.md`](./README.md) §0.5 |
+| Refund / partial refund API | Yes via API / Dashboard | Yes via API / Dashboard | N/A | |
+| Webhook reliability / idempotency story | Standard robust webhooks | Standard robust webhooks | N/A | Align with PWA D2 outbox where relevant |
 
 ---
 
-## Matrix 3 — Settlement and economics (placeholders)
+## Matrix 3 — Settlement and economics
 
 | Field | Value |
 | ----- | ----- |
-| Settlement currency (PH wedge) | PHP (default) / other: ___ |
-| Estimated **blended** MDR net to MoR (list → after PSP) | **TBD** — replace `~0.85` placeholder in `01_unit_economics_and_costs.md` §2 when locked |
-| Monthly platform minimums (if any) | TBD |
-| Chargeback / dispute fee exposure | TBD |
-| FX exposure (if any non-PHP leg) | TBD |
+| Settlement currency (PH wedge) | PHP (default) |
+| Estimated **blended** MDR net to MoR (list → after PSP) | **~2.0% (0.02)** blended wallet rate. Replaces `~0.85` placeholder in `01_unit_economics_and_costs.md` §2. |
+| Monthly platform minimums (if any) | None (Pay-as-you-go) |
+| Chargeback / dispute fee exposure | Standard dispute fees (wallet dispute rates are generally lower than card chargebacks) |
+| FX exposure (if any non-PHP leg) | None on PH user -> PH MoR side |
 
 ---
 
@@ -58,10 +57,10 @@ Use for **P-8 trial**, **failed renewal**, and **wallet vs card** behavior. Repl
 
 | Lock | Decision | Date | Migrates to |
 | ---- | -------- | ---- | ----------- |
-| **PM1** — Primary PSP (PH wedge, spouse-led MoR) | `OPEN` | — | `01_unit_economics_and_costs.md` §2; integration spec |
-| **PM2** — Secondary / contingency PSP (if any) | `OPEN` / `NONE` | — | Same + runbooks |
-| **PM3** — Wallet-first confirmation (GCash + Maya acceptable paths) | `OPEN` | — | [`README.md`](./README.md); exit gate copy |
-| **PM4** — Blended effective fee / net % for unit economics | `OPEN` | — | `01_unit_economics_and_costs.md` §2 |
+| **PM1** — Primary PSP (PH wedge, spouse-led MoR) | `LOCKED: PayMongo` | 2026-05-03 | `01_unit_economics_and_costs.md` §2; integration spec |
+| **PM2** — Secondary / contingency PSP (if any) | `Xendit` | 2026-05-03 | Same + runbooks |
+| **PM3** — Wallet-first confirmation (GCash + Maya acceptable paths) | `LOCKED: Maya Auto-Debit, GCash Manual Invoice` | 2026-05-03 | [`README.md`](./README.md); exit gate copy |
+| **PM4** — Blended effective fee / net % for unit economics | `LOCKED: ~2.0%` | 2026-05-03 | `01_unit_economics_and_costs.md` §2 |
 | **PM5** — Revisit trigger (e.g. fee change, KYB rule change) | | | This file + `CHANGELOG.md` |
 
 ---
@@ -75,4 +74,4 @@ Use for **P-8 trial**, **failed renewal**, and **wallet vs card** behavior. Repl
 
 ---
 
-*Last updated: 2026-05-05 — created as payment-plan counterpart to entity `DECISION_MATRIX.md`.*
+*Last updated: 2026-05-05 — PM1–PM4 HitM-confirmed via Gemini research CPPRD; Matrix 2–3 filled from [`PSP_RESEARCH_NOTES_2026_05.md`](./PSP_RESEARCH_NOTES_2026_05.md).*
