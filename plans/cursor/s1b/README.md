@@ -27,6 +27,24 @@ Sub-plans under this Stage. Each follows the canonical Execution Plan template (
 | `pwa-install-offline-sync-research/` | `draft`     | unassigned (HitM-led decisions + web) | none; informs W3 and W6 vocabulary                               | **Decision + rationale hub:** `[pwa-install-offline-sync-research/README.md](./pwa-install-offline-sync-research/README.md)` §**1.1–1.7** (tier, D2 API, D3 auth, D4 smoke/ADR, **3mo seed + offline banners + atomicity**), §**6** production bar; `**[RESEARCH_ARTIFACTS.md](./pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md)`**; **D4-exec** on `:8443`; S1.B exit bullet in `[validation_gates.md](../strategic-roadmap-reframe-53be/validation_gates.md)`. Sprint index: [below](#pwa-sprint-activation-index). |
 | `pwa-implementation-branch/`       | `draft`     | unassigned (web + api)                | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` (registry `completed` before plan `ready`) | **Orchestration root:** `[pwa-implementation-branch/README.md](./pwa-implementation-branch/README.md)` — Advanced PWA tasks **T00–T16**, `validation_gates.md`, **SEO P0** with sprint / **SEO P1** after **BP_SPRINT_CLOSE**; links research hub + [`distribution-channel-research/SEO_PRIORITY_MATRIX.md`](./distribution-channel-research/SEO_PRIORITY_MATRIX.md). |
 
+### Feature execution plans (`FEATURE_IDEAS.md` F-001–F-011)
+
+Each row is a **draft** governed plan (`plan_id` in YAML); work branches: `cursor/s1b/feat/<slug>` per [`../../_governance/branching_guidelines.md`](../../_governance/branching_guidelines.md). Register: [`../../_governance/plan_registry.md`](../../_governance/plan_registry.md).
+
+| F-id | Plan root |
+| ---- | --------- |
+| F-001 | [`feat-f001-balance-history/README.md`](./feat-f001-balance-history/README.md) |
+| F-002 | [`feat-f002-smart-tag-estimation/README.md`](./feat-f002-smart-tag-estimation/README.md) |
+| F-003 | [`feat-f003-predictive-budgeting/README.md`](./feat-f003-predictive-budgeting/README.md) |
+| F-004 | [`feat-f004-sts-pay-cycles-bill-realism/README.md`](./feat-f004-sts-pay-cycles-bill-realism/README.md) |
+| F-005 | [`feat-f005-savings-goals/README.md`](./feat-f005-savings-goals/README.md) |
+| F-006 | [`feat-f006-dashboard-widgets-custom/README.md`](./feat-f006-dashboard-widgets-custom/README.md) |
+| F-007 | [`feat-f007-guided-walkthroughs/README.md`](./feat-f007-guided-walkthroughs/README.md) |
+| F-008 | [`feat-f008-family-ledger/README.md`](./feat-f008-family-ledger/README.md) |
+| F-009 | [`feat-f009-recurring-auto-deduct/README.md`](./feat-f009-recurring-auto-deduct/README.md) |
+| F-010 | [`feat-f010-export-sharing/README.md`](./feat-f010-export-sharing/README.md) |
+| F-011 | [`feat-f011-wedge-landing-hero/README.md`](./feat-f011-wedge-landing-hero/README.md) |
+
 
 ## Branch naming convention
 

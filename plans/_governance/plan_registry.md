@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-05-03 (PWA implementation sprint plan registered)
+**Last updated:** 2026-05-05 (F-001–F-011 feature execution plans registered)
 
 ## Update protocol
 
@@ -39,6 +39,17 @@ Active strategic phase: **S1**, Stage **S1.B** (per `plans/cursor/strategic-road
 |---|---|---|---|---|
 | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/cursor/s1b/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/cursor/s1b/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
 | `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | pproctor | 2026-05-03 | **Execution hub:** `plans/cursor/s1b/pwa-implementation-branch/README.md`; **host branch** `cursor/s1b/pwa-implementation-branch`; Advanced PWA + **SEO P0** parallel + **SEO P1** post-`BP_SPRINT_CLOSE`; **depends_on** `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` (remain `draft` until research `completed` per plan README ready-rule). |
+| `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/cursor/s1b/feat-f001-balance-history/README.md`; branch `cursor/s1b/feat/f001-balance-history`. |
+| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/cursor/s1b/feat-f002-smart-tag-estimation/README.md`. |
+| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/cursor/s1b/feat-f003-predictive-budgeting/README.md`. |
+| `PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-004** STS pay cycles, partial pay, volatile vs rigid bills + expansion annex: `plans/cursor/s1b/feat-f004-sts-pay-cycles-bill-realism/README.md`; **P1**. |
+| `PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-005** savings goals: `plans/cursor/s1b/feat-f005-savings-goals/README.md`. |
+| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-006** customizable dashboard: `plans/cursor/s1b/feat-f006-dashboard-widgets-custom/README.md`. |
+| `PLAN_CROSS_GUIDED_TOURS_F007_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-007** guided walkthroughs: `plans/cursor/s1b/feat-f007-guided-walkthroughs/README.md`. |
+| `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/cursor/s1b/feat-f008-family-ledger/README.md`. |
+| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-009** recurring automation + **source → auto_deduct**: `plans/cursor/s1b/feat-f009-recurring-auto-deduct/README.md`. |
+| `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-010** export/share + PWA trust; **P1**: `plans/cursor/s1b/feat-f010-export-sharing/README.md`. |
+| `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-011** living landing/hero (H-W3-1): `plans/cursor/s1b/feat-f011-wedge-landing-hero/README.md`. |
 
 ## Paused
 

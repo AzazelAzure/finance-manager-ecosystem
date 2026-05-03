@@ -1,12 +1,28 @@
 # Feature Ideas — Brain Dump (2026-05-03)
 
-**Consolidated index (huddle + strategy + this file):** [`PRODUCT_FEATURE_BACKLOG_INDEX.md`](./PRODUCT_FEATURE_BACKLOG_INDEX.md)
+**Consolidated index (huddle + strategy + this file):** `[PRODUCT_FEATURE_BACKLOG_INDEX.md](./PRODUCT_FEATURE_BACKLOG_INDEX.md)`
 
 Unstructured feature capture. No implementation plans yet. Each entry is a product idea to be slotted into sprint planning later.
 
 **Format:** ID, title, what it does, why it matters, rough notes.
 
 **Ids:** **F-001**–**F-007** (original brain dump), **F-008**–**F-011** (huddle / S1.B candidates + living marketing), **B-001**–**B-003** (sticky-note bugs).
+
+**S1.B execution plans** (governed per `plans/_governance/plan_template.md`; branch `cursor/s1b/feat/<slug>` per `branching_guidelines.md`):
+
+| F-id | Plan `README` |
+| ---- | ------------- |
+| F-001 | [`s1b/feat-f001-balance-history/README.md`](./s1b/feat-f001-balance-history/README.md) |
+| F-002 | [`s1b/feat-f002-smart-tag-estimation/README.md`](./s1b/feat-f002-smart-tag-estimation/README.md) |
+| F-003 | [`s1b/feat-f003-predictive-budgeting/README.md`](./s1b/feat-f003-predictive-budgeting/README.md) |
+| F-004 | [`s1b/feat-f004-sts-pay-cycles-bill-realism/README.md`](./s1b/feat-f004-sts-pay-cycles-bill-realism/README.md) |
+| F-005 | [`s1b/feat-f005-savings-goals/README.md`](./s1b/feat-f005-savings-goals/README.md) |
+| F-006 | [`s1b/feat-f006-dashboard-widgets-custom/README.md`](./s1b/feat-f006-dashboard-widgets-custom/README.md) |
+| F-007 | [`s1b/feat-f007-guided-walkthroughs/README.md`](./s1b/feat-f007-guided-walkthroughs/README.md) |
+| F-008 | [`s1b/feat-f008-family-ledger/README.md`](./s1b/feat-f008-family-ledger/README.md) |
+| F-009 | [`s1b/feat-f009-recurring-auto-deduct/README.md`](./s1b/feat-f009-recurring-auto-deduct/README.md) |
+| F-010 | [`s1b/feat-f010-export-sharing/README.md`](./s1b/feat-f010-export-sharing/README.md) |
+| F-011 | [`s1b/feat-f011-wedge-landing-hero/README.md`](./s1b/feat-f011-wedge-landing-hero/README.md) |
 
 ---
 
