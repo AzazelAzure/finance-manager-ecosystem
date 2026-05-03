@@ -100,7 +100,7 @@ wait_api_service_ready() {
   log "Waiting for $svc /api/health/ ..."
   for i in $(seq 1 90); do
     cid="$(container_id_for_service "$svc")"
-    if [[ -n "$cid" ]] && "$RUNTIME_BIN" exec -T "$cid" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
+    if [[ -n "$cid" ]] && "$RUNTIME_BIN" exec "$cid" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
       log "$svc is healthy (${i}s)."
       return 0
     fi
@@ -170,7 +170,8 @@ compose_exec_tty() {
   local cid
   cid="$(container_id_for_service "$svc")"
   [[ -n "$cid" ]] || die "compose service not running (no container id): $svc (project=$PROJECT_NAME)"
-  "$RUNTIME_BIN" exec -T "$cid" "$@"
+  # No `-T`: Podman does not support Docker's "disable TTY" shorthand; default is non-TTY.
+  "$RUNTIME_BIN" exec "$cid" "$@"
 }
 
 require_paths() {
