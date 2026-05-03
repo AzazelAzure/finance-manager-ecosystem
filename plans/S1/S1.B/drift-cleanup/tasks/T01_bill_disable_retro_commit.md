@@ -21,7 +21,7 @@ Per `design_docs/10_Current_State/01_Runtime_Validation_Checklist.md` §H BP7 sn
 
 1. SSH to VPS as `dev@159.198.75.194`.
 2. `cd ~/finance_manager/finance_manager_web` and check the running code state.
-3. Compare with local clone at `/home/pproctor/Documents/python/finance_manager/finance_manager_web/src/components/dashboard/QuickActions.tsx`.
+3. Compare with your local **`finance_manager_web`** submodule: `src/components/dashboard/QuickActions.tsx` (sibling under the parent repo root).
 4. Apply the same disable to the local clone if not present.
 5. Commit on branch `cursor/s1b/drift-cleanup/t01-bill-disable-retro-commit`.
 6. Open PR to `main`.

@@ -8,6 +8,12 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 - **Moved** `GEMINI_PLAN_TEMPLATE.md`, `GEMINI_PLAN_TEMPLATE_V2.md`, and `GEMINI_PLAN_TEMPLATE_QUICK.md` to [`plans/archived/gemini_plan_templates/`](plans/archived/gemini_plan_templates/) with index README. **`governance/plan_template.md`** is the only active plan schema; [`plans/templates/README.md`](plans/templates/README.md) points authors there. Updated [`governance/plan_template.md`](governance/plan_template.md) intro and [`GEMINI.md`](GEMINI.md).
 
+### 2026-05-04 — Plans health: `plans/README.md`, remove duplicate `plans/feat/` tree
+
+- **Added** [`plans/README.md`](plans/README.md) as the entry map for active `plans/<Phase>/<Stage>/`, `plans/archived/`, and `plans/templates/` (vs **`strategy/`** and **`governance/`**).
+- **Removed** residual duplicate `plans/feat/web-reflex-parity-sweep-1/` (canonical frozen plan: [`plans/archived/feat/web-reflex-parity-sweep-1/`](plans/archived/feat/web-reflex-parity-sweep-1/)).
+- **Docs:** `AGENTS.md` orchestration bullet Markdown fix; `plans/S1/S1.B/drift-cleanup/tasks/T01_bill_disable_retro_commit.md` uses submodule-relative wording for the QuickActions comparison; `plans/cursor/_TEMP_ECOSYSTEM_HEALTH_AND_DIRECTIVES_2026-05-04.md` parity item marked resolved; parent [`README.md`](README.md) links [`plans/README.md`](plans/README.md).
+
 ### 2026-05-04 — `GEMINI.md` aligned with ecosystem layout and governance
 
 - **Rewrote** root [`GEMINI.md`](GEMINI.md): parent vs submodules, `governance/` + `strategy/` + hierarchical `plans/`, canonical **`governance/plan_template.md`**, API `finance/` layout, flagship web, Docker/proxy `:8443` and `scripts/` pointers, CPPRD/PR rules, archived Reflex, and archived root Python scratches path.
