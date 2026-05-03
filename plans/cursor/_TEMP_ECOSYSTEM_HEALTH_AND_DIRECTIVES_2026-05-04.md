@@ -90,9 +90,7 @@ Branches: `cursor/s1b/<sub-plan>`, `cursor/s1b/feat/<feature>`, etc.
 1. **Mixed plan roots under `plans/`**
   Closed **cursor-era** umbrellas now live under `plans/archived/cursor-layout-era/`; active Stage work is under `plans/S1/S1.B/`. Any remaining stray top-level plan folders outside those patterns should be triaged into `plans/archived/` or deleted.  
    **Health impact:** Residual top-level plan dirs (outside `plans/S1/` and `plans/archived/`) still confuse “active vs historical” unless registry rows stay strict.
-2. `**plans/feat/web-reflex-parity-sweep-1/` still present**
-  Registry notes former `plans/feat/` trees were moved under `plans/archived/` (2026-05-01). A **residual** `plans/feat/web-reflex-parity-sweep-1/` directory remains.  
-   **Health impact:** Duplicate or stale coordination artifacts vs `plans/archived/feat/…`.
+2. ~~**`plans/feat/web-reflex-parity-sweep-1/` still present**~~ **Resolved (2026-05-04 sweep):** residual top-level `plans/feat/` tree removed; canonical parity sweep artifacts live under **`plans/archived/feat/web-reflex-parity-sweep-1/`** only.
 3. **Root README vs governance**
   `README.md` still says plans live at `plans/<proposed-git-branch-name>/` and points at `roadmap-rollout-planning` for structure; governance and `AGENTS.md` now center `plans/<Phase>/<Stage>/` plus repo-root `strategy/`.  
    **Health impact:** Onboarding mismatch.
@@ -165,7 +163,7 @@ These are **opinionated next steps** derived from this snapshot:
 
 1. **Normalize all active and reference-only plan trees** under `plans/<Phase>/<Stage>/` or `plans/archived/`, and eliminate stray `plans/feat/` remnants or symlink them to archived canonical copies.
 2. **Update parent `README.md`** to match hierarchical `plans/<Phase>/<Stage>/` + `strategy/` layout and link to `governance/plan_registry.md`.
-3. **Add a single “orchestration index”** (could replace this temp file later) listing: governance files, strategic root, active stage root, paused items, and “do not use” legacy paths.
+3. ~~**Add a single “orchestration index”**~~ **Done:** [`governance/orchestration.md`](../../governance/orchestration.md) plus skill mirrors [`governance/skill_roadmap_rollout_planning.md`](../../governance/skill_roadmap_rollout_planning.md) and [`governance/skill_orchestration_manager.md`](../../governance/skill_orchestration_manager.md). Retire this temp file after a final link sweep if nothing unique remains.
 4. **Submodule hygiene:** When web work stabilizes, commit parent with updated `finance_manager_web` SHA; avoid long-lived `+` drift without documenting intent.
 5. **design_docs:** Periodic link sweep using `Strategic_doc_conflicts…` as baseline; avoid duplicating strategy in design_docs when `strategy/` + `plans/` already own execution sequencing.
 

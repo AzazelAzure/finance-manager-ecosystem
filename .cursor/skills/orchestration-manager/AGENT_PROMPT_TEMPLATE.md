@@ -17,7 +17,7 @@ First, read and follow:
 - `.cursor/skills/orchestration-manager/SKILL.md`
 
 Execution context:
-- Active plan root: `plans/<proposed-git-branch-name>/` (primary plan file or manifest inside that folder, e.g. `README.md` or `execution_manifest.md`)
+- Active plan root: `plans/<Phase>/<Stage>/<sub-plan>/` (primary plan file or manifest inside that folder, e.g. `README.md` or `execution_manifest.md`; see `governance/orchestration.md`)
 - Current tasks/todos: <list>
 - Scope boundaries: <repos/paths>
 - Branch/PR targets: <repo -> feature branch -> target branch>
@@ -27,8 +27,8 @@ Required behavior:
 1. Classify tasks and route to the correct workflow skill/subagent path.
 2. Delegate with explicit task packet (objective, scope, DoD, validation).
 3. Enforce testing breakpoints and handoff requirements.
-4. Enforce PR protocol: post opened PRs to Slack `#pull-requests`, wait/read automation authorization, and reconcile with GitHub mergeability/check state before merge.
-5. If a task fails or PR gate mismatches (Slack approved but GitHub conflicting/dirty), reclassify/reorder and retask.
+4. Enforce PR protocol: post opened PR links in **Cursor chat**; reconcile GitHub mergeability and required checks before merge; follow `governance/execution_protocols.md` for Slack gates when required by the plan.
+5. If a task fails or PR gate mismatches (approved in chat or Slack but GitHub conflicting or dirty), reclassify/reorder and retask.
 6. Do not declare completion until final readiness gate passes.
 
 Return format:
