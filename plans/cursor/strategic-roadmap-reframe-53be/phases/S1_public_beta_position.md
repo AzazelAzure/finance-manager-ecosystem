@@ -61,7 +61,7 @@ This phase is **not** about new features for their own sake. It is about closing
 - Founding member program backend ready (seat cap + lifetime SKU + badge system).
 - "Worth paying for" feature work complete (Pro tier demonstrably worth ₱200/mo).
 - ToS + Privacy + Refund policies drafted and live.
-- Flagship **PWA install-as-app** production bar met and `pwa-install-offline-sync-research` closed with **D0–D4** decisions + **D4-exec** on `:8443` (`plans/cursor/s1b/pwa-install-offline-sync-research/README.md` **§6**; rationale chain **§1.1–§1.7** including **3mo seed, offline disclaimers, bidirectional atomicity**). **Sprint activation index:** `plans/cursor/s1b/README.md` (section **Sprint activation index — PWA (install, offline, resync)**). Gates S1.C entry via S1.B exit.
+- Flagship **PWA install-as-app** production bar met and `pwa-install-offline-sync-research` closed with **D0–D4** decisions + **D4-exec** on `:8443` (`plans/S1/S1.B/pwa-install-offline-sync-research/README.md` **§6**; rationale chain **§1.1–§1.7** including **3mo seed, offline disclaimers, bidirectional atomicity**). **Sprint activation index:** `plans/S1/S1.B/README.md` (section **Sprint activation index — PWA (install, offline, resync)**). Gates S1.C entry via S1.B exit.
 
 ### S1.B Workstreams
 
@@ -77,18 +77,18 @@ P0 / S1. Order locked at huddle.
   - Issue #1 (recurring expense edit `is_recurring=true` broken) — S1
   - Issues #4 + #7 (heatmap intensity + calendar daily-active populate) — investigate jointly per shared root suspicion
 
-Sub-plan: `plans/cursor/s1b/drift-cleanup/`.
+Sub-plan: `plans/S1/S1.B/drift-cleanup/`.
 
 #### W2 — Research Workstream (Group C, sequential)
 
 P0 / S1.B exit gate. Sequential per huddle Q9.2.
 
-- **Entity formation research.** US LLC vs OPC. Gates everything financial. Sub-plan: `plans/cursor/s1b/entity-formation-research/`.
-- **Payment provider research.** Stripe vs PayMongo vs Xendit vs hybrid. GCash/Maya legality for US-incorporated business. Mobile-wallet primary path. Sub-plan: `plans/cursor/s1b/payment-provider-research/`.
-- **AI Economics Deep-Dive.** 16 questions per `00_strategic_context.md` §3.11 + this Phase doc Appendix A. Sub-plan: `plans/cursor/s1b/ai-economics-deep-dive/`. **Shelved 2026-05-01** until **entity formation** + **payment provider** research decide PSP/entity path; **partial locks** in `01_unit_economics_and_costs.md` §2.0 + Appendix A snapshot — resume to close **remaining** rows before S1.C.
-- **Distribution channel research.** PH-local channels (Facebook anchor, AI video framing, family/friend WOM seed). Sub-plan: `plans/cursor/s1b/distribution-channel-research/`.
-- **Wedge consistency audit.** Slip-in (~1 hour). Static product surfaces, public docs, social/content surfaces. Sub-plan: `plans/cursor/s1b/wedge-consistency-audit/`.
-- **PWA install-as-app + offline/resync research.** Pre-Android app-like distribution; decision gates **D0–D4** control implementation depth (**Advanced** locked — see sub-plan **§1.1**). Sub-plan hub: `plans/cursor/s1b/pwa-install-offline-sync-research/README.md` (**§1.1–§1.7** rationale, **§6** bar, **`RESEARCH_ARTIFACTS.md`**). **S1.B sprint activation:** `plans/cursor/s1b/README.md` (**Sprint activation index — PWA (install, offline, resync)**). **Seeding / offline window / atomicity:** `plans/cursor/s1b/pwa-install-offline-sync-research/SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`.
+- **Entity formation research.** US LLC vs OPC. Gates everything financial. Sub-plan: `plans/S1/S1.B/entity-formation-research/`.
+- **Payment provider research.** Stripe vs PayMongo vs Xendit vs hybrid. GCash/Maya legality for US-incorporated business. Mobile-wallet primary path. Sub-plan: `plans/S1/S1.B/payment-provider-research/`.
+- **AI Economics Deep-Dive.** 16 questions per `00_strategic_context.md` §3.11 + this Phase doc Appendix A. Sub-plan: `plans/S1/S1.B/ai-economics-deep-dive/`. **Shelved 2026-05-01** until **entity formation** + **payment provider** research decide PSP/entity path; **partial locks** in `01_unit_economics_and_costs.md` §2.0 + Appendix A snapshot — resume to close **remaining** rows before S1.C.
+- **Distribution channel research.** PH-local channels (Facebook anchor, AI video framing, family/friend WOM seed). Sub-plan: `plans/S1/S1.B/distribution-channel-research/`.
+- **Wedge consistency audit.** Slip-in (~1 hour). Static product surfaces, public docs, social/content surfaces. Sub-plan: `plans/S1/S1.B/wedge-consistency-audit/`.
+- **PWA install-as-app + offline/resync research.** Pre-Android app-like distribution; decision gates **D0–D4** control implementation depth (**Advanced** locked — see sub-plan **§1.1**). Sub-plan hub: `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` (**§1.1–§1.7** rationale, **§6** bar, **`RESEARCH_ARTIFACTS.md`**). **S1.B sprint activation:** `plans/S1/S1.B/README.md` (**Sprint activation index — PWA (install, offline, resync)**). **Seeding / offline window / atomicity:** `plans/S1/S1.B/pwa-install-offline-sync-research/SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`.
 
 #### W3 — "Worth Paying For" Feature Work (Group D)
 
@@ -118,10 +118,10 @@ After W2 + W3.
 
 Concurrent with other workstreams. Targets `android:Scaffold → android:Alpha` during S1.B; `android:Tight Beta` during S1.C.
 
-- Sync architecture document drafted (per `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md`); align outbox/idempotency vocabulary with **web PWA** decisions from `plans/cursor/s1b/pwa-install-offline-sync-research/README.md` (**§1.2–§1.7**, `D2_API_OUTBOX_CONTRACT.md`, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`) where applicable.
+- Sync architecture document drafted (per `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md`); align outbox/idempotency vocabulary with **web PWA** decisions from `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` (**§1.2–§1.7**, `D2_API_OUTBOX_CONTRACT.md`, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`) where applicable.
 - Kotlin + Compose project scaffold built and verified buildable via AI orchestration.
 - First minimum-viable feature on Android: safe-to-spend dashboard reading from local SQLite, syncing to API.
-- Sub-plan: `plans/cursor/s1b/android-pullforward/` (when scoped; may slip to S1.C if S1.B capacity is constrained).
+- Sub-plan: `plans/S1/S1.B/android-pullforward/` (when scoped; may slip to S1.C if S1.B capacity is constrained).
 
 ---
 
@@ -131,7 +131,7 @@ Concurrent with other workstreams. Targets `android:Scaffold → android:Alpha` 
 
 **Entry criteria (all required):**
 
-- S1.B exit met (includes flagship **PWA install-as-app** bar per `plans/cursor/s1b/pwa-install-offline-sync-research/README.md` **§6** + **D4-exec**; decisions/rationale **§1.1–§1.7**; S1.B index `plans/cursor/s1b/README.md`).
+- S1.B exit met (includes flagship **PWA install-as-app** bar per `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` **§6** + **D4-exec**; decisions/rationale **§1.1–§1.7**; S1.B index `plans/S1/S1.B/README.md`).
 - Pricing live with PHP-anchored Pro tier and Founding Lifetime SKU.
 - Mobile wallet payment (GCash/Maya) functional as primary payment method.
 - AI tier (Pro+ AI) launches — final commitment per AI Economics Deep-Dive outcome.
@@ -211,7 +211,7 @@ Concurrent with other workstreams. Targets `android:Scaffold → android:Alpha` 
 - Parking lot: `PARKING_LOT.md` (P-1 through P-7)
 - Branching workflow: `governance/branching_guidelines.md`
 - Deployment workflow: `governance/deployment_protocol.md`
-- Stage-level dashboard: `plans/cursor/s1b/README.md`
+- Stage-level dashboard: `plans/S1/S1.B/README.md`
 
 ---
 
@@ -221,7 +221,7 @@ Required S1.B sub-Sprint per `00_strategic_context.md` §3.5 and §3.11. **S1.B 
 
 **Deep-dive execution shelved (2026-05-01):** Remaining **Open** Appendix A items (model ladder, measured tokens, volume PAYG SKUs, UX cadence, ToS-level founder text) are **paused** until `**entity-formation-research`** and `**payment-provider-research**` land—those outputs change net-₱ math and bundle rules. **Commercial locks** (§2.0) stay authoritative in the interim.
 
-**Where the living math lives:** `plans/cursor/s1b/ai-economics-deep-dive/` — `LLM_PROVIDER_COST_SNAPSHOT.md`, `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md`, `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`, **optional PAYG volume SKUs:** `PAYG_VOLUME_BUNDLES_RESEARCH.md`. Strategic tier copy: `01_unit_economics_and_costs.md` §2–§3.
+**Where the living math lives:** `plans/S1/S1.B/ai-economics-deep-dive/` — `LLM_PROVIDER_COST_SNAPSHOT.md`, `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md`, `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`, **optional PAYG volume SKUs:** `PAYG_VOLUME_BUNDLES_RESEARCH.md`. Strategic tier copy: `01_unit_economics_and_costs.md` §2–§3.
 
 ---
 
@@ -231,7 +231,7 @@ Required S1.B sub-Sprint per `00_strategic_context.md` §3.5 and §3.11. **S1.B 
 | Topic                       | Status                | Position                                                                                                                                                |
 | --------------------------- | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Customer-visible unit**   | **Locked**            | **Billing credits** (not raw prompts).                                                                                                                  |
-| **PAYG price floor**        | **Locked**            | **₱99 → 100 credits** (~₱0.99/credit list); larger bundles — research only (`plans/cursor/s1b/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`). |
+| **PAYG price floor**        | **Locked**            | **₱99 → 100 credits** (~₱0.99/credit list); larger bundles — research only (`plans/S1/S1.B/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`). |
 | **Included credits / mo**   | **Locked**            | **Free 10 · Pro 100 · Pro+ 250**.                                                                                                                       |
 | **Pro list price**          | **Locked**            | **₱249/mo** (`01_unit_economics_and_costs.md` §2.0).                                                                                                    |
 | **Pro+ list price**         | **Locked**            | **₱349/mo**.                                                                                                                                            |

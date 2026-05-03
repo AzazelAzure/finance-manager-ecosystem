@@ -67,7 +67,7 @@ These are **closed decisions**. Re-opening them requires a kill/commit gate revi
 ### 3.5 AI Credits Model (Cursor-Pattern); Tier Ships at S1.C
 
 - Free tier: **~10 AI credits/month** (mini-only paths; see `01_unit_economics_and_costs.md` §3.1).
-- Paid tier: monthly subscription includes baseline AI credits; **PAYG** top-ups at **floor SKU ₱99 → 100 credits** (2026-05-01 lock). **Optional larger credit bundles** remain **unlocked** until volume economics + PSP fees are modeled (`plans/cursor/s1b/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`).
+- Paid tier: monthly subscription includes baseline AI credits; **PAYG** top-ups at **floor SKU ₱99 → 100 credits** (2026-05-01 lock). **Optional larger credit bundles** remain **unlocked** until volume economics + PSP fees are modeled (`plans/S1/S1.B/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`).
 - **List prices locked 2026-05-01:** Pro **₱249/mo**, Pro+ AI **₱349/mo** (`01_unit_economics_and_costs.md` §2.0).
 - "Smart predictions" rotate model tier by subscription level. Always cache, always batch where possible.
 - **2026-04-30 timing update:** Pro+ AI tier pulls forward from S2 to **S1.C** (Founding Beta entry), tentative pending the AI Economics Deep-Dive resolution within S1.B.

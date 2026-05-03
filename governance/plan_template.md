@@ -7,7 +7,7 @@ For surgical single-file fixes, use `plans/templates/GEMINI_PLAN_TEMPLATE_QUICK.
 ## 1) Required directory layout
 
 ```
-plans/cursor/<intended-branch>/
+plans/<Phase>/<Stage>/<sub-plan>/   # e.g. plans/S1/S1.B/drift-cleanup/
 ├── README.md            ← contains metadata header + body sections
 ├── tasks/               ← optional, for multi-task plans
 │   ├── T01_<slug>.md

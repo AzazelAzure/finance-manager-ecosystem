@@ -51,7 +51,7 @@ Read in this order when revisiting the plan:
 | Stage    | Title                  | What it covers                                                                                                                                                                            | Status (2026-04-30)   |
 | -------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------- |
 | **S1.A** | Tight Invite Beta      | Owner + small invite cohort; flagship product committed; infra stable                                                                                                                     | **Completed**         |
-| **S1.B** | Distribution Readiness | S0 fixes; Reflex archival; entity formation research; payment provider research; AI Economics Deep-Dive; landing polish; founding member program backend; "worth paying for" feature work; flagship **PWA** (decisions under `plans/cursor/s1b/pwa-install-offline-sync-research/`, sprint index `plans/cursor/s1b/README.md#pwa-sprint-activation-index`) | **Active** (entering) |
+| **S1.B** | Distribution Readiness | S0 fixes; Reflex archival; entity formation research; payment provider research; AI Economics Deep-Dive; landing polish; founding member program backend; "worth paying for" feature work; flagship **PWA** (decisions under `plans/S1/S1.B/pwa-install-offline-sync-research/`, sprint index `plans/S1/S1.B/README.md#pwa-sprint-activation-index`) | **Active** (entering) |
 | **S1.C** | Founding Beta          | Founding-member program open; first 50–100 paying lifetime seats; AI tier launches PH-only                                                                                                | Pending (~Aug 2026)   |
 | **S1.D** | Soft Public Open       | Anyone can sign up (PH); pricing visible; low-key promotion only                                                                                                                          | Pending (~Nov 2026)   |
 
@@ -93,8 +93,8 @@ This roadmap is "retired" when:
 Active Stage (S1.B) handoff:
 
 - Plan root: `plans/cursor/strategic-roadmap-reframe-53be/`
-- Active Stage packet: `phases/S1_public_beta_position.md` (+ Stage-level `plans/cursor/s1b/README.md`)
-- Active Stage execution plans: under `plans/cursor/s1b/<sub-plan>/`
+- Active Stage packet: `phases/S1_public_beta_position.md` (+ Stage-level `plans/S1/S1.B/README.md`)
+- Active Stage execution plans: under `plans/S1/S1.B/<sub-plan>/`
 - Pre-governance plans (now closed): see `governance/plan_registry.md` Recently Completed section
 
 ## 8) Plan Governance Layer
@@ -114,7 +114,7 @@ Tactical plans that execute against this strategic roadmap follow the **plan gov
 | `governance/branching_guidelines.md` | Producing or executing a feature on inactive color |
 
 
-**Hierarchical plan structure (locked 2026-04-30):** new plans live under `plans/cursor/<phase-stage>/<sub-plan>/` (e.g. `plans/cursor/s1b/drift-cleanup/`). Strategic Plan stays at top level (`plans/cursor/strategic-roadmap-reframe-53be/`); not Stage-scoped.
+**Hierarchical plan structure (locked 2026-04-30; path update 2026-05-04):** active Stage **implementation** plans live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/drift-cleanup/`). Pre-governance **cursor-era** umbrellas live under `plans/archived/cursor-layout-era/`. Strategic Plan stays at `plans/cursor/strategic-roadmap-reframe-53be/` (not Stage-scoped).
 
 **This strategic plan is not edited as part of tactical execution.** Subordinate plans update `validation_gates.md` and `kill_commit_gates.md` only at close, and only via the actions documented in `governance/plan_lifecycle.md` Stage 5.
 
@@ -122,6 +122,6 @@ When commissioning new work:
 
 1. Decide Phase/Stage (this README §3).
 2. Read the relevant Phase doc under `phases/`.
-3. Read the Stage-level README under `plans/cursor/<phase-stage>/README.md`.
+3. Read the Stage-level README under `plans/<Phase>/<Stage>/README.md` (active example: `plans/S1/S1.B/README.md`).
 4. Hand off to an agent with the Phase + Stage context; agent uses `governance/plan_template.md` to author a new tactical plan.
 5. Slack confirmation gates per `governance/execution_protocols.md` §1 keep HitM in the loop without requiring desktop attention for routine progress.

@@ -3,8 +3,8 @@ plan_id: PLAN_WEB_REFLEX_PARITY_SWEEP_1_2026-04-29
 execution_model: delegated_agents_sequential_with_pr_gates
 orchestration_branch: feat/web-reflex-parity-sweep-1
 sibling_plans:
-  - plans/cursor/finance-manager-web-beta-rollout-53be   # base rollout (auth, Docker, proxy, jsdev*)
-  - plans/cursor/vps-reflex-bluegreen-recovery-53be      # VPS blue/green
+  - plans/archived/cursor-layout-era/finance-manager-web-beta-rollout-53be   # base rollout (auth, Docker, proxy, jsdev*)
+  - plans/archived/cursor-layout-era/vps-reflex-bluegreen-recovery-53be      # VPS blue/green
 deployment:
   required: true
   target_services:

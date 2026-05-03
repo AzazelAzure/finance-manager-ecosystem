@@ -35,7 +35,7 @@ Anchored to PH purchasing power. **PH-first market focus locked 2026-04-30** (`0
 | **Founding Lifetime** | **₱999–₱1,499** one-time · **≤100 seats** hard cap | Seat count **locked at 100** for planning; entitlement text still ToS-ready per Appendix A founder questions.                                                                                                                                  |
 
 
-**Not locked:** **Pro Annual** SKU math (still table band); optional **larger PAYG bundles** — see `**plans/cursor/s1b/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`** before adding SKUs.
+**Not locked:** **Pro Annual** SKU math (still table band); optional **larger PAYG bundles** — see `**plans/S1/S1.B/ai-economics-deep-dive/PAYG_VOLUME_BUNDLES_RESEARCH.md`** before adding SKUs.
 
 
 | Tier                                    | PHP/mo                   | USD/mo            | What's included                                                                                                                                                                                                                                                                                         |
@@ -103,11 +103,11 @@ Included **wallet credits**/month (**same numeric caps** as legacy prompt allowa
 
 Required S1.B sub-Sprint before S1.C opens. 16 interlocking decisions, captured in `phases/S1_public_beta_position.md`. Final Pro+ AI commitment (currently `S1.C tentative` per Topic 4 Q4) depends on this deep-dive's outcome.
 
-**Model-vs-price sanity check:** `plans/cursor/s1b/ai-economics-deep-dive/LLM_PROVIDER_COST_SNAPSHOT.md` — full **bucket** usage vs tariff (still uses **completion** framing; aligns to **debit multipliers** in metering doc).
+**Model-vs-price sanity check:** `plans/S1/S1.B/ai-economics-deep-dive/LLM_PROVIDER_COST_SNAPSHOT.md` — full **bucket** usage vs tariff (still uses **completion** framing; aligns to **debit multipliers** in metering doc).
 
-**Metering / BC ledger:** `plans/cursor/s1b/ai-economics-deep-dive/AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` — **tier ceilings**, debit multipliers, PAYG **₱99 → 100**.
+**Metering / BC ledger:** `plans/S1/S1.B/ai-economics-deep-dive/AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` — **tier ceilings**, debit multipliers, PAYG **₱99 → 100**.
 
-**Floor vs subscription vs founder discounts:** `plans/cursor/s1b/ai-economics-deep-dive/CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md` — **net $/credit**, **COGS/credit**, Pro **100** vs Pro+ **250**, breakeven **discount vs PAYG**.
+**Floor vs subscription vs founder discounts:** `plans/S1/S1.B/ai-economics-deep-dive/CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md` — **net $/credit**, **COGS/credit**, Pro **100** vs Pro+ **250**, breakeven **discount vs PAYG**.
 
 ### 3.4 AI usage observability (S1.C implementation — required for financial health)
 
@@ -177,7 +177,7 @@ These are pre-decided actions, not commitments to act now.
 
 ### 5.0 Operating entity pipeline (HitM lock — 2026-05-03)
 
-Authoritative narrative for **how** revenue is intended to flow pending counsel, PSP KYB, and written agreements (see `plans/cursor/s1b/entity-formation-research/README.md` §0.2 and `DECISION_MATRIX.md` L2–L4):
+Authoritative narrative for **how** revenue is intended to flow pending counsel, PSP KYB, and written agreements (see `plans/S1/S1.B/entity-formation-research/README.md` §0.2 and `DECISION_MATRIX.md` L2–L4):
 
 - **PH operating entity (spouse-led):** Filipino-owned vehicle is **merchant of record** for PHP customer receipts, PSP settlement, and PH tax filings. Spouse has **agreed** to genuine management responsibilities consistent with **Anti-Dummy** constraints.
 - **HitM US LLC:** Acts as **independent contractor** — software / IP **licensor** and technical **services vendor** to the PH entity under B2B contracts (arm’s-length pricing **TBD** with PH + US tax advisors).

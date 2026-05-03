@@ -523,7 +523,7 @@ new-feature-branch complete
 **Decision Q11.3 — Hierarchical plan structure locked:**
 
 ```
-plans/cursor/<phase><stage>/                    e.g. plans/cursor/s1b/
+plans/cursor/<phase><stage>/                    e.g. plans/S1/S1.B/
   ├── README.md                                  Stage summary + sub-plan index
   ├── <sub-plan-name>/                           e.g. drift-cleanup/
   │   ├── README.md                              Plan metadata + body

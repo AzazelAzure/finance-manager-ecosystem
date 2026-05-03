@@ -1,6 +1,6 @@
 # Governance — AI operations manual
 
-Repo location: **`governance/`** (workspace root, sibling to `plans/`). Tactical **execution plans** still live under `plans/cursor/<phase-stage>/<sub-plan>/`; this directory holds **protocols** (registry, lifecycle, deploy, branching, vocabulary).
+Repo location: **`governance/`** (workspace root, sibling to `plans/`). Tactical **execution plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/`); this directory holds **protocols** (registry, lifecycle, deploy, branching, vocabulary).
 
 Primary audience: AI agents (Cursor desktop, Cursor cloud, headless Slack bridge, any future agent).
 Secondary audience: HitM (Human in the Middle = `pproctor`) at Slack confirmation gates only.
@@ -153,7 +153,7 @@ These values are normative. AI agents must use only these strings. Validation fa
 
 ## What this directory does not contain
 
-- Actual plans. **Active tactical plans** live under `plans/cursor/<phase-stage>/<sub-plan>/` (see `branching_guidelines.md`). **Closed or superseded plans** live under `plans/archived/` (flat `PLAN_*.md`, huddle folders like `post_beta_huddle_2026-04-30/`, or nested `archived/feat/`, `archived/fix/`, `archived/volatile/`, `archived/volatile_standby/` from the 2026-05-01 layout consolidation).
+- Actual plans. **Active tactical plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (see `branching_guidelines.md`). **Closed or superseded plans** live under `plans/archived/` (flat `PLAN_*.md`, huddle folders like `post_beta_huddle_2026-04-30/`, nested `archived/feat/`, `archived/fix/`, `archived/volatile*`, and **`archived/cursor-layout-era/`** for pre–2026-05-04 `plans/cursor/*` umbrellas).
 - Strategic context. That lives in `plans/cursor/strategic-roadmap-reframe-53be/`.
 - Tooling. Governance is documentation, not enforcement code.
 
