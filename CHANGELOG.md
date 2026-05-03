@@ -4,6 +4,12 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-05 — Payment provider `DECISION_MATRIX.md` (PM locks)
+
+- **`plans/cursor/s1b/payment-provider-research/DECISION_MATRIX.md`:** Matrix 1–3 (PSP path, capabilities, settlement economics) + **PM1–PM5** HitM signoff slots (distinct from entity **L** locks).
+- **`plans/cursor/s1b/payment-provider-research/README.md`:** **§0.65** hub link; deliverables + §3 pointers; `updated` metadata.
+- **`PSP_COMPARISON_MATRIX.md`**, **`PAYMENT_ARCHITECTURE_SPLIT.md`**, **`plans/cursor/s1b/README.md`**, **`GEMINI_RESEARCH_README.md`:** cross-links.
+
 ### 2026-05-04 — Entity formation execution posture + US LLC pathways workbook
 
 - **`plans/cursor/s1b/entity-formation-research/README.md`:** **§0.4** — counsel-heavy tail continues; **not** a PWA implementation blocker; **PSP go-live** still gated; hub table + **§7** payment/PWA nuance.
