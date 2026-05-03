@@ -2,6 +2,11 @@
 
 # Finance Manager server-beta blue/green runtime helper.
 # Script-first operations for status/check/deploy/switch/rollback without forcing destructive actions.
+#
+# Log hygiene: smoke / wait / proxy reload use direct "podman exec" (see compose_exec_tty) so
+# podman-compose does not print compose-interpolated secrets for those steps. "compose up" /
+# "build" may still print full "podman run -e ..." lines from podman-compose; avoid teeing that
+# output to public logs, or run compose from tooling that masks secrets.
 
 set -euo pipefail
 
@@ -91,16 +96,17 @@ remove_compose_service_container() {
 # After (re)creating an API container, Django may need a few seconds before :8000 listens.
 wait_api_service_ready() {
   local svc="$1"
-  local i
+  local i cid
   log "Waiting for $svc /api/health/ ..."
-  for i in $(seq 1 60); do
-    if compose_exec_tty "$svc" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
+  for i in $(seq 1 90); do
+    cid="$(container_id_for_service "$svc")"
+    if [[ -n "$cid" ]] && "$RUNTIME_BIN" exec -T "$cid" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
       log "$svc is healthy (${i}s)."
       return 0
     fi
     sleep 2
   done
-  die "$svc did not respond to /api/health/ within ~120s (check logs: $0 logs $svc)"
+  die "$svc did not respond to /api/health/ within ~180s (check logs: $0 logs $svc)"
 }
 
 using_parallel_compose() {
