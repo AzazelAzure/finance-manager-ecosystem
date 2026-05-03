@@ -4,6 +4,15 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-21 — Parent CPPRD: submodule pins, PWA pause registry, plans + brand pack
+
+- **Submodules:** `finance_manager_api` → **`main`** (merge **`cb02b24`** — PWA D2 idempotency allowlist for categories/tags/sources). `finance_manager_web` → **`main`** (merge **`e3dc6e1`** — offline outbox lookup allowlist + Workbox navigate fix PR #45).
+- **PWA implementation sprint:** `plans/cursor/s1b/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `plans/_governance/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
+- **Plans / research:** `plans/cursor/s1b/entity-formation-research/ACTION_SEQUENCE.md` (new). `plans/feat/web-reflex-parity-sweep-1/` (parity sweep plan tree). Ongoing edits: `FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`, `SEO_PRIORITY_MATRIX.md`, `feat-f007-guided-walkthroughs/README.md`.
+- **Brand assets:** `resources/hfm_icon_web/` (F-011 README–referenced HitM icon pack; PNG set for wedge / manifest work).
+- **`AGENTS.md`:** workspace memory / alignment updates.
+- **Branch:** merged **`origin/main`** into `cursor/s1b/feat/s1b-feature-plans-registry` so parent history includes latest ecosystem `main`.
+
 ### 2026-05-06 — `fm_server_beta.sh rebuild-color` (Podman blue/green)
 
 - **`scripts/fm_server_beta.sh`:** New **`rebuild-color [--no-build] <blue|green>`** command: builds `api-*`/`web-*` for one color, stops **proxy** plus that color’s app containers, removes those containers via compose **labels** (no `podman-compose rm`, which does not exist), then `up -d` db/redis/api/web/proxy. Avoids Podman **`--requires`** / `depends_on` failures when replacing inactive backends. Parallel compose file keeps `up -d --force-recreate` only (no proxy). **`wait_api_service_ready`** polls `/api/health/` so immediate `smoke` after `rebuild-color` does not race Django startup.
