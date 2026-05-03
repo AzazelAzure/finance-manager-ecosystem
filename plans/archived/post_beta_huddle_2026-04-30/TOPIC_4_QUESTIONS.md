@@ -16,7 +16,7 @@ Recommended order: Q2 → Q3 → Q4 → Q5 → Q6 → Q1 (Q1 last as a summary l
 
 ## Q1 — Canonical model lock
 
-**Question:** Is the Strategic Plan (`plans/cursor/strategic-roadmap-reframe-53be/`) the canonical multi-year structure going forward, with old `Phase 1` / `Phase 2` docs in `design_docs/20_Roadmap/` becoming historical reference only?
+**Question:** Is the Strategic Plan (`strategy/strategic-roadmap-reframe-53be/`) the canonical multi-year structure going forward, with old `Phase 1` / `Phase 2` docs in `design_docs/20_Roadmap/` becoming historical reference only?
 
 **HitM context (2026-04-30):** "This depends. We will need to likely need to restructure this entirely."
 

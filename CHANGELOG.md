@@ -1,14 +1,30 @@
 # Changelog — finance-manager-ecosystem (parent)
 
-Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
+Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+
+### 2026-05-04 — Strategic roadmap: `strategy/strategic-roadmap-reframe-53be/`
+
+- **`plans/cursor/strategic-roadmap-reframe-53be/` → `strategy/strategic-roadmap-reframe-53be/`:** Canonical multi-year roadmap tree moved to repo-root **`strategy/`** (sibling to `plans/`). Added [`strategy/README.md`](strategy/README.md) as the entry router.
+- **Pointers:** `AGENTS.md`, `governance/*`, `README.md`, `.cursor/` skills/rules, `plans/S1/S1.B/**`, `design_docs/**`, `scripts/schedule_agent_sync.sh`, archives, and plan YAML `strategic_link` fields updated; relative markdown links recomputed per file depth.
+
+### 2026-05-04 — Active S1.B plans: `plans/S1/S1.B/` + `cursor-layout-era` archive
+
+- **`plans/cursor/s1b/` → `plans/S1/S1.B/`:** All active Stage S1.B implementation sub-plans, research, feature drafts, and backlog markdown (`FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`) now live under phase/stage paths. Cross-links, `AGENTS.md`, `governance/*`, strategic README §8, and `.cursor/skills/roadmap-rollout-planning/SKILL.md` updated.
+- **`plans/archived/cursor-layout-era/`:** Closed pre-governance umbrellas formerly under `plans/cursor/` (api-reflex beta readiness, web beta rollout, server blue-green install, VPS ops, security hardening, vps-reflex recovery) moved here; index `README.md` explains scope.
+- **Submodules / web:** `design_docs` path text updates; `finance_manager_web` comment pointer in `QuickActions.tsx`.
+
+### 2026-05-04 — Governance protocols moved to repo-root `governance/`
+
+- **`plans/_governance/` → `governance/`:** Plan ops manuals (registry, lifecycle, deploy, branching, glossary, HitM schedule docs) now live at the workspace root, sibling to `plans/`. Tactical execution plans use hierarchical `plans/<Phase>/<Stage>/<sub-plan>/` (see later 2026-05-04 S1.B lift in this changelog).
+- **Pointers:** `AGENTS.md`, parent `README.md`, `.gitignore` (schedule snapshot path), `scripts/schedule_agent_sync.sh`, `.cursor/` skills/rules, `design_docs/` vault links, and plan/strategic markdown cross-references updated to the new layout.
 
 ### 2026-05-21 — Parent CPPRD: submodule pins, PWA pause registry, plans + brand pack
 
 - **Submodules:** `finance_manager_api` → **`main`** (merge **`cb02b24`** — PWA D2 idempotency allowlist for categories/tags/sources). `finance_manager_web` → **`main`** (merge **`e3dc6e1`** — offline outbox lookup allowlist + Workbox navigate fix PR #45).
-- **PWA implementation sprint:** `plans/cursor/s1b/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `plans/_governance/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
-- **Plans / research:** `plans/cursor/s1b/entity-formation-research/ACTION_SEQUENCE.md` (new). `plans/feat/web-reflex-parity-sweep-1/` (parity sweep plan tree). Ongoing edits: `FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`, `SEO_PRIORITY_MATRIX.md`, `feat-f007-guided-walkthroughs/README.md`.
+- **PWA implementation sprint:** `plans/S1/S1.B/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `governance/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
+- **Plans / research:** `plans/S1/S1.B/entity-formation-research/ACTION_SEQUENCE.md` (new). `plans/feat/web-reflex-parity-sweep-1/` (parity sweep plan tree). Ongoing edits: `FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`, `SEO_PRIORITY_MATRIX.md`, `feat-f007-guided-walkthroughs/README.md`.
 - **Brand assets:** `resources/hfm_icon_web/` (F-011 README–referenced HitM icon pack; PNG set for wedge / manifest work).
 - **`AGENTS.md`:** workspace memory / alignment updates.
 - **Branch:** merged **`origin/main`** into `cursor/s1b/feat/s1b-feature-plans-registry` so parent history includes latest ecosystem `main`.
@@ -16,7 +32,7 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 ### 2026-05-06 — `fm_server_beta.sh rebuild-color` (Podman blue/green)
 
 - **`scripts/fm_server_beta.sh`:** New **`rebuild-color [--no-build] <blue|green>`** command: builds `api-*`/`web-*` for one color, stops **proxy** plus that color’s app containers, removes those containers via compose **labels** (no `podman-compose rm`, which does not exist), then `up -d` db/redis/api/web/proxy. Avoids Podman **`--requires`** / `depends_on` failures when replacing inactive backends. Parallel compose file keeps `up -d --force-recreate` only (no proxy). **`wait_api_service_ready`** polls `/api/health/` so immediate `smoke` after `rebuild-color` does not race Django startup.
-- **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`plans/_governance/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
+- **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`governance/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
 
 ### 2026-05-05 — KNOWN_ISSUES: P0 #8 source balance after transaction delete
 
@@ -24,49 +40,49 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ### 2026-05-05 — Gemini research CPPRD batch (PSP locks, distribution SEO, entity counsel prep)
 
-- **`plans/cursor/s1b/payment-provider-research/`:** HitM-confirmed **PM1–PM4** (PayMongo primary, Xendit secondary, Maya auto-debit + GCash manual invoice, **~2.0%** blended wallet MDR); `DECISION_MATRIX` Matrices 1–3 filled; `PSP_COMPARISON_MATRIX`, `PAYMENT_ARCHITECTURE_SPLIT`, `README` §0.6/§1/§5 gates; new **`PSP_RESEARCH_NOTES_2026_05.md`** (rationale). Governance note: re-verify on PSP sites before production.
-- **`plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** §2 bullets — PSP MDR **~2.0%** (PM4); §4.1 modeling note vs **~0.85** shortcut.
-- **`plans/cursor/s1b/distribution-channel-research/`:** `README` deliverables expanded; **`DECISION_MATRIX.md`**, **`DISTRIBUTION_RESEARCH_NOTES.md`**, **`SEO_GUIDE_01–03`**, **`SEO_PRIORITY_MATRIX.md`** (Gemini-assisted SEO / channel research).
-- **`plans/cursor/s1b/entity-formation-research/`:** `RESEARCH_ARTIFACTS` index; **`DTI_VS_OPC_COMPARISON.md`**, **`PH_COUNSEL_QUESTIONNAIRE.md`**, **`TAX_ADVISOR_QUESTIONNAIRE.md`**.
+- **`plans/S1/S1.B/payment-provider-research/`:** HitM-confirmed **PM1–PM4** (PayMongo primary, Xendit secondary, Maya auto-debit + GCash manual invoice, **~2.0%** blended wallet MDR); `DECISION_MATRIX` Matrices 1–3 filled; `PSP_COMPARISON_MATRIX`, `PAYMENT_ARCHITECTURE_SPLIT`, `README` §0.6/§1/§5 gates; new **`PSP_RESEARCH_NOTES_2026_05.md`** (rationale). Governance note: re-verify on PSP sites before production.
+- **`strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** §2 bullets — PSP MDR **~2.0%** (PM4); §4.1 modeling note vs **~0.85** shortcut.
+- **`plans/S1/S1.B/distribution-channel-research/`:** `README` deliverables expanded; **`DECISION_MATRIX.md`**, **`DISTRIBUTION_RESEARCH_NOTES.md`**, **`SEO_GUIDE_01–03`**, **`SEO_PRIORITY_MATRIX.md`** (Gemini-assisted SEO / channel research).
+- **`plans/S1/S1.B/entity-formation-research/`:** `RESEARCH_ARTIFACTS` index; **`DTI_VS_OPC_COMPARISON.md`**, **`PH_COUNSEL_QUESTIONNAIRE.md`**, **`TAX_ADVISOR_QUESTIONNAIRE.md`**.
 
 ### 2026-05-05 — Wedge consistency audit execution pack
 
-- **`plans/cursor/s1b/wedge-consistency-audit/README.md`:** canonical wedge quote, sequencing vs PWA/W3, **`i18n.ts`** surface map (`en-US` + `tl-PH`), method + deliverables + gates.
-- **`plans/cursor/s1b/wedge-consistency-audit/AUDIT_REPORT.md`:** findings table template + P0/P1 + signoff.
-- **`plans/cursor/s1b/wedge-consistency-audit/RESEARCH_ARTIFACTS.md`:** artifact index.
-- **`plans/cursor/s1b/README.md`**, **`GEMINI_RESEARCH_README.md`:** stage table + Gemini handoff for wedge audit.
+- **`plans/S1/S1.B/wedge-consistency-audit/README.md`:** canonical wedge quote, sequencing vs PWA/W3, **`i18n.ts`** surface map (`en-US` + `tl-PH`), method + deliverables + gates.
+- **`plans/S1/S1.B/wedge-consistency-audit/AUDIT_REPORT.md`:** findings table template + P0/P1 + signoff.
+- **`plans/S1/S1.B/wedge-consistency-audit/RESEARCH_ARTIFACTS.md`:** artifact index.
+- **`plans/S1/S1.B/README.md`**, **`GEMINI_RESEARCH_README.md`:** stage table + Gemini handoff for wedge audit.
 
 ### 2026-05-05 — Payment provider `DECISION_MATRIX.md` (PM locks)
 
-- **`plans/cursor/s1b/payment-provider-research/DECISION_MATRIX.md`:** Matrix 1–3 (PSP path, capabilities, settlement economics) + **PM1–PM5** HitM signoff slots (distinct from entity **L** locks).
-- **`plans/cursor/s1b/payment-provider-research/README.md`:** **§0.65** hub link; deliverables + §3 pointers; `updated` metadata.
-- **`PSP_COMPARISON_MATRIX.md`**, **`PAYMENT_ARCHITECTURE_SPLIT.md`**, **`plans/cursor/s1b/README.md`**, **`GEMINI_RESEARCH_README.md`:** cross-links.
+- **`plans/S1/S1.B/payment-provider-research/DECISION_MATRIX.md`:** Matrix 1–3 (PSP path, capabilities, settlement economics) + **PM1–PM5** HitM signoff slots (distinct from entity **L** locks).
+- **`plans/S1/S1.B/payment-provider-research/README.md`:** **§0.65** hub link; deliverables + §3 pointers; `updated` metadata.
+- **`PSP_COMPARISON_MATRIX.md`**, **`PAYMENT_ARCHITECTURE_SPLIT.md`**, **`plans/S1/S1.B/README.md`**, **`GEMINI_RESEARCH_README.md`:** cross-links.
 
 ### 2026-05-04 — Entity formation execution posture + US LLC pathways workbook
 
-- **`plans/cursor/s1b/entity-formation-research/README.md`:** **§0.4** — counsel-heavy tail continues; **not** a PWA implementation blocker; **PSP go-live** still gated; hub table + **§7** payment/PWA nuance.
-- **`plans/cursor/s1b/entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`:** pathway **decision matrix** (P1–P9), Gemini protocol, dated research log, handoff checklist.
-- **`plans/cursor/s1b/entity-formation-research/RESEARCH_ARTIFACTS.md`**, **`plans/cursor/s1b/README.md`:** index + stage table pointers.
+- **`plans/S1/S1.B/entity-formation-research/README.md`:** **§0.4** — counsel-heavy tail continues; **not** a PWA implementation blocker; **PSP go-live** still gated; hub table + **§7** payment/PWA nuance.
+- **`plans/S1/S1.B/entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`:** pathway **decision matrix** (P1–P9), Gemini protocol, dated research log, handoff checklist.
+- **`plans/S1/S1.B/entity-formation-research/RESEARCH_ARTIFACTS.md`**, **`plans/S1/S1.B/README.md`:** index + stage table pointers.
 
 ### 2026-05-03 — S1.B operating entity pipeline lock + Gemini research protocol
 
-- **`plans/cursor/s1b/entity-formation-research/`:** README **§0.2** (spouse-led PH MoR + HitM US LLC vendor, US-later + future regional split); **§0.3** payment coupling; objectives/scope; `DECISION_MATRIX` HitM locks **L2–L4** (2026-05-03) with L1 still time-gated; `RESEARCH_ARTIFACTS` touch; `HITM_LOCAL_CONTEXT` open question 4 aligned to pipeline + payment §0.6.
-- **`plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** **§5.0** operating entity pipeline mirror; **§5.1** advisory note that §5.0 supersedes generic FEIE-trigger list for initial wedge; **§5.3** points at §5.0 for settlement dual-entity.
-- **`plans/cursor/s1b/payment-provider-research/`:** README objective + **§0.6** (L2–L4 locked, PH spouse-led primary column, next dependency tax deep dive); §3 source line + §4 deliverables pipeline-aligned; `PSP_COMPARISON_MATRIX` + `PAYMENT_ARCHITECTURE_SPLIT` aligned to 2026-05-03 pipeline.
-- **`plans/cursor/s1b/README.md`:** pointer to **`GEMINI_RESEARCH_README.md`** for external research tools.
-- **`plans/cursor/s1b/GEMINI_RESEARCH_README.md`:** first-read protocol for Gemini/Antigravity (folder bounds, HitM-only locks, sources, CPPRD, no secrets).
+- **`plans/S1/S1.B/entity-formation-research/`:** README **§0.2** (spouse-led PH MoR + HitM US LLC vendor, US-later + future regional split); **§0.3** payment coupling; objectives/scope; `DECISION_MATRIX` HitM locks **L2–L4** (2026-05-03) with L1 still time-gated; `RESEARCH_ARTIFACTS` touch; `HITM_LOCAL_CONTEXT` open question 4 aligned to pipeline + payment §0.6.
+- **`strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** **§5.0** operating entity pipeline mirror; **§5.1** advisory note that §5.0 supersedes generic FEIE-trigger list for initial wedge; **§5.3** points at §5.0 for settlement dual-entity.
+- **`plans/S1/S1.B/payment-provider-research/`:** README objective + **§0.6** (L2–L4 locked, PH spouse-led primary column, next dependency tax deep dive); §3 source line + §4 deliverables pipeline-aligned; `PSP_COMPARISON_MATRIX` + `PAYMENT_ARCHITECTURE_SPLIT` aligned to 2026-05-03 pipeline.
+- **`plans/S1/S1.B/README.md`:** pointer to **`GEMINI_RESEARCH_README.md`** for external research tools.
+- **`plans/S1/S1.B/GEMINI_RESEARCH_README.md`:** first-read protocol for Gemini/Antigravity (folder bounds, HitM-only locks, sources, CPPRD, no secrets).
 
 ### 2026-05-03 — PWA implementation + SEO orchestration plan (S1.B)
 
-- **`plans/cursor/s1b/pwa-implementation-branch/`:** Execution-ready plan **`PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`** — `README.md` (YAML + phase compass), `validation_gates.md` (BP0–BP_SEO_P1, **SEO P1** gated on **BP_SPRINT_CLOSE**), `runtime_handoff.md`, `CROSS_AGENT_COORDINATION.md`, `governance_validator_run_2026-05-03.md`, tasks **T00–T16** (API D2, web build/manifest/SW, IndexedDB seed, outbox, D3 auth, D4-exec, docs CPPRD, **SEO P0** parallel / **SEO P1** deferred). Host branch: `cursor/s1b/pwa-implementation-branch`. Plan stays **`draft`** until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is **`completed`** in registry.
-- **`plans/_governance/plan_registry.md`:** Draft row for the implementation sprint plan.
-- **`plans/cursor/s1b/README.md`:** Sub-plan index row + sprint activation index link to `pwa-implementation-branch/README.md`.
+- **`plans/S1/S1.B/pwa-implementation-branch/`:** Execution-ready plan **`PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`** — `README.md` (YAML + phase compass), `validation_gates.md` (BP0–BP_SEO_P1, **SEO P1** gated on **BP_SPRINT_CLOSE**), `runtime_handoff.md`, `CROSS_AGENT_COORDINATION.md`, `governance_validator_run_2026-05-03.md`, tasks **T00–T16** (API D2, web build/manifest/SW, IndexedDB seed, outbox, D3 auth, D4-exec, docs CPPRD, **SEO P0** parallel / **SEO P1** deferred). Host branch: `cursor/s1b/pwa-implementation-branch`. Plan stays **`draft`** until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is **`completed`** in registry.
+- **`governance/plan_registry.md`:** Draft row for the implementation sprint plan.
+- **`plans/S1/S1.B/README.md`:** Sub-plan index row + sprint activation index link to `pwa-implementation-branch/README.md`.
 
 ### 2026-05-02 — S1.B entity/payment research governance + continual-learning memory
 
-- **`plans/cursor/s1b/entity-formation-research/`:** Gemini-sourced drafts reconciled to plan governance (no premature `LOCKED` without HitM signoff); `DECISION_MATRIX`, `US_ENTITY_PH_OPERATIONS`, `PH_SPOUSE_LED_AND_TRANSFER`, `REGISTRATION_BREAKPOINTS`, `HITM_LOCAL_CONTEXT`, `SPOUSE_INVOLVEMENT_REQUIREMENTS.md`, `RESEARCH_ARTIFACTS`, plan `README` **draft** status restored; FIA / minimum-capital framed as activity-specific counsel verification.
-- **`plans/cursor/s1b/payment-provider-research/`:** `README` §0.6 restored to **L1 time-gated** scenario coupling; Stripe back in scope; `PSP_COMPARISON_MATRIX.md` + `PAYMENT_ARCHITECTURE_SPLIT.md` as labeled research drafts with verify-on-provider disclaimers.
-- **`plans/cursor/strategic-roadmap-reframe-53be/`:** Reverted unintended Gemini edits to `01_unit_economics_and_costs.md`, `PARKING_LOT.md` P-2, and phase files (locks belong in entity plan after HitM signoff, not in strategic locks from chat).
+- **`plans/S1/S1.B/entity-formation-research/`:** Gemini-sourced drafts reconciled to plan governance (no premature `LOCKED` without HitM signoff); `DECISION_MATRIX`, `US_ENTITY_PH_OPERATIONS`, `PH_SPOUSE_LED_AND_TRANSFER`, `REGISTRATION_BREAKPOINTS`, `HITM_LOCAL_CONTEXT`, `SPOUSE_INVOLVEMENT_REQUIREMENTS.md`, `RESEARCH_ARTIFACTS`, plan `README` **draft** status restored; FIA / minimum-capital framed as activity-specific counsel verification.
+- **`plans/S1/S1.B/payment-provider-research/`:** `README` §0.6 restored to **L1 time-gated** scenario coupling; Stripe back in scope; `PSP_COMPARISON_MATRIX.md` + `PAYMENT_ARCHITECTURE_SPLIT.md` as labeled research drafts with verify-on-provider disclaimers.
+- **`strategy/strategic-roadmap-reframe-53be/`:** Reverted unintended Gemini edits to `01_unit_economics_and_costs.md`, `PARKING_LOT.md` P-2, and phase files (locks belong in entity plan after HitM signoff, not in strategic locks from chat).
 - **`.gitignore` / `README.md`:** `.cursorignore` is **local-only** again (not tracked); Antigravity/agent ignore patterns live in the untracked file for per-machine Cursor index hygiene.
 - **`AGENTS.md`:** Continual-learning memory — normalize parallel-assistant tagged research before CPPRD; add overlapping agent trees to `.cursorignore`.
 
@@ -79,12 +95,12 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 
 ### 2026-05-01 — S1.B CPPRD batch: PWA plans, strategic/governance research, vault + web submodule pins
 
-- **`plans/cursor/s1b/pwa-install-offline-sync-research/`:** New sub-plan (README §1.1–§1.7, §6 bar, D0/D2/D3/D4 specs, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`, `RESEARCH_ARTIFACTS.md`, smoke/ADR).
-- **`plans/cursor/s1b/README.md`:** **Sprint activation index — PWA** (`#pwa-sprint-activation-index`), sub-plan table pointers, exit summary tied to D4-exec.
-- **`plans/cursor/strategic-roadmap-reframe-53be/`:** `validation_gates.md`, `phases/S1_public_beta_position.md`, `README.md` — PWA exit language, W2/W6 handoffs, Advanced tier reference; plus **`00_strategic_context.md`**, **`01_unit_economics_and_costs.md`**, **`PARKING_LOT.md`** updates from parallel research threads.
-- **`plans/_governance/`:** `plan_registry.md` (PWA plan row); **`README.md`**, **`deployment_protocol.md`**, **`execution_protocols.md`**, **`plan_lifecycle.md`** — governance/lifecycle alignment.
-- **`plans/cursor/s1b/ai-economics-deep-dive/`:** `README.md` plus new artifacts `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md`, `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`, `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md`, `LLM_PROVIDER_COST_SNAPSHOT.md`, `PAYG_VOLUME_BUNDLES_RESEARCH.md`.
-- **`plans/cursor/s1b/drift-cleanup/README.md`**, **`plans/cursor/s1b/payment-provider-research/README.md`:** README touch-ups (other threads).
+- **`plans/S1/S1.B/pwa-install-offline-sync-research/`:** New sub-plan (README §1.1–§1.7, §6 bar, D0/D2/D3/D4 specs, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`, `RESEARCH_ARTIFACTS.md`, smoke/ADR).
+- **`plans/S1/S1.B/README.md`:** **Sprint activation index — PWA** (`#pwa-sprint-activation-index`), sub-plan table pointers, exit summary tied to D4-exec.
+- **`strategy/strategic-roadmap-reframe-53be/`:** `validation_gates.md`, `phases/S1_public_beta_position.md`, `README.md` — PWA exit language, W2/W6 handoffs, Advanced tier reference; plus **`00_strategic_context.md`**, **`01_unit_economics_and_costs.md`**, **`PARKING_LOT.md`** updates from parallel research threads.
+- **`governance/`:** `plan_registry.md` (PWA plan row); **`README.md`**, **`deployment_protocol.md`**, **`execution_protocols.md`**, **`plan_lifecycle.md`** — governance/lifecycle alignment.
+- **`plans/S1/S1.B/ai-economics-deep-dive/`:** `README.md` plus new artifacts `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md`, `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`, `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md`, `LLM_PROVIDER_COST_SNAPSHOT.md`, `PAYG_VOLUME_BUNDLES_RESEARCH.md`.
+- **`plans/S1/S1.B/drift-cleanup/README.md`**, **`plans/S1/S1.B/payment-provider-research/README.md`:** README touch-ups (other threads).
 - **`AGENTS.md`:** PWA §1.7 seeding file + sprint activation path.
 - **`.cursor/settings.json`:** Workspace/editor settings updates.
 - **`design_docs` submodule:** Pinned to **`94b2fbf`** (design-docs PR [#16](https://github.com/AzazelAzure/finance-manager-design-docs/pull/16)) — Web PWA bridge doc (`12_Web_PWA_Install_Offline_Sync.md`), Android cross-ref, **`01_Business_Vision.md`** + **`Beta_Launch_Cutline`** touch-ups, vault `CHANGELOG`.
@@ -92,16 +108,16 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 
 ### 2026-05-01 — Strategic PH pricing lock + PAYG bundle research
 
-- **`plans/cursor/strategic-roadmap-reframe-53be/`:** `01_unit_economics_and_costs.md` **§2.0** locks **Pro ₱249/mo**, **Pro+ ₱349/mo**, **PAYG floor ₱99→100 credits**, **≤100 founding seats** (₱999–₱1,499); PAYG **volume bundles** explicitly **research** (`PAYG_VOLUME_BUNDLES_RESEARCH.md`). `00_strategic_context.md` §3.5 / §3.11, `validation_gates.md` indexing note, `phases/S1_public_beta_position.md` Appendix A snapshot + Q4–Q6 updates.
-- **`plans/cursor/s1b/ai-economics-deep-dive/`:** `PAYG_VOLUME_BUNDLES_RESEARCH.md`; `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` **§8.5**; README link; `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md` assumes **§2.0** locks.
+- **`strategy/strategic-roadmap-reframe-53be/`:** `01_unit_economics_and_costs.md` **§2.0** locks **Pro ₱249/mo**, **Pro+ ₱349/mo**, **PAYG floor ₱99→100 credits**, **≤100 founding seats** (₱999–₱1,499); PAYG **volume bundles** explicitly **research** (`PAYG_VOLUME_BUNDLES_RESEARCH.md`). `00_strategic_context.md` §3.5 / §3.11, `validation_gates.md` indexing note, `phases/S1_public_beta_position.md` Appendix A snapshot + Q4–Q6 updates.
+- **`plans/S1/S1.B/ai-economics-deep-dive/`:** `PAYG_VOLUME_BUNDLES_RESEARCH.md`; `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` **§8.5**; README link; `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md` assumes **§2.0** locks.
 - **`design_docs` submodule:** `01_Business_Vision.md` tier table aligned to **₱249** Pro list and **100**-seat founding cap (commit in design_docs repo when batching vault changes).
 
 ### 2026-05-01 — S1.B plan hygiene: drift-cleanup complete, AI economics shelved
 
-- **`plans/cursor/s1b/drift-cleanup/README.md`:** `status: completed`; completion note (HitM-confirmed W1; evidence pointers).
-- **`plans/cursor/s1b/ai-economics-deep-dive/README.md`:** `status: shelved`; `depends_on` entity + payment plans; status section explains resume trigger.
-- **`plans/cursor/s1b/README.md`:** sub-plan table — drift-cleanup **completed**, ai-economics-deep-dive **shelved** with deps; Group C sequencing + personal constraint line updated.
-- **`plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`:** W2 AI Economics bullet + S1.B exit line note **shelved** until entity + payment research (exit still requires Appendix A closure).
+- **`plans/S1/S1.B/drift-cleanup/README.md`:** `status: completed`; completion note (HitM-confirmed W1; evidence pointers).
+- **`plans/S1/S1.B/ai-economics-deep-dive/README.md`:** `status: shelved`; `depends_on` entity + payment plans; status section explains resume trigger.
+- **`plans/S1/S1.B/README.md`:** sub-plan table — drift-cleanup **completed**, ai-economics-deep-dive **shelved** with deps; Group C sequencing + personal constraint line updated.
+- **`strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`:** W2 AI Economics bullet + S1.B exit line note **shelved** until entity + payment research (exit still requires Appendix A closure).
 
 ### 2026-05-01 — Canonical web stack: docs, Cursor rules, scripts
 
@@ -113,8 +129,8 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 
 ### 2026-05-01 — Plans archive, governance hygiene, design_docs CPPRD (ecosystem)
 
-- **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `plans/_governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.
-- **Cursor skills:** `huddle-facilitation` and `roadmap-rollout-planning` aligned with `plans/cursor/<phase-stage>/<sub-plan>/` and archived volatile conventions.
+- **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.
+- **Cursor skills:** `huddle-facilitation` and `roadmap-rollout-planning` aligned with `plans/<Phase>/<Stage>/<sub-plan>/` and archived volatile conventions.
 - **Submodules:** `design_docs` pinned to `7c9a57e` on branch `cursor/strategic-doc-sync-2026-05-01` (vault strategic alignment, `design_docs/CHANGELOG.md`, **resolved** strategic-doc conflict set: PH-first `07_Server_Runtime_and_Scaling.md` §2, web-first golden rule / phase triggers, `20_Roadmap/_historical/` for calendar + orchestration_manager packs).
 
 ### 2026-05-01 — Plans, deploy runbook, submodule sync

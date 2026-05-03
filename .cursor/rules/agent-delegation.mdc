@@ -30,9 +30,9 @@ Use this rule to decide when and how to delegate work through skills and subagen
 - If one subagent result is insufficient, chain to a second subagent with an explicit handoff summary.
 - For multi-repo work, begin with `explore` impact mapping, then execute repo-by-repo with `generalPurpose`.
 - For design docs updates, use `explore` for doc targeting then `generalPurpose` for edits.
-- For roadmap work, use `explore` evidence gathering before `generalPurpose` phased plan authoring. When a plan is execution-ready, materialize it under `plans/<proposed-git-branch-name>/` (see `roadmap-rollout-planning` skill).
+- For roadmap work, use `explore` evidence gathering before `generalPurpose` phased plan authoring. When a plan is execution-ready, materialize it under `plans/<Phase>/<Stage>/<sub-plan>/` (see `roadmap-rollout-planning` skill and `governance/README.md`).
 - For container runtime issues, use `shell` first for script-driven diagnosis, then `generalPurpose` for durable fixes.
-- For orchestration work, use `generalPurpose` as coordinator and route each task to specialized skills/subagents; default active plan root is `plans/<proposed-git-branch-name>/`.
+- For orchestration work, use `generalPurpose` as coordinator and route each task to specialized skills/subagents; default active plan root is `plans/<Phase>/<Stage>/<sub-plan>/` (governance protocols in repo-root `governance/`; canonical roadmap in repo-root `strategy/`).
 - For security audits, start with `explore` threat-surface mapping, then use `generalPurpose`/`shell` for fix and verification loops.
 - Standard orchestration launch should use the prompt in `.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md` and must read `.cursor/skills/orchestration-manager/SKILL.md` first.
 

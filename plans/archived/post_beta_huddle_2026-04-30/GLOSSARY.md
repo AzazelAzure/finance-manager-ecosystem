@@ -1,6 +1,6 @@
 # Glossary — Canonical Vocabulary
 
-Locked 2026-04-30 in post-beta huddle. Migrates to `plans/_governance/glossary.md` at Topic 11 close-out.
+Locked 2026-04-30 in post-beta huddle. Migrates to `governance/glossary.md` at Topic 11 close-out.
 
 This file is the **single source of truth** for vocabulary. Other files reference these terms; conflicts in other files get resolved against this glossary.
 
@@ -110,11 +110,11 @@ Five plan-type categories, each with distinct scope and lifecycle:
 
 | Type                     | Scope                                                                                                                  | Lifecycle                                                   | Location                                                         |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------- |
-| **Strategic Plan**       | Multi-year. Phases S1–S6, locked decisions, success criteria, kill gates. ONE per project.                             | Permanent; updated at Phase transitions.                    | `plans/cursor/strategic-roadmap-reframe-53be/`                   |
-| **Execution Plan**       | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates.                                  | Lives `draft → ready → in_progress → completed → archived`. | `plans/cursor/<branch>/` or `plans/archived/feat/<branch>/`               |
+| **Strategic Plan**       | Multi-year. Phases S1–S6, locked decisions, success criteria, kill gates. ONE per project.                             | Permanent; updated at Phase transitions.                    | `strategy/strategic-roadmap-reframe-53be/`                   |
+| **Execution Plan**       | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates.                                  | Lives `draft → ready → in_progress → completed → archived`. | `plans/<Phase>/<Stage>/<sub-plan>/` or `plans/archived/feat/<branch>/`               |
 | **Feature Roadmap**      | Per-surface backlog (e.g. "Dashboard feature roadmap"). Lists features, priorities, target Phase. NOT execution-ready. | Permanent; updated as features ship or get queued.          | `design_docs/<surface>_docs/feature_roadmap.md` (proposed)       |
 | **Implementation Guide** | Agent-facing how-to for repeatable work patterns.                                                                      | Permanent; revised when patterns change.                    | `design_docs/40_System_Design/implementation_guides/` (proposed) |
-| **Branching Guideline**  | Specific to deploy/branch strategy. Extends `_governance/deployment_protocol.md`.                                      | Permanent; revised when deploy strategy changes.            | `_governance/branching_guidelines.md` (proposed)                 |
+| **Branching Guideline**  | Specific to deploy/branch strategy. Extends `governance/deployment_protocol.md`.                                      | Permanent; revised when deploy strategy changes.            | `governance/branching_guidelines.md` (proposed)                 |
 
 
 ### Retired vocabulary (do not use going forward)
@@ -137,7 +137,7 @@ Two distinct scales that look identical. Always include the prefix letter.
 | Scale        | Range                     | Domain                        | Source                                                                                          |
 | ------------ | ------------------------- | ----------------------------- | ----------------------------------------------------------------------------------------------- |
 | **Severity** | `S0` / `S1` / `S2` / `S3` | How bad an issue is           | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
-| **Priority** | `P0` / `P1` / `P2`        | How urgent a piece of work is | `_governance/plan_template.md`                                                                  |
+| **Priority** | `P0` / `P1` / `P2`        | How urgent a piece of work is | `governance/plan_template.md`                                                                  |
 
 
 A bug can be `S0` (data integrity broken) **and** `P0` (must be fixed first). They aren't the same: severity describes the issue, priority describes our scheduling decision. They usually correlate; not always.
@@ -194,7 +194,7 @@ Always write `S0`, `S1`, `P0`, etc. — never bare `0`, `1`, `2`. The prefix let
 | Term       | Definition                                                                                              |
 | ---------- | ------------------------------------------------------------------------------------------------------- |
 | **CPPR**   | Commit, Push, Pull-Request. Local→remote→PR cycle. No deployment.                                       |
-| **CPPR+D** | CPPR plus Deploy. Adds blue-green deploy step after PR merge. See `_governance/deployment_protocol.md`. |
+| **CPPR+D** | CPPR plus Deploy. Adds blue-green deploy step after PR merge. See `governance/deployment_protocol.md`. |
 | **CPPRD**  | Commit, Push, Pull-Request, Document. Adds documentation update step. See `AGENTS.md`.                  |
 
 

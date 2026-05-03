@@ -79,7 +79,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Description:** On mobile viewport, dashboard quick-add buttons (`Add expense`, `Add income`, `Add transfer`) are not above the fold; users have to scroll past KPIs / charts to reach them.
 - **Why S2 not S3:** PH-wedge persona is mobile-first, intermittent connectivity, often opening the app to log a quick expense at point-of-sale. Friction here is friction on the primary use case.
 - **Note:** HitM deliberately deferred specific layout decision to feature-roadmap conversation post-Topic 4.
-- **Status (2026-05):** **Resolved / shipped** — quick actions placed above KPIs on mobile; see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #6). Backlog index: `plans/cursor/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-6**).
+- **Status (2026-05):** **Resolved / shipped** — quick actions placed above KPIs on mobile; see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #6). Backlog index: `plans/S1/S1.B/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-6**).
 
 ---
 
@@ -90,7 +90,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Severity:** **S2**
 - **Type:** **design decision, not bug** (the implementation is currently disabled, not broken)
 - **Description:** Dashboard `Quick add → +Bill` quick-action is disabled in production via VPS hotfix pending product decision on what bill-flow semantics should be.
-- **Decision staged (2026-05-05):** Replace with **Quick pay bill** — minimal form: dropdown of user upcoming expenses, amount prefilled to bill list amount (editable), submit posts a **transaction** with **`bill`** set and other fields autofilled from the selected upcoming row; **description, category, and tags omitted in v1.** Full write-up: [`plans/cursor/s1b/quick-pay-bill-design/DESIGN_DECISION.md`](../../cursor/s1b/quick-pay-bill-design/DESIGN_DECISION.md). **Implementation still queued** (PWA / outbox work merged 2026-05; use standard transaction-create path when building).
+- **Decision staged (2026-05-05):** Replace with **Quick pay bill** — minimal form: dropdown of user upcoming expenses, amount prefilled to bill list amount (editable), submit posts a **transaction** with **`bill`** set and other fields autofilled from the selected upcoming row; **description, category, and tags omitted in v1.** Full write-up: [`plans/S1/S1.B/quick-pay-bill-design/DESIGN_DECISION.md`](../../cursor/s1b/quick-pay-bill-design/DESIGN_DECISION.md). **Implementation still queued** (PWA / outbox work merged 2026-05; use standard transaction-create path when building).
 - **Three candidate behaviors HitM has named:** *(superseded for primary path by staged decision above; hybrid “create upcoming” remains available elsewhere via Upcoming Expenses page.)*
   - ~~Create an upcoming expense~~ — not the Quick pay bill primary action
   - **Record a pay-bill flow** — **chosen** for dashboard quick path (transaction + bill)
@@ -107,7 +107,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Workaround:** Use the full add transaction flow.
 - **Surface:** `finance_manager_web/src/` quick-add flow components and underlying editor modal.
 - **Note:** HitM deliberately deferred behavior decision to feature-roadmap conversation post-Topic 4.
-- **Status (2026-05):** **Resolved / shipped** — optional bill link + tags and parity with main create fields (per CHANGELOG); see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #3). Backlog index: `plans/cursor/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-3**).
+- **Status (2026-05):** **Resolved / shipped** — optional bill link + tags and parity with main create fields (per CHANGELOG); see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #3). Backlog index: `plans/S1/S1.B/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-3**).
 
 ---
 

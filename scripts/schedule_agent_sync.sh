@@ -5,7 +5,7 @@
 # Environment:
 #   FM_BASE_DIR        — repo root (default: parent of this script's directory)
 #   SCHEDULE_DAYS      — how many days forward to list from today (default: 90)
-#   SCHEDULE_SNAPSHOT  — output file (default: plans/_governance/HITM_SCHEDULE_SNAPSHOT.md)
+#   SCHEDULE_SNAPSHOT  — output file (default: governance/HITM_SCHEDULE_SNAPSHOT.md)
 #   KHAL_CAL           — optional: pass through to khal -a (include only this calendar)
 #
 # Requires: khal, todo (todoman), python3 (for portable date math)
@@ -15,7 +15,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="${FM_BASE_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 DAYS="${SCHEDULE_DAYS:-90}"
-OUT="${SCHEDULE_SNAPSHOT:-$BASE_DIR/plans/_governance/HITM_SCHEDULE_SNAPSHOT.md}"
+OUT="${SCHEDULE_SNAPSHOT:-$BASE_DIR/governance/HITM_SCHEDULE_SNAPSHOT.md}"
 
 require_cmd() {
   if ! command -v "$1" &>/dev/null; then
@@ -74,7 +74,7 @@ GEN_ISO="$(python3 -c "from datetime import datetime, timezone; print(datetime.n
   printf '%s\n' "## Sprint / absence hints for agents"
   printf '%s\n' ""
   printf '%s\n' "- Treat **all-day** lines and **recurring** markers (\`⟳\`) in the calendar block as **time windows** or standing commitments."
-  printf '%s\n' "- Cross-check **strategic phase/stage** dates in \`plans/cursor/strategic-roadmap-reframe-53be/\` with this snapshot when planning execution density."
+  printf '%s\n' "- Cross-check **strategic phase/stage** dates in \`strategy/strategic-roadmap-reframe-53be/\` with this snapshot when planning execution density."
   printf '%s\n' "- Tasks with **due dates** in todoman appear in list output; use \`todo new \"Summary\" -d YYYY-MM-DD\` to add dated work items agents should respect."
   printf '%s\n' ""
 } >"$TMP"

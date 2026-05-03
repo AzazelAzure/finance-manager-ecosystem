@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Reflex Frontend Rules (archived product)
 
-> **`finance_manager_reflex` is archived (2026-04-30).** New work belongs in **`finance_manager_web/`** (see ecosystem `AGENTS.md` and `plans/cursor/strategic-roadmap-reframe-53be/`). Apply this file only when touching the historical Reflex tree.
+> **`finance_manager_reflex` is archived (2026-04-30).** New work belongs in **`finance_manager_web/`** (see ecosystem `AGENTS.md` and `strategy/strategic-roadmap-reframe-53be/`). Apply this file only when touching the historical Reflex tree.
 
 Apply these rules when editing **legacy** Reflex frontend code.
 

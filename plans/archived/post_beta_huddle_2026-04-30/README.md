@@ -33,7 +33,7 @@ The huddle is "done" when **all** of:
 - [ ] Trigger condition for next sprint resume defined
 - [ ] All `DECISIONS.md` entries are signed off by HitM
 
-When complete: a single follow-up plan packet under `plans/cursor/<branch>/` covers the cleanup work, the strategic roadmap is updated to reflect locked decisions, and this huddle directory moves to `plans/archived/post_beta_huddle_2026-04-30/`.
+When complete: a single follow-up plan packet under `plans/<Phase>/<Stage>/<sub-plan>/` covers the cleanup work, the strategic roadmap is updated to reflect locked decisions, and this huddle directory moves to `plans/archived/post_beta_huddle_2026-04-30/`.
 
 ## Agenda (suggested order)
 
@@ -54,7 +54,7 @@ The order is sequenced so each topic feeds the next. We can re-order if HitM has
 ## Scope guardrails
 
 - **No code changes during the huddle** except Topic 9 (drift cleanup) — and even those wait until the relevant decisions are locked.
-- **No autonomous strategic roadmap edits** — every change to `plans/cursor/strategic-roadmap-reframe-53be/` waits for explicit HitM signoff in `DECISIONS.md`.
+- **No autonomous strategic roadmap edits** — every change to `strategy/strategic-roadmap-reframe-53be/` waits for explicit HitM signoff in `DECISIONS.md`.
 - **Preserve pre-governance plan progress** — don't retroactively force them into governance metadata until they close.
 
 ## Pace expectation
