@@ -35,7 +35,7 @@ git submodule update --init --recursive
 | **Plan operations** | **`governance/`** | Registry, lifecycle, deploy protocol, branching, **`plan_template.md`**, **`glossary.md`**. Read **`governance/README.md`** first when authoring or executing governed work. |
 | **Tactical execution plans** | **`plans/<Phase>/<Stage>/<sub-plan>/`** | Active example: **`plans/S1/S1.B/`** (PWA research, drift cleanup, feature drafts, etc.). |
 | **Archives** | **`plans/archived/`** | Completed umbrellas, huddles, **`cursor-layout-era/`**, legacy `feat/` / `fix/` trees. **Do not** add new active work here. |
-| **Quick / Gemini-named templates** | **`plans/templates/`** | e.g. **`GEMINI_PLAN_TEMPLATE_QUICK.md`**, **`GEMINI_PLAN_TEMPLATE_V2.md`** — convenience; **canonical** governed plan schema is **`governance/plan_template.md`**. |
+| **Legacy Gemini templates (archived)** | **`plans/archived/gemini_plan_templates/`** | Historical copies only; **do not** use for new work. |
 
 New governed work: **materialize** a directory under **`plans/<Phase>/<Stage>/<sub-plan>/`**, YAML header in **`README.md`** per **`governance/plan_template.md`**, register in **`governance/plan_registry.md`**, and tie to a **`strategic_link`** under **`strategy/strategic-roadmap-reframe-53be/phases/`** (not the strategic README alone).
 
@@ -116,7 +116,7 @@ Each submodule is its **own** git repo: **feature branch → PR → merge to tha
 
 ### 13. Plan-based execution
 
-Significant governed work uses **`governance/plan_template.md`**, **`governance/plan_registry.md`**, and **`governance/plan_lifecycle.md`**. For tiny single-file fixes, you may start from **`plans/templates/GEMINI_PLAN_TEMPLATE_QUICK.md`** but must still align metadata with the canonical template. Completed plan **trees** remain under **`plans/archived/`** (or marked complete in the registry) per governance — not deleted casually.
+Significant governed work uses **`governance/plan_template.md`**, **`governance/plan_registry.md`**, and **`governance/plan_lifecycle.md`**. For tiny single-file fixes, use the **same** template’s YAML header and a shorter body; do not invent a second plan shape. Completed plan **trees** remain under **`plans/archived/`** (or marked complete in the registry) per governance — not deleted casually.
 
 ### 14. Knowledge hierarchy
 

@@ -2,7 +2,7 @@
 
 Copy verbatim. Fill all fields. Validate against rules below before transitioning `draft → ready`.
 
-For surgical single-file fixes, use `plans/templates/GEMINI_PLAN_TEMPLATE_QUICK.md` and import the metadata header from this file.
+For surgical single-file fixes, still use **this** document: copy the **metadata header** (YAML between `---` fences) from §2 into the plan’s `README.md`, keep `plan_root` / `strategic_link` accurate, and use shorter body sections if appropriate — do not skip registry-required fields or `plan_registry.md` updates.
 
 ## 1) Required directory layout
 
