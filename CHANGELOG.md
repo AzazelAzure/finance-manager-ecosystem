@@ -4,6 +4,12 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-04 — Entity formation execution posture + US LLC pathways workbook
+
+- **`plans/cursor/s1b/entity-formation-research/README.md`:** **§0.4** — counsel-heavy tail continues; **not** a PWA implementation blocker; **PSP go-live** still gated; hub table + **§7** payment/PWA nuance.
+- **`plans/cursor/s1b/entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`:** pathway **decision matrix** (P1–P9), Gemini protocol, dated research log, handoff checklist.
+- **`plans/cursor/s1b/entity-formation-research/RESEARCH_ARTIFACTS.md`**, **`plans/cursor/s1b/README.md`:** index + stage table pointers.
+
 ### 2026-05-03 — S1.B operating entity pipeline lock + Gemini research protocol
 
 - **`plans/cursor/s1b/entity-formation-research/`:** README **§0.2** (spouse-led PH MoR + HitM US LLC vendor, US-later + future regional split); **§0.3** payment coupling; objectives/scope; `DECISION_MATRIX` HitM locks **L2–L4** (2026-05-03) with L1 still time-gated; `RESEARCH_ARTIFACTS` touch; `HITM_LOCAL_CONTEXT` open question 4 aligned to pipeline + payment §0.6.
