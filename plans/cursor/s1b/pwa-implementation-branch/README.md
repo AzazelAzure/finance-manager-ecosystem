@@ -59,7 +59,7 @@ standalone_notes: ""
 - **Cost cap impact:** none beyond existing VPS blue/green posture; no mandatory third-party PWA SaaS.
 - **Validation gates affected:** [`plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../strategic-roadmap-reframe-53be/validation_gates.md) S1.B flagship **install-as-app** bullet; this plan’s **BP_D4_EXEC** and **BP_SPRINT_CLOSE** must pass before research sub-plan can close with D4-exec and registry moves to completed.
 
-**Ready-state rule:** Per `plans/_governance/plan_template.md`, do not set this plan’s `status: ready` until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is `completed` in `plan_registry.md` (or governance waives dependency). Until then remain `draft` / `in_progress` as execution proceeds.
+**Ready-state rule:** Per `governance/plan_template.md`, do not set this plan’s `status: ready` until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is `completed` in `plan_registry.md` (or governance waives dependency). Until then remain `draft` / `in_progress` as execution proceeds.
 
 ## 1) Objective
 
@@ -162,7 +162,7 @@ Execution order for orchestrator: **T00 → (T01,T02) → T03 → T04** (T04 may
 When closing this plan, executor must:
 
 - [ ] Confirm `validation_gates.md` S1.B PWA bullet remains satisfied (or update if tier waived — not expected).
-- [ ] Update `_governance/plan_registry.md` status to `completed` for this plan_id when **BP_SPRINT_CLOSE** and **BP_D4_EXEC** are PASS.
+- [ ] Update `governance/plan_registry.md` status to `completed` for this plan_id when **BP_SPRINT_CLOSE** and **BP_D4_EXEC** are PASS.
 - [ ] Run design-docs-sync per section 7.
 - [ ] Post PR link(s) in Cursor chat (repo, branch, URL) per `AGENTS.md`; reconcile GitHub mergeability before merge.
 

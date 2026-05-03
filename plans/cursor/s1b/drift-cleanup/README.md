@@ -91,7 +91,7 @@ Close drift accumulated during S1.A launch sprint. Ship six concrete fixes (`+Bi
 - `plans/archived/post_beta_huddle_2026-04-30/KNOWN_ISSUES.md` — full triage of issues.
 - `plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md` — Topic 2 Reflex archival per-file scope.
 - `design_docs/10_Current_State/01_Runtime_Validation_Checklist.md` §H — BP7 snapshot showing `+Bill` runtime hotfix.
-- `_governance/plan_registry.md` — Recently Completed section showing pre-governance plans pending formal close.
+- `governance/plan_registry.md` — Recently Completed section showing pre-governance plans pending formal close.
 
 ## 4) Task List
 
@@ -115,7 +115,7 @@ Close drift accumulated during S1.A launch sprint. Ship six concrete fixes (`+Bi
 5. **T05** — Recurring expense edit bug fix.
 6. **T06** — Heatmap + calendar joint investigation and fix.
 
-Each task ships via per-feature color cycle per `_governance/branching_guidelines.md`. T01 and T04 ship without color flip (no service code change). T02, T03, T05, T06 ship with `pre_deploy` + `pre_cutover` Slack gates.
+Each task ships via per-feature color cycle per `governance/branching_guidelines.md`. T01 and T04 ship without color flip (no service code change). T02, T03, T05, T06 ship with `pre_deploy` + `pre_cutover` Slack gates.
 
 ## 6) Verification Gates
 
@@ -130,7 +130,7 @@ Per task, plus overall plan-level gate:
 ## 7) Documentation Sync Required
 
 - `KNOWN_ISSUES.md` (volatile huddle directory): mark Issues #1, #4, #5, #7 as resolved when respective tasks ship.
-- `_governance/plan_registry.md`: update each pre-governance plan to `completed` after T04.
+- `governance/plan_registry.md`: update each pre-governance plan to `completed` after T04.
 - `design_docs/10_Current_State/01_Runtime_Validation_Checklist.md` §H: update BP7 snapshot to remove the "`+Bill` is a runtime hotfix not in git" note after T01.
 
 ## 8) Strategic Phase Impact
@@ -139,7 +139,7 @@ When this plan closes, executor must:
 
 - Update `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B exit criteria checkboxes for all completed items.
 - Append entry to `plans/cursor/strategic-roadmap-reframe-53be/kill_commit_gates.md` outcomes log noting drift cleanup complete.
-- Update `plans/_governance/plan_registry.md` status to `completed`.
+- Update `governance/plan_registry.md` status to `completed`.
 - Run `design-docs-sync` per task list above.
 - Post completion summary to Slack `#cli-interface` thread.
 

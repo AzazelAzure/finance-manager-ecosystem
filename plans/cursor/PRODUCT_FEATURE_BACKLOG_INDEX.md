@@ -1,7 +1,7 @@
 # Product & feature backlog — consolidated index
 
 **Created:** 2026-05-05  
-**Updated:** 2026-05-21 (+F-012/F-013 infra intake + user activity logs; governed plans under `feat-f`* and `feat-infra-*`.)
+**Updated:** 2026-05-21 (+F-012/F-013 infra intake + user activity logs; governed plans under `feat-f`* and `feat-infra-`*.)
 
 **Purpose:** One entry point that ties together **brain-dump feature ideas**, **post-beta huddle (2026-04-30) planned product work**, **S1.B strategic workstreams**, **known issues with a feature shape**, and **pointers into design docs**. It does **not** replace detailed specs elsewhere; it dedupes and cross-references.
 
@@ -72,7 +72,7 @@ Verbatim candidate list from `**DECISIONS.md`** (Topic 6). “Final list is Topi
 
 ## 4) Master crosswalk
 
-Governed **draft** plans: `plans/cursor/s1b/feat-f`* + `feat-infra-*` (see `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` table); registry `[../_governance/plan_registry.md](../_governance/plan_registry.md)`.
+Governed **draft** plans: `plans/cursor/s1b/feat-f`* + `feat-infra-`* (see `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` table); registry `[../../governance/plan_registry.md](../../governance/plan_registry.md)`.
 
 
 | Theme                                    | F-id / B-id                            | Execution plan `README`                                                                                        | Huddle / W3                                                 | Status (high level)                                                         |

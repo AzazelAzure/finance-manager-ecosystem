@@ -1,6 +1,6 @@
 # Branching Guidelines — Per-Feature Color-Cycle Workflow
 
-**Locked:** 2026-04-30, Topic 11 close-out (huddle). Extends `_governance/deployment_protocol.md`.
+**Locked:** 2026-04-30, Topic 11 close-out (huddle). Extends `deployment_protocol.md`.
 
 This file codifies the actual branching + deployment workflow for shipping features on the blue-green VPS runtime. It supersedes any informal patterns from prior sprints.
 
@@ -51,7 +51,7 @@ cursor/s1b/feat/quick-pay-bill/t03-wire-transaction-seed
 2. Confirm inactive color is clean (no stale commits, no parallel feature in flight).
 3. Create feature branch from `main`: `git checkout -b cursor/<phase-stage>/feat/<feature-name>`.
 4. Push branch (no PR yet).
-5. Update `_governance/plan_registry.md` with the feature branch as `in_progress`.
+5. Update `plan_registry.md` with the feature branch as `in_progress`.
 
 ### 3.2 Per-task work
 
@@ -82,15 +82,15 @@ When all tasks for the feature are merged into the feature branch:
 
 1. Final feature-branch verification:
   - All tests pass on the feature branch.
-  - Inactive color smoke per `_governance/deployment_protocol.md` §6.
+  - Inactive color smoke per `deployment_protocol.md` §6.
   - Feature behaves end-to-end (manual review on inactive color).
 2. Open PR: feature branch → `main`.
 3. Apply `pre_deploy` Slack gate (HitM authorization to deploy).
 4. On approval: merge PR.
 5. Trigger color flip (deploy via `scripts/fm_server_beta.sh switch --to <inactive-color>`).
 6. Apply `pre_cutover` Slack gate (HitM authorization for the flip itself).
-7. Post-cutover smoke per `_governance/deployment_protocol.md` §6.
-8. Update `_governance/plan_registry.md`: feature as `completed`.
+7. Post-cutover smoke per `deployment_protocol.md` §6.
+8. Update `plan_registry.md`: feature as `completed`.
 
 The feature branch is now merged into main; inactive color (the previously-inactive one) is now active. The newly-inactive color (the previously-active one) holds the prior state, ready for rollback.
 
@@ -128,14 +128,14 @@ If no feature is currently active: open a "maintenance feature branch" (`cursor/
 2. Create hotfix branch from `main`: `git checkout -b cursor/<phase-stage>/hotfix/<slug>`.
 3. Implement minimum viable fix (no scope creep).
 4. PR hotfix branch → `main` directly (skip feature branch).
-5. Apply hotfix-specific Slack gates (`pre_deploy` required; `pre_cutover` required; per `_governance/deployment_protocol.md`).
+5. Apply hotfix-specific Slack gates (`pre_deploy` required; `pre_cutover` required; per `deployment_protocol.md`).
 6. On approval: merge + color flip.
 7. **After hotfix lands:** the previously-paused feature branch needs the hotfix re-rolled into it before resumption:
   - Either rebase the feature branch on the new main (clean), or
   - Cherry-pick the hotfix commit into the feature branch (also fine).
 8. Resume feature work from §3.2.
 
-**Hotfix Sprint duration override:** can be shorter than the standard 1-week minimum (per `_governance/glossary.md` §6) because hotfixes are reactive, not planned.
+**Hotfix Sprint duration override:** can be shorter than the standard 1-week minimum (per `glossary.md` §6) because hotfixes are reactive, not planned.
 
 ### 4.3 What about S0 production incidents (data corruption, auth breach)?
 
@@ -156,7 +156,7 @@ If an agent attempts to start a new feature while one is in flight:
 
 ### 5.2 Task concurrency within a feature
 
-**Multiple tasks within the same feature CAN be in flight in parallel** if and only if they don't conflict on files. Apply the conflict-detection heuristics from `_governance/plan_template.md` §7.
+**Multiple tasks within the same feature CAN be in flight in parallel** if and only if they don't conflict on files. Apply the conflict-detection heuristics from `plan_template.md` §7.
 
 ### 5.3 Hotfix during active feature
 
@@ -175,7 +175,7 @@ Hotfix interrupts the active feature (per §4.2). Only one hotfix at a time.
 | Inactive-color rebuild (no flip) | Optional (informational only) | N/A                |
 
 
-Per `_governance/deployment_protocol.md` §3 and §5; this section reinforces that the cadence applies per feature flip, not per Sprint.
+Per `deployment_protocol.md` §3 and §5; this section reinforces that the cadence applies per feature flip, not per Sprint.
 
 ---
 
@@ -190,7 +190,7 @@ If a feature flip causes regression:
 
 The previously-shipped feature stays in main commit history; rolling back the proxy doesn't roll back git. If the feature needs full removal: `git revert` the merge commit and ship a hotfix-style flip.
 
-Per `_governance/deployment_protocol.md` §8.
+Per `deployment_protocol.md` §8.
 
 ---
 
@@ -202,7 +202,7 @@ DB migrations are special — they're not easily rollback-able by color flip alo
 
 - Migrations are **never** included in feature branches by default.
 - A migration ships as its own micro-feature with stricter gates: HitM personal review, dry-run on inactive color, manual rollback verification.
-- Color flip after migration is more cautious: monitoring window doubled (per `_governance/deployment_protocol.md` §7).
+- Color flip after migration is more cautious: monitoring window doubled (per `deployment_protocol.md` §7).
 
 ### 8.2 Feature spans multiple repos (e.g. API + web)
 
@@ -241,11 +241,11 @@ If a feature branch has had no commits for >1 week:
 
 | Concept                                            | File                                                                                            |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Slack gate templates (`pre_deploy`, `pre_cutover`) | `_governance/execution_protocols.md` §1                                                         |
-| VPS deployment commands                            | `_governance/deployment_protocol.md` §4-§6                                                      |
-| Plan template metadata                             | `_governance/plan_template.md`                                                                  |
-| Status transitions                                 | `_governance/plan_lifecycle.md`                                                                 |
-| Vocabulary (Sprint types, etc.)                    | `_governance/glossary.md`                                                                       |
+| Slack gate templates (`pre_deploy`, `pre_cutover`) | `execution_protocols.md` §1                                                         |
+| VPS deployment commands                            | `deployment_protocol.md` §4-§6                                                      |
+| Plan template metadata                             | `plan_template.md`                                                                  |
+| Status transitions                                 | `plan_lifecycle.md`                                                                 |
+| Vocabulary (Sprint types, etc.)                    | `glossary.md`                                                                       |
 | Incident triage                                    | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
 
 

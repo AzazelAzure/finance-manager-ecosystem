@@ -92,7 +92,7 @@ P0 / S1.B exit gate. Sequential per huddle Q9.2.
 
 #### W3 — "Worth Paying For" Feature Work (Group D)
 
-Sequential after W2. HitM has feature backlog; not research-driven. Each feature follows the Per-Feature Color-Cycle Workflow (`_governance/branching_guidelines.md`).
+Sequential after W2. HitM has feature backlog; not research-driven. Each feature follows the Per-Feature Color-Cycle Workflow (`governance/branching_guidelines.md`).
 
 - Landing polish + wedge integration into hero.
 - Issue #2 — `+Bill` rework as **"quick pay bill that seeds a transaction with relevant data from the bill being paid"** (design resolved 2026-04-30; specialized form to be drafted).
@@ -185,7 +185,7 @@ Concurrent with other workstreams. Targets `android:Scaffold → android:Alpha` 
 - **PH-first only.** US users grandfathered as Honorary Founders; no US-targeted acquisition.
 - **Mobile wallet as primary payment.** Forcing PH users to use credit cards is a non-starter.
 - **Pre-baby vs post-baby velocity:** front-load deep-focus W2 research into May–early June pre-baby window. W3 features and W6 Android more interruption-tolerant.
-- **One feature at a time on inactive color** per `_governance/branching_guidelines.md` §1.
+- **One feature at a time on inactive color** per `governance/branching_guidelines.md` §1.
 - **Velocity ceiling:** 10hr/day, 55hr/week (Sprint); 6hr/day, 30hr/week (decompression).
 
 ## Risks and Mitigations
@@ -209,8 +209,8 @@ Concurrent with other workstreams. Targets `android:Scaffold → android:Alpha` 
 - Validation gates: `validation_gates.md` Phase S1
 - Kill/commit gates: `kill_commit_gates.md` §2, §3, §6
 - Parking lot: `PARKING_LOT.md` (P-1 through P-7)
-- Branching workflow: `_governance/branching_guidelines.md`
-- Deployment workflow: `_governance/deployment_protocol.md`
+- Branching workflow: `governance/branching_guidelines.md`
+- Deployment workflow: `governance/deployment_protocol.md`
 - Stage-level dashboard: `plans/cursor/s1b/README.md`
 
 ---

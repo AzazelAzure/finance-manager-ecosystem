@@ -341,8 +341,8 @@ Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/fm_server_b
 | Compose layout                               | `docker-compose.bluegreen.yml`                                                     |
 | Active color state                           | `proxy/active_color.conf`                                                          |
 | Runtime ownership tracking                   | `design_docs/30_Releases/Runtime_Signup_Sheet.md`                                  |
-| Slack gate templates                         | `_governance/execution_protocols.md` §1                                            |
-| Status transitions                           | `_governance/plan_lifecycle.md`                                                    |
+| Slack gate templates                         | `execution_protocols.md` §1                                            |
+| Status transitions                           | `plan_lifecycle.md`                                                    |
 
 
 ## 16) Quick reference — deploy decision tree

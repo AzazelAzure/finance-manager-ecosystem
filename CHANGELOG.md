@@ -1,13 +1,18 @@
 # Changelog — finance-manager-ecosystem (parent)
 
-Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
+Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+
+### 2026-05-04 — Governance protocols moved to repo-root `governance/`
+
+- **`plans/_governance/` → `governance/`:** Plan ops manuals (registry, lifecycle, deploy, branching, glossary, HitM schedule docs) now live at the workspace root, sibling to `plans/`. Tactical execution plans remain under `plans/cursor/<phase-stage>/<sub-plan>/`.
+- **Pointers:** `AGENTS.md`, parent `README.md`, `.gitignore` (schedule snapshot path), `scripts/schedule_agent_sync.sh`, `.cursor/` skills/rules, `design_docs/` vault links, and plan/strategic markdown cross-references updated to the new layout.
 
 ### 2026-05-21 — Parent CPPRD: submodule pins, PWA pause registry, plans + brand pack
 
 - **Submodules:** `finance_manager_api` → **`main`** (merge **`cb02b24`** — PWA D2 idempotency allowlist for categories/tags/sources). `finance_manager_web` → **`main`** (merge **`e3dc6e1`** — offline outbox lookup allowlist + Workbox navigate fix PR #45).
-- **PWA implementation sprint:** `plans/cursor/s1b/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `plans/_governance/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
+- **PWA implementation sprint:** `plans/cursor/s1b/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `governance/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
 - **Plans / research:** `plans/cursor/s1b/entity-formation-research/ACTION_SEQUENCE.md` (new). `plans/feat/web-reflex-parity-sweep-1/` (parity sweep plan tree). Ongoing edits: `FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`, `SEO_PRIORITY_MATRIX.md`, `feat-f007-guided-walkthroughs/README.md`.
 - **Brand assets:** `resources/hfm_icon_web/` (F-011 README–referenced HitM icon pack; PNG set for wedge / manifest work).
 - **`AGENTS.md`:** workspace memory / alignment updates.
@@ -16,7 +21,7 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 ### 2026-05-06 — `fm_server_beta.sh rebuild-color` (Podman blue/green)
 
 - **`scripts/fm_server_beta.sh`:** New **`rebuild-color [--no-build] <blue|green>`** command: builds `api-*`/`web-*` for one color, stops **proxy** plus that color’s app containers, removes those containers via compose **labels** (no `podman-compose rm`, which does not exist), then `up -d` db/redis/api/web/proxy. Avoids Podman **`--requires`** / `depends_on` failures when replacing inactive backends. Parallel compose file keeps `up -d --force-recreate` only (no proxy). **`wait_api_service_ready`** polls `/api/health/` so immediate `smoke` after `rebuild-color` does not race Django startup.
-- **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`plans/_governance/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
+- **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`governance/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
 
 ### 2026-05-05 — KNOWN_ISSUES: P0 #8 source balance after transaction delete
 
@@ -59,7 +64,7 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 ### 2026-05-03 — PWA implementation + SEO orchestration plan (S1.B)
 
 - **`plans/cursor/s1b/pwa-implementation-branch/`:** Execution-ready plan **`PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`** — `README.md` (YAML + phase compass), `validation_gates.md` (BP0–BP_SEO_P1, **SEO P1** gated on **BP_SPRINT_CLOSE**), `runtime_handoff.md`, `CROSS_AGENT_COORDINATION.md`, `governance_validator_run_2026-05-03.md`, tasks **T00–T16** (API D2, web build/manifest/SW, IndexedDB seed, outbox, D3 auth, D4-exec, docs CPPRD, **SEO P0** parallel / **SEO P1** deferred). Host branch: `cursor/s1b/pwa-implementation-branch`. Plan stays **`draft`** until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is **`completed`** in registry.
-- **`plans/_governance/plan_registry.md`:** Draft row for the implementation sprint plan.
+- **`governance/plan_registry.md`:** Draft row for the implementation sprint plan.
 - **`plans/cursor/s1b/README.md`:** Sub-plan index row + sprint activation index link to `pwa-implementation-branch/README.md`.
 
 ### 2026-05-02 — S1.B entity/payment research governance + continual-learning memory
@@ -82,7 +87,7 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 - **`plans/cursor/s1b/pwa-install-offline-sync-research/`:** New sub-plan (README §1.1–§1.7, §6 bar, D0/D2/D3/D4 specs, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`, `RESEARCH_ARTIFACTS.md`, smoke/ADR).
 - **`plans/cursor/s1b/README.md`:** **Sprint activation index — PWA** (`#pwa-sprint-activation-index`), sub-plan table pointers, exit summary tied to D4-exec.
 - **`plans/cursor/strategic-roadmap-reframe-53be/`:** `validation_gates.md`, `phases/S1_public_beta_position.md`, `README.md` — PWA exit language, W2/W6 handoffs, Advanced tier reference; plus **`00_strategic_context.md`**, **`01_unit_economics_and_costs.md`**, **`PARKING_LOT.md`** updates from parallel research threads.
-- **`plans/_governance/`:** `plan_registry.md` (PWA plan row); **`README.md`**, **`deployment_protocol.md`**, **`execution_protocols.md`**, **`plan_lifecycle.md`** — governance/lifecycle alignment.
+- **`governance/`:** `plan_registry.md` (PWA plan row); **`README.md`**, **`deployment_protocol.md`**, **`execution_protocols.md`**, **`plan_lifecycle.md`** — governance/lifecycle alignment.
 - **`plans/cursor/s1b/ai-economics-deep-dive/`:** `README.md` plus new artifacts `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md`, `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`, `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md`, `LLM_PROVIDER_COST_SNAPSHOT.md`, `PAYG_VOLUME_BUNDLES_RESEARCH.md`.
 - **`plans/cursor/s1b/drift-cleanup/README.md`**, **`plans/cursor/s1b/payment-provider-research/README.md`:** README touch-ups (other threads).
 - **`AGENTS.md`:** PWA §1.7 seeding file + sprint activation path.
@@ -113,7 +118,7 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 
 ### 2026-05-01 — Plans archive, governance hygiene, design_docs CPPRD (ecosystem)
 
-- **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `plans/_governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.
+- **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.
 - **Cursor skills:** `huddle-facilitation` and `roadmap-rollout-planning` aligned with `plans/cursor/<phase-stage>/<sub-plan>/` and archived volatile conventions.
 - **Submodules:** `design_docs` pinned to `7c9a57e` on branch `cursor/strategic-doc-sync-2026-05-01` (vault strategic alignment, `design_docs/CHANGELOG.md`, **resolved** strategic-doc conflict set: PH-first `07_Server_Runtime_and_Scaling.md` §2, web-first golden rule / phase triggers, `20_Roadmap/_historical/` for calendar + orchestration_manager packs).
 

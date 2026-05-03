@@ -9,7 +9,7 @@
 ## 1) Authority stack (read order)
 
 1. [`../../AGENTS.md`](../../AGENTS.md) — operating constraints, CPPRD, sub-repo map, PWA locks (when relevant).
-2. [`../_governance/glossary.md`](../_governance/glossary.md) — canonical terms (HitM, MoR, gates, etc.).
+2. [`../../../governance/glossary.md`](../../../governance/glossary.md) — canonical terms (HitM, MoR, gates, etc.).
 3. **Active sub-plan README** in `plans/cursor/s1b/<sub-plan>/README.md` — scope, objectives, and **what is already locked**.
 4. This file — **how** to write research so Cursor agents can normalize and CPPRD.
 

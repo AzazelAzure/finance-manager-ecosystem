@@ -26,12 +26,12 @@ SCHEDULE_SNAPSHOT=/path/to/custom.md ./scripts/schedule_agent_sync.sh
 KHAL_CAL=work ./scripts/schedule_agent_sync.sh
 ```
 
-Output default: `plans/_governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored — personal).
+Output default: `governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored — personal).
 
 ## Agent reading order
 
 1. This file (pointers + workflow).
-2. `plans/_governance/HITM_SCHEDULE_SNAPSHOT.md` — **if present** (run the script locally; not shipped in git).
+2. `HITM_SCHEDULE_SNAPSHOT.md` — **if present** (run the script locally; not shipped in git).
 3. Strategic cadence and gates: `plans/cursor/strategic-roadmap-reframe-53be/README.md`, `kill_commit_gates.md`, `validation_gates.md`.
 
 If the snapshot is missing, assume schedule is unknown and ask HitM before assuming availability.

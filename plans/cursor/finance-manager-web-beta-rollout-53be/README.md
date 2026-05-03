@@ -90,7 +90,7 @@ Document choice in [`runtime_handoff.md`](./runtime_handoff.md) and gate **Break
 | Step | Owner | Notes |
 |------|--------|------|
 | C/P/PR/M | JS agent (+ API agent if API repo PR) | Separate PRs per submodule repo |
-| D | Execution plane per [deployment_protocol.md](../../_governance/deployment_protocol.md) when deploying API or proxy to VPS |
+| D | Execution plane per [deployment_protocol.md](../../../governance/deployment_protocol.md) when deploying API or proxy to VPS |
 
 **Human manual verification:** Login, dashboard charts/tables, hard refresh — record in `runtime_handoff.md` or PR verification section.
 

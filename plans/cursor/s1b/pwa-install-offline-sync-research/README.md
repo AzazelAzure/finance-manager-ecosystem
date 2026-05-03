@@ -41,7 +41,7 @@ standalone_notes: ""
 
 ## 0) Strategic Inheritance
 
-**Referenced from S1.B (when implementation sprint activates):** Stage hub [`plans/cursor/s1b/README.md`](../README.md) section **Sprint activation index — PWA** (anchor `#pwa-sprint-activation-index`); exit bar [`plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../strategic-roadmap-reframe-53be/validation_gates.md) (S1.B); phase/workstreams [`plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2/W3/W6); portfolio [`plans/_governance/plan_registry.md`](../../../_governance/plan_registry.md) (`PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01`).
+**Referenced from S1.B (when implementation sprint activates):** Stage hub [`plans/cursor/s1b/README.md`](../README.md) section **Sprint activation index — PWA** (anchor `#pwa-sprint-activation-index`); exit bar [`plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../strategic-roadmap-reframe-53be/validation_gates.md) (S1.B); phase/workstreams [`plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2/W3/W6); portfolio [`governance/plan_registry.md`](../../../../governance/plan_registry.md) (`PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01`).
 
 - **Wedge respected:** yes — PH-first implies **Chrome on Android** as the primary install surface; iOS Safari PWA limitations are documented risks, not blocking assumptions for v1.
 - **Locked decisions touched:** `00_strategic_context.md` §3.3 (Android pull-forward); offline/sync narrative must align with `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md` so web PWA patterns **reuse** the same mental model (outbox, idempotency) where possible.
@@ -200,7 +200,7 @@ Each gate requires an **explicit HitM decision** (and optional agent recommendat
 When closing this plan, executor must:
 
 - Confirm `validation_gates.md` S1.B PWA bullet still matches §6 (revise if tier changed).
-- Update `_governance/plan_registry.md` status to `completed`.
+- Update `governance/plan_registry.md` status to `completed`.
 - Post completion summary per workspace Slack policy if `pre_close: required`.
 
 ## 9) Completion Criteria

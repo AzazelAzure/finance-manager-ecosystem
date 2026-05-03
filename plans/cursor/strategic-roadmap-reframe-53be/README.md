@@ -95,33 +95,33 @@ Active Stage (S1.B) handoff:
 - Plan root: `plans/cursor/strategic-roadmap-reframe-53be/`
 - Active Stage packet: `phases/S1_public_beta_position.md` (+ Stage-level `plans/cursor/s1b/README.md`)
 - Active Stage execution plans: under `plans/cursor/s1b/<sub-plan>/`
-- Pre-governance plans (now closed): see `_governance/plan_registry.md` Recently Completed section
+- Pre-governance plans (now closed): see `governance/plan_registry.md` Recently Completed section
 
 ## 8) Plan Governance Layer
 
-Tactical plans that execute against this strategic roadmap follow the **plan governance layer** at `plans/_governance/`:
+Tactical plans that execute against this strategic roadmap follow the **plan governance layer** at `governance/`:
 
 
 | File                                        | Read when                                          |
 | ------------------------------------------- | -------------------------------------------------- |
-| `plans/_governance/README.md`               | First, every session                               |
-| `plans/_governance/glossary.md`             | First, every session — canonical vocabulary        |
-| `plans/_governance/plan_template.md`        | Authoring a plan                                   |
-| `plans/_governance/plan_registry.md`        | Before authoring or starting work                  |
-| `plans/_governance/plan_lifecycle.md`       | At every status transition                         |
-| `plans/_governance/execution_protocols.md`  | Producing HitM-facing Slack messages               |
-| `plans/_governance/deployment_protocol.md`  | Plan ships code to VPS                             |
-| `plans/_governance/branching_guidelines.md` | Producing or executing a feature on inactive color |
+| `governance/README.md`               | First, every session                               |
+| `governance/glossary.md`             | First, every session — canonical vocabulary        |
+| `governance/plan_template.md`        | Authoring a plan                                   |
+| `governance/plan_registry.md`        | Before authoring or starting work                  |
+| `governance/plan_lifecycle.md`       | At every status transition                         |
+| `governance/execution_protocols.md`  | Producing HitM-facing Slack messages               |
+| `governance/deployment_protocol.md`  | Plan ships code to VPS                             |
+| `governance/branching_guidelines.md` | Producing or executing a feature on inactive color |
 
 
 **Hierarchical plan structure (locked 2026-04-30):** new plans live under `plans/cursor/<phase-stage>/<sub-plan>/` (e.g. `plans/cursor/s1b/drift-cleanup/`). Strategic Plan stays at top level (`plans/cursor/strategic-roadmap-reframe-53be/`); not Stage-scoped.
 
-**This strategic plan is not edited as part of tactical execution.** Subordinate plans update `validation_gates.md` and `kill_commit_gates.md` only at close, and only via the actions documented in `_governance/plan_lifecycle.md` Stage 5.
+**This strategic plan is not edited as part of tactical execution.** Subordinate plans update `validation_gates.md` and `kill_commit_gates.md` only at close, and only via the actions documented in `governance/plan_lifecycle.md` Stage 5.
 
 When commissioning new work:
 
 1. Decide Phase/Stage (this README §3).
 2. Read the relevant Phase doc under `phases/`.
 3. Read the Stage-level README under `plans/cursor/<phase-stage>/README.md`.
-4. Hand off to an agent with the Phase + Stage context; agent uses `_governance/plan_template.md` to author a new tactical plan.
-5. Slack confirmation gates per `_governance/execution_protocols.md` §1 keep HitM in the loop without requiring desktop attention for routine progress.
+4. Hand off to an agent with the Phase + Stage context; agent uses `governance/plan_template.md` to author a new tactical plan.
+5. Slack confirmation gates per `governance/execution_protocols.md` §1 keep HitM in the loop without requiring desktop attention for routine progress.

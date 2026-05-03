@@ -339,7 +339,7 @@ Items flagged in the previous huddle message that need cleanup:
 
 - Update strategic roadmap files: which entries change?
 - Create a single follow-up plan packet under `plans/cursor/<branch>/` for the drift cleanup queue.
-- Update `_governance/plan_registry.md` with all status transitions.
+- Update `governance/plan_registry.md` with all status transitions.
 - Append first entry to `kill_commit_gates.md` outcomes log: implicit S1 boundary shift, JS pivot completion, Reflex archival, S0 issue declaration.
 - Trigger `design-docs-sync` for affected design docs.
 - Define resume trigger condition explicitly in `01_unit_economics_and_costs.md` or a new file.
@@ -349,7 +349,7 @@ Items flagged in the previous huddle message that need cleanup:
 
 - **Feature roadmaps** — per-phase feature lists with implementation order. Likely one per major surface (dashboard, transactions, calendar, upcoming bills, data hub, settings, onboarding).
 - **Implementation guides** — agent-facing how-tos for repeatable feature work (e.g. "how to add a new dashboard widget end-to-end," "how to add a new API contract with CLI smoke + JS consumer," etc.).
-- **Blue-green branching guidelines** — codify the actual VPS workflow that has emerged: per-phase branch strategy, web-blue/web-green build cadence, when to fold into shared infra. Extends `_governance/deployment_protocol.md`.
+- **Blue-green branching guidelines** — codify the actual VPS workflow that has emerged: per-phase branch strategy, web-blue/web-green build cadence, when to fold into shared infra. Extends `governance/deployment_protocol.md`.
 - **Plan/branch templates for next beta sprint** — concrete pre-flight artifacts so the next sprint starts with all governance scaffolding ready.
 
 ### Discussion notes

@@ -33,7 +33,7 @@ Facilitate a structured strategic-planning huddle with the HitM. Use when HitM c
 
 8. **Close-out produces real artifacts.** Final topic of a huddle is "Lock and consolidate" — convert the huddle outputs into Strategic Plan updates, governance changes, plan packets, design doc syncs. The huddle isn't over until the artifacts exist on disk.
 
-9. **Archive volatile huddle directory at close.** If the huddle used `plans/archived/volatile/<huddle-name>/`, move it to `plans/archived/<huddle-name>/` after Topic 11 close-out (same pattern as post-beta huddle 2026-04-30). Do **not** recreate removed top-level `plans/volatile/`; new governed work belongs under `plans/cursor/<phase-stage>/<sub-plan>/` per `plans/_governance/`.
+9. **Archive volatile huddle directory at close.** If the huddle used `plans/archived/volatile/<huddle-name>/`, move it to `plans/archived/<huddle-name>/` after Topic 11 close-out (same pattern as post-beta huddle 2026-04-30). Do **not** recreate removed top-level `plans/volatile/`; new governed work belongs under `plans/cursor/<phase-stage>/<sub-plan>/` per `governance/README.md` and `governance/branching_guidelines.md`.
 
 ## Standard huddle structure
 
@@ -43,7 +43,7 @@ plans/archived/volatile/<huddle-name>/         ← optional short-lived mirror d
 ├── TALKING_POINTS.md                             ← per-topic status + discussion notes
 ├── DECISIONS.md                                  ← append-only locked decisions log
 ├── KNOWN_ISSUES.md                               ← bug/issue list if applicable
-├── GLOSSARY.md                                   ← canonical vocabulary (migrates to _governance/ at close)
+├── GLOSSARY.md                                   ← canonical vocabulary (migrates to governance/ at close)
 ├── PARKING_LOT.md                                ← deferred items with revisit triggers
 └── TOPIC_N_QUESTIONS.md                          ← optional per-topic single-page reference for heavy topics
 ```
@@ -94,7 +94,7 @@ Once logged, the decision is locked. Re-opening requires an explicit revisit.
 
 ## Slack gate awareness
 
-Strategic decisions usually do NOT use Slack gates (they happen on desktop with full context). Tactical execution post-huddle uses Slack gates per `_governance/execution_protocols.md`.
+Strategic decisions usually do NOT use Slack gates (they happen on desktop with full context). Tactical execution post-huddle uses Slack gates per `governance/execution_protocols.md`.
 
 ## Common HitM patterns to recognize
 
@@ -110,9 +110,9 @@ A full huddle covering 10–11 topics takes 3–6 hours of conversation + 2–4 
 
 ## References
 
-- Glossary canonical: `plans/_governance/glossary.md`.
-- Decision-locking template: `_governance/plan_template.md` and worked examples in any volatile huddle's `DECISIONS.md`.
-- Branching workflow: `_governance/branching_guidelines.md`.
+- Glossary canonical: `governance/glossary.md`.
+- Decision-locking template: `governance/plan_template.md` and worked examples in any volatile huddle's `DECISIONS.md`.
+- Branching workflow: `governance/branching_guidelines.md`.
 - Strategic Plan canonical: `plans/cursor/strategic-roadmap-reframe-53be/`.
 
 ## Last validated

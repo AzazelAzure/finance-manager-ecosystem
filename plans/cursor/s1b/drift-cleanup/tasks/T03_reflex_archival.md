@@ -70,7 +70,7 @@ This repository is preserved as historical evidence only. Do not use as a refere
 ## Canonical Sources
 
 - Strategic context for archival: `plans/cursor/strategic-roadmap-reframe-53be/00_strategic_context.md` §3.1
-- Per-product launch state: `plans/_governance/glossary.md` §8 (current state shows `reflex:Archived`)
+- Per-product launch state: `governance/glossary.md` §8 (current state shows `reflex:Archived`)
 - Active flagship: `finance_manager_web` (`web:Tight Beta` as of 2026-04-30)
 
 ## Branch Status

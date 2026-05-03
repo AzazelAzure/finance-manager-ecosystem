@@ -1,4 +1,6 @@
-# Plan Governance — AI Operations Manual
+# Governance — AI operations manual
+
+Repo location: **`governance/`** (workspace root, sibling to `plans/`). Tactical **execution plans** still live under `plans/cursor/<phase-stage>/<sub-plan>/`; this directory holds **protocols** (registry, lifecycle, deploy, branching, vocabulary).
 
 Primary audience: AI agents (Cursor desktop, Cursor cloud, headless Slack bridge, any future agent).
 Secondary audience: HitM (Human in the Middle = `pproctor`) at Slack confirmation gates only.
@@ -8,18 +10,18 @@ This manual defines how AI agents author and execute plans **consistently** acro
 ## Files in this directory
 
 
-| File                      | Purpose                                                                    | Read when                                                   |
-| ------------------------- | -------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `README.md`               | Router, canonical enums, reading sequences                                 | First, every session                                        |
-| `plan_template.md`        | Schema for new plans                                                       | Authoring a plan                                            |
-| `plan_registry.md`        | Portfolio status of all plans                                              | Before authoring or executing (conflict + dependency check) |
-| `plan_lifecycle.md`       | State machine + transition actions                                         | At every status transition                                  |
-| `execution_protocols.md`  | Exact Slack gate + handoff templates                                       | Producing any HitM-facing message                           |
-| `deployment_protocol.md`  | CPPR+D cycle, blue-green deploy, SSH rules                                 | Plan has `deployment.required: true`                        |
-| `branching_guidelines.md` | Per-feature color-cycle workflow                                           | Producing or executing a feature on inactive color          |
-| `glossary.md`             | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.) | First, every session                                        |
-| `HITM_SCHEDULE_AND_TASKS.md` | khal + todoman paths, sprint/absence workflow, how to refresh agent snapshot | Before dense sprint planning or availability assumptions |
-| `HITM_SCHEDULE_SNAPSHOT.md` | **Generated** (`./scripts/schedule_agent_sync.sh`); gitignored | When present locally: calendar window + open tasks for agents |
+| File                         | Purpose                                                                      | Read when                                                     |
+| ---------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `README.md`                  | Router, canonical enums, reading sequences                                   | First, every session                                          |
+| `plan_template.md`           | Schema for new plans                                                         | Authoring a plan                                              |
+| `plan_registry.md`           | Portfolio status of all plans                                                | Before authoring or executing (conflict + dependency check)   |
+| `plan_lifecycle.md`          | State machine + transition actions                                           | At every status transition                                    |
+| `execution_protocols.md`     | Exact Slack gate + handoff templates                                         | Producing any HitM-facing message                             |
+| `deployment_protocol.md`     | CPPR+D cycle, blue-green deploy, SSH rules                                   | Plan has `deployment.required: true`                          |
+| `branching_guidelines.md`    | Per-feature color-cycle workflow                                             | Producing or executing a feature on inactive color            |
+| `glossary.md`                | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.)   | First, every session                                          |
+| `HITM_SCHEDULE_AND_TASKS.md` | khal + todoman paths, sprint/absence workflow, how to refresh agent snapshot | Before dense sprint planning or availability assumptions      |
+| `HITM_SCHEDULE_SNAPSHOT.md`  | **Generated** (`../scripts/schedule_agent_sync.sh`); gitignored               | When present locally: calendar window + open tasks for agents |
 
 
 ## Reading sequences
@@ -157,7 +159,7 @@ These values are normative. AI agents must use only these strings. Validation fa
 
 ## Forbidden actions for agents
 
-- Authoring or modifying files in `_governance/` without explicit HitM authorization.
+- Authoring or modifying files in the repo-root `governance/` directory (this manual) without explicit HitM authorization.
 - Modifying `plans/cursor/strategic-roadmap-reframe-53be/` files except via `plan_lifecycle.md` Stage 5 close-out updates to `validation_gates.md` and `kill_commit_gates.md`.
 - Skipping validation (`draft → in_progress` directly) outside hotfix variant.
 - Merging without Slack `#pull-requests` authorization (workspace rule, reinforced here).

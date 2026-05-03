@@ -14,7 +14,7 @@ This is paperwork only — code already shipped via those plans during S1.A. The
 
 ## Plans to Close
 
-Per `_governance/plan_registry.md` Recently Completed section (already updated at huddle close-out):
+Per `governance/plan_registry.md` Recently Completed section (already updated at huddle close-out):
 
 
 | plan_id                                                   | plan_root                                                | Action                  |
@@ -41,11 +41,11 @@ This plan is formally closed as of 2026-04-30 (post-beta huddle Topic 11).
 
 - Status: `completed`
 - Phase: S1.A (pre-governance era; mapped to S1.A in the canonical S1–S6 model)
-- Outcomes: see `plans/_governance/plan_registry.md` Recently Completed section for strategic impact summary.
+- Outcomes: see `governance/plan_registry.md` Recently Completed section for strategic impact summary.
 
 ## Why This Was a "Pre-Governance" Plan
 
-This plan was authored before the plan governance system at `plans/_governance/` was established. It does not have the YAML metadata header from the canonical `plan_template.md` and was executed under prior conventions. Its outcomes are real and shipped; the close-out is registry hygiene only.
+This plan was authored before the plan governance system at `governance/` was established. It does not have the YAML metadata header from the canonical `plan_template.md` and was executed under prior conventions. Its outcomes are real and shipped; the close-out is registry hygiene only.
 
 ## Reference
 
@@ -56,7 +56,7 @@ Closure decision: `plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md` (Top
 ## Acceptance Criteria
 
 - All seven plans have a `CLOSED.md` file with the above content (adapted per plan_id).
-- `plans/_governance/plan_registry.md` is verified consistent (no plans listed `in_progress` that have been closed).
+- `governance/plan_registry.md` is verified consistent (no plans listed `in_progress` that have been closed).
 - No code changes; no deploy.
 
 ## Verification Commands
@@ -74,7 +74,7 @@ for d in plans/cursor/api-reflex-beta-readiness-plan-53be \
 done
 
 # Verify registry is consistent
-grep -A 2 "## In Progress" plans/_governance/plan_registry.md | head -10
+grep -A 2 "## In Progress" governance/plan_registry.md | head -10
 ```
 
 ## Risks / Rollback

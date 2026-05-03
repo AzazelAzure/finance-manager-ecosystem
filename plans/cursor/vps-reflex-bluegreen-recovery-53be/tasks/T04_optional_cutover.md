@@ -4,7 +4,7 @@
 
 ## Objective
 
-Only after inactive smoke is **extended** and human approves **pre_cutover** per [deployment_protocol.md](../../_governance/deployment_protocol.md).
+Only after inactive smoke is **extended** and human approves **pre_cutover** per [deployment_protocol.md](../../../../governance/deployment_protocol.md).
 
 ## Steps
 

@@ -33,7 +33,8 @@ git submodule update --init --recursive
 - **`docker-compose.yml`** — local stack (Postgres, API, **web** (Vite build), nginx proxy). Blue/green production-style flows use `docker-compose.bluegreen.yml` + `proxy/`. Copy **`.env.example`** to **`.env`** and set secrets locally; **`.env` is gitignored.**
 - **`scripts/`** — lifecycle helpers (`fm_docker.sh`, `fm_services.sh`, DB utilities, etc.). Virtualenvs under `scripts/` (e.g. `hive_venv/`) are ignored.
 - **`proxy/`** — nginx image and config. **TLS material** under `proxy/certs/*.pem` is ignored; generate or copy certs per machine and keep private keys out of git.
-- **`plans/`** — execution plans for orchestration (`plans/<proposed-git-branch-name>/`); see `.cursor/skills/roadmap-rollout-planning/SKILL.md`.
+- **`governance/`** — plan ops protocols (registry, lifecycle, deploy, branching, glossary); read `governance/README.md` first when authoring or executing governed work.
+- **`plans/`** — tactical execution plans under `plans/cursor/<phase-stage>/<sub-plan>/`; see `.cursor/skills/roadmap-rollout-planning/SKILL.md`.
 - **`docs/`** — cross-cutting notes (lockfiles, SPDX, agent pilot).
 - **`finance_manager_rust_middleware/`** and **`finance_manager_rust_tools/`** — separate repos (see table above); develop Rust work there and bump submodule SHAs when sharing changes with the ecosystem.
 - **`.gitignore`** — excludes `.env`, venvs, local dumps, editor ignore files (`.cursorignore`, `.antigravityignore`), and local certificates.

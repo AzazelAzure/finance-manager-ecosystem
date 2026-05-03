@@ -16,7 +16,7 @@ This is the phase where the wedge moves from "validated by 30+ Founding/Soft Pub
 
 ## Exit Criteria (all required)
 
-- GCash/Maya **direct integration** live and accurate (≥95% test transactions correctly parsed). Not just CSV import — full SMS parsing pipeline (per `_governance/branching_guidelines.md` for multi-repo coordination).
+- GCash/Maya **direct integration** live and accurate (≥95% test transactions correctly parsed). Not just CSV import — full SMS parsing pipeline (per `governance/branching_guidelines.md` for multi-repo coordination).
 - AI tier mature with ≥10 paid Pro+ AI subscribers.
 - ≥100 paying users total.
 - Active PH content cadence sustained for ≥3 months (≥2 PH-local touchpoints per week).
@@ -93,7 +93,7 @@ Android shipped in S1.B/C. S2 maintains and grows it but doesn't make it primary
 - **AI cost cap is non-negotiable.** Free-tier LLM cost ≤30% of paid MRR.
 - **No new product personas in S2.** Wedge stays as written.
 - **PH-only market focus continues.** US re-engagement deferred behind P-6 trigger.
-- **One feature at a time on inactive color** per `_governance/branching_guidelines.md`.
+- **One feature at a time on inactive color** per `governance/branching_guidelines.md`.
 - **Velocity ceiling holds:** 10hr/day, 55hr/week (Sprint); 6hr/day, 30hr/week (decompression).
 
 ## Risks and Mitigations

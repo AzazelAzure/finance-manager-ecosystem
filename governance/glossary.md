@@ -102,7 +102,7 @@ Five plan-type categories, each with distinct scope and lifecycle:
 | **Execution Plan** | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates. | Lives `draft → ready → in_progress → completed → archived`. | `plans/cursor/<phase-stage>/<sub-plan>/` (hierarchical, per Topic 11 lock), `plans/cursor/<branch>/` (pre-hierarchy standalone), or closed trees under `plans/archived/` (including `archived/feat/`, `archived/fix/`, `archived/volatile*`) |
 | **Feature Roadmap** | Per-surface backlog (e.g. "Dashboard feature roadmap"). Lists features, priorities, target Phase. NOT execution-ready. | Permanent; updated as features ship or get queued. | `design_docs/<surface>_docs/feature_roadmap.md` |
 | **Implementation Guide** | Agent-facing how-to for repeatable work patterns. | Permanent; revised when patterns change. | `design_docs/40_System_Design/implementation_guides/` |
-| **Branching Guideline** | Specific to deploy/branch strategy. Extends `_governance/deployment_protocol.md`. | Permanent; revised when deploy strategy changes. | `_governance/branching_guidelines.md` |
+| **Branching Guideline** | Specific to deploy/branch strategy. Extends `deployment_protocol.md`. | Permanent; revised when deploy strategy changes. | `branching_guidelines.md` |
 
 ### Retired vocabulary
 
@@ -121,7 +121,7 @@ Two distinct scales that look identical. Always include the prefix letter.
 | Scale | Range | Domain | Source |
 |---|---|---|---|
 | **Severity** | `S0` / `S1` / `S2` / `S3` | How bad an issue is | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
-| **Priority** | `P0` / `P1` / `P2` | How urgent a piece of work is | `_governance/plan_template.md` |
+| **Priority** | `P0` / `P1` / `P2` | How urgent a piece of work is | `plan_template.md` |
 
 A bug can be `S0` (data integrity broken) **and** `P0` (must be fixed first). They aren't the same: severity describes the issue, priority describes our scheduling decision.
 
@@ -158,7 +158,7 @@ Always write `S0`, `S1`, `P0`, etc. — never bare `0`, `1`, `2`. The prefix let
 
 | Term | Definition |
 |---|---|
-| **Sprint** | A time-bounded execution cycle within a Stage. Has start, end, deliverables. Minimum durations per `_governance/branching_guidelines.md`. |
+| **Sprint** | A time-bounded execution cycle within a Stage. Has start, end, deliverables. Minimum durations per `branching_guidelines.md`. |
 | **Production Sprint** | A Sprint that ships code to production VPS. Goes through CPPR+D. Min 1 week calendar slot. |
 | **Maintenance Sprint** | A Sprint focused on bug-fix-only or doc-only work, no new features. Min 3 days. |
 | **Research Sprint** | A Sprint with no code changes — research, decision documents, design exploration. Min 1 week. |
@@ -172,7 +172,7 @@ Always write `S0`, `S1`, `P0`, etc. — never bare `0`, `1`, `2`. The prefix let
 | Term | Definition |
 |---|---|
 | **CPPR** | Commit, Push, Pull-Request. Local→remote→PR cycle. No deployment. |
-| **CPPR+D** | CPPR plus Deploy. Adds blue-green deploy step after PR merge. See `_governance/deployment_protocol.md`. |
+| **CPPR+D** | CPPR plus Deploy. Adds blue-green deploy step after PR merge. See `deployment_protocol.md`. |
 | **CPPRD** | Commit, Push, Pull-Request, Document. Adds documentation update step. See `AGENTS.md`. |
 
 These three are not synonyms. CPPR is the minimum cycle; CPPR+D is for code that ships to VPS; CPPRD is for code that ships and where docs need to be updated.

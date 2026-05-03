@@ -94,7 +94,7 @@ Older plans from prior cycles. Not retroactively migrated to this registry. Futu
 
 ## Hierarchical plan structure (Topic 11 lock)
 
-New plans use the hierarchical pattern per `_governance/branching_guidelines.md`:
+New plans use the hierarchical pattern per `branching_guidelines.md`:
 
 ```
 plans/cursor/<phase-stage>/                          ← Stage umbrella
@@ -133,6 +133,6 @@ For each currently-active plan (In Progress + Ready):
 4. Else: candidate for parallel_safe_with (confirm both plans agree)
 ```
 
-See `_governance/execution_protocols.md` §8 for canonical conflict signatures.
+See `execution_protocols.md` §8 for canonical conflict signatures.
 
-See `_governance/branching_guidelines.md` §5 for color-cycle concurrency rules (one feature at a time).
+See `branching_guidelines.md` §5 for color-cycle concurrency rules (one feature at a time).

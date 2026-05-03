@@ -9,7 +9,7 @@ Fix the **S0 critical distribution-blocker** from huddle Topic 1: DB enforces us
 - Repo: `finance_manager_api/` (primary)
 - Repo: `finance_manager_web/` (secondary — UI handling of duplicate-email signup response)
 - Branch: `cursor/s1b/drift-cleanup/t02-email-uniqueness-s0-fix`
-- Multi-repo coordination per `_governance/branching_guidelines.md` §8.2 (API ships first, web ships second).
+- Multi-repo coordination per `governance/branching_guidelines.md` §8.2 (API ships first, web ships second).
 
 ## Current Evidence
 

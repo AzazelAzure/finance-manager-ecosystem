@@ -4,7 +4,7 @@
 **Plan root:** `plans/cursor/vps-reflex-bluegreen-recovery-53be/`  
 **Last updated:** 2026-04-30 — parallel T03 done, Breakpoint B signed, main + bundle current
 
-Use this file as the primary handoff for the **next executor** (host agent or human). Re-read [`CROSS_AGENT_COORDINATION.md`](./CROSS_AGENT_COORDINATION.md) and [`../../_governance/deployment_protocol.md`](../../_governance/deployment_protocol.md) before any VPS lifecycle work.
+Use this file as the primary handoff for the **next executor** (host agent or human). Re-read [`CROSS_AGENT_COORDINATION.md`](./CROSS_AGENT_COORDINATION.md) and [`../../../governance/deployment_protocol.md`](../../../governance/deployment_protocol.md) before any VPS lifecycle work.
 
 ---
 
@@ -36,7 +36,7 @@ Use this file as the primary handoff for the **next executor** (host agent or hu
 ## What is next (blue/green focus)
 
 1. **Optional:** periodic **`FM_BG_PARALLEL=1`** `check` and **`smoke --color inactive`** after material API/reflex image changes.
-2. **When ready for traffic cutover:** `pre_cutover` gate → reconfigure **live** nginx to blue/green (or maintenance window) → `fm_server_beta` **`switch`** — see [design doc](../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) and [`deployment_protocol.md`](../../_governance/deployment_protocol.md).
+2. **When ready for traffic cutover:** `pre_cutover` gate → reconfigure **live** nginx to blue/green (or maintenance window) → `fm_server_beta` **`switch`** — see [design doc](../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md) and [`deployment_protocol.md`](../../../governance/deployment_protocol.md).
 3. **JS / `web-*` colors:** coordinate with [web plan](../finance-manager-web-beta-rollout-53be/README.md) when the React app is ready; does not block Reflex.
 4. **Deferred product work:** dashboard **chart** data population — not tracked as this plan’s exit criteria.
 
@@ -64,7 +64,7 @@ export FM_PUBLIC_BASE_URL=https://127.0.0.1:8443
 
 ## Execution plane
 
-- Use a **host-trusted agent** or human for SSH, bundle push, and `fm_server_beta` lifecycle. Follow [`deployment_protocol.md`](../../_governance/deployment_protocol.md) for gates.
+- Use a **host-trusted agent** or human for SSH, bundle push, and `fm_server_beta` lifecycle. Follow [`deployment_protocol.md`](../../../governance/deployment_protocol.md) for gates.
 
 ---
 

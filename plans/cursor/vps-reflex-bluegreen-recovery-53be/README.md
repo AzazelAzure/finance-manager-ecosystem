@@ -16,7 +16,7 @@ deployment:
     - "WebSocket /_event stability on reflex-api host"
   notes: >-
     Coordinate with JS plan for CORS and extra server_name blocks.
-    CPPR+D per plans/_governance/deployment_protocol.md; execution plane for SSH/deploy.
+    CPPR+D per governance/deployment_protocol.md; execution plane for SSH/deploy.
 ---
 
 # VPS Reflex stack and blue-green recovery
@@ -45,7 +45,7 @@ deployment:
 - **Parallel deploy + future JS UI:** single source of truth for *how* we run inactive color beside active traffic and how **`finance_manager_web`** joins the same blue/green cycle when Reflex is sunset — [`14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md`](../../../design_docs/40_System_Design/14_Parallel_Blue_Green_Deploy_and_JS_Web_Integration.md).
 - VPS has often run **single-stack** [`docker-compose.yml`](../../../docker-compose.yml) + [`proxy/nginx.conf`](../../../proxy/nginx.conf) + [`scripts/fm_docker.sh`](../../../scripts/fm_docker.sh). Blue-green files exist: [`docker-compose.bluegreen.yml`](../../../docker-compose.bluegreen.yml), [`proxy/nginx.bluegreen.conf`](../../../proxy/nginx.bluegreen.conf), [`scripts/fm_server_beta.sh`](../../../scripts/fm_server_beta.sh).
 - Baseline narrative: [`../server-beta-install-bluegreen-53be/known_good_beta_state_apr28.md`](../server-beta-install-bluegreen-53be/known_good_beta_state_apr28.md).
-- Live cutover was previously deferred — do not `switch` without **pre_cutover** gate per [`deployment_protocol.md`](../../_governance/deployment_protocol.md).
+- Live cutover was previously deferred — do not `switch` without **pre_cutover** gate per [`deployment_protocol.md`](../../../governance/deployment_protocol.md).
 
 ## Phase A — Inventory
 

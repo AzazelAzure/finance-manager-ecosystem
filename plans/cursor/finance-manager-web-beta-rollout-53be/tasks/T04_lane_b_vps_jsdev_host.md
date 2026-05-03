@@ -39,4 +39,4 @@ Public HTTPS URL serves the **built** JS app while API remains `https://api.theh
 
 ## CPPR+D
 
-API and proxy VPS changes: merged PR → execution plane **D** with `pre_deploy` per [deployment_protocol.md](../../_governance/deployment_protocol.md).
+API and proxy VPS changes: merged PR → execution plane **D** with `pre_deploy` per [deployment_protocol.md](../../../../governance/deployment_protocol.md).

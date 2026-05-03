@@ -8,7 +8,7 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 
 **Ids:** **F-001**–**F-007** (original brain dump), **F-008**–**F-011** (huddle / S1.B candidates + living marketing), **F-012**–**F-013** (infrastructure / support product), **B-001**–**B-003** (sticky-note bugs).
 
-**S1.B execution plans** (governed per `plans/_governance/plan_template.md`; branch `cursor/s1b/feat/<slug>` per `branching_guidelines.md`):
+**S1.B execution plans** (governed per `governance/plan_template.md`; branch `cursor/s1b/feat/<slug>` per `branching_guidelines.md`):
 
 
 | F-id  | Plan `README`                                                                                                  |

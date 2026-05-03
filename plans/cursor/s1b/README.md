@@ -13,7 +13,7 @@
 
 ## Sub-plan index
 
-Sub-plans under this Stage. Each follows the canonical Execution Plan template (`plans/_governance/plan_template.md`) with hierarchical metadata.
+Sub-plans under this Stage. Each follows the canonical Execution Plan template (`governance/plan_template.md`) with hierarchical metadata.
 
 
 | Sub-plan                             | Status      | Owner                                 | Dependencies                                                     | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
@@ -29,7 +29,7 @@ Sub-plans under this Stage. Each follows the canonical Execution Plan template (
 
 ### Feature execution plans (`FEATURE_IDEAS.md` F-001–F-011)
 
-Each row is a **draft** governed plan (`plan_id` in YAML); work branches: `cursor/s1b/feat/<slug>` per [`../../_governance/branching_guidelines.md`](../../_governance/branching_guidelines.md). Register: [`../../_governance/plan_registry.md`](../../_governance/plan_registry.md).
+Each row is a **draft** governed plan (`plan_id` in YAML); work branches: `cursor/s1b/feat/<slug>` per [`../../../governance/branching_guidelines.md`](../../../governance/branching_guidelines.md). Register: [`../../../governance/plan_registry.md`](../../../governance/plan_registry.md).
 
 | F-id | Plan root |
 | ---- | --------- |
@@ -50,7 +50,7 @@ Each row is a **draft** governed plan (`plan_id` in YAML); work branches: `curso
 
 ## Branch naming convention
 
-Per `plans/_governance/branching_guidelines.md`:
+Per `governance/branching_guidelines.md`:
 
 - Sub-plan branch: `cursor/s1b/<sub-plan-name>` (e.g. `cursor/s1b/drift-cleanup`)
 - Feature branch on inactive color: `cursor/s1b/feat/<feature-name>` (e.g. `cursor/s1b/feat/email-uniqueness-fix`)
@@ -107,7 +107,7 @@ Use this block when the **flagship web Advanced PWA** implementation sprint is a
 | `[strategic-roadmap-reframe-53be/validation_gates.md](../strategic-roadmap-reframe-53be/validation_gates.md)` (S1.B exit)                 | Authoritative **install-as-app** exit bullet; ties to sub-plan **completed** + **D0–D4** + **D4-exec**.                 |
 | `[pwa-install-offline-sync-research/README.md](./pwa-install-offline-sync-research/README.md)`                                            | **§1.1–§1.7** decision log + rationale; **§6** checklist; links to **D0 / D2 / D3 / D4 / seeding / API version** specs. |
 | `[pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md](./pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md)`                    | One-page index of all PWA research files.                                                                               |
-| `[_governance/plan_registry.md](../_governance/plan_registry.md)`                                                                         | Portfolio row `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` (status handoff).                                     |
+| `[governance/plan_registry.md](../../../governance/plan_registry.md)`                                                                         | Portfolio row `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` (status handoff).                                     |
 | `[pwa-implementation-branch/README.md](./pwa-implementation-branch/README.md)`                                                           | **Implementation + orchestration** (`PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`): tasks **T00–T16**, breakpoints, **SEO P0/P1** sequencing, `runtime_handoff.md`. |
 
 
@@ -117,9 +117,9 @@ Deep specs (from sub-plan README §3 + §1.7): `[D0_BROWSER_MATRIX.md](./pwa-ins
 - Unit economics: `plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`
 - Validation gates: `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`
 - Parking lot: `plans/cursor/strategic-roadmap-reframe-53be/PARKING_LOT.md`
-- Branching workflow: `plans/_governance/branching_guidelines.md`
-- Plan template: `plans/_governance/plan_template.md`
-- Plan registry: `plans/_governance/plan_registry.md`
+- Branching workflow: `governance/branching_guidelines.md`
+- Plan template: `governance/plan_template.md`
+- Plan registry: `governance/plan_registry.md`
 
 ## Stage exit criteria summary (full detail in `validation_gates.md`)
 

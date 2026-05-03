@@ -25,4 +25,4 @@ Prove blue-green path without switching public traffic.
 
 ## CPPR
 
-Merged code → execution plane runs **D** per [deployment_protocol.md](../../_governance/deployment_protocol.md) with `pre_deploy` approval before VPS writes.
+Merged code → execution plane runs **D** per [deployment_protocol.md](../../../../governance/deployment_protocol.md) with `pre_deploy` approval before VPS writes.

@@ -8,7 +8,7 @@ Fix Issue #1 from huddle Topic 1: editing an existing upcoming expense whose `is
 
 - Repos: `finance_manager_api/` (likely serializer fix) + `finance_manager_web/` (likely form-binding fix)
 - Branch: `cursor/s1b/drift-cleanup/t05-recurring-expense-edit-fix`
-- Multi-repo coordination per `_governance/branching_guidelines.md` §8.2.
+- Multi-repo coordination per `governance/branching_guidelines.md` §8.2.
 
 ## Current Evidence
 

@@ -5,7 +5,7 @@
 # Environment:
 #   FM_BASE_DIR        — repo root (default: parent of this script's directory)
 #   SCHEDULE_DAYS      — how many days forward to list from today (default: 90)
-#   SCHEDULE_SNAPSHOT  — output file (default: plans/_governance/HITM_SCHEDULE_SNAPSHOT.md)
+#   SCHEDULE_SNAPSHOT  — output file (default: governance/HITM_SCHEDULE_SNAPSHOT.md)
 #   KHAL_CAL           — optional: pass through to khal -a (include only this calendar)
 #
 # Requires: khal, todo (todoman), python3 (for portable date math)
@@ -15,7 +15,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BASE_DIR="${FM_BASE_DIR:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 DAYS="${SCHEDULE_DAYS:-90}"
-OUT="${SCHEDULE_SNAPSHOT:-$BASE_DIR/plans/_governance/HITM_SCHEDULE_SNAPSHOT.md}"
+OUT="${SCHEDULE_SNAPSHOT:-$BASE_DIR/governance/HITM_SCHEDULE_SNAPSHOT.md}"
 
 require_cmd() {
   if ! command -v "$1" &>/dev/null; then

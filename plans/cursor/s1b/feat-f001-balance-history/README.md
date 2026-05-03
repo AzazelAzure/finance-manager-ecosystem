@@ -75,7 +75,7 @@ Persist and expose **per-account day-end closing balances** so users see balance
 
 ## 4) Phase Plan or Task List
 
-Author `tasks/T01_*.md` … when breaking out migrations vs API vs UI (template: `plans/_governance/plan_template.md`).
+Author `tasks/T01_*.md` … when breaking out migrations vs API vs UI (template: `governance/plan_template.md`).
 
 ## 5) Execution Order
 

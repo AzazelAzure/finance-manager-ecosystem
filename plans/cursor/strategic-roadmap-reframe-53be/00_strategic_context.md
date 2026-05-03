@@ -16,7 +16,7 @@ This sentence is the brand. It belongs on:
 
 If a feature does not directly serve "what's safe to spend right now," it is **not** a Phase S1–S2 feature. It can be queued for later, but it does not get scarce launch attention.
 
-**Wedge consistency audit** is queued for S1.B per `validation_gates.md` and `_governance/branching_guidelines.md`.
+**Wedge consistency audit** is queued for S1.B per `validation_gates.md` and `governance/branching_guidelines.md`.
 
 ## 2) Primary Persona: The "Living Thin" Household
 
@@ -155,7 +155,7 @@ Frontend framework swap was clean because API contract was the firewall. JS fron
 
 ### 6.4 Conscious owner-approved deviations need automatic follow-up tracking
 
-The `+Bill` hotfix wasn't an AI failure or process violation — it was a deliberate owner tradeoff during launch. Drift came from forgetting to schedule the cleanup. **Implication:** approved deviations should automatically open a "retro-commit this" task. Workflow formalized in `_governance/branching_guidelines.md` §4.
+The `+Bill` hotfix wasn't an AI failure or process violation — it was a deliberate owner tradeoff during launch. Drift came from forgetting to schedule the cleanup. **Implication:** approved deviations should automatically open a "retro-commit this" task. Workflow formalized in `governance/branching_guidelines.md` §4.
 
 ### 6.5 Sprint compression risk is real
 
@@ -167,7 +167,7 @@ Separate GitHub/Slack identities for agents would improve traceability but opera
 
 ### 6.7 Automation is not always desirable
 
-Manual merge-after-confirmation is a verification gate, not bureaucracy. For solo HitM with multiple agents, manual merge is one of the few places "is this actually working?" gets externally validated. **Default:** agents prepare automation-ready outputs (drafted PRs, ready-to-merge state, smoke evidence captured); humans commit irreversible actions (merge, deploy authorization, cutover). Codified in design doc 15 and `_governance/branching_guidelines.md`.
+Manual merge-after-confirmation is a verification gate, not bureaucracy. For solo HitM with multiple agents, manual merge is one of the few places "is this actually working?" gets externally validated. **Default:** agents prepare automation-ready outputs (drafted PRs, ready-to-merge state, smoke evidence captured); humans commit irreversible actions (merge, deploy authorization, cutover). Codified in design doc 15 and `governance/branching_guidelines.md`.
 
 ## 7) Personal Operating Constraints
 
@@ -228,8 +228,8 @@ PFM does not grow from architecture. It grows from these channels, in order of p
 - Kill/commit gates: `kill_commit_gates.md`.
 - Unit economics: `01_unit_economics_and_costs.md`.
 - Parking lot (deferred decisions): `PARKING_LOT.md`.
-- Vocabulary: `_governance/glossary.md`.
-- Branching workflow: `_governance/branching_guidelines.md`.
-- Deployment workflow: `_governance/deployment_protocol.md`.
-- Plan template: `_governance/plan_template.md`.
-- Plan registry: `_governance/plan_registry.md`.
+- Vocabulary: `governance/glossary.md`.
+- Branching workflow: `governance/branching_guidelines.md`.
+- Deployment workflow: `governance/deployment_protocol.md`.
+- Plan template: `governance/plan_template.md`.
+- Plan registry: `governance/plan_registry.md`.

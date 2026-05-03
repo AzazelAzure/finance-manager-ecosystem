@@ -31,4 +31,4 @@ When this plan changes **API** ([`finance_manager_api/`](../../../finance_manage
 
 ## CPPR+D
 
-Same as sibling: [deployment_protocol.md](../../_governance/deployment_protocol.md). JS static/container deploy to VPS is still **D** with gates when it touches production paths.
+Same as sibling: [deployment_protocol.md](../../../governance/deployment_protocol.md). JS static/container deploy to VPS is still **D** with gates when it touches production paths.

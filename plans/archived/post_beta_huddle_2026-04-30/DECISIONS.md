@@ -11,7 +11,7 @@ Append-only log of locked decisions. Format:
 **HitM signoff:** <yes | yes-with-modifications | deferred>
 ```
 
-Once a decision is logged here, it is locked. Re-opening requires a kill/commit gate review per `_governance/plan_lifecycle.md`.
+Once a decision is logged here, it is locked. Re-opening requires a kill/commit gate review per `governance/plan_lifecycle.md`.
 
 ---
 
@@ -65,8 +65,8 @@ Once a decision is logged here, it is locked. Re-opening requires a kill/commit 
 - Severity (S0–S3) and Priority (P0–P2) are distinct scales; prefix letter mandatory.
 - HitM = sole human; agents are workforce.
 
-**Affects:** `GLOSSARY.md` (created), `TALKING_POINTS.md` Topic 4 (re-poses Q1–Q6 in new vocabulary), all future huddle output, eventual migration to `_governance/glossary.md`.
-**Migration path:** Glossary moves to `_governance/glossary.md` at Topic 11 close-out as persistent governance artifact.
+**Affects:** `GLOSSARY.md` (created), `TALKING_POINTS.md` Topic 4 (re-poses Q1–Q6 in new vocabulary), all future huddle output, eventual migration to `governance/glossary.md`.
+**Migration path:** Glossary moves to `governance/glossary.md` at Topic 11 close-out as persistent governance artifact.
 **HitM signoff:** yes (2026-04-30; with Q-G3 extension for per-product launch states accepted as part of lock)
 
 ---

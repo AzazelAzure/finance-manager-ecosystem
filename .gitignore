@@ -1,5 +1,5 @@
 # HitM calendar + task snapshot (generated locally; personal — refresh with scripts/schedule_agent_sync.sh)
-plans/_governance/HITM_SCHEDULE_SNAPSHOT.md
+governance/HITM_SCHEDULE_SNAPSHOT.md
 
 # Local secrets (never commit)
 .env

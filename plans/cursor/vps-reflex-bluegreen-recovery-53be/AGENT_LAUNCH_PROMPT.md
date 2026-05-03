@@ -33,7 +33,7 @@ Success criteria (full run):
 - Phase C: scripts/fm_server_beta.sh check passes on VPS with FM_PUBLIC_* overrides for production hostnames if needed; inactive color deploy + smoke WITHOUT public cutover unless separate human gate; optional cutover + rollback drill with evidence
 - Close: Update validation_gates.md breakpoint statuses; fill runtime_handoff.md; handoff block per CROSS_AGENT_COORDINATION.md if API/proxy changed
 
-CPPR+D: Any VPS deploy of merged code uses plans/_governance/deployment_protocol.md (pre_deploy, deploy inactive, smoke, pre_cutover, cutover). Slack gates in #cli-interface as specified there.
+CPPR+D: Any VPS deploy of merged code uses governance/deployment_protocol.md (pre_deploy, deploy inactive, smoke, pre_cutover, cutover). Slack gates in #cli-interface as specified there.
 
 Start at README Phase A. Report blockers with reproduction + last 30 lines of relevant container logs.
 ```

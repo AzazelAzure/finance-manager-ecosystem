@@ -35,4 +35,4 @@ JS work may add `CORS_ALLOWED_ORIGINS`, new server names in nginx, or Cloudflare
 
 ## CPPR+D reminder for this track
 
-VPS deploys follow **[plans/_governance/deployment_protocol.md](../../../../plans/_governance/deployment_protocol.md)** — cloud agents plan/review; **execution plane** runs SSH/bundle/deploy per contract. Do not SSH from cloud agent unless that contract is explicitly waived for your session.
+VPS deploys follow **[governance/deployment_protocol.md](../../../governance/deployment_protocol.md)** — cloud agents plan/review; **execution plane** runs SSH/bundle/deploy per contract. Do not SSH from cloud agent unless that contract is explicitly waived for your session.

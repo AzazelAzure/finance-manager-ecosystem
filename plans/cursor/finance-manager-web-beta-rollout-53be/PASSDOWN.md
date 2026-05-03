@@ -88,7 +88,7 @@ cd finance_manager_web && npm ci && npm run build
 | [runtime_handoff.md](./runtime_handoff.md) | Lane, URLs, copy/paste handoff |
 | [CROSS_AGENT_COORDINATION.md](./CROSS_AGENT_COORDINATION.md) | Reflex sibling + API change log |
 | [AGENT_LAUNCH_PROMPT.md](./AGENT_LAUNCH_PROMPT.md) | Full agent bootstrap text |
-| [../../_governance/deployment_protocol.md](../../_governance/deployment_protocol.md) | Deploy (D) when touching production paths |
+| [../../../governance/deployment_protocol.md](../../../governance/deployment_protocol.md) | Deploy (D) when touching production paths |
 
 ---
 
