@@ -50,7 +50,7 @@ standalone_notes: ""
 
 # S1.B — Advanced PWA implementation + SEO (P0 parallel, P1 deferred)
 
-**Orchestration root:** this directory. **Host branch:** `cursor/s1b/pwa-implementation-branch`. **Research SSoT:** [`../pwa-install-offline-sync-research/README.md`](../pwa-install-offline-sync-research/README.md) (§1.1–1.7 Advanced tier, §6 production bar, D4-exec). **SEO matrix:** [`../distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../distribution-channel-research/SEO_PRIORITY_MATRIX.md).
+**Orchestration root:** this directory (`plans/cursor/s1b/pwa-implementation-branch/`, not `plans/cursor/pwa-implementation-branch/`). **Host branch:** `cursor/s1b/pwa-implementation-branch`. **Research SSoT:** [`../pwa-install-offline-sync-research/README.md`](../pwa-install-offline-sync-research/README.md) (§1.1–1.7 Advanced tier, §6 production bar, D4-exec). **SEO matrix:** [`../distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../distribution-channel-research/SEO_PRIORITY_MATRIX.md). **Live blockers + VPS color notes:** [`runtime_handoff.md`](runtime_handoff.md) (continuation section).
 
 ## 0) Strategic Inheritance
 

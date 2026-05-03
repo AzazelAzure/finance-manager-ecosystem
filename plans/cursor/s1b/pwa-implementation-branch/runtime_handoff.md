@@ -2,6 +2,8 @@
 
 **Plan ID:** `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`
 
+**Orchestration root:** `plans/cursor/s1b/pwa-implementation-branch/` (not `plans/cursor/pwa-implementation-branch/`).
+
 **Single-owner rule:** Only one agent controls container start/stop/rebuild at a time. Record owner changes here. Prefer project scripts per `.cursor/rules/container-testing-orchestration.mdc`.
 
 ## Lifecycle scripts (default)
@@ -20,45 +22,54 @@ scripts/fm_services.sh restart
 - **Authoritative PWA exit:** manual **D4-exec** on **deployed HTTPS :8443** (active blue/green stack), **Chrome desktop + Chrome Android** only for certified exit (D0 Option B).
 - **Staging / cutover hostnames:** follow `deploy/BLUEGREEN_SWITCHOVER.md` — production origin for installed PWA vs `jsdevtesting` / inactive color validation.
 
-## Current snapshot
+## Current snapshot (2026-05-03 — offline parity sweep landed in workspace)
 
 | Field | Value |
 | ----- | ----- |
 | **Runtime owner** | _(unassigned — set on first test batch)_ |
 | **Mode** | VPS containerized blue/green (`~/finance_manager`, Podman) |
-| **Last lifecycle command** | `rebuild-color green` after web **PR #45** merge (`main` @ `e3dc6e1` on VPS); `smoke --color green` + `active` PASS (2026-05-03) |
-| **Last :8443 / D4 checkpoint** | **PAUSED** — HitM manual verification **blocked** on open issues below; prior **PARTIAL** — [`evidence/D4_EXEC_2026-05-03.md`](evidence/D4_EXEC_2026-05-03.md) |
-| **Active / inactive** | **Active:** `blue` · **Inactive:** `green` (staging: `jsdevtesting` + `api-jsdevtesting` per `deploy/BLUEGREEN_SWITCHOVER.md`) |
+| **Last lifecycle command** | HitM: **green is active** with a **broken PWA build** shipped; operational plan is **system-wide reset** — finish fixes, then **sync inactive → active** (e.g. blue → green) per deploy playbook. Prior doc row (blue active) is stale vs live VPS. |
+| **Last :8443 / D4 checkpoint** | **OPEN** — code in this batch: lookups/upcoming/profile outbox overlays, snapshot source overlay, `getTransaction` offline + edit `pending:*`, `readOptsFromQuery` on calendar/deep-dive, online `Idempotency-Key` interceptor, auto-drain on `fm-api-reachable`, drain retry on transient error, sync bar depth + dismiss, logout outbox count copy. **Deploy + human D4-exec** still required after merge. |
+| **Active / inactive** | **Live:** confirm on VPS (`fm_server_beta.sh active` / proxy). **Intent after fix window:** align both colors to the same good build. |
+
+### Breakpoint checklist (agent)
+
+| BP | Status | Notes |
+| --- | --- | --- |
+| BP_OUTBOX | **In progress (code)** | Profile PATCH allowlisted API + web; overlays for lookups/upcoming/profile; pending tx edit. |
+| BP_OFFLINE_READ | **In progress (code)** | `getTransaction` + calendar/viz read bypass. |
+| BP_D3_AUTH | **Verify** | Logout modal shows queue depth; `AUTH_CHANGED` aborts drain (existing `drain.ts`). |
+| BP_BG_PWA | **Pending** | CPPRD: merge web+API PRs, rebuild inactive color, flip per `deploy/BLUEGREEN_SWITCHOVER.md`. |
+| BP_D4_EXEC | **Pending** | Record under `evidence/` after Chrome desktop + Android on :8443. |
 
 ## Smoke log
 
 | Date | Task / BP | Color | Result | Notes |
 | ---- | --------- | ----- | ------ | ----- |
 | 2026-05-03 | BP_D4_EXEC §2 / T14 | blue (active) | PASS | VPS `fm_server_beta.sh smoke --color active`; see evidence file. |
-| 2026-05-03 | Post PR #44/#45 deploy | green (inactive) | PASS | Script smoke only; human PWA passes **not** closed — see **Open issues (paused)**. |
+| 2026-05-03 | Post PR #44/#45 deploy | green (inactive) | PASS | Script smoke only; human PWA passes **not** closed. |
+| 2026-05-03 | Continuation triage | — | — | HitM: green active + PWA regressions; see **Open issues (continuation)**. |
 
-## Open issues (paused — 2026-05-03)
+## Open issues — continuation (2026-05-03)
 
-Work **paused** pending HitM re-test or a fresh agent session. Logged from manual PWA verification on deployed stack (installed app, staging/inactive path as applicable).
+Operational / product (HitM):
 
-### HitM test method (baseline)
+1. **Blue/green:** Green holds broken PWA; cannot undo user-facing release — treat as reset, ship fixes, then **sync good build to active color** (see `deploy/BLUEGREEN_SWITCHOVER.md`).
+2. **Sync banner / status:** Banner and copy felt wrong offline and after reconnect; **stuck “error”** phase after a failed drain until the next successful reachability transition.
+3. **Outbox “once”:** Suspected **reachability module** not aligned on `offline` / lie-fi transitions — second offline spell did not enqueue as expected until a failing request flipped `lastReachable`.
+4. **Offline tx not on dashboard:** Data **does** persist in **IndexedDB** (Dexie); dashboard reads `fetchAppSnapshot` → `applyTransactionOutboxToSnapshot`. Gaps are usually **filter window** (e.g. tx date not in dashboard’s current-month slice), **stale React Query view**, or **enqueue path** not firing — not “browser cannot store.”
+5. **Parity:** Full offline parity (except password / account delete) remains the sprint bar — calendar, viz, upcoming, data hub, etc. need the same outbox + cache discipline as transactions.
 
-1. **Install** the PWA (from the target origin, e.g. staging or `:8443`).
-2. **Log in** to the app.
-3. **Online:** open each main surface and confirm **loading + data** look correct.
-4. **Go offline** and repeat / exercise offline flows.
+Agent / web (this workspace batch):
 
-### Issue A — Online transaction create → network error
+- **`markApiReachable(false)` on `window.offline`** in `OfflineRoot` and `SyncStatusBar` so `lastReachable` matches browser offline immediately (helps second offline enqueue + UI).
+- **`SyncStatusBar`:** hide when **browser offline** + idle + empty outbox + no reconnect prompt; **clear `error` → `idle`** when `fm-api-reachable` reports `ok`; split copy for **offline + queue** vs **reachable-but-API-down + no queue**; add missing i18n keys `sync.status.queuedWillSync`, `sync.status.offlineNoQueue`; clear stale `syncDetail` when phase returns to `idle`.
 
-- **Symptom:** While **still online**, adding a **transaction** from the installed PWA surfaced a **network error** (not isolated to offline queue).
-- **Status:** Uninvestigated — capture **exact route** (Quick add vs ledger), **browser console / Network tab** (failed URL, status, CORS), and whether the hit was **production API** vs **staging API** (`api-jsdevtesting` on `jsdevtesting` host per `resolveApiBaseUrl`).
-- **Suspects (for later):** token refresh / `X-Client-Build` / **409** upgrade path misread as generic network; wrong API base for installed PWA hostname; proxy or mixed active/inactive color confusion.
+## Previously resolved batch (2026-05-03) — keep for history
 
-### Issue B — Offline shell / navigation error unchanged
-
-- **Symptom:** After **PR #45** (removed duplicate Workbox `navigate` + SWR route; probe short-circuit when `!navigator.onLine`), **offline** use still shows the **same hard failure as before** (user-facing: prior **ERR_ADDRESS_UNREACHABLE** class symptom — full document / app load failure, not just a failed API `fetch`).
-- **Status:** Unresolved — confirm **which URL** Chrome shows in the error UI, **Service Worker** “controlling this page” after install + one online load, **Clear site data** timing vs first offline open, and whether testing was on **inactive green** (`jsdevtesting`) vs **active blue** vs raw **:8443**.
-- **Suspects (for later):** cold open offline with **no SW / empty precache** (browser limit); **DNS/TLS** to web origin when “offline”; SW not updating after deploy (stale worker); Nginx/proxy edge only.
+- **Issue A — CORS:** `X-Client-Build`, `Idempotency-Key` on `CORS_ALLOW_HEADERS` (API).
+- **Issue B — SW shell:** `clientsClaim: true` in Workbox (`vite.config.ts`).
+- **Issue C — RQ offline pause + first-write loss:** `networkMode: "always"`; retroactive queue in Axios error path + `canRetroactivelyQueue()`.
 
 ## Rollback
 
