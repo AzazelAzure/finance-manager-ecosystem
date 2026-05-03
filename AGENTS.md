@@ -29,7 +29,7 @@
   - `desktop:Concept` — desktop standalone (was Track E); future-only.
 - `finance_manager_web` is its own git repository (submodule from the ecosystem parent). Deployed and tunneled flows use **blue-green Docker** with the **proxy** exposing **HTTPS on host :8443** to the active color's static web and API—**not** split across Vite dev ports `5173`/`4173` for real stack verification (see `finance_manager_web/README.md`). Optional local "Lane A" (SQLite + Vite) may exist for light edits; **authoritative** behavior is still the **VPS blue-green stack on :8443**. Packaged web/PWA brand icons and sizes live under `resources/hfm_icon_web/` (trimmed and transparent variants alongside master assets).
 - Dev VPS for live deploy: `dev@dev@<VPS_HOST>` (hostname `server1.thehivemanager.com`), application root `~/finance_manager` with `docker-compose.bluegreen*.yml`, subrepos `finance_manager_api`, `finance_manager_web`, plus `deploy/` and `proxy/`. Compare with the local workspace clone when reconciling orchestration with what is actually running.
-- Multi-agent **orchestration** uses repo-root `**governance/`** (protocols: registry, lifecycle, deploy, branching) plus `**plans/<Phase>/<Stage>/`** (tactical markdown) and repo-root `**strategy/`** (canonical roadmap); the VPS does not mirror those trees. SSH there for runtime truth, read `governance/`, `plans/`, and `strategy/` here for coordinated work definition. If another local agent tool mirrors or overlaps this tree, add its paths to **.cursorignore** so Cursor does not double-index conflicting copies.
+- Multi-agent **orchestration** uses repo-root **`governance/`** (protocols: registry, lifecycle, deploy, branching), **`plans/<Phase>/<Stage>/`** (tactical markdown), and **`strategy/`** (canonical roadmap); the VPS does not mirror those trees. SSH there for runtime truth; read `governance/`, `plans/`, and `strategy/` here for coordinated work definition. If another local agent tool mirrors or overlaps this tree, add its paths to **.cursorignore** so Cursor does not double-index conflicting copies.
 - Runtime ownership tracking (active session): `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
 - **HitM calendar + tasks (khal / todoman):** workflow and paths in `governance/HITM_SCHEDULE_AND_TASKS.md`. Regenerate local agent snapshot with `./scripts/schedule_agent_sync.sh` → `governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored, personal).
 - **Active market: PH only; HitM is the sole human operator.** US users are grandfathered as Honorary Founders. New US acquisition deferred behind P-6 (`strategy/strategic-roadmap-reframe-53be/PARKING_LOT.md`). Commercial intent is subscription-based; monetizing user data is not planned. Multi-actor language in plans means one human plus AI agents unless stated otherwise.
@@ -57,8 +57,9 @@
 1. `AGENTS.md` (this file) — operating constraints + learned facts.
 2. `governance/glossary.md` — canonical vocabulary.
 3. `governance/README.md` — governance overview.
-4. `strategy/strategic-roadmap-reframe-53be/README.md` — strategic phase map.
-5. `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md` — locked decisions.
-6. `governance/plan_registry.md` — active plans + status.
-7. Active Stage README at `plans/<Phase>/<Stage>/README.md` (example: `plans/S1/S1.B/README.md`).
-8. Specific sub-plan README before executing.
+4. `governance/orchestration.md` — strategy / plans / Cursor / runtime map and skill mirrors (`skill_roadmap_rollout_planning.md`, `skill_orchestration_manager.md`); use for coordinated multi-step execution.
+5. `strategy/strategic-roadmap-reframe-53be/README.md` — strategic phase map.
+6. `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md` — locked decisions.
+7. `governance/plan_registry.md` — active plans + status.
+8. Active Stage README at `plans/<Phase>/<Stage>/README.md` (example: `plans/S1/S1.B/README.md`).
+9. Specific sub-plan README before executing.

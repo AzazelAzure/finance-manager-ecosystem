@@ -13,6 +13,9 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | File                         | Purpose                                                                      | Read when                                                     |
 | ---------------------------- | ---------------------------------------------------------------------------- | ------------------------------------------------------------- |
 | `README.md`                  | Router, canonical enums, reading sequences                                   | First, every session                                          |
+| `orchestration.md`           | Strategy / plans / Cursor / runtime map; multi-agent navigation               | Starting a coordinated or multi-step execution session        |
+| `skill_roadmap_rollout_planning.md` | Governance mirror of roadmap-rollout-planning (materialize `plans/<Phase>/<Stage>/`) | Authoring phased plans for disk + registry             |
+| `skill_orchestration_manager.md`   | Governance mirror of orchestration-manager (delegate, gates, retask)        | Running execution batches over an active plan root           |
 | `plan_template.md`           | Schema for new plans                                                         | Authoring a plan                                              |
 | `plan_registry.md`           | Portfolio status of all plans                                                | Before authoring or executing (conflict + dependency check)   |
 | `plan_lifecycle.md`          | State machine + transition actions                                           | At every status transition                                    |
@@ -57,6 +60,14 @@ This manual defines how AI agents author and execute plans **consistently** acro
 2. `execution_protocols.md` §1.2 (pre_merge gate still applies)
 3. If hotfix touches deployed code: `deployment_protocol.md` still applies (skip optional gates only with HitM authorization)
 4. Retroactive plan body within 24h of resolution
+
+### Sequence F: multi-agent orchestration (Cursor or headless)
+
+1. `orchestration.md` → roots, directives snapshot, legacy-path warnings  
+2. `plan_registry.md` → status and dependencies for the active plan  
+3. `skill_orchestration_manager.md` and/or `skill_roadmap_rollout_planning.md` → delegation and materialization rules  
+4. Active plan root under `plans/<Phase>/<Stage>/<sub-plan>/` → `README.md` and tasks  
+5. `.cursor/rules/agent-delegation.mdc` when routing from Cursor  
 
 ### Sequence E: deploying a plan to VPS (CPPR+D)
 
@@ -150,6 +161,7 @@ These values are normative. AI agents must use only these strings. Validation fa
 - This `README.md` enums → referenced by `plan_template.md` for validation.
 - `deployment_protocol.md` → references `design_docs/40_System_Design/13_Server_Runtime_Agent_Operations_Contract.md` for control-plane / execution-plane operating model.
 - `deployment_protocol.md` → references `deploy/SERVER_BETA_INSTALL.md` for runbook commands and `scripts/fm_server_beta.sh` + `scripts/server/`* for execution.
+- `orchestration.md` → links `strategy/`, `plans/`, `.cursor/` skills, and `skill_*.md` mirrors.
 
 ## What this directory does not contain
 
@@ -162,5 +174,5 @@ These values are normative. AI agents must use only these strings. Validation fa
 - Authoring or modifying files in the repo-root `governance/` directory (this manual) without explicit HitM authorization.
 - Modifying `strategy/strategic-roadmap-reframe-53be/` files except via `plan_lifecycle.md` Stage 5 close-out updates to `validation_gates.md` and `kill_commit_gates.md`.
 - Skipping validation (`draft → in_progress` directly) outside hotfix variant.
-- Merging without Slack `#pull-requests` authorization (workspace rule, reinforced here).
+- Merging without required HitM authorization surfaces defined in `execution_protocols.md` **and** without reconciling **GitHub** mergeability and required checks. PR links must be posted in **Cursor chat** when an agent opens a PR (`AGENTS.md`); Slack gates apply where the plan or protocol still requires them.
 - Authoring plans without `strategic_phase` and `strategic_link` populated.

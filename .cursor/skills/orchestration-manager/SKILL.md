@@ -9,7 +9,7 @@ description: Coordinate execution against active plans by delegating tasks to wo
 
 Act as the execution manager over active plans:
 
-- **Plan root:** execution-ready plans from `roadmap-rollout-planning` live under `plans/<proposed-git-branch-name>/` (see that skill). Treat that directory as the canonical plan root unless explicitly overridden.
+- **Plan root:** execution-ready plans from `roadmap-rollout-planning` live under `plans/<Phase>/<Stage>/<sub-plan>/` (see that skill and `governance/orchestration.md`). Treat that directory as the canonical plan root unless explicitly overridden.
 - read current plan scope and todo state
 - assign work to the correct skill/subagent pathway
 - enforce testing and handoff gates
@@ -39,7 +39,7 @@ Treat orchestration as a dedicated reusable agent profile:
 
 ## Orchestration Workflow
 
-- [ ] Locate the active plan under `plans/<proposed-git-branch-name>/` (or the path given at launch) and read scope/todos.
+- [ ] Locate the active plan under `plans/<Phase>/<Stage>/<sub-plan>/` (or the path given at launch) and read scope/todos.
 - [ ] Read active plan and identify executable task batches.
 - [ ] Classify each task into the routing map above.
 - [ ] Delegate with explicit scope, success criteria, and expected handoff format.
@@ -88,6 +88,5 @@ Do not declare a plan complete until all are true:
 - Prefer deterministic verification over broad reruns.
 - Use `shared-subagent-handoff` for every delegated result.
 - For runtime-dependent tasks, follow single-owner protocol and testing breakpoints.
-- For PR workflows, post/update in Slack `#pull-requests` and wait/read channel replies for authorization state (`approved`, `merged`, `changes_requested`, `blocked`).
-- Treat Slack automation reply as the coordination gate, then reconcile with live GitHub PR state before merge.
-- If Slack says `approved` but GitHub reports `mergeable=CONFLICTING` or `mergeStateStatus=DIRTY`, classify as `blocked`, post conflict note in `#pull-requests`, and require conflict resolution before merge.
+- For PR workflows: send the **PR link in the Cursor chat** (repo, branch, URL); reconcile live **GitHub** mergeability, conflicts, and required checks before merge. Follow `governance/execution_protocols.md` for HitM Slack gates when the plan requires them.
+- If any approval signal conflicts with GitHub (`mergeable=CONFLICTING` or dirty checks), classify as `blocked` and require resolution before merge.
