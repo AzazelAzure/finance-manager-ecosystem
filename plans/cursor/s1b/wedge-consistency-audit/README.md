@@ -3,7 +3,7 @@ plan_id: PLAN_AUDIT_WEDGE_CONSISTENCY_2026-04-30
 status: draft
 priority: P2
 created: 2026-04-30
-updated: 2026-04-30
+updated: 2026-05-05
 owner: pproctor
 
 plan_root: plans/cursor/s1b/wedge-consistency-audit/
@@ -24,6 +24,7 @@ parallel_safe_with:
   - PLAN_RESEARCH_AI_ECONOMICS_2026-04-30
   - PLAN_RESEARCH_DISTRIBUTION_CHANNEL_2026-04-30
   - PLAN_OPS_DRIFT_CLEANUP_2026-04-30
+  - PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01
 conflicts_with: []
 
 slack_gates:
@@ -42,81 +43,125 @@ standalone_notes: ""
 
 ## 0) Strategic Inheritance
 
-- **Wedge respected:** this audit IS the wedge-consistency mechanism.
-- **Locked decisions touched:** `00_strategic_context.md` §1 (the wedge sentence) — every public-facing surface should lead with it.
-- **Cost cap impact:** none (HitM time + minor agent cycles).
-- **Validation gates affected:** S1.B exit; ongoing weekly automated audit during S1.C+.
+- **Wedge respected:** this audit **is** the wedge-consistency mechanism for public-facing copy.
+- **Locked decisions touched:** [`00_strategic_context.md`](../../strategic-roadmap-reframe-53be/00_strategic_context.md) **§1** (canonical wedge sentence) — every in-scope surface should **anchor** on it or explicit thin-margin / safe-to-spend language aligned to §2 persona.
+- **Cost cap impact:** none (HitM time + light agent cycles).
+- **Validation gates affected:** [`validation_gates.md`](../../strategic-roadmap-reframe-53be/validation_gates.md) S1.B exit — wedge audit **complete** (paired in phase doc with **landing-page polish landed**; polish is **W3**, audit can **finish first** and hand fixes to W3).
+
+## 0.3) Canonical wedge (verbatim — audit target)
+
+From **`00_strategic_context.md` §1** (do not paraphrase for “hero” verdict without HitM exception):
+
+> **"The personal finance app that tells you what's actually safe to spend before payday — built for people living on thin margins, not people optimizing surplus."**
+
+**Thematic alignment** (acceptable where verbatim line is too long, e.g. a KPI label): copy must clearly evoke **safe-to-spend before payday** and **thin margins**, not generic budgeting / surplus optimization. When in doubt, flag **⚠** and propose text for HitM.
+
+## 0.4) Sequencing vs other S1.B work
+
+| Question | Answer |
+| -------- | ------ |
+| Blocks **PWA** implementation? | **No** — run in parallel ([`../pwa-install-offline-sync-research/README.md`](../pwa-install-offline-sync-research/README.md)). PWA install strings / manifest copy should appear as **extra rows** in [AUDIT_REPORT.md](./AUDIT_REPORT.md) when those assets exist. |
+| Blocks **payment** research? | **No**. |
+| Replaces **W3** landing polish? | **No.** Audit **lists** gaps; **W3** (and follow-up web PRs) **implements** hero/value-prop changes. Exit gate still requires polish **landed** after findings are triaged. |
+| Live checks | Production: **`https://thehivemanager.com/`**. Stack-shaped verification: dev VPS **HTTPS :8443`** (blue/green proxy) per [`AGENTS.md`](../../../../AGENTS.md) — use when comparing deploy-shaped build vs local Vite-only. |
+
+## 0.5) Artifact index
+
+**One-page index:** [RESEARCH_ARTIFACTS.md](./RESEARCH_ARTIFACTS.md)  
+**Working report:** [AUDIT_REPORT.md](./AUDIT_REPORT.md) — fill §2 table during the sweep; signoff in §5.
+
+## 0.6) Surface → code map (flagship `web`)
+
+Most user-visible strings for landing + app chrome live in **`finance_manager_web/src/lib/i18n.ts`** under **`en-US`** and **`tl-PH`**. Audit **both** locales for each key in scope.
+
+| Category | Where to look |
+| -------- | ------------- |
+| Landing hero, value props, showcase, preview, roadmap, CTA | `Hero.tsx`, `ValueProps.tsx`, `FeatureShowcase.tsx`, `LivePreview.tsx`, `Roadmap.tsx`, `CTASection.tsx` — strings via `tr(..., locale)` → **`i18n.ts`** |
+| Public header / footer | `PublicShell.tsx` (`public-footer`, brand line); **`index.html`** `<title>` |
+| Login / signup | `i18n.ts` `login.*`, `signup.*` |
+| Dashboard first screen / KPIs | `i18n.ts` `dashboard.*` + dashboard route components |
+| Onboarding, settings, guide | `i18n.ts` keys + matching pages under `src/` |
+| PWA name / description | Vite PWA config / manifest when present (add row to audit report if not yet in repo) |
+| Legal | ToS / Privacy / Refund pages or static assets when live in `web` |
+
+**Design vault (optional row):** `design_docs/01_Business_Vision.md` — excerpt only if it **diverges** from §1 wedge; vault changes use **design_docs** submodule CPPRD.
 
 ## 1) Objective
 
-Audit every public-facing surface of the product to verify alignment with the wedge sentence (`00_strategic_context.md` §1). Per huddle Topic 7 Q7.3: "we need consistency work to align future agents and design implementations." This audit is the baseline; S1.C+ runs weekly automated re-audits.
+Produce a **complete, signed audit** that:
+
+1. Classifies each in-scope surface as **✅ / ⚠ / ✗** against §0.3–0.4 rules.
+2. Supplies **concrete replacement copy** (or wireframe note) for every **⚠** and **✗**.
+3. Triage fixes **P0** (before S1.C / public wedge-dependent messaging) vs **P1** (polish queue).
+
+Per huddle Topic 7 Q7.3: baseline human+agent audit in S1.B; optional **automated grep** later ([`AUDIT_REPORT.md`](./AUDIT_REPORT.md) §4).
 
 ## 2) Scope
 
-### In scope (per huddle Topic 7 audit scope proposal)
+### In scope
 
 | Category | Surfaces |
-|---|---|
-| **Static product surfaces** | Landing hero, sub-hero, value props, dashboard primary KPI label, onboarding flow copy, settings/about pages, footer |
-| **Public-facing docs** | README files (when public), ToS, Privacy, About |
-| **Social/content surfaces** | FB business page about + recent posts (when published), app store description (when published), monthly content cadence posts (when active) |
+| -------- | -------- |
+| **Static product surfaces** | Landing hero, sub-hero, value props, dashboard primary KPI / above-the-fold copy, onboarding, settings/about/guide, public footer |
+| **Public chrome** | `index.html` title, meta description if user-facing |
+| **Public-facing docs** | Repo READMEs meant for prospects; ToS; Privacy; Refund — when published |
+| **PWA / install copy** | Manifest / install UI strings when shipped |
+| **Social / store** | FB business about + pinned framing; app store first line — **when published** (N/A rows OK) |
 
-### Consistency definition (locked)
+### Consistency rules (locked)
 
-A surface is "consistent" if it either:
-
-- Leads with the wedge sentence verbatim, OR
-- Has explicit thematic alignment with wedge (safe-to-spend / thin-margin language).
-
-A surface is "inconsistent" if it:
-
-- Mentions "budgeting" / "savings tracking" / "personal finance" generically without wedge anchor.
-- Uses "Average Joe vs Finance Bro" framing (retired persona).
-- Implies surplus-optimization vs survival-math (off-wedge).
+- **✅ Consistent:** Leads with the **verbatim** wedge sentence **or** clearly equivalent **safe-to-spend + thin margins** positioning tied to §2 persona.
+- **⚠ Partial:** Mostly on-wedge but buried, diluted, or mixed with generic “finance clarity” without survival-math anchor.
+- **✗ Inconsistent:** Generic “budgeting” / “plan with confidence” / surplus framing; **retired** “Average Joe vs Finance Bro” **marketing** persona; surplus-optimization vibe.
 
 ### Out of scope
 
-- Landing page polish design changes (separate W3 task).
-- New copy creation (audit identifies; another task fixes).
+- **Visual** redesign / layout polish (W3 owns landing polish **implementation**).
+- **New** feature copy beyond alignment fixes (separate tasks).
+- Changing **`00_strategic_context.md` §1** sentence itself (that is strategy governance, not this audit).
 
-## 3) Source Evidence
+## 3) Method
 
-- `00_strategic_context.md` §1 (canonical wedge sentence).
-- Live web app at `https://thehivemanager.com/`.
-- Repo: `finance_manager_web/src/` for in-app copy.
-- Design docs in `design_docs/01_Business_Vision.md`, etc.
+1. Read §1–§2 in `00_strategic_context.md`.
+2. Walk **`i18n.ts`** keys for both **`en-US`** and **`tl-PH`** for every row in [AUDIT_REPORT.md](./AUDIT_REPORT.md) §2.
+3. Spot-check **live** production URL; optionally `:8443` deploy for parity.
+4. Record verdicts + suggested fixes; triage P0/P1 in §3 of the report.
+5. HitM signoff in [AUDIT_REPORT.md](./AUDIT_REPORT.md) §5.
 
 ## 4) Deliverables
 
-Audit report with:
-
-- Each surface categorized: ✅ consistent, ⚠ partial alignment, ✗ inconsistent.
-- For each ✗ or ⚠: current text + suggested replacement that aligns with wedge.
-- Recommendation: which fixes are P0 (must-fix before S1.C) vs P1 (queue for S1.C polish).
-- Setup automation: agent script that re-runs this audit weekly during S1.C+.
+| Deliverable | Location |
+| ----------- | -------- |
+| Completed audit table + P0/P1 list + signoff | [AUDIT_REPORT.md](./AUDIT_REPORT.md) |
+| Optional: excerpt or link from `design_docs` | Only if vault narrative must change; submodule PR per [`git-repo-workflow`](../../../../.cursor/rules/git-repo-workflow.mdc) |
+| Optional automation | Script or CI note per report §4 — **explicit defer** is acceptable |
 
 ## 5) Verification Gates
 
-- Report covers all in-scope surface categories.
-- Each ✗ surface has a concrete suggested fix.
-- Weekly automation script in place (or explicitly deferred to a follow-up task).
+- [ ] [AUDIT_REPORT.md](./AUDIT_REPORT.md) §2 covers **all** §2 scope rows (mark N/A with reason where appropriate).
+- [ ] Every **✗** and **⚠** has a **suggested fix** (or explicit HitM waiver).
+- [ ] HitM checked §5 signoff boxes (or listed deferrals with owner).
 
 ## 6) Documentation Sync Required
 
-- Audit report committed to `design_docs/40_System_Design/` (or `_governance/audits/wedge_consistency/`) with date.
-- Follow-up tasks created for ✗ surfaces if not fixed in this plan.
+- Keep this plan’s **`status`** in YAML aligned with reality (`draft` → note completion date in `updated` when done).
+- If `design_docs` changes: submodule pin + vault `CHANGELOG` per CPPRD.
+- Web copy fixes: **`finance_manager_web`** own repo `CHANGELOG` + PR (not parent-only).
 
 ## 7) Strategic Phase Impact
 
-- S1.B exit: wedge consistency audit complete ✅
-- Weekly re-audit cadence active during S1.C+.
+- **S1.B exit:** wedge consistency audit **complete** per `validation_gates.md` (with landing polish **landed** separately via W3).
+- Sets baseline for optional **weekly** grep / re-audit in S1.C+ ([`AUDIT_REPORT.md`](./AUDIT_REPORT.md) §4).
 
 ## 8) Risks
 
-Trivial. Audit doesn't change behavior; just identifies divergence.
+| Risk | Mitigation |
+| ---- | ---------- |
+| Audit passes but W3 does not schedule fixes | P0 list is explicit input to W3 backlog |
+| `tl-PH` lags `en-US` | Audit both; do not sign off until PH locale is **intentionally** aligned or waived |
+| Scope creep into redesign | Treat visual-only changes as out of scope unless copy changes |
 
 ## Estimated Effort
 
-HitM: 1–2 hours (review + signoff).
-Agent: 2–3 hours (sweep + report).
-Total: ~3–5 hours; aim for 1 hour slip-in if possible.
+- **HitM:** ~1 hour review + signoff after report is drafted.
+- **Agent:** ~2–4 hours first-pass sweep + report fill (slip-in **~1 hour** possible if limiting to landing + dashboard KPI only — record **reduced scope** in audit header).
