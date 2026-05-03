@@ -13,12 +13,12 @@
 These items have zero architectural conflict with PWA work and should be committed as a side task during the PWA sprint.
 
 
-| Task                                                             | File(s) Touched                                                                                     | Est. Time | Guide Reference                                             | Status |
-| ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------- | ------ |
-| Fix `index.html` meta tags, OG tags, canonical URL               | `finance_manager_web/index.html`                                                                  | 30 min    | [Guide 02 §1.1](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) | **DONE** (2026-05-03, PWA sprint T04) |
-| Add `robots.txt` (block `/app/`, allow public routes)            | `finance_manager_web/public/robots.txt`                                                             | 5 min     | [Guide 02 §1.2](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) | **DONE** (2026-05-03) |
-| Add `sitemap.xml` (3 public routes)                              | `finance_manager_web/public/sitemap.xml`                                                            | 15 min    | [Guide 02 §1.3](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) | **DONE** (2026-05-03) |
-| Add JSON-LD structured data (SoftwareApplication + Organization) | `finance_manager_web/index.html`                                                                   | 15 min    | [Guide 02 §2](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md)   | **DONE** (2026-05-03) |
+| Task                                                             | File(s) Touched                          | Est. Time | Guide Reference                                             | Status                                |
+| ---------------------------------------------------------------- | ---------------------------------------- | --------- | ----------------------------------------------------------- | ------------------------------------- |
+| Fix `index.html` meta tags, OG tags, canonical URL               | `finance_manager_web/index.html`         | 30 min    | [Guide 02 §1.1](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) | **DONE** (2026-05-03, PWA sprint T04) |
+| Add `robots.txt` (block `/app/`, allow public routes)            | `finance_manager_web/public/robots.txt`  | 5 min     | [Guide 02 §1.2](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) | **DONE** (2026-05-03)                 |
+| Add `sitemap.xml` (3 public routes)                              | `finance_manager_web/public/sitemap.xml` | 15 min    | [Guide 02 §1.3](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md) | **DONE** (2026-05-03)                 |
+| Add JSON-LD structured data (SoftwareApplication + Organization) | `finance_manager_web/index.html`         | 15 min    | [Guide 02 §2](./SEO_GUIDE_02_TECHNICAL_IMPLEMENTATION.md)   | **DONE** (2026-05-03)                 |
 
 
 ---

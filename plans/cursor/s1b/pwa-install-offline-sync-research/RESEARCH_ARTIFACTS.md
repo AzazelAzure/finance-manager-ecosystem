@@ -16,6 +16,7 @@ Use this folder as the **single plans-side source** for PWA research until dev w
 | `[D4_SMOKE_CHECKLIST_AND_ADR.md](./D4_SMOKE_CHECKLIST_AND_ADR.md)`       | **D4:** smoke checklist, ADR stub, D4-exec template, Advanced v1 out-of-scope.                                                |
 | `[SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md](./SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md)` | **HitM intent:** ~3mo install seed, offline banners, atomicity + reconciliation.                                      |
 | `[API_VERSION_AND_CLIENT_WINDOW.md](./API_VERSION_AND_CLIENT_WINDOW.md)` | Client/API version skew, support windowing, force-upgrade contract, outbox replay rules, Cloudflare note.                    |
+| `[OFFLINE_MINIMAL_EXCHANGE_RATES.md](./OFFLINE_MINIMAL_EXCHANGE_RATES.md)` | **Follow-up:** scope offline FX to currencies in the user’s sources (and tx set), not global tables; bridge to Android.     |
 | `[RESEARCH_ARTIFACTS.md](./RESEARCH_ARTIFACTS.md)`                       | This index.                                                                                                                  |
 
 

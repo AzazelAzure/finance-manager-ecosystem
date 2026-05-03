@@ -1,4 +1,5 @@
 ---
+
 plan_id: PLAN_CROSS_GUIDED_TOURS_F007_2026-05-05
 status: draft
 priority: P2
@@ -11,8 +12,9 @@ intended_branch: cursor/s1b/feat/f007-guided-walkthroughs
 parent_plan: plans/cursor/s1b/
 
 target_repos:
-  - finance_manager_api
-  - finance_manager_web
+
+- finance_manager_api
+- finance_manager_web
 
 strategic_phase: S1
 strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
@@ -37,13 +39,13 @@ deployment:
     - Tour completion API smoke if persisted server-side
   notes: Per-page tours; library choice per F-007 (react-joyride, intro.js, etc.).
 
-standalone: true
+## standalone: true
+
 standalone_notes: ""
----
 
 # F-007 — Guided page walkthroughs
 
-**Feature idea:** [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) (F-007).
+**Feature idea:** `[../../FEATURE_IDEAS.md](../../FEATURE_IDEAS.md)` (F-007).
 
 ## 0) Strategic Inheritance
 
@@ -68,7 +70,7 @@ Replace single popup with **per-page** and **per-widget** guided tours; persist 
 
 ## 3) Source Evidence
 
-- [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) §F-007.
+- `[../../FEATURE_IDEAS.md](../../FEATURE_IDEAS.md)` §F-007.
 
 ## 4) Phase Plan or Task List
 
@@ -96,6 +98,7 @@ Registry on completion.
 
 ## 10) Risks and Rollback
 
-| Risk | Trigger | Rollback | Owner |
-| ---- | ------- | -------- | ----- |
-| Tours block PWA shell | z-index / overlay | Disable tours via flag | web |
+
+| Risk                  | Trigger           | Rollback               | Owner |
+| --------------------- | ----------------- | ---------------------- | ----- |
+| Tours block PWA shell | z-index / overlay | Disable tours via flag | web   |

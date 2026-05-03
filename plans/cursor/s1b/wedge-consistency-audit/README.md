@@ -3,7 +3,7 @@ plan_id: PLAN_AUDIT_WEDGE_CONSISTENCY_2026-04-30
 status: draft
 priority: P2
 created: 2026-04-30
-updated: 2026-05-05
+updated: 2026-05-21
 owner: pproctor
 
 plan_root: plans/cursor/s1b/wedge-consistency-audit/
@@ -82,6 +82,7 @@ Most user-visible strings for landing + app chrome live in **`finance_manager_we
 | Dashboard first screen / KPIs | `i18n.ts` `dashboard.*` + dashboard route components |
 | Onboarding, settings, guide | `i18n.ts` keys + matching pages under `src/` |
 | PWA name / description | Vite PWA config / manifest when present (add row to audit report if not yet in repo) |
+| **Brand / maskable / favicon assets** | **`finance_manager_web/public/`** + manifest; **canonical exports** in ecosystem **`resources/hfm_icon_web/`** (cropped + transparent PNGs). **Ownership:** HitM; generated via **Google Gemini** image — no stock clearance. **Implementation plan:** [`../feat-f011-wedge-landing-hero/README.md`](../feat-f011-wedge-landing-hero/README.md) (F-011 / W3 polish). |
 | Legal | ToS / Privacy / Refund pages or static assets when live in `web` |
 
 **Design vault (optional row):** `design_docs/01_Business_Vision.md` — excerpt only if it **diverges** from §1 wedge; vault changes use **design_docs** submodule CPPRD.

@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05
 status: draft
 priority: P2
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-05-21
 owner: pproctor
 
 plan_root: plans/cursor/s1b/feat-f006-dashboard-widgets-custom/
@@ -61,6 +61,7 @@ User-selectable widgets, reorder, resize tiers, persist per user (API), optional
 ### In scope
 
 - Persistence model + API; drag/drop or equivalent; widget catalog.
+- **Global brand / shell icons** (favicon, header mark, PWA manifest): follow **F-011** and ecosystem asset path **`resources/hfm_icon_web/`** — F-006 does not own the primary icon pack; avoid diverging copies in widget chrome without updating F-011.
 
 ### Out of scope
 

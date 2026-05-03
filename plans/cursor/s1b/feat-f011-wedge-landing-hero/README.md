@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05
 status: draft
 priority: P2
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-05-21
 owner: pproctor
 
 plan_root: plans/cursor/s1b/feat-f011-wedge-landing-hero/
@@ -34,7 +34,7 @@ deployment:
   smoke_targets:
     - GET / (public landing)
     - i18n keys for hero/value props render
-  notes: **Living plan:** re-open or add tasks whenever **material F-*** features ship — hero feature bullets and showcase must expand so marketing stays honest (H-W3-1). Wedge audit: `wedge-consistency-audit/AUDIT_REPORT.md`.
+  notes: **Living plan:** re-open or add tasks whenever **material F-*** features ship — hero feature bullets and showcase must expand so marketing stays honest (H-W3-1). Wedge audit: `wedge-consistency-audit/AUDIT_REPORT.md`. **Brand pack:** ecosystem `resources/hfm_icon_web/` (cropped + transparent PNGs, multi-size); HitM-owned (Gemini image generation); wire into web favicon, manifest, OG, public shell.
 
 standalone: true
 standalone_notes: ""
@@ -61,6 +61,7 @@ Keep **landing**, **hero**, **value props**, and **feature showcase** aligned wi
 
 - Copy + layout updates in `finance_manager_web` public shell / i18n; optional screenshots.
 - Process: after each major feature plan closes, add a **pass** task here or bump `updated` and run audit checklist rows.
+- **Brand icons (HitM asset drop):** canonical raster set lives in the **ecosystem parent repo** at **`resources/hfm_icon_web/`** (transparent + trimmed variants, square master, 16–512px exports). Icons were produced with **Google Gemini** image generation; **no third-party stock rights** — HitM-owned. Implementation: copy or pipeline into `finance_manager_web` (`public/`, favicon, **PWA manifest** icons, Apple touch, OG / social preview as needed) and update wedge audit **Public chrome** / **PWA** rows. Add a task (e.g. `tasks/Txx_brand_icons_web.md`) when scheduling the pass.
 
 ### Out of scope
 

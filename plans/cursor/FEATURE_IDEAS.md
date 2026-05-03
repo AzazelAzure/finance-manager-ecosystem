@@ -6,23 +6,27 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 
 **Format:** ID, title, what it does, why it matters, rough notes.
 
-**Ids:** **F-001**–**F-007** (original brain dump), **F-008**–**F-011** (huddle / S1.B candidates + living marketing), **B-001**–**B-003** (sticky-note bugs).
+**Ids:** **F-001**–**F-007** (original brain dump), **F-008**–**F-011** (huddle / S1.B candidates + living marketing), **F-012**–**F-013** (infrastructure / support product), **B-001**–**B-003** (sticky-note bugs).
 
 **S1.B execution plans** (governed per `plans/_governance/plan_template.md`; branch `cursor/s1b/feat/<slug>` per `branching_guidelines.md`):
 
-| F-id | Plan `README` |
-| ---- | ------------- |
-| F-001 | [`s1b/feat-f001-balance-history/README.md`](./s1b/feat-f001-balance-history/README.md) |
-| F-002 | [`s1b/feat-f002-smart-tag-estimation/README.md`](./s1b/feat-f002-smart-tag-estimation/README.md) |
-| F-003 | [`s1b/feat-f003-predictive-budgeting/README.md`](./s1b/feat-f003-predictive-budgeting/README.md) |
-| F-004 | [`s1b/feat-f004-sts-pay-cycles-bill-realism/README.md`](./s1b/feat-f004-sts-pay-cycles-bill-realism/README.md) |
-| F-005 | [`s1b/feat-f005-savings-goals/README.md`](./s1b/feat-f005-savings-goals/README.md) |
-| F-006 | [`s1b/feat-f006-dashboard-widgets-custom/README.md`](./s1b/feat-f006-dashboard-widgets-custom/README.md) |
-| F-007 | [`s1b/feat-f007-guided-walkthroughs/README.md`](./s1b/feat-f007-guided-walkthroughs/README.md) |
-| F-008 | [`s1b/feat-f008-family-ledger/README.md`](./s1b/feat-f008-family-ledger/README.md) |
-| F-009 | [`s1b/feat-f009-recurring-auto-deduct/README.md`](./s1b/feat-f009-recurring-auto-deduct/README.md) |
-| F-010 | [`s1b/feat-f010-export-sharing/README.md`](./s1b/feat-f010-export-sharing/README.md) |
-| F-011 | [`s1b/feat-f011-wedge-landing-hero/README.md`](./s1b/feat-f011-wedge-landing-hero/README.md) |
+
+| F-id  | Plan `README`                                                                                                  |
+| ----- | -------------------------------------------------------------------------------------------------------------- |
+| F-001 | `[s1b/feat-f001-balance-history/README.md](./s1b/feat-f001-balance-history/README.md)`                         |
+| F-002 | `[s1b/feat-f002-smart-tag-estimation/README.md](./s1b/feat-f002-smart-tag-estimation/README.md)`               |
+| F-003 | `[s1b/feat-f003-predictive-budgeting/README.md](./s1b/feat-f003-predictive-budgeting/README.md)`               |
+| F-004 | `[s1b/feat-f004-sts-pay-cycles-bill-realism/README.md](./s1b/feat-f004-sts-pay-cycles-bill-realism/README.md)` |
+| F-005 | `[s1b/feat-f005-savings-goals/README.md](./s1b/feat-f005-savings-goals/README.md)`                             |
+| F-006 | `[s1b/feat-f006-dashboard-widgets-custom/README.md](./s1b/feat-f006-dashboard-widgets-custom/README.md)`       |
+| F-007 | `[s1b/feat-f007-guided-walkthroughs/README.md](./s1b/feat-f007-guided-walkthroughs/README.md)`                 |
+| F-008 | `[s1b/feat-f008-family-ledger/README.md](./s1b/feat-f008-family-ledger/README.md)`                             |
+| F-009 | `[s1b/feat-f009-recurring-auto-deduct/README.md](./s1b/feat-f009-recurring-auto-deduct/README.md)`             |
+| F-010 | `[s1b/feat-f010-export-sharing/README.md](./s1b/feat-f010-export-sharing/README.md)`                           |
+| F-011 | `[s1b/feat-f011-wedge-landing-hero/README.md](./s1b/feat-f011-wedge-landing-hero/README.md)`                   |
+| F-012 | `[s1b/feat-infra-support-intake/README.md](./s1b/feat-infra-support-intake/README.md)`                         |
+| F-013 | `[s1b/feat-infra-user-activity-logs/README.md](./s1b/feat-infra-user-activity-logs/README.md)`                 |
+
 
 ---
 
@@ -252,7 +256,40 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 **Rough notes:**
 
 - Re-run **wedge consistency audit** static rows after each material feature release (`plans/cursor/s1b/wedge-consistency-audit/AUDIT_REPORT.md`).
+- **Brand icons:** ecosystem folder `**resources/hfm_icon_web/`** — cropped and transparent PNGs (multiple sizes + master). Use as the web/PWA chrome source of truth. Created with **Google Gemini** image tooling; **HitM-owned** (no external asset license). Tracked in **F-011** execution plan (`plans/cursor/s1b/feat-f011-wedge-landing-hero/README.md`).
 - Not a one-time ticket — **ongoing** with major releases.
+
+---
+
+## F-012: In-App Bug Reports & Feature Requests (Support Intake)
+
+**What:** Authenticated paths for users to submit **bug reports** and **feature requests** with structured fields (environment, repro steps, severity self-rating, screenshots optional), deduplication hints, and a clear delivery path to HitM (email queue, ticketing integration, or GitHub private link — **TBD in plan tasks**). Optionally expose status “received / triaged” without building a full public ticket UI v1.
+
+**Current state:** Ad hoc channels (Slack, DMs); no durable per-user intake tied to the product.
+
+**Why it matters:** Tight beta and PWA rollout will spike feedback volume; structured intake reduces duplicate context-gathering and keeps PII out of random threads. Aligns with founding-member support expectations.
+
+**Rough notes:**
+
+- PII minimization: never auto-attach full ledger; user-provided description only unless explicit export attach (see **F-010**).
+- Rate limits + spam controls; link to privacy policy.
+- **Execution plan:** `[s1b/feat-infra-support-intake/README.md](./s1b/feat-infra-support-intake/README.md)`.
+
+---
+
+## F-013: Per-User Activity & Diagnostic Logs (Top-Level)
+
+**What:** A **top-level** (app shell) surface for the signed-in user to see **their own** operational history: sign-ins, sensitive settings changes, failed mutations, client build / PWA events (where applicable), and support-relevant errors — **not** a second ledger of every transaction row (that stays in existing views). Distinct from server-only request logs: this is **user-visible**, permission-scoped, and retention-bounded.
+
+**Current state:** Server logs exist for ops; users have no self-service timeline for “what did the app do on my account?”
+
+**Why it matters:** Debugging PWA/offline/outbox issues with founders requires a shared vocabulary (“this line at 14:32”); reduces back-and-forth. Trust posture: transparency without exposing other users.
+
+**Rough notes:**
+
+- Retention TTL, export/delete alignment with privacy commitments; may share storage patterns with audit trail for **F-008** later — keep schema extension points documented.
+- Coordinate redaction rules with API logging (`LOG_FULL_USERNAME` style) so two surfaces do not contradict.
+- **Execution plan:** `[s1b/feat-infra-user-activity-logs/README.md](./s1b/feat-infra-user-activity-logs/README.md)`.
 
 ---
 
