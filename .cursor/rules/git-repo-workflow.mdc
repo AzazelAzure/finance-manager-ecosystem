@@ -35,12 +35,14 @@ This workspace contains multiple independent git repositories. Treat each repo a
 - CLI repo: `finance_manager_cli/`
 - Design vault (submodule): `design_docs/`
 - Reflex repo: `finance_manager_reflex/` (**archived** — historical only; not in production architecture)
+- Rust tools library: `finance_manager_rust_tools/` (PFM numerics; committed `Cargo.lock`; CI `fmt` / `clippy` / `test --locked`)
 
 ## Changelog Discipline
 
 - For API changes, update `finance_manager_api/CHANGELOG.md` in the same workstream.
 - For Web changes, update `finance_manager_web/CHANGELOG.md` in the same workstream.
 - For CLI changes, create and maintain `finance_manager_cli/CHANGELOG.md` once CLI feature work begins.
+- For Rust tools changes, update `finance_manager_rust_tools/CHANGELOG.md` in the same workstream (prefer `[Unreleased]` until a versioned release).
 - For legacy Reflex-only archaeology, update `finance_manager_reflex/CHANGELOG.md` only if you intentionally change that archived tree.
 
 ## Commit Quality

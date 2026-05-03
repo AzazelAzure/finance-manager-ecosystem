@@ -21,7 +21,7 @@ So the goal is **reproducible, reviewable installs**—harder for dependency cha
 | `finance_manager_cli/` | `pyproject.toml` + `uv.lock` are in place. | Continue resolving via `uv lock`; install with `uv sync --frozen`. |
 | `finance_manager_web/` | `package-lock.json` (or project lockfile) for the Vite SPA. | Install with `npm ci` (or equivalent) in CI/images; fail if lock drifts. |
 | `finance_manager_reflex/` (archived) | Historical `pyproject.toml` + `uv.lock` may remain. | No longer a production delivery surface. |
-| Future Rust crate | N/A | Commit **`Cargo.lock`** for binaries/services you deploy; library crates sometimes omit it—pick a policy per artifact type. |
+| `finance_manager_rust_tools/` | `Cargo.toml` + committed **`Cargo.lock`** | CI uses `cargo test --locked` / `cargo clippy --locked`; refresh the lock when direct deps change. |
 
 ## Recommended directions (pick one stack per repo, stay consistent)
 
