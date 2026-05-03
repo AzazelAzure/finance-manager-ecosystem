@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-04 — `GEMINI.md` aligned with ecosystem layout and governance
+
+- **Rewrote** root [`GEMINI.md`](GEMINI.md): parent vs submodules, `governance/` + `strategy/` + hierarchical `plans/`, canonical **`governance/plan_template.md`** vs `plans/templates/GEMINI_*`, API `finance/` layout, flagship web, Docker/proxy `:8443` and `scripts/` pointers, CPPRD/PR rules, archived Reflex, and archived root Python scratches path.
+
 ### 2026-05-04 — Archive repo-root one-off Python scripts
 
 - **Moved** nine ad-hoc `*.py` files from the parent repo root into [`scripts/archived/root_one_off_python/`](scripts/archived/root_one_off_python/) with an index [`README.md`](scripts/archived/root_one_off_python/README.md). They were Reflex-era / local-smoke scratches (hardcoded paths, not CI); real tests live in `finance_manager_api/` and `finance_manager_web/`.
