@@ -74,7 +74,7 @@ Read `**[GEMINI_RESEARCH_README.md](./GEMINI_RESEARCH_README.md)`** before addin
 
 | Topic | Doc | Notes |
 | ----- | --- | ----- |
-| **Quick pay bill** (replaces disabled dashboard **+Bill**; KNOWN_ISSUES #2) | [`quick-pay-bill-design/DESIGN_DECISION.md`](./quick-pay-bill-design/DESIGN_DECISION.md) | Coordinate with [`pwa-implementation-branch/README.md`](./pwa-implementation-branch/README.md) §11 before touching `QuickActions` / transaction writers. |
+| **Quick pay bill** (replaces disabled dashboard **+Bill**; KNOWN_ISSUES #2) | [`quick-pay-bill-design/DESIGN_DECISION.md`](./quick-pay-bill-design/DESIGN_DECISION.md) | PWA merged — implement when ready; code pointer in `QuickActions.tsx`. Full backlog crosswalk: [`../PRODUCT_FEATURE_BACKLOG_INDEX.md`](../PRODUCT_FEATURE_BACKLOG_INDEX.md). |
 
 ### Sprint activation index — PWA (install, offline, resync)
 
