@@ -1,7 +1,7 @@
 # Product & feature backlog — consolidated index
 
 **Created:** 2026-05-05  
-**Updated:** 2026-05-05 (H-ISS-3 / H-ISS-6 completed; F-008–F-011 in `FEATURE_IDEAS.md`; recurring automation meaning; export/PWA; hero maintenance)
+**Updated:** 2026-05-05 (H-ISS-3 / H-ISS-6 completed; F-008–F-011 in `FEATURE_IDEAS.md`; recurring automation meaning; export/PWA; hero maintenance; **governed execution plans** under `plans/cursor/s1b/feat-f*/` + `plans/_governance/plan_registry.md`)
 
 **Purpose:** One entry point that ties together **brain-dump feature ideas**, **post-beta huddle (2026-04-30) planned product work**, **S1.B strategic workstreams**, **known issues with a feature shape**, and **pointers into design docs**. It does **not** replace detailed specs elsewhere; it dedupes and cross-references.
 
@@ -72,28 +72,30 @@ Verbatim candidate list from `**DECISIONS.md`** (Topic 6). “Final list is Topi
 
 ## 4) Master crosswalk
 
+Governed **draft** plans: `plans/cursor/s1b/feat-f00*` (see [`FEATURE_IDEAS.md`](./FEATURE_IDEAS.md) table); registry [`../_governance/plan_registry.md`](../_governance/plan_registry.md).
 
-| Theme                                    | F-id / B-id                            | Huddle / W3                                                 | Status (high level)                                                         |
-| ---------------------------------------- | -------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Balance history & trends                 | **F-001**                              | W3 / worth paying                                           | Idea only                                                                   |
-| Smart tag value estimation               | **F-002**                              | Historical pattern analysis                                 | Idea only; `finance_manager_rust_tools` stub                                |
-| Predictive budgeting & projections       | **F-003**                              | AI STS forecasting; W3                                      | Idea only                                                                   |
-| Configurable STS periods & bill juggling | **F-004**                              | AI STS; partial pay (Quick pay v1 defers mark-paid linkage) | Idea only                                                                   |
-| Savings goals                            | **F-005**                              | Worth paying candidate pool                                 | Idea only                                                                   |
-| Customizable dashboard widgets           | **F-006**                              | W3 polish                                                   | Idea only                                                                   |
-| Guided walkthroughs (not one popup)      | **F-007**                              | Onboarding / education                                      | Idea only                                                                   |
-| Family ledger (household)                | **F-008**                              | Topic 6 Q6.4                                                | Idea only                                                                   |
-| Recurring expense automation             | **F-009**                              | Topic 6 Q6.4                                                | Defined in FEATURE_IDEAS (automation ≠ “add recurring”)                     |
-| Export & sharing                         | **F-010**                              | PWA + trust                                                 | Idea only; schedule with PWA exit / verification                            |
-| Wedge-aligned landing & hero             | **F-011**                              | **H-W3-1**                                                  | **Ongoing** — refresh when material features ship                           |
-| Cash / source currency onboarding        | **B-001**, **B-002**                   | QoL / bugs                                                  | Triaged in FEATURE_IDEAS                                                    |
-| Upcoming rollover when paid untagged     | **B-003**                              | Bug                                                         | Triaged in FEATURE_IDEAS                                                    |
-| Quick pay bill (+Bill)                   | *(optional F-012 or keep design-only)* | **H-ISS-2**, KNOWN_ISSUES #2                                | **Design staged**                                                           |
-| Quick-add full editor                    | **F-007** adjacency                    | **H-ISS-3**, #3                                             | **Shipped** (2026-05)                                                       |
-| Mobile quick actions layout              |                                        | **H-ISS-6**, #6                                             | **Shipped** (2026-05)                                                       |
-| PWA install / offline / outbox           |                                        | S1.B exit; `pwa-implementation-branch`                      | **Merged in repo**; **manual / D4-exec verification** outstanding per owner |
-| Android pull-forward                     |                                        | **W6**                                                      | Scaffold → Alpha in S1.B                                                    |
-| Founding member + pricing + legal        |                                        | **W5**                                                      | S1.C prep, not same as “PFM feature list”                                   |
+
+| Theme                                    | F-id / B-id                            | Execution plan `README` | Huddle / W3                                                 | Status (high level)                                                         |
+| ---------------------------------------- | -------------------------------------- | ----------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Balance history & trends                 | **F-001**                              | [`s1b/feat-f001-balance-history/README.md`](./s1b/feat-f001-balance-history/README.md) | W3 / worth paying                                           | Draft plan; not started                                                     |
+| Smart tag value estimation               | **F-002**                              | [`s1b/feat-f002-smart-tag-estimation/README.md`](./s1b/feat-f002-smart-tag-estimation/README.md) | Historical pattern analysis                                 | Draft plan; `finance_manager_rust_tools` stub                               |
+| Predictive budgeting & projections       | **F-003**                              | [`s1b/feat-f003-predictive-budgeting/README.md`](./s1b/feat-f003-predictive-budgeting/README.md) | AI STS forecasting; W3                                      | Draft plan                                                                  |
+| Configurable STS periods & bill juggling | **F-004**                              | [`s1b/feat-f004-sts-pay-cycles-bill-realism/README.md`](./s1b/feat-f004-sts-pay-cycles-bill-realism/README.md) | AI STS; partial pay (Quick pay v1 defers mark-paid linkage) | Draft plan (**P1**); expansion annex in README                              |
+| Savings goals                            | **F-005**                              | [`s1b/feat-f005-savings-goals/README.md`](./s1b/feat-f005-savings-goals/README.md) | Worth paying candidate pool                                 | Draft plan                                                                  |
+| Customizable dashboard widgets           | **F-006**                              | [`s1b/feat-f006-dashboard-widgets-custom/README.md`](./s1b/feat-f006-dashboard-widgets-custom/README.md) | W3 polish                                                   | Draft plan                                                                  |
+| Guided walkthroughs (not one popup)      | **F-007**                              | [`s1b/feat-f007-guided-walkthroughs/README.md`](./s1b/feat-f007-guided-walkthroughs/README.md) | Onboarding / education                                      | Draft plan                                                                  |
+| Family ledger (household)                | **F-008**                              | [`s1b/feat-f008-family-ledger/README.md`](./s1b/feat-f008-family-ledger/README.md) | Topic 6 Q6.4                                                | Draft plan                                                                  |
+| Recurring expense automation             | **F-009**                              | [`s1b/feat-f009-recurring-auto-deduct/README.md`](./s1b/feat-f009-recurring-auto-deduct/README.md) | Topic 6 Q6.4                                                | Draft plan; source → **auto_deduct** funnel                                   |
+| Export & sharing                         | **F-010**                              | [`s1b/feat-f010-export-sharing/README.md`](./s1b/feat-f010-export-sharing/README.md) | PWA + trust                                                 | Draft plan (**P1**); with PWA exit / verification                             |
+| Wedge-aligned landing & hero             | **F-011**                              | [`s1b/feat-f011-wedge-landing-hero/README.md`](./s1b/feat-f011-wedge-landing-hero/README.md) | **H-W3-1**                                                  | **Living draft** — refresh when material features ship                        |
+| Cash / source currency onboarding        | **B-001**, **B-002**                   | —                       | QoL / bugs                                                  | Triaged in FEATURE_IDEAS                                                    |
+| Upcoming rollover when paid untagged     | **B-003**                              | —                       | Bug                                                         | Triaged in FEATURE_IDEAS                                                    |
+| Quick pay bill (+Bill)                   | *(optional F-012 or keep design-only)* | [`s1b/quick-pay-bill-design/DESIGN_DECISION.md`](./s1b/quick-pay-bill-design/DESIGN_DECISION.md) | **H-ISS-2**, KNOWN_ISSUES #2                                | **Design staged**                                                           |
+| Quick-add full editor                    | **F-007** adjacency                    | —                       | **H-ISS-3**, #3                                             | **Shipped** (2026-05)                                                       |
+| Mobile quick actions layout              |                                        | —                       | **H-ISS-6**, #6                                             | **Shipped** (2026-05)                                                       |
+| PWA install / offline / outbox           |                                        | `pwa-implementation-branch` | S1.B exit                                                   | **Merged in repo**; **manual / D4-exec verification** outstanding per owner |
+| Android pull-forward                     |                                        | —                       | **W6**                                                      | Scaffold → Alpha in S1.B                                                    |
+| Founding member + pricing + legal        |                                        | —                       | **W5**                                                      | S1.C prep, not same as “PFM feature list”                                   |
 
 
 ---
