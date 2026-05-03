@@ -2,6 +2,8 @@
 
 **Status:** Research draft aligned to **HitM pipeline lock (2026-05-03)** — spouse-led PH MoR + HitM US LLC vendor ([`../entity-formation-research/README.md`](../entity-formation-research/README.md) §0.2). **Not** implementation spec until PSP + counsel artifacts are complete.
 
+**PSP decision / locks:** [`DECISION_MATRIX.md`](./DECISION_MATRIX.md).
+
 ## Phase 1 — PH wedge (S1.B)
 
 **Entities (HitM lock):**

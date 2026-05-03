@@ -1,5 +1,7 @@
 # Payment Service Provider (PSP) comparison matrix
 
+**Strategic choice + HitM-only locks:** [DECISION_MATRIX.md](./DECISION_MATRIX.md) (Matrix 1–3, **PM1–PM5**).
+
 **Status:** Research draft — **not** a HitM lock. MDR figures and product rules **change**; confirm on each provider’s **current** pricing and API documentation before modeling margin.
 
 **Scenario focus:** Default KYB column is the **PH spouse-led settlement entity** (DTI vs OPC per counsel) per [`../entity-formation-research/README.md`](../entity-formation-research/README.md) §0.2 and [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2–L4. Contingency columns only as needed — see [`README.md`](./README.md) §0.6.

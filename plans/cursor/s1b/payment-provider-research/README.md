@@ -3,7 +3,7 @@ plan_id: PLAN_RESEARCH_PAYMENT_PROVIDER_2026-04-30
 status: draft
 priority: P0
 created: 2026-04-30
-updated: 2026-05-03
+updated: 2026-05-05
 owner: pproctor
 
 plan_root: plans/cursor/s1b/payment-provider-research/
@@ -73,6 +73,10 @@ Use this section when **context drifts** between payment work and adjacent S1.B 
 
 Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` is satisfied for **operating-structure** decisions; **payment provider choice** and **tax memos** remain open until HitM signoff on those plans.
 
+## 0.65) Decision matrix and payment locks
+
+**HitM signoff + strategic matrices:** [DECISION_MATRIX.md](./DECISION_MATRIX.md) — Matrix 1–3 (PSP path, capabilities, settlement economics) and **PM1–PM5** lock slots (**payment** locks; entity plan uses **L1–L5** separately).
+
 ## 1) Objective
 
 Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate with the **locked PH spouse-led settlement entity** from `entity-formation-research` (**L2–L4**, 2026-05-03) plus contingency columns only if counsel requires. **HitM PSP signoff** remains the exit gate for this plan (L1 BI timeline is separate).
@@ -100,7 +104,8 @@ Decide payment processor strategy: which provider(s) accept PH users, support mo
 - Stripe PH availability + GCash support (verify current product pages).
 - PayMongo product / pricing page.
 - Xendit product / pricing page.
-- HFM legal posture: **PH spouse-led MoR + HitM US LLC vendor** per [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2–L4 (2026-05-03); cite PSP KYB under PH entity name in final write-up.
+- HFM legal posture: **PH spouse-led MoR + HitM US LLC vendor** per [../entity-formation-research/DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2–L4 (2026-05-03); cite PSP KYB under PH entity name in final write-up.
+- **Payment locks:** fill [DECISION_MATRIX.md](./DECISION_MATRIX.md) **PM1–PM5** after HitM PSP signoff (do not conflate with entity **L** locks).
 
 ## 4) Deliverables
 
@@ -110,8 +115,8 @@ Research document with:
 - Recommended primary + optional secondary provider, **after** signoff.
 - Mobile wallet integration path (specific API/SDK).
 - Estimated per-transaction effective margin at PHP-anchored prices.
-- HitM final lock decision (signoff).
-- Trigger to revisit (e.g. "if PayMongo monthly fees creep above X, re-evaluate").
+- HitM final lock decision (signoff) recorded in [DECISION_MATRIX.md](./DECISION_MATRIX.md) **HitM locks (payment)**.
+- Trigger to revisit (e.g. "if PayMongo monthly fees creep above X, re-evaluate") — also logged in `DECISION_MATRIX.md` **PM5** / revisit section.
 
 ## 5) Verification Gates
 
