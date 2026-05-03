@@ -4,9 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-04 — Archive `plans/templates/GEMINI_PLAN_TEMPLATE*.md`
+
+- **Moved** `GEMINI_PLAN_TEMPLATE.md`, `GEMINI_PLAN_TEMPLATE_V2.md`, and `GEMINI_PLAN_TEMPLATE_QUICK.md` to [`plans/archived/gemini_plan_templates/`](plans/archived/gemini_plan_templates/) with index README. **`governance/plan_template.md`** is the only active plan schema; [`plans/templates/README.md`](plans/templates/README.md) points authors there. Updated [`governance/plan_template.md`](governance/plan_template.md) intro and [`GEMINI.md`](GEMINI.md).
+
 ### 2026-05-04 — `GEMINI.md` aligned with ecosystem layout and governance
 
-- **Rewrote** root [`GEMINI.md`](GEMINI.md): parent vs submodules, `governance/` + `strategy/` + hierarchical `plans/`, canonical **`governance/plan_template.md`** vs `plans/templates/GEMINI_*`, API `finance/` layout, flagship web, Docker/proxy `:8443` and `scripts/` pointers, CPPRD/PR rules, archived Reflex, and archived root Python scratches path.
+- **Rewrote** root [`GEMINI.md`](GEMINI.md): parent vs submodules, `governance/` + `strategy/` + hierarchical `plans/`, canonical **`governance/plan_template.md`**, API `finance/` layout, flagship web, Docker/proxy `:8443` and `scripts/` pointers, CPPRD/PR rules, archived Reflex, and archived root Python scratches path.
 
 ### 2026-05-04 — Archive repo-root one-off Python scripts
 
