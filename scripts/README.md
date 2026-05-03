@@ -17,6 +17,10 @@ Blank lines and `# comments` are ignored.
 
 All scripts continue safely when a directory is missing or not initialized as a Git repository.
 
+## Archived
+
+- **`archived/root_one_off_python/`** — former repo-root Python scratches (Reflex / httpx smokes); not maintained. See that folder’s `README.md`.
+
 ## Scripts
 
 ### `./scripts/schedule_agent_sync.sh`

@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-04 — Archive repo-root one-off Python scripts
+
+- **Moved** nine ad-hoc `*.py` files from the parent repo root into [`scripts/archived/root_one_off_python/`](scripts/archived/root_one_off_python/) with an index [`README.md`](scripts/archived/root_one_off_python/README.md). They were Reflex-era / local-smoke scratches (hardcoded paths, not CI); real tests live in `finance_manager_api/` and `finance_manager_web/`.
+
 ### 2026-05-04 — Strategic roadmap: `strategy/strategic-roadmap-reframe-53be/`
 
 - **`plans/cursor/strategic-roadmap-reframe-53be/` → `strategy/strategic-roadmap-reframe-53be/`:** Canonical multi-year roadmap tree moved to repo-root **`strategy/`** (sibling to `plans/`). Added [`strategy/README.md`](strategy/README.md) as the entry router.
