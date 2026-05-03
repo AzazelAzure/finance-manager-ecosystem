@@ -13,6 +13,10 @@
 
 **Single-owner rule:** Only one agent controls container start/stop/rebuild at a time. Record owner changes here. Prefer project scripts per `.cursor/rules/container-testing-orchestration.mdc`.
 
+### Merge / review policy (2026-05-03 — **locked for now**)
+
+- **Bug-fix auto-merge is no longer in effect.** Do not assume PRs can be squash-merged immediately without human review or branch protection exceptions. Treat every web/API change as **normal PR workflow** (review, checks, manual merge when HitM is ready) until this note is explicitly revoked.
+
 ## Lifecycle scripts (default)
 
 ```bash
@@ -29,27 +33,49 @@ scripts/fm_services.sh restart
 - **Authoritative PWA exit:** manual **D4-exec** on **deployed HTTPS :8443** (active blue/green stack), **Chrome desktop + Chrome Android** only for certified exit (D0 Option B).
 - **Staging / cutover hostnames:** follow `deploy/BLUEGREEN_SWITCHOVER.md` — production origin for installed PWA vs `jsdevtesting` / inactive color validation.
 
-## Current snapshot (2026-05-03 — offline parity sweep landed in workspace)
+## Current snapshot (2026-05-03 — post PR #52 / #53 deploy on **active green**)
 
 | Field | Value |
 | ----- | ----- |
 | **Runtime owner** | _(unassigned — set on first test batch)_ |
 | **Mode** | VPS containerized blue/green (`~/finance_manager`, Podman) |
-| **Last lifecycle command** | **2026-05-03:** `fm_server_beta.sh rebuild-color green` (active); `smoke --color active` **PASS** after web **#48** (PWA online continuous drain loop fix) merged to `main` and pulled on VPS `~/finance_manager/finance_manager_web`. |
-| **Last :8443 / D4 checkpoint** | **REOPENED for verification** after web **PR #52** (PWA offline **PR-3** — form parity: Data Hub invalidations, profile Dexie merge, lookup-rename → tx overlay, `getTransaction` PWA local-first, dashboard refresh offline). Full **D4-exec** still **OPEN** until HitM runs Chrome desktop + Android on `:8443` post-merge + VPS pull/rebuild. |
-| **Active / inactive** | **Live:** confirm on VPS (`fm_server_beta.sh active` / proxy). **Intent:** keep active color on good `main` builds; rebuild inactive color when convenient so both sides match. |
-| **Sync UX vs MVP** | **Banner/track deferred:** #48 fixed the **online drain loop**; all **sync status bar / banner** follow-ups are **explicitly later** (see **Priority** table). |
-| **Next execution priority** | **Must-fix now — offline:** same as **Priority → Now**: cached reads + overlays everywhere so **stored changes** drive **numbers, graphs, and lists** offline. |
+| **Last lifecycle command** | **2026-05-03:** `git pull` web `main` @ `4c949a0` (PR **#52** + build hotfix **#53**); `fm_server_beta.sh rebuild-color green` (active); `smoke --color active` **PASS**. |
+| **Last :8443 / D4 checkpoint** | **OPEN** — human manual verification **not** signed off. **Do not treat script smoke as PWA offline acceptance.** |
+| **Active / inactive** | **Active color: green** (leave **as-is** for normal use). **Further experiments, tests, and fixes:** build and validate on the **inactive** color only (`rebuild-color blue` when blue is inactive, or the inverse per `fm_server_beta.sh status`); **do not** churn the active color for try/fix loops unless HitM explicitly approves a promote-after-verify. |
+| **Offline → online offloading** | HitM reports **heavy or sensitive work is being shifted from strict offline paths to when the client is online** (offloading). The stack **still works** and sync/drain behavior is **not obtrusive**, but the **overall PWA sync model** (what runs offline vs deferred, how RQ + Dexie interact) may need a **dedicated revisit** once the offline transaction read path is honest. |
+| **Human-verified offline gap (authoritative)** | **Transactions are still not populating in the UI when offline** (ledger lists / dashboard views empty or wrong vs expectation). Prior handoff bullets that implied “offline read parity” or “dashboard/transactions include queued rows after reload” as **fully fixed** were **overstated** — code landed for overlays, session, drain, and form parity, but **end-user offline transaction population remains broken or incomplete.** Next agent must treat this as **P0 unresolved**, not closed. |
+| **Sync UX vs MVP** | **Banner/track deferred:** #48 fixed the **online drain loop**; follow-up sync UX is still **later** unless it blocks diagnosis of offline reads. |
+| **Next execution priority** | **Prove why `listTransactions` / snapshot / seed caches do not surface rows when `navigator.onLine === false`** (installed PWA and/or `preferOfflineCaches`), then fix on **inactive color** first. |
+
+### Correction — prior handoff / README wording (do not repeat)
+
+- **Incorrect:** That **BP_OFFLINE_READ** or PR #52 alone meant “transactions and data populate offline” or “code complete” for full offline ledger coherence.
+- **Correct:** PR #52 / #53 improved **invalidation, profile Dexie merge, rename overlay, `getTransaction` local-first, dashboard `forceNetwork` guard,** and **production build**. They did **not** establish verified **offline transaction list population** in the field.
 
 ### Breakpoint checklist (agent)
 
 | BP | Status | Notes |
 | --- | --- | --- |
 | BP_OUTBOX | **In progress (code)** | Profile PATCH allowlisted API + web; overlays for lookups/upcoming/profile; pending tx edit. |
-| BP_OFFLINE_READ | **Code complete (web PR #52)** — merge + VPS `git pull` / `rebuild-color <active>` + smoke; then human **D4-exec** to flip to **PASS**. Covers Data Hub invalidation breadth, QuickActions queued category create, dashboard forced snapshot offline, `appprofile:root` Dexie after profile PATCH enqueue, cross-entity rename on merged tx rows, `getTransaction` under `preferPwaLocalFirstReads()`. |
+| BP_OFFLINE_READ | **NOT PASS — human verified:** transactions **still do not populate offline**. PR **#52/#53** merged and on **active green**; code includes overlays, invalidations, profile cache merge, etc., but **offline ledger visibility remains the blocking defect**. Next work: diagnose + fix on **inactive** color; update this row only after HitM confirms on device. |
 | BP_D3_AUTH | **Verify** | Logout modal shows queue depth; `AUTH_CHANGED` aborts drain (existing `drain.ts`). |
 | BP_BG_PWA | **Pending** | CPPRD: merge web+API PRs, rebuild inactive color, flip per `deploy/BLUEGREEN_SWITCHOVER.md`. |
-| BP_D4_EXEC | **Pending (window reopened)** | Run after **PR #52** lands on active color; record under `evidence/` after Chrome desktop + Android on :8443. |
+| BP_D4_EXEC | **Pending** | Blocked on honest **BP_OFFLINE_READ**; record under `evidence/` after Chrome desktop + Android on :8443 when HitM is satisfied offline reads work. |
+
+## Detailed change log — PWA offline end-to-end batch (for next agent)
+
+Chronological **attempted** work (web repo `finance-manager-web`; ecosystem docs here). Use this to avoid re-litigating what already shipped.
+
+| # | Item | Outcome / notes |
+| --- | --- | --- |
+| 1 | **PR-1** (plan): offline-first session (`auth.ts`, `SessionContext`, `RequireAuth`, lazy refresh in `api/client.ts`), `transactionOutboxOverlay` default-period for `pending:*`, snapshot `total_assets` from merged `source_balances`, tests, CHANGELOG. | **Merged** (prior session). Intended: cold reload offline with refresh token does not bounce to `/login`; pending rows not hidden by implicit current-month filter. **Does not guarantee** UI shows transactions offline if downstream readers never hit merged paths. |
+| 2 | **PR-2** (plan): `drain.ts` 401 vs network on `postRefresh`, `AUTH_CHANGED` listener order, `SyncStatusBar` clear `auth_blocked` when reachable + empty outbox, SW banner gating (`swUpdateAck.ts`, `registerPwa.ts`, `SwUpdateBanner.tsx`), i18n `sync.status.refreshNetworkError`, tests, CHANGELOG. | **Merged** (prior session). Improves reconnect/drain/SW noise; **orthogonal** to offline transaction list population. |
+| 3 | **PR #52** (plan PR-3): Data Hub query invalidations; `lookups.ts` `create*` returns `OfflineQueuedResult` on 202; QuickActions after queued category; `DashboardPage` `refetchSnapshotForced` without `forceNetwork` when `preferOfflineCaches()`; `queueMutating` + `optimisticProfileEnqueue.ts` Dexie merge on `PATCH /finance/appprofile/`; `transactionOutboxOverlay` FIFO rename overlay; `getTransaction` + `preferPwaLocalFirstReads()`; tests; CHANGELOG. | **Merged to `main`.** Form/cache parity improvements. **Did not** resolve HitM-reported **offline transaction population** failure. |
+| 4 | **PR #53** (hotfix): remove unused `mergedTransactionMap` (TS6133) so `tsc -b` passes in Docker `npm run build`. | **Merged** — required because **#52** broke production image build on VPS first `rebuild-color` attempt. |
+| 5 | **VPS deploy** | `git pull` `finance_manager_web` → `4c949a0`; `rebuild-color green` (active); `smoke --color active` **PASS**. **Blue** not rebuilt in this batch; follow **inactive color** rule for next fixes. |
+| 6 | **Policy** | **Auto-merge for bug-fix PRs disabled** (see section above). |
+
+**Still broken (P0):** Offline (or installed PWA offline) **transaction lists / dashboard transaction-derived views** not showing expected data — **treat as open investigation** (seed keys, `preferOfflineCaches` vs `preferPwaLocalFirstReads`, React Query `networkMode`, empty Dexie `txlist:*`, filter params, or route mount order vs `OfflineRoot` seed).
 
 ## Smoke log
 
@@ -59,16 +85,17 @@ scripts/fm_services.sh restart
 | 2026-05-03 | Post PR #44/#45 deploy | green (inactive) | PASS | Script smoke only; human PWA passes **not** closed. |
 | 2026-05-03 | Continuation triage | — | — | HitM: green active + PWA regressions; see **Open issues (continuation)**. |
 | 2026-05-03 | Web PR #48 online sync loop | green (active) | PASS | `git pull` web `main` @ `3d58e30`; `rebuild-color green`; `smoke --color active`. |
-| 2026-05-03 | Web **PR #52** PWA offline PR-3 (form parity) | _(post-merge)_ | **PENDING** | Branch `feature/pwa-offline-e2e-pr3` → `https://github.com/AzazelAzure/finance-manager-web/pull/52`; after merge: VPS `~/finance_manager/finance_manager_web` pull + `fm_server_beta.sh rebuild-color <active>` + `smoke --color active` + spot D4 repro (Data Hub / Quick add / profile PATCH / rename / `getTransaction`). |
+| 2026-05-03 | Web **PR #52** PWA offline PR-3 (form parity) | green (active) | **DEPLOYED** | Merged; first VPS rebuild **failed** TS6133 until **PR #53**. |
+| 2026-05-03 | Web **PR #53** build hotfix + rebuild green | green (active) | PASS | `rebuild-color green`; `smoke --color active`. **Human:** transactions **still** not populating offline — **not** a smoke pass item. |
 
 ## Open issues — continuation (2026-05-03)
 
 Operational / product (HitM):
 
-1. **Blue/green:** Keep **active** color on merged `main` builds; **rebuild inactive** when convenient so blue/green stay in sync (see `deploy/BLUEGREEN_SWITCHOVER.md`). Prior “broken build on green” crisis is **superseded** by #48 + deploy; still avoid long-lived drift between colors.
+1. **Blue/green (2026-05-03 policy):** **Active color (green):** leave stable; **do not** use it as the primary loop for speculative offline fixes. **Inactive color:** use for **further tests and fixes** (`rebuild-color <inactive>`), then promote only after HitM verification. Long-term drift between colors: still reconcile per `deploy/BLUEGREEN_SWITCHOVER.md` when convenient.
 2. **Sync banner / status — defer only (no sprint work until offline lane closes):** Copy, reconnect prompts, **stuck “error”** phase until next reachability transition, hide/show rules, i18n gaps. **#48** already fixed the **continuous online drain** bug; anything left here is **polish**, not blocking offline correctness.
 3. **Reachability / lie-fi enqueue (offline-adjacent — fix with offline lane if reproduced):** Second offline spell sometimes did not enqueue until a failing request flipped `lastReachable`; may share root with read paths not using offline state — **not** sync-bar copy work.
-4. **Dashboard vs offline tx (often diagnosis, not storage):** Data **does** persist in **IndexedDB**; `fetchAppSnapshot` + `applyTransactionOutboxToSnapshot` path exists. Gaps are often **filter window**, **stale RQ view**, or **read path not using overlay** — rolls into **Next execution priority** (cache coherence across all surfaces).
+4. **Dashboard vs offline tx (P0 — reopened):** HitM confirms **transactions still do not populate offline** despite IndexedDB + overlay code paths. **Do not** assume “data persists in Dexie, therefore UI is fine.” Hypotheses for next agent: seed never wrote `txlist:*` / snapshot for the filters in use, `listTransactions` short-circuit when offline, React Query not reading from merged offline branch, PWA local-first vs `preferOfflineCaches()` mismatch, or UI mounted before caches warm. **Verify with runtime logging or Dexie inspection on device** on **inactive** color.
 5. **Parity / graphs (active work, not defer):** Full offline parity (except password / account delete) remains the bar — **numbers, graphs, aggregates, and every ledger-adjacent read** must go through **cached + overlay** logic so offline matches what the user already stored.
 
 ### Deferred — sync banner / status only (do not implement until HitM clears offline lane)
