@@ -12,4 +12,4 @@ This directory holds **governed execution plans** and **archives**. It does **no
 
 **Do not** recreate top-level **`plans/feat/`**, **`plans/fix/`**, or **`plans/volatile/`** — new work belongs under **`plans/<Phase>/<Stage>/<sub-plan>/`** per **`governance/plan_template.md`**.
 
-See also: [`../strategy/README.md`](../strategy/README.md), [`../governance/README.md`](../governance/README.md).
+See also: [`../strategy/README.md`](../strategy/README.md), [`../governance/README.md`](../governance/README.md), [`../governance/orchestration.md`](../governance/orchestration.md) (strategy / plans / Cursor / runtime map).

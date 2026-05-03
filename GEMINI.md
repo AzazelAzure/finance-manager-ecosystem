@@ -32,7 +32,7 @@ git submodule update --init --recursive
 | Layer | Path | Use |
 | --- | --- | --- |
 | **Strategic plan** | **`strategy/strategic-roadmap-reframe-53be/`** | Multi-year phases S1–S6, locks, `validation_gates.md`, `kill_commit_gates.md`. |
-| **Plan operations** | **`governance/`** | Registry, lifecycle, deploy protocol, branching, **`plan_template.md`**, **`glossary.md`**. Read **`governance/README.md`** first when authoring or executing governed work. |
+| **Plan operations** | **`governance/`** | Registry, lifecycle, deploy protocol, branching, **`plan_template.md`**, **`glossary.md`**. Read **`governance/README.md`** first; use **`governance/orchestration.md`** for the strategy / plans / Cursor / runtime map and **`governance/skill_*`** mirrors of rollout + orchestration workflows. |
 | **Tactical execution plans** | **`plans/<Phase>/<Stage>/<sub-plan>/`** | Active example: **`plans/S1/S1.B/`** (PWA research, drift cleanup, feature drafts, etc.). |
 | **Archives** | **`plans/archived/`** | Completed umbrellas, huddles, **`cursor-layout-era/`**, legacy `feat/` / `fix/` trees. **Do not** add new active work here. |
 | **Legacy Gemini templates (archived)** | **`plans/archived/gemini_plan_templates/`** | Historical copies only; **do not** use for new work. |

@@ -57,8 +57,9 @@
 1. `AGENTS.md` (this file) — operating constraints + learned facts.
 2. `governance/glossary.md` — canonical vocabulary.
 3. `governance/README.md` — governance overview.
-4. `strategy/strategic-roadmap-reframe-53be/README.md` — strategic phase map.
-5. `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md` — locked decisions.
-6. `governance/plan_registry.md` — active plans + status.
-7. Active Stage README at `plans/<Phase>/<Stage>/README.md` (example: `plans/S1/S1.B/README.md`).
-8. Specific sub-plan README before executing.
+4. `governance/orchestration.md` — strategy / plans / Cursor / runtime map and skill mirrors (`skill_roadmap_rollout_planning.md`, `skill_orchestration_manager.md`); use for coordinated multi-step execution.
+5. `strategy/strategic-roadmap-reframe-53be/README.md` — strategic phase map.
+6. `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md` — locked decisions.
+7. `governance/plan_registry.md` — active plans + status.
+8. Active Stage README at `plans/<Phase>/<Stage>/README.md` (example: `plans/S1/S1.B/README.md`).
+9. Specific sub-plan README before executing.

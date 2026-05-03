@@ -163,7 +163,7 @@ These are **opinionated next steps** derived from this snapshot:
 
 1. **Normalize all active and reference-only plan trees** under `plans/<Phase>/<Stage>/` or `plans/archived/`, and eliminate stray `plans/feat/` remnants or symlink them to archived canonical copies.
 2. **Update parent `README.md`** to match hierarchical `plans/<Phase>/<Stage>/` + `strategy/` layout and link to `governance/plan_registry.md`.
-3. **Add a single “orchestration index”** (could replace this temp file later) listing: governance files, strategic root, active stage root, paused items, and “do not use” legacy paths.
+3. ~~**Add a single “orchestration index”**~~ **Done:** [`governance/orchestration.md`](../../governance/orchestration.md) plus skill mirrors [`governance/skill_roadmap_rollout_planning.md`](../../governance/skill_roadmap_rollout_planning.md) and [`governance/skill_orchestration_manager.md`](../../governance/skill_orchestration_manager.md). Retire this temp file after a final link sweep if nothing unique remains.
 4. **Submodule hygiene:** When web work stabilizes, commit parent with updated `finance_manager_web` SHA; avoid long-lived `+` drift without documenting intent.
 5. **design_docs:** Periodic link sweep using `Strategic_doc_conflicts…` as baseline; avoid duplicating strategy in design_docs when `strategy/` + `plans/` already own execution sequencing.
 
