@@ -1,11 +1,11 @@
 # Product & feature backlog — consolidated index
 
 **Created:** 2026-05-05  
-**Updated:** 2026-05-05 (H-ISS-3 / H-ISS-6 completed; F-008–F-011 in `FEATURE_IDEAS.md`; recurring automation meaning; export/PWA; hero maintenance; **governed execution plans** under `plans/cursor/s1b/feat-f*/` + `plans/_governance/plan_registry.md`)
+**Updated:** 2026-05-21 (+F-012/F-013 infra intake + user activity logs; governed plans under `feat-f*` and `feat-infra-*`.)
 
 **Purpose:** One entry point that ties together **brain-dump feature ideas**, **post-beta huddle (2026-04-30) planned product work**, **S1.B strategic workstreams**, **known issues with a feature shape**, and **pointers into design docs**. It does **not** replace detailed specs elsewhere; it dedupes and cross-references.
 
-**Rich narrative ideas (keep editing there):** `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` — **F-001**–**F-011**, plus **B-001**–**B-003** (sticky-note bugs).
+**Rich narrative ideas (keep editing there):** `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` — **F-001**–**F-013**, plus **B-001**–**B-003** (sticky-note bugs).
 
 **How to use:** When adding a new idea, give it an **F-** or **B-** id in `FEATURE_IDEAS.md` if it is product-sized, and add **one row** to the [Master crosswalk](#4-master-crosswalk) below (or extend a huddle/W3 row with that id).
 
@@ -16,7 +16,7 @@
 
 | Source                              | Path                                                                                                                                                   | What it contains                                                                                      |
 | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| Feature ideas (brain dump)          | `[plans/cursor/FEATURE_IDEAS.md](./FEATURE_IDEAS.md)`                                                                                                  | **F-001–F-011** narratives; B-001–B-003 onboarding/upcoming bugs                                      |
+| Feature ideas (brain dump)          | `[plans/cursor/FEATURE_IDEAS.md](./FEATURE_IDEAS.md)`                                                                                                  | **F-001–F-013** narratives; B-001–B-003 onboarding/upcoming bugs                                      |
 | Post-beta huddle — issues           | `[plans/archived/post_beta_huddle_2026-04-30/KNOWN_ISSUES.md](../archived/post_beta_huddle_2026-04-30/KNOWN_ISSUES.md)`                                | Issues **#1–#8** triage (bugs, design, feature gaps)                                                  |
 | Post-beta huddle — decisions        | `[plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md](../archived/post_beta_huddle_2026-04-30/DECISIONS.md)`                                      | Locked decisions; **Topic 6 Q6.4** “worth paying for” candidate list; **Topic 9** drift/feature queue |
 | Post-beta huddle — parking          | `[plans/archived/post_beta_huddle_2026-04-30/PARKING_LOT.md](../archived/post_beta_huddle_2026-04-30/PARKING_LOT.md)`                                  | **P-1–P-6** deferred strategic items (revenue, entity, US re-entry), not app feature backlog          |
@@ -72,7 +72,7 @@ Verbatim candidate list from `**DECISIONS.md`** (Topic 6). “Final list is Topi
 
 ## 4) Master crosswalk
 
-Governed **draft** plans: `plans/cursor/s1b/feat-f00*` (see [`FEATURE_IDEAS.md`](./FEATURE_IDEAS.md) table); registry [`../_governance/plan_registry.md`](../_governance/plan_registry.md).
+Governed **draft** plans: `plans/cursor/s1b/feat-f*` + `feat-infra-*` (see [`FEATURE_IDEAS.md`](./FEATURE_IDEAS.md) table); registry [`../_governance/plan_registry.md`](../_governance/plan_registry.md).
 
 
 | Theme                                    | F-id / B-id                            | Execution plan `README` | Huddle / W3                                                 | Status (high level)                                                         |
@@ -88,6 +88,8 @@ Governed **draft** plans: `plans/cursor/s1b/feat-f00*` (see [`FEATURE_IDEAS.md`]
 | Recurring expense automation             | **F-009**                              | [`s1b/feat-f009-recurring-auto-deduct/README.md`](./s1b/feat-f009-recurring-auto-deduct/README.md) | Topic 6 Q6.4                                                | Draft plan; source → **auto_deduct** funnel                                   |
 | Export & sharing                         | **F-010**                              | [`s1b/feat-f010-export-sharing/README.md`](./s1b/feat-f010-export-sharing/README.md) | PWA + trust                                                 | Draft plan (**P1**); with PWA exit / verification                             |
 | Wedge-aligned landing & hero             | **F-011**                              | [`s1b/feat-f011-wedge-landing-hero/README.md`](./s1b/feat-f011-wedge-landing-hero/README.md) | **H-W3-1**                                                  | **Living draft** — refresh when material features ship                        |
+| Bug reports & feature requests (intake)  | **F-012**                              | [`s1b/feat-infra-support-intake/README.md`](./s1b/feat-infra-support-intake/README.md) | Infra / support product                                     | Draft plan                                                                  |
+| Per-user activity & diagnostic logs      | **F-013**                              | [`s1b/feat-infra-user-activity-logs/README.md`](./s1b/feat-infra-user-activity-logs/README.md) | Infra / trust + PWA debug                                   | Draft plan                                                                  |
 | Cash / source currency onboarding        | **B-001**, **B-002**                   | —                       | QoL / bugs                                                  | Triaged in FEATURE_IDEAS                                                    |
 | Upcoming rollover when paid untagged     | **B-003**                              | —                       | Bug                                                         | Triaged in FEATURE_IDEAS                                                    |
 | Quick pay bill (+Bill)                   | *(optional F-012 or keep design-only)* | [`s1b/quick-pay-bill-design/DESIGN_DECISION.md`](./s1b/quick-pay-bill-design/DESIGN_DECISION.md) | **H-ISS-2**, KNOWN_ISSUES #2                                | **Design staged**                                                           |
@@ -102,13 +104,13 @@ Governed **draft** plans: `plans/cursor/s1b/feat-f00*` (see [`FEATURE_IDEAS.md`]
 
 ## 5) Gaps — still not in `FEATURE_IDEAS.md` as full F-* narratives
 
-Promote to **F-012+** in `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` when you want the same long-form treatment as F-001–F-011:
+Promote to **F-014+** in `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` when you want the same long-form treatment as F-001–F-013:
 
 - GCash/Maya **SMS or statement parsing** (Topic 6 candidate).
 - **Bill payment reminders** (notifications / calendar).
 - **OFW / tax-aware categorization** presets.
 
-*(Family ledger, recurring automation meaning, export/sharing, and living landing/hero are now **F-008–F-011**.)*
+*(Family ledger, recurring automation meaning, export/sharing, living landing/hero **F-008–F-011**; support intake + user activity logs **F-012–F-013**.)*
 
 ---
 

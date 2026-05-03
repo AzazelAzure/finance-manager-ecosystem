@@ -44,6 +44,8 @@ Each row is a **draft** governed plan (`plan_id` in YAML); work branches: `curso
 | F-009 | [`feat-f009-recurring-auto-deduct/README.md`](./feat-f009-recurring-auto-deduct/README.md) |
 | F-010 | [`feat-f010-export-sharing/README.md`](./feat-f010-export-sharing/README.md) |
 | F-011 | [`feat-f011-wedge-landing-hero/README.md`](./feat-f011-wedge-landing-hero/README.md) |
+| F-012 | [`feat-infra-support-intake/README.md`](./feat-infra-support-intake/README.md) |
+| F-013 | [`feat-infra-user-activity-logs/README.md`](./feat-infra-user-activity-logs/README.md) |
 
 
 ## Branch naming convention

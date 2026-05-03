@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-05-05 (F-001–F-011 feature execution plans registered)
+**Last updated:** 2026-05-21 (F-012–F-013 infrastructure support plans registered)
 
 ## Update protocol
 
@@ -50,6 +50,8 @@ Active strategic phase: **S1**, Stage **S1.B** (per `plans/cursor/strategic-road
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-009** recurring automation + **source → auto_deduct**: `plans/cursor/s1b/feat-f009-recurring-auto-deduct/README.md`. |
 | `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-010** export/share + PWA trust; **P1**: `plans/cursor/s1b/feat-f010-export-sharing/README.md`. |
 | `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-011** living landing/hero (H-W3-1): `plans/cursor/s1b/feat-f011-wedge-landing-hero/README.md`. |
+| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-012** bug reports + feature requests: `plans/cursor/s1b/feat-infra-support-intake/README.md`; branch `cursor/s1b/feat/infra-support-intake`. |
+| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-013** per-user activity/diagnostic logs (shell): `plans/cursor/s1b/feat-infra-user-activity-logs/README.md`; branch `cursor/s1b/feat/infra-user-activity-logs`. |
 
 ## Paused
 
