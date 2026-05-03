@@ -4,7 +4,7 @@ plan_id: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30
 status: draft
 priority: P0
 created: 2026-04-30
-updated: 2026-05-03
+updated: 2026-05-04
 owner: pproctor
 
 plan_root: plans/cursor/s1b/entity-formation-research/
@@ -60,6 +60,7 @@ standalone_notes: ""
 | [US_ENTITY_PH_OPERATIONS.md](./US_ENTITY_PH_OPERATIONS.md) | US entity primarily serving PH — cost and feasibility scaffold |
 | [PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md) | Spouse-led PH entity and later transfer — counsel checklist |
 | [DECISION_MATRIX.md](./DECISION_MATRIX.md) | Matrices and signoff slots |
+| [US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md](./US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) | US LLC formation + US↔PH tax **pathway matrix** and Gemini drop log (before PSP go-live) |
 | [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md) | PH entity assumption: BMBE law text, VAT/CIT breakpoints, deductions (NIRC Sec. 34), primary links |
 
 **Disclaimer:** This sub-plan contains **research scaffolding and questions**, not legal, tax, or immigration advice. Confirm with qualified advisors in PH and US before acting.
@@ -84,6 +85,13 @@ HitM confirms the **default operating structure** for the PH wedge (subject to c
 - **Final lock:** When L1 becomes `LOCKED`, collapse PSP recommendation from conditional rows to a single **primary path** (or explicit hybrid), still subject to counsel.
 
 YAML on the payment plan still lists `depends_on: entity-formation`; interpret that as **shared scenario documentation + breakpoints**, not “block all payment research until BI returns.”
+
+## 0.4) Execution posture (HitM — 2026-05-04)
+
+- **Counsel-heavy tail:** Vehicle choice (DTI vs OPC), written intercompany terms, and **US LLC registration + tax** modeling require **paid advisors** and embassy/BI evidence — not parallelizable as pure engineering.
+- **Not shelved:** Short-cycle research (e.g. Gemini) on **US LLC formation requirements and tax pathways** continues when HitM has bandwidth; capture drops in [US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md](./US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) §4.
+- **Not a PWA blocker:** **PWA implementation** (S1.B Group D) may proceed without completing this tail — offline/install/resync work does not depend on PSP merchant KYB.
+- **PSP gate:** **Production PSP integration** (merchant onboarding, settlement in PH entity name, intercompany cash movement) **does** depend on clearing the US + PH setup to advisor comfort — treat [US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md](./US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) as the **prep workbook** for that gate.
 
 ## 1) Objective
 
@@ -144,8 +152,8 @@ This is **HitM-led research**; agent role is to compile structure, questions, an
 
 ## 7) Strategic Phase Impact
 
-- S1.B exit: entity formation decision check-box.
-- Unblocks **payment-provider-research** (hard dependency).
+- S1.B exit: entity formation decision check-box (vehicle + timeline evidence + advisor alignment — **pipeline** already locked per §0.2).
+- **payment-provider-research:** Hard dependency for **production billing / PSP merchant go-live**; **research and comparison** may continue in parallel per §0.3. **PWA** work does **not** wait on entity tail (§0.4).
 
 ## 8) Completion Criteria
 

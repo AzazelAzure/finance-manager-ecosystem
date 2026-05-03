@@ -21,7 +21,7 @@
 
 | Sub-plan folder | Topic | Do **not** |
 | ---------------- | ----- | ---------- |
-| [`entity-formation-research/`](./entity-formation-research/) | PH/US entity, Anti-Dummy, spouse involvement, KYB shape | Invent **HitM locks** in `DECISION_MATRIX.md` — only **Patrick (HitM)** fills HitM lock rows after counsel review. |
+| [`entity-formation-research/`](./entity-formation-research/) | PH/US entity, Anti-Dummy, spouse involvement, KYB shape; **US LLC registration/tax prep** → [`entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`](./entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) §4 log | Invent **HitM locks** in `DECISION_MATRIX.md` — only **Patrick (HitM)** fills HitM lock rows after counsel review. |
 | [`payment-provider-research/`](./payment-provider-research/) | PayMongo, Xendit, Stripe, wallets, PSP economics | Claim **PSP chosen** without HitM signoff; mix US merchant rails into PH wedge without labeling contingency. |
 | [`pwa-install-offline-sync-research/`](./pwa-install-offline-sync-research/) | PWA, D0–D4, outbox, API version window | Contradict **locked** D0/D2/D3/D4 decisions in that folder’s README §1.x — those are **research locks** until governance reopens them. |
 | [`ai-economics-research/`](./ai-economics-research/), [`distribution-channels-research/`](./distribution-channels-research/), [`founder-content-cadence-research/`](./founder-content-cadence-research/), [`wedge-consistency-audit/`](./wedge-consistency-audit/), [`founding-member-program-backend/`](./founding-member-program-backend/) | Per each README | Drop unrelated entity/PSP essays into the wrong folder. |
@@ -91,4 +91,4 @@ Re-read this file when:
 
 ---
 
-*Last updated: 2026-05-03 — created for Gemini/Antigravity alignment with S1.B research discipline.*
+*Last updated: 2026-05-04 — entity folder table points to `US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md` for US LLC/tax prep drops.*
