@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-05 — Wedge consistency audit execution pack
+
+- **`plans/cursor/s1b/wedge-consistency-audit/README.md`:** canonical wedge quote, sequencing vs PWA/W3, **`i18n.ts`** surface map (`en-US` + `tl-PH`), method + deliverables + gates.
+- **`plans/cursor/s1b/wedge-consistency-audit/AUDIT_REPORT.md`:** findings table template + P0/P1 + signoff.
+- **`plans/cursor/s1b/wedge-consistency-audit/RESEARCH_ARTIFACTS.md`:** artifact index.
+- **`plans/cursor/s1b/README.md`**, **`GEMINI_RESEARCH_README.md`:** stage table + Gemini handoff for wedge audit.
+
 ### 2026-05-05 — Payment provider `DECISION_MATRIX.md` (PM locks)
 
 - **`plans/cursor/s1b/payment-provider-research/DECISION_MATRIX.md`:** Matrix 1–3 (PSP path, capabilities, settlement economics) + **PM1–PM5** HitM signoff slots (distinct from entity **L** locks).
