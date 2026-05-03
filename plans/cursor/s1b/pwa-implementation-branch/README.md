@@ -114,6 +114,12 @@ Ship the **flagship web** as an **installable Advanced PWA** (manifest, SW, offl
 | P14 | Docs + CPPRD | `tasks/T15_design_docs_and_changelog_cpprd.md` | same | **BP_DOCS** |
 | P15 | SEO P1 (post-close) | `tasks/T16_seo_p1_gsc_and_react_helmet_async.md` | same | **BP_SEO_P1** |
 
+### 4.1) MVP posture and next lane (HitM — 2026-05-03)
+
+- **Sync / status bar:** Current behavior is **responsive enough for MVP** after reachability gating (continuous online drain fixed, web **#48**). Further **copy, error-phase, and lie-fi** polish is **deferrable** unless it blocks D4-exec; track in [`runtime_handoff.md`](runtime_handoff.md) (*Deferred polish*).
+- **Next lane (required for “real” offline product):** Implement **all user-visible reads** so they **materialize from IndexedDB caches plus outbox overlays** — same discipline as transactions / lookups / partial snapshot — so **KPIs, charts, flow aggregates, and every derived number** stay **internally consistent** while offline (within seed window + documented limits). This is the main gap between “writes queue” and “app feels whole offline.”
+- **Execution hint:** Prefer extending **`transactionOutboxOverlay`**, **`lookupsOutboxOverlay`**, **`upcomingOutboxOverlay`**, **`profileOutboxOverlay`**, snapshot/totals/calendar/viz readers, and any **React Query** hooks that still hit “API-only” shapes without merging pending rows.
+
 Execution order for orchestrator: **T00 → (T01,T02) → T03 → T04** (T04 may start after T00; coordinate `index.html` per `CROSS_AGENT_COORDINATION.md`) **→ T05 → T06 → T07 → T08 → T09 → T10 → T11 → T12 → T13 → T14 → T15 → T16** (T16 only after **BP_SPRINT_CLOSE**).
 
 ## 5) Execution Order
