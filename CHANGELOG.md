@@ -47,6 +47,12 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 - **`plans/cursor/s1b/README.md`:** pointer to **`GEMINI_RESEARCH_README.md`** for external research tools.
 - **`plans/cursor/s1b/GEMINI_RESEARCH_README.md`:** first-read protocol for Gemini/Antigravity (folder bounds, HitM-only locks, sources, CPPRD, no secrets).
 
+### 2026-05-03 — PWA implementation + SEO orchestration plan (S1.B)
+
+- **`plans/cursor/s1b/pwa-implementation-branch/`:** Execution-ready plan **`PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`** — `README.md` (YAML + phase compass), `validation_gates.md` (BP0–BP_SEO_P1, **SEO P1** gated on **BP_SPRINT_CLOSE**), `runtime_handoff.md`, `CROSS_AGENT_COORDINATION.md`, `governance_validator_run_2026-05-03.md`, tasks **T00–T16** (API D2, web build/manifest/SW, IndexedDB seed, outbox, D3 auth, D4-exec, docs CPPRD, **SEO P0** parallel / **SEO P1** deferred). Host branch: `cursor/s1b/pwa-implementation-branch`. Plan stays **`draft`** until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is **`completed`** in registry.
+- **`plans/_governance/plan_registry.md`:** Draft row for the implementation sprint plan.
+- **`plans/cursor/s1b/README.md`:** Sub-plan index row + sprint activation index link to `pwa-implementation-branch/README.md`.
+
 ### 2026-05-02 — S1.B entity/payment research governance + continual-learning memory
 
 - **`plans/cursor/s1b/entity-formation-research/`:** Gemini-sourced drafts reconciled to plan governance (no premature `LOCKED` without HitM signoff); `DECISION_MATRIX`, `US_ENTITY_PH_OPERATIONS`, `PH_SPOUSE_LED_AND_TRANSFER`, `REGISTRATION_BREAKPOINTS`, `HITM_LOCAL_CONTEXT`, `SPOUSE_INVOLVEMENT_REQUIREMENTS.md`, `RESEARCH_ARTIFACTS`, plan `README` **draft** status restored; FIA / minimum-capital framed as activity-specific counsel verification.
