@@ -24,7 +24,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
   - Inviting any second user is unsafe until fixed.
   - Password-reset flow keyed on email becomes ambiguous (which account?) — auth-collision / account-hijack risk.
   - Account-deletion flow (per `PLAN_API_Account_Deletion`) may not behave correctly with duplicate emails.
-- **Existing branch/PR:** _(none known)_
+- **Existing branch/PR:** *(none known)*
 - **Action items beyond the fix itself:**
   - Audit current `auth_user` table for duplicate emails before any new user is invited.
   - Confirm behavior of password-reset flow under duplicate-email conditions (probably broken or unsafe today).
@@ -39,7 +39,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Surface:** `finance_manager_web/src/` upcoming-expenses edit modal + `finance_manager_api/` upcoming expenses serializer.
 - **Note:** `finance_manager_web/CHANGELOG.md` shows a recent fix for `is_recurring` field mapping in the **list** view; the **edit** path likely has a parallel mismatch.
 - **Why this matters for distribution:** Every user with a recurring bill will hit this the moment they need to edit it (changing amount, due date, etc.). Recurring bills are a primary use case for the persona.
-- **Existing branch/PR:** _(none known)_
+- **Existing branch/PR:** *(none known)*
 
 ### Issue 8 (S1): Source balance recalculation broken when transactions are deleted
 
@@ -48,7 +48,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Description:** After a user deletes a transaction, **source balances** are not recalculated correctly (stale or wrong balances remain tied to affected sources).
 - **Surface:** `finance_manager_api/` (transaction delete, balance rollup / source-balance signals) and any web client that displays source balances from cached or refetched snapshot data.
 - **Why this matters for distribution:** Wrong balances undermine trust in the core ledger and any “safe to spend” or dashboard KPI surfaces that depend on source totals.
-- **Existing branch/PR:** _(none known)_
+- **Existing branch/PR:** *(none known)*
 
 ---
 
@@ -89,10 +89,11 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Severity:** **S2**
 - **Type:** **design decision, not bug** (the implementation is currently disabled, not broken)
 - **Description:** Dashboard `Quick add → +Bill` quick-action is disabled in production via VPS hotfix pending product decision on what bill-flow semantics should be.
-- **Three candidate behaviors HitM has named:**
-  - Create an upcoming expense
-  - Record a pay-bill flow
-  - A hybrid of the two
+- **Decision staged (2026-05-05):** Replace with **Quick pay bill** — minimal form: dropdown of user upcoming expenses, amount prefilled to bill list amount (editable), submit posts a **transaction** with **`bill`** set and other fields autofilled from the selected upcoming row; **description, category, and tags omitted in v1.** Full write-up and PWA coordination rules: [`plans/cursor/s1b/quick-pay-bill-design/DESIGN_DECISION.md`](../../cursor/s1b/quick-pay-bill-design/DESIGN_DECISION.md). **Implementation intentionally deferred** until after coordination with the active PWA sprint (same surfaces: `QuickActions`, transaction mutations).
+- **Three candidate behaviors HitM has named:** *(superseded for primary path by staged decision above; hybrid “create upcoming” remains available elsewhere via Upcoming Expenses page.)*
+  - ~~Create an upcoming expense~~ — not the Quick pay bill primary action
+  - **Record a pay-bill flow** — **chosen** for dashboard quick path (transaction + bill)
+  - ~~A hybrid of the two~~ — deferred
 - **Surface (when re-enabled):** `finance_manager_web/src/components/dashboard/QuickActions.tsx`
 - **Cross-reference:** Topic 9 (Drift cleanup) — the disable is a runtime hotfix not yet in git; needs retroactive commit even if final design isn't decided yet.
 - **Note:** HitM confirmed this is **not** the critical distribution-blocker.
@@ -118,24 +119,27 @@ When the feature-roadmap conversation opens, those QoL items will be captured an
 
 ## Out-of-scope items (acknowledged but in other queues)
 
-| Item | Where it lives |
-|---|---|
-| `+Bill` hotfix not in git | Topic 9 (Drift cleanup) — retroactive commit required regardless of design decision |
-| Reflex zombie branch | Topic 2 (Reflex archival scope) |
-| Strategic doc drift | Topic 9 (Drift cleanup) |
-| Wedge / hero copy | Topic 7 (Wedge audit) — wedge IS in dashboard KPI top-level, only landing-hero placement is open |
+
+| Item                      | Where it lives                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| `+Bill` hotfix not in git | Topic 9 (Drift cleanup) — retroactive commit required regardless of design decision              |
+| Reflex zombie branch      | Topic 2 (Reflex archival scope)                                                                  |
+| Strategic doc drift       | Topic 9 (Drift cleanup)                                                                          |
+| Wedge / hero copy         | Topic 7 (Wedge audit) — wedge IS in dashboard KPI top-level, only landing-hero placement is open |
+
 
 ---
 
 ## Summary triage
 
-| Priority | Issue | Severity | Type |
-|---|---|---|---|
-| **P0** | #5 email uniqueness | **S0** | bug — distribution-blocker |
-| **P0** | #1 recurring expense edit | S1 | bug |
-| **P0** | #8 source balances after tx delete | S1 | bug — ledger / recalculation |
-| **P1** | #7 calendar daily active | S1/S2 | bug (likely shared root with #4) |
-| **P1** | #4 heatmap intensity | S2 | bug (likely shared root with #7) |
-| **P1** | #6 mobile quick buttons | S2 | UX gap (wedge-relevant) |
-| **P2** | #2 +Bill rework | S2 | design decision pending product spec |
-| **P2** | #3 quick-add fullness | S2 | feature gap; workaround exists |
+
+| Priority | Issue                              | Severity | Type                                 |
+| -------- | ---------------------------------- | -------- | ------------------------------------ |
+| **P0**   | #5 email uniqueness                | **S0**   | bug — distribution-blocker           |
+| **P0**   | #1 recurring expense edit          | S1       | bug                                  |
+| **P0**   | #8 source balances after tx delete | S1       | bug — ledger / recalculation         |
+| **P1**   | #7 calendar daily active           | S1/S2    | bug (likely shared root with #4)     |
+| **P1**   | #4 heatmap intensity               | S2       | bug (likely shared root with #7)     |
+| **P1**   | #6 mobile quick buttons            | S2       | UX gap (wedge-relevant)              |
+| **P2**   | #2 +Bill rework                    | S2       | design decision pending product spec |
+| **P2**   | #3 quick-add fullness              | S2       | feature gap; workaround exists       |

@@ -70,6 +70,12 @@ Read `**[GEMINI_RESEARCH_README.md](./GEMINI_RESEARCH_README.md)`** before addin
 
 
 
+### Staged UX decisions (implementation deferred)
+
+| Topic | Doc | Notes |
+| ----- | --- | ----- |
+| **Quick pay bill** (replaces disabled dashboard **+Bill**; KNOWN_ISSUES #2) | [`quick-pay-bill-design/DESIGN_DECISION.md`](./quick-pay-bill-design/DESIGN_DECISION.md) | Coordinate with [`pwa-implementation-branch/README.md`](./pwa-implementation-branch/README.md) §11 before touching `QuickActions` / transaction writers. |
+
 ### Sprint activation index — PWA (install, offline, resync)
 
 Use this block when the **flagship web Advanced PWA** implementation sprint is activated (after research locks; Group D sequencing per **Sequencing** above).

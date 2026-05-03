@@ -174,3 +174,10 @@ When closing this plan, executor must:
 | Auth token loss corrupts replay | D3 smoke fail | Block drain; preserve queue; fix refresh path | web + api |
 | index.html merge conflicts (SEO vs PWA) | PR friction | Serialize T04 vs T03/T05 per coordination doc | orchestrator |
 | `depends_on` research still draft | Registry validator blocks `ready` | Keep plan `draft` until research `completed` or governance waiver | HitM |
+
+## 11) Coordination — Quick pay bill (KNOWN_ISSUES #2)
+
+**Staged product decision** (not part of this sprint’s deliverables unless explicitly pulled in): dashboard **+Bill** → **Quick pay bill** — dropdown of upcoming expenses, editable amount defaulting to bill amount, submit creates a **transaction** with **`bill`** linked; v1 leaves description, category, and tags empty; remaining fields from upcoming row + form.
+
+- **SSoT:** [`../quick-pay-bill-design/DESIGN_DECISION.md`](../quick-pay-bill-design/DESIGN_DECISION.md)
+- **Conflict avoidance:** Implement Quick pay on a **dedicated feature branch** after PWA transaction/outbox work is stable, or merge only with explicit branch-owner review — **`QuickActions.tsx`** and shared transaction-create paths are overlap hotspots.
