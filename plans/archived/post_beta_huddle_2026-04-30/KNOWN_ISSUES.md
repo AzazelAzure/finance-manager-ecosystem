@@ -41,6 +41,15 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Why this matters for distribution:** Every user with a recurring bill will hit this the moment they need to edit it (changing amount, due date, etc.). Recurring bills are a primary use case for the persona.
 - **Existing branch/PR:** _(none known)_
 
+### Issue 8 (S1): Source balance recalculation broken when transactions are deleted
+
+- **Severity:** **S1**
+- **Type:** bug — data correctness / ledger integrity
+- **Description:** After a user deletes a transaction, **source balances** are not recalculated correctly (stale or wrong balances remain tied to affected sources).
+- **Surface:** `finance_manager_api/` (transaction delete, balance rollup / source-balance signals) and any web client that displays source balances from cached or refetched snapshot data.
+- **Why this matters for distribution:** Wrong balances undermine trust in the core ledger and any “safe to spend” or dashboard KPI surfaces that depend on source totals.
+- **Existing branch/PR:** _(none known)_
+
 ---
 
 ## P1 — Should fix before scaling beta
@@ -124,6 +133,7 @@ When the feature-roadmap conversation opens, those QoL items will be captured an
 |---|---|---|---|
 | **P0** | #5 email uniqueness | **S0** | bug — distribution-blocker |
 | **P0** | #1 recurring expense edit | S1 | bug |
+| **P0** | #8 source balances after tx delete | S1 | bug — ledger / recalculation |
 | **P1** | #7 calendar daily active | S1/S2 | bug (likely shared root with #4) |
 | **P1** | #4 heatmap intensity | S2 | bug (likely shared root with #7) |
 | **P1** | #6 mobile quick buttons | S2 | UX gap (wedge-relevant) |
