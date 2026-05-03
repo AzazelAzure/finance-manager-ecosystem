@@ -85,6 +85,21 @@ remove_compose_service_container() {
   fi
 }
 
+# After (re)creating an API container, Django may need a few seconds before :8000 listens.
+wait_api_service_ready() {
+  local svc="$1"
+  local i
+  log "Waiting for $svc /api/health/ ..."
+  for i in $(seq 1 60); do
+    if compose_cmd exec -T "$svc" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
+      log "$svc is healthy (${i}s)."
+      return 0
+    fi
+    sleep 2
+  done
+  die "$svc did not respond to /api/health/ within ~120s (check logs: $0 logs $svc)"
+}
+
 using_parallel_compose() {
   case "$COMPOSE_FILE" in
     *parallel.y* | *parallel.yaml) return 0 ;;
@@ -261,6 +276,7 @@ rebuild_color_cmd() {
     fi
     log "Recreating $api_service and $web_service (parallel compose; no proxy in this file)."
     compose_cmd up -d --force-recreate "$api_service" "$web_service"
+    wait_api_service_ready "$api_service"
     log "Rebuild complete for $color."
     return 0
   fi
@@ -284,6 +300,7 @@ rebuild_color_cmd() {
 
   log "Starting db, redis, $api_service, $web_service, proxy..."
   compose_cmd up -d db redis "$api_service" "$web_service" proxy
+  wait_api_service_ready "$api_service"
   log "Rebuild complete for $color. Run: $0 smoke --color $color"
 }
 
