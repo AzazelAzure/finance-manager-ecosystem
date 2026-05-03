@@ -256,6 +256,7 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 **Rough notes:**
 
 - Re-run **wedge consistency audit** static rows after each material feature release (`plans/cursor/s1b/wedge-consistency-audit/AUDIT_REPORT.md`).
+- **Brand icons:** ecosystem folder **`resources/hfm_icon_web/`** — cropped and transparent PNGs (multiple sizes + master). Use as the web/PWA chrome source of truth. Created with **Google Gemini** image tooling; **HitM-owned** (no external asset license). Tracked in **F-011** execution plan (`plans/cursor/s1b/feat-f011-wedge-landing-hero/README.md`).
 - Not a one-time ticket — **ongoing** with major releases.
 
 ---
