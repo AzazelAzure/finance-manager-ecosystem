@@ -28,8 +28,8 @@ scripts/fm_services.sh restart
 | ----- | ----- |
 | **Runtime owner** | _(unassigned — set on first test batch)_ |
 | **Mode** | VPS containerized blue/green (`~/finance_manager`, Podman) |
-| **Last lifecycle command** | HitM: **green is active** with a **broken PWA build** shipped; operational plan is **system-wide reset** — finish fixes, then **sync inactive → active** (e.g. blue → green) per deploy playbook. Prior doc row (blue active) is stale vs live VPS. |
-| **Last :8443 / D4 checkpoint** | **OPEN** — code in this batch: lookups/upcoming/profile outbox overlays, snapshot source overlay, `getTransaction` offline + edit `pending:*`, `readOptsFromQuery` on calendar/deep-dive, online `Idempotency-Key` interceptor, auto-drain on `fm-api-reachable`, drain retry on transient error, sync bar depth + dismiss, logout outbox count copy. **Deploy + human D4-exec** still required after merge. |
+| **Last lifecycle command** | **2026-05-03:** `fm_server_beta.sh rebuild-color green` (active); `smoke --color active` **PASS** after web **#48** (PWA online continuous drain loop fix) merged to `main` and pulled on VPS `~/finance_manager/finance_manager_web`. |
+| **Last :8443 / D4 checkpoint** | **OPEN** for full D4-exec signoff — web **#48** fixes **continuous sync while online** (`isApiReachabilityRecovery` gating in `OfflineRoot`); prior parity batch items unchanged for evidence. |
 | **Active / inactive** | **Live:** confirm on VPS (`fm_server_beta.sh active` / proxy). **Intent after fix window:** align both colors to the same good build. |
 
 ### Breakpoint checklist (agent)
@@ -49,13 +49,14 @@ scripts/fm_services.sh restart
 | 2026-05-03 | BP_D4_EXEC §2 / T14 | blue (active) | PASS | VPS `fm_server_beta.sh smoke --color active`; see evidence file. |
 | 2026-05-03 | Post PR #44/#45 deploy | green (inactive) | PASS | Script smoke only; human PWA passes **not** closed. |
 | 2026-05-03 | Continuation triage | — | — | HitM: green active + PWA regressions; see **Open issues (continuation)**. |
+| 2026-05-03 | Web PR #48 online sync loop | green (active) | PASS | `git pull` web `main` @ `3d58e30`; `rebuild-color green`; `smoke --color active`. |
 
 ## Open issues — continuation (2026-05-03)
 
 Operational / product (HitM):
 
 1. **Blue/green:** Green holds broken PWA; cannot undo user-facing release — treat as reset, ship fixes, then **sync good build to active color** (see `deploy/BLUEGREEN_SWITCHOVER.md`).
-2. **Sync banner / status:** Banner and copy felt wrong offline and after reconnect; **stuck “error”** phase after a failed drain until the next successful reachability transition.
+2. **Sync banner / status:** Banner and copy felt wrong offline and after reconnect; **stuck “error”** phase after a failed drain until the next successful reachability transition. **Update:** **#48** stops **continuous drain/refetch while online** (recovery-only `fm-api-reachable` handling).
 3. **Outbox “once”:** Suspected **reachability module** not aligned on `offline` / lie-fi transitions — second offline spell did not enqueue as expected until a failing request flipped `lastReachable`.
 4. **Offline tx not on dashboard:** Data **does** persist in **IndexedDB** (Dexie); dashboard reads `fetchAppSnapshot` → `applyTransactionOutboxToSnapshot`. Gaps are usually **filter window** (e.g. tx date not in dashboard’s current-month slice), **stale React Query view**, or **enqueue path** not firing — not “browser cannot store.”
 5. **Parity:** Full offline parity (except password / account delete) remains the sprint bar — calendar, viz, upcoming, data hub, etc. need the same outbox + cache discipline as transactions.
