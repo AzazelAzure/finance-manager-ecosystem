@@ -36,7 +36,7 @@ scripts/fm_services.sh restart
 | **Runtime owner** | _(unassigned — set on first test batch)_ |
 | **Mode** | VPS containerized blue/green (`~/finance_manager`, Podman) |
 | **Last lifecycle command** | **2026-05-03:** `fm_server_beta.sh rebuild-color green` (active); `smoke --color active` **PASS** after web **#48** (PWA online continuous drain loop fix) merged to `main` and pulled on VPS `~/finance_manager/finance_manager_web`. |
-| **Last :8443 / D4 checkpoint** | **OPEN** for full D4-exec signoff — web **#48** fixes **continuous sync while online** (`isApiReachabilityRecovery` gating in `OfflineRoot`); prior parity batch items unchanged for evidence. |
+| **Last :8443 / D4 checkpoint** | **REOPENED for verification** after web **PR #52** (PWA offline **PR-3** — form parity: Data Hub invalidations, profile Dexie merge, lookup-rename → tx overlay, `getTransaction` PWA local-first, dashboard refresh offline). Full **D4-exec** still **OPEN** until HitM runs Chrome desktop + Android on `:8443` post-merge + VPS pull/rebuild. |
 | **Active / inactive** | **Live:** confirm on VPS (`fm_server_beta.sh active` / proxy). **Intent:** keep active color on good `main` builds; rebuild inactive color when convenient so both sides match. |
 | **Sync UX vs MVP** | **Banner/track deferred:** #48 fixed the **online drain loop**; all **sync status bar / banner** follow-ups are **explicitly later** (see **Priority** table). |
 | **Next execution priority** | **Must-fix now — offline:** same as **Priority → Now**: cached reads + overlays everywhere so **stored changes** drive **numbers, graphs, and lists** offline. |
@@ -46,10 +46,10 @@ scripts/fm_services.sh restart
 | BP | Status | Notes |
 | --- | --- | --- |
 | BP_OUTBOX | **In progress (code)** | Profile PATCH allowlisted API + web; overlays for lookups/upcoming/profile; pending tx edit. |
-| BP_OFFLINE_READ | **P0 / must-fix now** | Extend cache + overlay reads through **all** ledger surfaces (not only tx list); KPIs/charts/totals/calendar/viz/data hub. |
+| BP_OFFLINE_READ | **Code complete (web PR #52)** — merge + VPS `git pull` / `rebuild-color <active>` + smoke; then human **D4-exec** to flip to **PASS**. Covers Data Hub invalidation breadth, QuickActions queued category create, dashboard forced snapshot offline, `appprofile:root` Dexie after profile PATCH enqueue, cross-entity rename on merged tx rows, `getTransaction` under `preferPwaLocalFirstReads()`. |
 | BP_D3_AUTH | **Verify** | Logout modal shows queue depth; `AUTH_CHANGED` aborts drain (existing `drain.ts`). |
 | BP_BG_PWA | **Pending** | CPPRD: merge web+API PRs, rebuild inactive color, flip per `deploy/BLUEGREEN_SWITCHOVER.md`. |
-| BP_D4_EXEC | **Pending** | Record under `evidence/` after Chrome desktop + Android on :8443. |
+| BP_D4_EXEC | **Pending (window reopened)** | Run after **PR #52** lands on active color; record under `evidence/` after Chrome desktop + Android on :8443. |
 
 ## Smoke log
 
@@ -59,6 +59,7 @@ scripts/fm_services.sh restart
 | 2026-05-03 | Post PR #44/#45 deploy | green (inactive) | PASS | Script smoke only; human PWA passes **not** closed. |
 | 2026-05-03 | Continuation triage | — | — | HitM: green active + PWA regressions; see **Open issues (continuation)**. |
 | 2026-05-03 | Web PR #48 online sync loop | green (active) | PASS | `git pull` web `main` @ `3d58e30`; `rebuild-color green`; `smoke --color active`. |
+| 2026-05-03 | Web **PR #52** PWA offline PR-3 (form parity) | _(post-merge)_ | **PENDING** | Branch `feature/pwa-offline-e2e-pr3` → `https://github.com/AzazelAzure/finance-manager-web/pull/52`; after merge: VPS `~/finance_manager/finance_manager_web` pull + `fm_server_beta.sh rebuild-color <active>` + `smoke --color active` + spot D4 repro (Data Hub / Quick add / profile PATCH / rename / `getTransaction`). |
 
 ## Open issues — continuation (2026-05-03)
 
