@@ -17,9 +17,9 @@ On status change:
 
 | plan_id | status | phase | plan_root |
 |---|---|---|---|
-| `PLAN_STRATEGIC_ROADMAP_REFRAME_2026-04-28` | `active` | (root) | `plans/cursor/strategic-roadmap-reframe-53be/` |
+| `PLAN_STRATEGIC_ROADMAP_REFRAME_2026-04-28` | `active` | (root) | `strategy/strategic-roadmap-reframe-53be/` |
 
-Active strategic phase: **S1**, Stage **S1.B** (per `plans/cursor/strategic-roadmap-reframe-53be/README.md` §3).
+Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-reframe-53be/README.md` §3).
 
 ## In Progress
 
@@ -37,7 +37,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `plans/cursor/strategic-road
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
-| `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/S1/S1.B/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
+| `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/S1/S1.B/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `strategy/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
 | `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `cursor/s1b/feat/f001-balance-history`. |
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
 | `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
@@ -117,7 +117,7 @@ cursor/s1b/feat/<feature-name>                        (feature branch)
 cursor/s1b/feat/<feature-name>/t<NN>-<slug>           (task branch)
 ```
 
-Pre-existing plans NOT retroactively moved. Stay at `plans/cursor/<branch>/` per their original paths.
+Pre-existing plans NOT retroactively moved. Each plan’s `plan_root` in its README metadata is authoritative (some legacy rows may still show historical `plans/cursor/...` paths until migrated).
 
 ## Conflict pre-check (read before authoring)
 

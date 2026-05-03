@@ -4,7 +4,7 @@ These directories were moved here intact when **active Stage S1.B implementation
 
 **What stays outside this archive**
 
-- **Strategic plan:** still at `plans/cursor/strategic-roadmap-reframe-53be/` (not Stage-scoped).
+- **Strategic plan:** still at `strategy/strategic-roadmap-reframe-53be/` (not Stage-scoped).
 - **Active S1.B work:** `plans/S1/S1.B/` (sub-plans, research, feature drafts, PWA sprint).
 
 **What is here**

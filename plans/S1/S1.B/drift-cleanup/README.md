@@ -19,7 +19,7 @@ target_repos:
 - design_docs
 
 strategic_phase: S1
-strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
+strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
 depends_on: []
 blocks: []
@@ -137,8 +137,8 @@ Per task, plus overall plan-level gate:
 
 When this plan closes, executor must:
 
-- Update `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B exit criteria checkboxes for all completed items.
-- Append entry to `plans/cursor/strategic-roadmap-reframe-53be/kill_commit_gates.md` outcomes log noting drift cleanup complete.
+- Update `strategy/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B exit criteria checkboxes for all completed items.
+- Append entry to `strategy/strategic-roadmap-reframe-53be/kill_commit_gates.md` outcomes log noting drift cleanup complete.
 - Update `governance/plan_registry.md` status to `completed`.
 - Run `design-docs-sync` per task list above.
 - Post completion summary to Slack `#cli-interface` thread.

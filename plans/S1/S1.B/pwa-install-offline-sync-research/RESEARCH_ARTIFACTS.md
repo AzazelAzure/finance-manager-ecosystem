@@ -2,7 +2,7 @@
 
 **Stage:** S1.B research only. **No** `finance_manager_web` or `finance_manager_api` contract is locked until decision gates close and a separate **execution** plan links here.
 
-**Cross-links:** S1.B stage hub + sprint activation table → [`../README.md`](../README.md#pwa-sprint-activation-index); strategic exit bar → [`../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B bullet); phase detail → [`../../../cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../../cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md).
+**Cross-links:** S1.B stage hub + sprint activation table → [`../README.md`](../README.md#pwa-sprint-activation-index); strategic exit bar → [`../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B bullet); phase detail → [`../../../../strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../../../strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md).
 
 Use this folder as the **single plans-side source** for PWA research until dev work starts; future tactical plans should link these paths instead of duplicating prose.
 

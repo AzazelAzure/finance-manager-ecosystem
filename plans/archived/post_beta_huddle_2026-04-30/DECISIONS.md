@@ -19,7 +19,7 @@ Once a decision is logged here, it is locked. Re-opening requires a kill/commit 
 
 **Decision:** Reflex frontend is fully archived. Repo retained as historical evidence; removed from all production architecture going forward.
 **Rationale:** JS pivot completed during S1 launch sprint; Reflex no longer carries the polish bar; maintaining two frontends doubles ongoing cost without revenue offset.
-**Affects:** `finance_manager_reflex/` (whole repo), root `docker-compose*.yml`, `proxy/nginx.bluegreen.conf`, `plans/cursor/strategic-roadmap-reframe-53be/00_strategic_context.md` §3.1, scattered references in `design_docs/`.
+**Affects:** `finance_manager_reflex/` (whole repo), root `docker-compose*.yml`, `proxy/nginx.bluegreen.conf`, `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md` §3.1, scattered references in `design_docs/`.
 **Migration:** Specific scope-per-file is TBD when Topic 2 is opened in detail. The high-level archival is locked; the per-file actions are pending.
 **HitM signoff:** yes (high-level confirmed 2026-04-30)
 
@@ -45,7 +45,7 @@ Once a decision is logged here, it is locked. Re-opening requires a kill/commit 
 
 **Decision:** Post-huddle deliverables expand beyond drift cleanup to include feature roadmaps, implementation guides, and blue-green branching guidelines as a coherent foundation for the next beta sprint.
 **Rationale:** HitM intent is to lay full groundwork for the next sprint with all governance, strategic, and execution scaffolding in place; this avoids re-deriving structure mid-sprint.
-**Affects:** `TALKING_POINTS.md` Topic 11 expanded, eventual plan packet under `plans/cursor/<branch>/` will be a multi-artifact deliverable, not a single drift-cleanup plan.
+**Affects:** `TALKING_POINTS.md` Topic 11 expanded, eventual plan packet under `plans/<Phase>/<Stage>/<sub-plan>/` will be a multi-artifact deliverable, not a single drift-cleanup plan.
 **HitM signoff:** yes (2026-04-30)
 
 ---
@@ -230,7 +230,7 @@ HitM identified a real personal risk: tendency to hyper-fixate and overwork (ADH
 
 ## 2026-04-30 — Topic 4 Q1: Canonical model lock (wrap-up)
 
-**Decision:** **Option (a) — locked.** Strategic Plan structure (S1–S6 in `plans/cursor/strategic-roadmap-reframe-53be/`) is canonical going forward. Old `Phase 1` / `Phase 2` docs in `design_docs/20_Roadmap/` become historical reference only.
+**Decision:** **Option (a) — locked.** Strategic Plan structure (S1–S6 in `strategy/strategic-roadmap-reframe-53be/`) is canonical going forward. Old `Phase 1` / `Phase 2` docs in `design_docs/20_Roadmap/` become historical reference only.
 
 **Substantial content revision queued for Topic 11 close-out:**
 
@@ -523,7 +523,7 @@ new-feature-branch complete
 **Decision Q11.3 — Hierarchical plan structure locked:**
 
 ```
-plans/cursor/<phase><stage>/                    e.g. plans/S1/S1.B/
+plans/<Phase>/<Stage>/                    e.g. plans/S1/S1.B/
   ├── README.md                                  Stage summary + sub-plan index
   ├── <sub-plan-name>/                           e.g. drift-cleanup/
   │   ├── README.md                              Plan metadata + body
@@ -533,10 +533,10 @@ plans/cursor/<phase><stage>/                    e.g. plans/S1/S1.B/
   └── <sub-plan-name>/                           e.g. entity-formation-research/
 ```
 
-- Stage-level README at `plans/cursor/<phase><stage>/README.md` is the dashboard.
-- Sub-plans inherit Stage context; declare `parent_plan: plans/cursor/<phase><stage>/` in metadata.
+- Stage-level README at `plans/<Phase>/<Stage>/README.md` is the dashboard.
+- Sub-plans inherit Stage context; declare `parent_plan: plans/<Phase>/<Stage>/` in metadata.
 - Branch names follow hierarchy: `cursor/s1b/<plan-name>` or `cursor/s1b/feat/<feature-name>` per Q11.2.
-- Strategic Plan stays at top level (`plans/cursor/strategic-roadmap-reframe-53be/`); not Stage-scoped.
+- Strategic Plan stays at top level (`strategy/strategic-roadmap-reframe-53be/`); not Stage-scoped.
 - **Pre-existing plans NOT retroactively moved.** They stay at current paths; new plans use hierarchical pattern.
 - Pattern hard-coded for agents in governance sweep (deliverable in this Topic 11 close-out).
 

@@ -5,7 +5,7 @@
 
 > **"The personal finance app that tells you what's actually safe to spend before payday — built for people living on thin margins, not people optimizing surplus."**
 
-Source: [`00_strategic_context.md`](../../../cursor/strategic-roadmap-reframe-53be/00_strategic_context.md) §1.
+Source: [`00_strategic_context.md`](../../../../strategy/strategic-roadmap-reframe-53be/00_strategic_context.md) §1.
 
 | Audit date | Auditor | Web rev / deploy |
 | ---------- | ------- | ---------------- |

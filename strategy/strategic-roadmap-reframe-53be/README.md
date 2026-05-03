@@ -5,7 +5,7 @@
 - Plan ID: `PLAN_STRATEGIC_ROADMAP_REFRAME_2026-04-28`
 - Status: `active` (Phase S1; Stage S1.B)
 - Priority: `P0` strategic anchor; supersedes informal long-term planning
-- Plan root: `plans/cursor/strategic-roadmap-reframe-53be/`
+- Plan root: `strategy/strategic-roadmap-reframe-53be/`
 - Target areas: business positioning, monetization, product sequencing across PFM core, Android, ZK middleware, and future Sari-Sari B2B vertical
 
 **Last revision:** 2026-04-30 post-beta huddle (major content revision; S1 split into 4 Stages; PH-first market lock; revenue path narrowed; per-product launch-state model).
@@ -19,7 +19,7 @@ The original `design_docs/` framing (Phase 1 Alpha / Phase 2 Beta Prep / Tracks 
 - Real constraints (solo HitM + AI workforce; baby due 2026-06-15; ₱100/mo runtime cap; VA disability income floor; FEIE tax cliff).
 - An ordered theory: PFM trust → bounty/ZK clout → Sari-Sari B2B vertical, with US market deferred behind explicit trigger.
 
-**This plan is the source of strategic truth.** Tactical execution plans under `plans/cursor/<phase-stage>/<sub-plan>/` are subordinate.
+**This plan is the source of strategic truth.** Tactical execution plans under `plans/<Phase>/<Stage>/<sub-plan>/` are subordinate.
 
 ## 2) Companion Documents
 
@@ -70,7 +70,7 @@ Read in this order when revisiting the plan:
 ## 5) What This Plan Explicitly Does Not Do
 
 - It does not replace `design_docs/`. Behavior changes still trigger doc sync per existing protocol.
-- It does not replace tactical Execution Plans. Those live under `plans/cursor/<phase-stage>/<sub-plan>/`.
+- It does not replace tactical Execution Plans. Those live under `plans/<Phase>/<Stage>/<sub-plan>/`.
 - It does not commit to S5/S6 absolutely. Both are conditional on prior-Phase trigger gates.
 - It does not encode US market acquisition (deferred behind P-6 trigger; see `PARKING_LOT.md`).
 - It does not encode partnership/acquisition optionality (handled if/when inbound arrives).
@@ -92,7 +92,7 @@ This roadmap is "retired" when:
 
 Active Stage (S1.B) handoff:
 
-- Plan root: `plans/cursor/strategic-roadmap-reframe-53be/`
+- Plan root: `strategy/strategic-roadmap-reframe-53be/`
 - Active Stage packet: `phases/S1_public_beta_position.md` (+ Stage-level `plans/S1/S1.B/README.md`)
 - Active Stage execution plans: under `plans/S1/S1.B/<sub-plan>/`
 - Pre-governance plans (now closed): see `governance/plan_registry.md` Recently Completed section
@@ -114,7 +114,7 @@ Tactical plans that execute against this strategic roadmap follow the **plan gov
 | `governance/branching_guidelines.md` | Producing or executing a feature on inactive color |
 
 
-**Hierarchical plan structure (locked 2026-04-30; path update 2026-05-04):** active Stage **implementation** plans live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/drift-cleanup/`). Pre-governance **cursor-era** umbrellas live under `plans/archived/cursor-layout-era/`. Strategic Plan stays at `plans/cursor/strategic-roadmap-reframe-53be/` (not Stage-scoped).
+**Hierarchical plan structure (locked 2026-04-30; path updates 2026-05-04 — S1.B lift + `strategy/` tree):** active Stage **implementation** plans live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/drift-cleanup/`). Pre-governance **cursor-era** umbrellas live under `plans/archived/cursor-layout-era/`. Strategic Plan lives at repo-root **`strategy/strategic-roadmap-reframe-53be/`** (not Stage-scoped; sibling to `plans/`).
 
 **This strategic plan is not edited as part of tactical execution.** Subordinate plans update `validation_gates.md` and `kill_commit_gates.md` only at close, and only via the actions documented in `governance/plan_lifecycle.md` Stage 5.
 

@@ -33,7 +33,7 @@ Facilitate a structured strategic-planning huddle with the HitM. Use when HitM c
 
 8. **Close-out produces real artifacts.** Final topic of a huddle is "Lock and consolidate" — convert the huddle outputs into Strategic Plan updates, governance changes, plan packets, design doc syncs. The huddle isn't over until the artifacts exist on disk.
 
-9. **Archive volatile huddle directory at close.** If the huddle used `plans/archived/volatile/<huddle-name>/`, move it to `plans/archived/<huddle-name>/` after Topic 11 close-out (same pattern as post-beta huddle 2026-04-30). Do **not** recreate removed top-level `plans/volatile/`; new governed work belongs under `plans/cursor/<phase-stage>/<sub-plan>/` per `governance/README.md` and `governance/branching_guidelines.md`.
+9. **Archive volatile huddle directory at close.** If the huddle used `plans/archived/volatile/<huddle-name>/`, move it to `plans/archived/<huddle-name>/` after Topic 11 close-out (same pattern as post-beta huddle 2026-04-30). Do **not** recreate removed top-level `plans/volatile/`; new governed work belongs under `plans/<Phase>/<Stage>/<sub-plan>/` per `governance/README.md` and `governance/branching_guidelines.md`.
 
 ## Standard huddle structure
 
@@ -113,7 +113,7 @@ A full huddle covering 10–11 topics takes 3–6 hours of conversation + 2–4 
 - Glossary canonical: `governance/glossary.md`.
 - Decision-locking template: `governance/plan_template.md` and worked examples in any volatile huddle's `DECISIONS.md`.
 - Branching workflow: `governance/branching_guidelines.md`.
-- Strategic Plan canonical: `plans/cursor/strategic-roadmap-reframe-53be/`.
+- Strategic Plan canonical: `strategy/strategic-roadmap-reframe-53be/`.
 
 ## Last validated
 

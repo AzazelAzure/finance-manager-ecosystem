@@ -32,7 +32,7 @@ Output default: `governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored — personal)
 
 1. This file (pointers + workflow).
 2. `HITM_SCHEDULE_SNAPSHOT.md` — **if present** (run the script locally; not shipped in git).
-3. Strategic cadence and gates: `plans/cursor/strategic-roadmap-reframe-53be/README.md`, `kill_commit_gates.md`, `validation_gates.md`.
+3. Strategic cadence and gates: `strategy/strategic-roadmap-reframe-53be/README.md`, `kill_commit_gates.md`, `validation_gates.md`.
 
 If the snapshot is missing, assume schedule is unknown and ask HitM before assuming availability.
 

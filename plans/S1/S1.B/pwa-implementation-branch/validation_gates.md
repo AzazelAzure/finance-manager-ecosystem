@@ -2,7 +2,7 @@
 
 **Plan ID:** `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`
 
-**Strategic cross-check:** `[plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md)` (S1.B flagship PWA install bullet).
+**Strategic cross-check:** `[strategy/strategic-roadmap-reframe-53be/validation_gates.md](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md)` (S1.B flagship PWA install bullet).
 
 Each breakpoint must be **PASS** before the orchestrator opens the next dependent batch (unless explicitly parallel). Fail → re-task via `bugfix-investigation-loop`, `ci-test-triage`, or `container-runtime-podman-triage`, then re-run the same gate.
 

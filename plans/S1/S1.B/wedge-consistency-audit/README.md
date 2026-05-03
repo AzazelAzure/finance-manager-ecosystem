@@ -14,7 +14,7 @@ target_repos:
   - design_docs
 
 strategic_phase: S1
-strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
+strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
 depends_on: []
 blocks: []
@@ -44,9 +44,9 @@ standalone_notes: ""
 ## 0) Strategic Inheritance
 
 - **Wedge respected:** this audit **is** the wedge-consistency mechanism for public-facing copy.
-- **Locked decisions touched:** [`00_strategic_context.md`](../../../cursor/strategic-roadmap-reframe-53be/00_strategic_context.md) **§1** (canonical wedge sentence) — every in-scope surface should **anchor** on it or explicit thin-margin / safe-to-spend language aligned to §2 persona.
+- **Locked decisions touched:** [`00_strategic_context.md`](../../../../strategy/strategic-roadmap-reframe-53be/00_strategic_context.md) **§1** (canonical wedge sentence) — every in-scope surface should **anchor** on it or explicit thin-margin / safe-to-spend language aligned to §2 persona.
 - **Cost cap impact:** none (HitM time + light agent cycles).
-- **Validation gates affected:** [`validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md) S1.B exit — wedge audit **complete** (paired in phase doc with **landing-page polish landed**; polish is **W3**, audit can **finish first** and hand fixes to W3).
+- **Validation gates affected:** [`validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) S1.B exit — wedge audit **complete** (paired in phase doc with **landing-page polish landed**; polish is **W3**, audit can **finish first** and hand fixes to W3).
 
 ## 0.3) Canonical wedge (verbatim — audit target)
 

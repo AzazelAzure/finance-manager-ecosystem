@@ -1,7 +1,7 @@
 # Install-time seeding, offline data window, and atomicity (HitM product intent)
 
 **Status:** research / product note (2026-05-01). Extends **Advanced** tier; does **not** reopen D0–D4 gates — implementation details for execution planning.  
-**S1.B linkage:** Summarized in parent plan [`README.md`](./README.md) **§1.7**; stage sprint index [`plans/S1/S1.B/README.md`](../README.md#pwa-sprint-activation-index); strategic exit language in [`validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B PWA bullet) and [`S1_public_beta_position.md`](../../../cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2 / exit criteria).  
+**S1.B linkage:** Summarized in parent plan [`README.md`](./README.md) **§1.7**; stage sprint index [`plans/S1/S1.B/README.md`](../README.md#pwa-sprint-activation-index); strategic exit language in [`validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B PWA bullet) and [`S1_public_beta_position.md`](../../../../strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2 / exit criteria).  
 **Related:** [`D2_API_OUTBOX_CONTRACT.md`](./D2_API_OUTBOX_CONTRACT.md) (writes), [`D3_AUTH_OFFLINE_SESSION.md`](./D3_AUTH_OFFLINE_SESSION.md) (auth), [`API_VERSION_AND_CLIENT_WINDOW.md`](./API_VERSION_AND_CLIENT_WINDOW.md) (local schema version).
 
 ---

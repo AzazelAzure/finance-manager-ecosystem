@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-04 — Strategic roadmap: `strategy/strategic-roadmap-reframe-53be/`
+
+- **`plans/cursor/strategic-roadmap-reframe-53be/` → `strategy/strategic-roadmap-reframe-53be/`:** Canonical multi-year roadmap tree moved to repo-root **`strategy/`** (sibling to `plans/`). Added [`strategy/README.md`](strategy/README.md) as the entry router.
+- **Pointers:** `AGENTS.md`, `governance/*`, `README.md`, `.cursor/` skills/rules, `plans/S1/S1.B/**`, `design_docs/**`, `scripts/schedule_agent_sync.sh`, archives, and plan YAML `strategic_link` fields updated; relative markdown links recomputed per file depth.
+
 ### 2026-05-04 — Active S1.B plans: `plans/S1/S1.B/` + `cursor-layout-era` archive
 
 - **`plans/cursor/s1b/` → `plans/S1/S1.B/`:** All active Stage S1.B implementation sub-plans, research, feature drafts, and backlog markdown (`FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`) now live under phase/stage paths. Cross-links, `AGENTS.md`, `governance/*`, strategic README §8, and `.cursor/skills/roadmap-rollout-planning/SKILL.md` updated.
@@ -12,7 +17,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-05-04 — Governance protocols moved to repo-root `governance/`
 
-- **`plans/_governance/` → `governance/`:** Plan ops manuals (registry, lifecycle, deploy, branching, glossary, HitM schedule docs) now live at the workspace root, sibling to `plans/`. Tactical execution plans remain under `plans/cursor/<phase-stage>/<sub-plan>/`.
+- **`plans/_governance/` → `governance/`:** Plan ops manuals (registry, lifecycle, deploy, branching, glossary, HitM schedule docs) now live at the workspace root, sibling to `plans/`. Tactical execution plans use hierarchical `plans/<Phase>/<Stage>/<sub-plan>/` (see later 2026-05-04 S1.B lift in this changelog).
 - **Pointers:** `AGENTS.md`, parent `README.md`, `.gitignore` (schedule snapshot path), `scripts/schedule_agent_sync.sh`, `.cursor/` skills/rules, `design_docs/` vault links, and plan/strategic markdown cross-references updated to the new layout.
 
 ### 2026-05-21 — Parent CPPRD: submodule pins, PWA pause registry, plans + brand pack
@@ -36,7 +41,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-05 — Gemini research CPPRD batch (PSP locks, distribution SEO, entity counsel prep)
 
 - **`plans/S1/S1.B/payment-provider-research/`:** HitM-confirmed **PM1–PM4** (PayMongo primary, Xendit secondary, Maya auto-debit + GCash manual invoice, **~2.0%** blended wallet MDR); `DECISION_MATRIX` Matrices 1–3 filled; `PSP_COMPARISON_MATRIX`, `PAYMENT_ARCHITECTURE_SPLIT`, `README` §0.6/§1/§5 gates; new **`PSP_RESEARCH_NOTES_2026_05.md`** (rationale). Governance note: re-verify on PSP sites before production.
-- **`plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** §2 bullets — PSP MDR **~2.0%** (PM4); §4.1 modeling note vs **~0.85** shortcut.
+- **`strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** §2 bullets — PSP MDR **~2.0%** (PM4); §4.1 modeling note vs **~0.85** shortcut.
 - **`plans/S1/S1.B/distribution-channel-research/`:** `README` deliverables expanded; **`DECISION_MATRIX.md`**, **`DISTRIBUTION_RESEARCH_NOTES.md`**, **`SEO_GUIDE_01–03`**, **`SEO_PRIORITY_MATRIX.md`** (Gemini-assisted SEO / channel research).
 - **`plans/S1/S1.B/entity-formation-research/`:** `RESEARCH_ARTIFACTS` index; **`DTI_VS_OPC_COMPARISON.md`**, **`PH_COUNSEL_QUESTIONNAIRE.md`**, **`TAX_ADVISOR_QUESTIONNAIRE.md`**.
 
@@ -62,7 +67,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-03 — S1.B operating entity pipeline lock + Gemini research protocol
 
 - **`plans/S1/S1.B/entity-formation-research/`:** README **§0.2** (spouse-led PH MoR + HitM US LLC vendor, US-later + future regional split); **§0.3** payment coupling; objectives/scope; `DECISION_MATRIX` HitM locks **L2–L4** (2026-05-03) with L1 still time-gated; `RESEARCH_ARTIFACTS` touch; `HITM_LOCAL_CONTEXT` open question 4 aligned to pipeline + payment §0.6.
-- **`plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** **§5.0** operating entity pipeline mirror; **§5.1** advisory note that §5.0 supersedes generic FEIE-trigger list for initial wedge; **§5.3** points at §5.0 for settlement dual-entity.
+- **`strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** **§5.0** operating entity pipeline mirror; **§5.1** advisory note that §5.0 supersedes generic FEIE-trigger list for initial wedge; **§5.3** points at §5.0 for settlement dual-entity.
 - **`plans/S1/S1.B/payment-provider-research/`:** README objective + **§0.6** (L2–L4 locked, PH spouse-led primary column, next dependency tax deep dive); §3 source line + §4 deliverables pipeline-aligned; `PSP_COMPARISON_MATRIX` + `PAYMENT_ARCHITECTURE_SPLIT` aligned to 2026-05-03 pipeline.
 - **`plans/S1/S1.B/README.md`:** pointer to **`GEMINI_RESEARCH_README.md`** for external research tools.
 - **`plans/S1/S1.B/GEMINI_RESEARCH_README.md`:** first-read protocol for Gemini/Antigravity (folder bounds, HitM-only locks, sources, CPPRD, no secrets).
@@ -77,7 +82,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 - **`plans/S1/S1.B/entity-formation-research/`:** Gemini-sourced drafts reconciled to plan governance (no premature `LOCKED` without HitM signoff); `DECISION_MATRIX`, `US_ENTITY_PH_OPERATIONS`, `PH_SPOUSE_LED_AND_TRANSFER`, `REGISTRATION_BREAKPOINTS`, `HITM_LOCAL_CONTEXT`, `SPOUSE_INVOLVEMENT_REQUIREMENTS.md`, `RESEARCH_ARTIFACTS`, plan `README` **draft** status restored; FIA / minimum-capital framed as activity-specific counsel verification.
 - **`plans/S1/S1.B/payment-provider-research/`:** `README` §0.6 restored to **L1 time-gated** scenario coupling; Stripe back in scope; `PSP_COMPARISON_MATRIX.md` + `PAYMENT_ARCHITECTURE_SPLIT.md` as labeled research drafts with verify-on-provider disclaimers.
-- **`plans/cursor/strategic-roadmap-reframe-53be/`:** Reverted unintended Gemini edits to `01_unit_economics_and_costs.md`, `PARKING_LOT.md` P-2, and phase files (locks belong in entity plan after HitM signoff, not in strategic locks from chat).
+- **`strategy/strategic-roadmap-reframe-53be/`:** Reverted unintended Gemini edits to `01_unit_economics_and_costs.md`, `PARKING_LOT.md` P-2, and phase files (locks belong in entity plan after HitM signoff, not in strategic locks from chat).
 - **`.gitignore` / `README.md`:** `.cursorignore` is **local-only** again (not tracked); Antigravity/agent ignore patterns live in the untracked file for per-machine Cursor index hygiene.
 - **`AGENTS.md`:** Continual-learning memory — normalize parallel-assistant tagged research before CPPRD; add overlapping agent trees to `.cursorignore`.
 
@@ -92,7 +97,7 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 
 - **`plans/S1/S1.B/pwa-install-offline-sync-research/`:** New sub-plan (README §1.1–§1.7, §6 bar, D0/D2/D3/D4 specs, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`, `RESEARCH_ARTIFACTS.md`, smoke/ADR).
 - **`plans/S1/S1.B/README.md`:** **Sprint activation index — PWA** (`#pwa-sprint-activation-index`), sub-plan table pointers, exit summary tied to D4-exec.
-- **`plans/cursor/strategic-roadmap-reframe-53be/`:** `validation_gates.md`, `phases/S1_public_beta_position.md`, `README.md` — PWA exit language, W2/W6 handoffs, Advanced tier reference; plus **`00_strategic_context.md`**, **`01_unit_economics_and_costs.md`**, **`PARKING_LOT.md`** updates from parallel research threads.
+- **`strategy/strategic-roadmap-reframe-53be/`:** `validation_gates.md`, `phases/S1_public_beta_position.md`, `README.md` — PWA exit language, W2/W6 handoffs, Advanced tier reference; plus **`00_strategic_context.md`**, **`01_unit_economics_and_costs.md`**, **`PARKING_LOT.md`** updates from parallel research threads.
 - **`governance/`:** `plan_registry.md` (PWA plan row); **`README.md`**, **`deployment_protocol.md`**, **`execution_protocols.md`**, **`plan_lifecycle.md`** — governance/lifecycle alignment.
 - **`plans/S1/S1.B/ai-economics-deep-dive/`:** `README.md` plus new artifacts `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md`, `CREDIT_FLOOR_SUBSCRIPTION_AND_FOUNDER_MATH.md`, `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md`, `LLM_PROVIDER_COST_SNAPSHOT.md`, `PAYG_VOLUME_BUNDLES_RESEARCH.md`.
 - **`plans/S1/S1.B/drift-cleanup/README.md`**, **`plans/S1/S1.B/payment-provider-research/README.md`:** README touch-ups (other threads).
@@ -103,7 +108,7 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 
 ### 2026-05-01 — Strategic PH pricing lock + PAYG bundle research
 
-- **`plans/cursor/strategic-roadmap-reframe-53be/`:** `01_unit_economics_and_costs.md` **§2.0** locks **Pro ₱249/mo**, **Pro+ ₱349/mo**, **PAYG floor ₱99→100 credits**, **≤100 founding seats** (₱999–₱1,499); PAYG **volume bundles** explicitly **research** (`PAYG_VOLUME_BUNDLES_RESEARCH.md`). `00_strategic_context.md` §3.5 / §3.11, `validation_gates.md` indexing note, `phases/S1_public_beta_position.md` Appendix A snapshot + Q4–Q6 updates.
+- **`strategy/strategic-roadmap-reframe-53be/`:** `01_unit_economics_and_costs.md` **§2.0** locks **Pro ₱249/mo**, **Pro+ ₱349/mo**, **PAYG floor ₱99→100 credits**, **≤100 founding seats** (₱999–₱1,499); PAYG **volume bundles** explicitly **research** (`PAYG_VOLUME_BUNDLES_RESEARCH.md`). `00_strategic_context.md` §3.5 / §3.11, `validation_gates.md` indexing note, `phases/S1_public_beta_position.md` Appendix A snapshot + Q4–Q6 updates.
 - **`plans/S1/S1.B/ai-economics-deep-dive/`:** `PAYG_VOLUME_BUNDLES_RESEARCH.md`; `AI_METERING_MODELS_AND_PRO_PRICE_BENCHMARKS.md` **§8.5**; README link; `FOUNDER_AND_MRR_PATH_FORECAST_PHP.md` assumes **§2.0** locks.
 - **`design_docs` submodule:** `01_Business_Vision.md` tier table aligned to **₱249** Pro list and **100**-seat founding cap (commit in design_docs repo when batching vault changes).
 
@@ -112,7 +117,7 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 - **`plans/S1/S1.B/drift-cleanup/README.md`:** `status: completed`; completion note (HitM-confirmed W1; evidence pointers).
 - **`plans/S1/S1.B/ai-economics-deep-dive/README.md`:** `status: shelved`; `depends_on` entity + payment plans; status section explains resume trigger.
 - **`plans/S1/S1.B/README.md`:** sub-plan table — drift-cleanup **completed**, ai-economics-deep-dive **shelved** with deps; Group C sequencing + personal constraint line updated.
-- **`plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`:** W2 AI Economics bullet + S1.B exit line note **shelved** until entity + payment research (exit still requires Appendix A closure).
+- **`strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`:** W2 AI Economics bullet + S1.B exit line note **shelved** until entity + payment research (exit still requires Appendix A closure).
 
 ### 2026-05-01 — Canonical web stack: docs, Cursor rules, scripts
 
@@ -125,7 +130,7 @@ Keeps the parent checkout aligned with each child’s canonical `main` after Git
 ### 2026-05-01 — Plans archive, governance hygiene, design_docs CPPRD (ecosystem)
 
 - **Plans:** Moved legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, and `plans/volatile_standby/` under `plans/archived/`; refreshed cross-references; corrected post-beta huddle and PH Android archive paths; `governance/README.md`, `plan_registry.md`, and `glossary.md` updated for hierarchical layout and archive index row; strategic plan README stage line and `00_strategic_context.md` broken-path fix.
-- **Cursor skills:** `huddle-facilitation` and `roadmap-rollout-planning` aligned with `plans/cursor/<phase-stage>/<sub-plan>/` and archived volatile conventions.
+- **Cursor skills:** `huddle-facilitation` and `roadmap-rollout-planning` aligned with `plans/<Phase>/<Stage>/<sub-plan>/` and archived volatile conventions.
 - **Submodules:** `design_docs` pinned to `7c9a57e` on branch `cursor/strategic-doc-sync-2026-05-01` (vault strategic alignment, `design_docs/CHANGELOG.md`, **resolved** strategic-doc conflict set: PH-first `07_Server_Runtime_and_Scaling.md` §2, web-first golden rule / phase triggers, `20_Roadmap/_historical/` for calendar + orchestration_manager packs).
 
 ### 2026-05-01 — Plans, deploy runbook, submodule sync

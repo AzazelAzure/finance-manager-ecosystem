@@ -28,13 +28,13 @@ created: <YYYY-MM-DD>
 updated: <YYYY-MM-DD>
 owner: pproctor
 
-plan_root: plans/cursor/<branch>/
+plan_root: plans/<Phase>/<Stage>/<sub-plan>/
 intended_branch: cursor/<branch>
 target_repos:
   - <repo-path>
 
 strategic_phase: S1
-strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
+strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
 depends_on: []
 blocks: []

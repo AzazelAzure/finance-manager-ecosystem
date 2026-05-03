@@ -13,7 +13,7 @@ target_repos:
   - finance_manager_api
 
 strategic_phase: S1
-strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
+strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
 depends_on:
   - PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01
@@ -57,7 +57,7 @@ standalone_notes: ""
 - **Wedge respected:** yes — PH-first, **Chrome desktop + Chrome Android** certified per D0 Option B; iOS/WebKit not blocking v1.
 - **Locked decisions touched:** Advanced PWA tier; D2 API/outbox contract; D3 auth/offline session; D4 smoke + ADR; ~3-month install seed + offline disclaimers + atomicity; single API + compatibility windowing (no Redis HTTP API routing); blue/green stable hostnames (research README §3.1).
 - **Cost cap impact:** none beyond existing VPS blue/green posture; no mandatory third-party PWA SaaS.
-- **Validation gates affected:** [`plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md) S1.B flagship **install-as-app** bullet; this plan’s **BP_D4_EXEC** and **BP_SPRINT_CLOSE** must pass before research sub-plan can close with D4-exec and registry moves to completed.
+- **Validation gates affected:** [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) S1.B flagship **install-as-app** bullet; this plan’s **BP_D4_EXEC** and **BP_SPRINT_CLOSE** must pass before research sub-plan can close with D4-exec and registry moves to completed.
 
 **Ready-state rule:** Per `governance/plan_template.md`, do not set this plan’s `status: ready` until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is `completed` in `plan_registry.md` (or governance waives dependency). Until then remain `draft` / `in_progress` as execution proceeds.
 
@@ -87,7 +87,7 @@ Ship the **flagship web** as an **installable Advanced PWA** (manifest, SW, offl
 - [`../pwa-install-offline-sync-research/README.md`](../pwa-install-offline-sync-research/README.md) — tier, gates, production bar, effort bands A–D.
 - [`../pwa-install-offline-sync-research/D0_BROWSER_MATRIX.md`](../pwa-install-offline-sync-research/D0_BROWSER_MATRIX.md), `D2_API_OUTBOX_CONTRACT.md`, `D3_AUTH_OFFLINE_SESSION.md`, `D4_SMOKE_CHECKLIST_AND_ADR.md`, `SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`, `API_VERSION_AND_CLIENT_WINDOW.md`.
 - [`../distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../distribution-channel-research/SEO_PRIORITY_MATRIX.md).
-- [`../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md) — S1.B PWA bullet.
+- [`../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) — S1.B PWA bullet.
 - [`../README.md`](../README.md) — Sprint activation index — PWA (`#pwa-sprint-activation-index`).
 - Other S1.B research folders (entity, payment, distribution, wedge audit) may run in parallel **if** no shared-file conflicts per `plan_template.md` §7; declare `conflicts_with` when overlap appears.
 - `deploy/BLUEGREEN_SWITCHOVER.md`, `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md` (vocabulary alignment).
@@ -148,7 +148,7 @@ Execution order for orchestrator: **T00 → (T01,T02) → T03 → T04** (T04 may
 ## 6) Verification Gates
 
 - Plan-local breakpoints: [`validation_gates.md`](validation_gates.md).
-- Strategic S1.B PWA bullet: [`../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md).
+- Strategic S1.B PWA bullet: [`../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md).
 - D4-exec checklist: [`../pwa-install-offline-sync-research/D4_SMOKE_CHECKLIST_AND_ADR.md`](../pwa-install-offline-sync-research/D4_SMOKE_CHECKLIST_AND_ADR.md) §2–§4 on **deployed :8443**, Chrome certified only.
 
 ## 7) Documentation Sync Required

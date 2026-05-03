@@ -8,7 +8,7 @@ This is paperwork only — code already shipped via those plans during S1.A. The
 
 ## Scope Boundary
 
-- Repo: workspace root (`plans/cursor/*` directory edits only)
+- Repo: workspace root (`plans/**` and `strategy/**` directory edits only)
 - Branch: `cursor/s1b/drift-cleanup/t04-pre-governance-plans-close`
 - No code changes; no deploy.
 
@@ -49,7 +49,7 @@ This plan was authored before the plan governance system at `governance/` was es
 
 ## Reference
 
-Strategic Plan canonical: `plans/cursor/strategic-roadmap-reframe-53be/`.
+Strategic Plan canonical: `strategy/strategic-roadmap-reframe-53be/`.
 Closure decision: `plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md` (Topic 9 close).
 ```
 

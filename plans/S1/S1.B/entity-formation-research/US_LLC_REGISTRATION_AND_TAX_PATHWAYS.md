@@ -56,7 +56,7 @@
 
 - Update [DECISION_MATRIX.md](./DECISION_MATRIX.md) **Matrix 3** (US LLC row: state, RA, classification **if** HitM locks).
 - Refresh [US_ENTITY_PH_OPERATIONS.md](./US_ENTITY_PH_OPERATIONS.md) with **costs + compliance** grounded in chosen state.
-- Mirror any **economic** lock into [`../../../cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`](../../../cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md) §5 **only** with advisor-backed wording + HitM signoff.
+- Mirror any **economic** lock into [`../../../../strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`](../../../../strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md) §5 **only** with advisor-backed wording + HitM signoff.
 - **`CHANGELOG.md`** (parent) if the batch is CPPRD-worthy.
 
 ---

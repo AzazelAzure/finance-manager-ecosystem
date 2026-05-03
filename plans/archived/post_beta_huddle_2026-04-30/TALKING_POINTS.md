@@ -126,14 +126,14 @@ Triage locked. See `KNOWN_ISSUES.md` for full record. Summary:
 - Three phase models currently coexist:
   1. `design_docs/20_Roadmap/Roadmap_Overview.md` — original `Phase 1` (Alpha Stabilization), `Phase 2` (Beta Preparation), Post-Beta Tracks A–E.
   2. `design_docs/20_Roadmap/Phase_1_Alpha_Stabilization.md` and `Phase_2_Beta_Preparation.md` — original detail.
-  3. `plans/cursor/strategic-roadmap-reframe-53be/` — S1–S6 strategic Phases.
+  3. `strategy/strategic-roadmap-reframe-53be/` — S1–S6 strategic Phases.
 - These three do not agree on what beta means, what comes after beta, or how Track A–E features map to Phase numbers.
 - HitM explicitly named this as a required exit deliverable.
 - 2026-04-30: Vocabulary grounding completed; canonical terms locked in `GLOSSARY.md`. Old `Phase 1`/`Phase 2`/`Cycle`/`Track` retired; per-product launch-state model adopted.
 
 ### Open questions (in canonical vocabulary)
 
-- **Q1 — Canonical model lock:** Strategic Plan (`plans/cursor/strategic-roadmap-reframe-53be/`) is canonical; old `Phase 1` / `Phase 2` docs become historical reference only — confirmed?
+- **Q1 — Canonical model lock:** Strategic Plan (`strategy/strategic-roadmap-reframe-53be/`) is canonical; old `Phase 1` / `Phase 2` docs become historical reference only — confirmed?
 - **Q2 — S1 Stage split:** `S1.A` Tight Invite Beta → `S1.B` Distribution Readiness → `S1.C` Founding Beta → `S1.D` Soft Public Open — right shape?
 - **Q3 — Desktop product stream:** Original Track E was Desktop standalone (single-binary, local SQLite). Keep as a product stream (give it its own launch-state progression), defer (note but unscheduled), or drop?
 - **Q4 — AI tier timing:** Pro+ AI tier (per `01_unit_economics_and_costs.md` §2) — stays in S2, pulls forward to S1.C/S1.D, or slips later?
@@ -338,7 +338,7 @@ Items flagged in the previous huddle message that need cleanup:
 **Original scope:**
 
 - Update strategic roadmap files: which entries change?
-- Create a single follow-up plan packet under `plans/cursor/<branch>/` for the drift cleanup queue.
+- Create a single follow-up plan packet under `plans/<Phase>/<Stage>/<sub-plan>/` for the drift cleanup queue.
 - Update `governance/plan_registry.md` with all status transitions.
 - Append first entry to `kill_commit_gates.md` outcomes log: implicit S1 boundary shift, JS pivot completion, Reflex archival, S0 issue declaration.
 - Trigger `design-docs-sync` for affected design docs.

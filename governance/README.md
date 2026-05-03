@@ -1,6 +1,6 @@
 # Governance — AI operations manual
 
-Repo location: **`governance/`** (workspace root, sibling to `plans/`). Tactical **execution plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/`); this directory holds **protocols** (registry, lifecycle, deploy, branching, vocabulary).
+Repo location: **`governance/`** (workspace root, sibling to `plans/` and `strategy/`). Tactical **execution plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/`); the **Strategic Plan** lives under `strategy/strategic-roadmap-reframe-53be/`. This directory holds **protocols** (registry, lifecycle, deploy, branching, vocabulary).
 
 Primary audience: AI agents (Cursor desktop, Cursor cloud, headless Slack bridge, any future agent).
 Secondary audience: HitM (Human in the Middle = `pproctor`) at Slack confirmation gates only.
@@ -30,7 +30,7 @@ This manual defines how AI agents author and execute plans **consistently** acro
 
 1. `README.md`
 2. `plan_registry.md` → list active plans → check conflicts
-3. `plans/cursor/strategic-roadmap-reframe-53be/phases/S<n>_*.md` → strategic context for declared phase
+3. `strategy/strategic-roadmap-reframe-53be/phases/S<n>_*.md` → strategic context for declared phase
 4. `plan_template.md` → fill schema
 5. `plan_lifecycle.md` §Stage 1 + §Stage 2 → execute Birth + Validation
 6. Append registry row → status `draft` or `ready`
@@ -145,7 +145,7 @@ These values are normative. AI agents must use only these strings. Validation fa
 
 ## Bidirectional links
 
-- Strategic roadmap: `plans/cursor/strategic-roadmap-reframe-53be/README.md` §8 → references this directory.
+- Strategic roadmap: `strategy/strategic-roadmap-reframe-53be/README.md` §8 → references this directory.
 - Every tactical plan's `strategic_link` field → references a specific phase doc.
 - This `README.md` enums → referenced by `plan_template.md` for validation.
 - `deployment_protocol.md` → references `design_docs/40_System_Design/13_Server_Runtime_Agent_Operations_Contract.md` for control-plane / execution-plane operating model.
@@ -154,13 +154,13 @@ These values are normative. AI agents must use only these strings. Validation fa
 ## What this directory does not contain
 
 - Actual plans. **Active tactical plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (see `branching_guidelines.md`). **Closed or superseded plans** live under `plans/archived/` (flat `PLAN_*.md`, huddle folders like `post_beta_huddle_2026-04-30/`, nested `archived/feat/`, `archived/fix/`, `archived/volatile*`, and **`archived/cursor-layout-era/`** for pre–2026-05-04 `plans/cursor/*` umbrellas).
-- Strategic context. That lives in `plans/cursor/strategic-roadmap-reframe-53be/`.
+- Strategic context. That lives in `strategy/strategic-roadmap-reframe-53be/`.
 - Tooling. Governance is documentation, not enforcement code.
 
 ## Forbidden actions for agents
 
 - Authoring or modifying files in the repo-root `governance/` directory (this manual) without explicit HitM authorization.
-- Modifying `plans/cursor/strategic-roadmap-reframe-53be/` files except via `plan_lifecycle.md` Stage 5 close-out updates to `validation_gates.md` and `kill_commit_gates.md`.
+- Modifying `strategy/strategic-roadmap-reframe-53be/` files except via `plan_lifecycle.md` Stage 5 close-out updates to `validation_gates.md` and `kill_commit_gates.md`.
 - Skipping validation (`draft → in_progress` directly) outside hotfix variant.
 - Merging without Slack `#pull-requests` authorization (workspace rule, reinforced here).
 - Authoring plans without `strategic_phase` and `strategic_link` populated.

@@ -74,7 +74,7 @@ GEN_ISO="$(python3 -c "from datetime import datetime, timezone; print(datetime.n
   printf '%s\n' "## Sprint / absence hints for agents"
   printf '%s\n' ""
   printf '%s\n' "- Treat **all-day** lines and **recurring** markers (\`⟳\`) in the calendar block as **time windows** or standing commitments."
-  printf '%s\n' "- Cross-check **strategic phase/stage** dates in \`plans/cursor/strategic-roadmap-reframe-53be/\` with this snapshot when planning execution density."
+  printf '%s\n' "- Cross-check **strategic phase/stage** dates in \`strategy/strategic-roadmap-reframe-53be/\` with this snapshot when planning execution density."
   printf '%s\n' "- Tasks with **due dates** in todoman appear in list output; use \`todo new \"Summary\" -d YYYY-MM-DD\` to add dated work items agents should respect."
   printf '%s\n' ""
 } >"$TMP"

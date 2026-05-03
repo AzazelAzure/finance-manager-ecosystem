@@ -9,7 +9,7 @@ description: Build phased roadmaps and feature rollout plans with clear breakpoi
 
 When a rollout plan is **ready to execute** (not while still brainstorming in chat), materialize it on disk for `/orchestration-manager`:
 
-- **Path:** `plans/<Phase>/<Stage>/<sub-plan>/` (hierarchical layout locked 2026-04-30; active Stage S1.B lives under `plans/S1/S1.B/` as of 2026-05-04). See `governance/branching_guidelines.md` and `plans/cursor/strategic-roadmap-reframe-53be/README.md` §8. Example: drift cleanup → `plans/S1/S1.B/drift-cleanup/`. Git branch names still use `cursor/s1b/...` until a branch rename workstream lands.
+- **Path:** `plans/<Phase>/<Stage>/<sub-plan>/` (hierarchical layout locked 2026-04-30; active Stage S1.B lives under `plans/S1/S1.B/` as of 2026-05-04). See `governance/branching_guidelines.md` and `strategy/strategic-roadmap-reframe-53be/README.md` §8. Example: drift cleanup → `plans/S1/S1.B/drift-cleanup/`. Git branch names still use `cursor/s1b/...` until a branch rename workstream lands.
 - Legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/` trees were moved under `plans/archived/` on 2026-05-01; do not add new plans there.
 - Put the phased plan, task packets, checkpoints, and any manifest files **inside** that folder so the orchestrator has a single root to read. Use `governance/plan_template.md` for required metadata fields.
 
@@ -50,6 +50,6 @@ This is **implicit** for all roadmap outputs that transition from planning to ex
 ## Delegation Defaults
 
 - Use `explore` to gather architecture/current-state evidence.
-- Use `generalPurpose` to author phased rollout updates and to create the `plans/cursor/<phase-stage>/<sub-plan>/` tree when moving to execution.
+- Use `generalPurpose` to author phased rollout updates and to create the `plans/<Phase>/<Stage>/<sub-plan>/` tree when moving to execution.
 - Feed outputs into `design-docs-sync` when plan requires doc edits.
-- Hand execution to `orchestration-manager` with the plan root path under `plans/cursor/<phase-stage>/<sub-plan>/`.
+- Hand execution to `orchestration-manager` with the plan root path under `plans/<Phase>/<Stage>/<sub-plan>/`.

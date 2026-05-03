@@ -49,7 +49,7 @@ archived     → *                  ❌  (open new plan; don't unarchive)
 1. Identify trigger: phase work | bug | ops | doc sync | hotfix
 2. Decide strategic_phase (S1..S6 | cross-phase | hotfix)
 3. Generate plan_id: PLAN_<DOMAIN>_<TOPIC>_<YYYY-MM-DD>
-4. Create plan_root: plans/cursor/<intended-branch>/
+4. Create plan_root: plans/<Phase>/<Stage>/<sub-plan>/ (match `intended_branch` per `branching_guidelines.md`)
 5. Create README.md from plan_template.md
 6. Fill metadata header (status: draft)
 7. Fill required body sections per template §4
@@ -182,9 +182,9 @@ Pre-conditions:
 Then:
 
 ```
-1. Move plan_root contents: plans/cursor/<branch>/ → plans/archived/<plan_id>/
+1. Move plan_root contents: plans/<Phase>/<Stage>/<sub-plan>/ → plans/archived/<plan_id>/
 2. Optional: leave stub at original path:
-   plans/cursor/<branch>/ARCHIVED.md → "Moved to plans/archived/<plan_id>/"
+   plans/<Phase>/<Stage>/<sub-plan>/ARCHIVED.md → "Moved to plans/archived/<plan_id>/"
 3. Set status: archived
 4. Move registry row to "Archived (Index Only)"
 5. Update metadata one last time: updated: <today>

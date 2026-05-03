@@ -13,7 +13,7 @@ parent_plan: plans/S1/S1.B/
 target_repos: []
 
 strategic_phase: S1
-strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
+strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
 depends_on: []
 blocks:

@@ -14,5 +14,5 @@ This plan was authored before the plan governance system at `governance/` was es
 
 ## Reference
 
-Strategic Plan canonical: `plans/cursor/strategic-roadmap-reframe-53be/`.
+Strategic Plan canonical: `strategy/strategic-roadmap-reframe-53be/`.
 Closure decision: `plans/archived/post_beta_huddle_2026-04-30/DECISIONS.md` (Topic 9 close).

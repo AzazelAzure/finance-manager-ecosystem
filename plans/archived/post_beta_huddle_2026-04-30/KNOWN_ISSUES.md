@@ -79,7 +79,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Description:** On mobile viewport, dashboard quick-add buttons (`Add expense`, `Add income`, `Add transfer`) are not above the fold; users have to scroll past KPIs / charts to reach them.
 - **Why S2 not S3:** PH-wedge persona is mobile-first, intermittent connectivity, often opening the app to log a quick expense at point-of-sale. Friction here is friction on the primary use case.
 - **Note:** HitM deliberately deferred specific layout decision to feature-roadmap conversation post-Topic 4.
-- **Status (2026-05):** **Resolved / shipped** — quick actions placed above KPIs on mobile; see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #6). Backlog index: `plans/cursor/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-6**).
+- **Status (2026-05):** **Resolved / shipped** — quick actions placed above KPIs on mobile; see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #6). Backlog index: `plans/S1/S1.B/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-6**).
 
 ---
 
@@ -107,7 +107,7 @@ Note: HitM uses "user-facing issues" as the umbrella term; this list deliberatel
 - **Workaround:** Use the full add transaction flow.
 - **Surface:** `finance_manager_web/src/` quick-add flow components and underlying editor modal.
 - **Note:** HitM deliberately deferred behavior decision to feature-roadmap conversation post-Topic 4.
-- **Status (2026-05):** **Resolved / shipped** — optional bill link + tags and parity with main create fields (per CHANGELOG); see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #3). Backlog index: `plans/cursor/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-3**).
+- **Status (2026-05):** **Resolved / shipped** — optional bill link + tags and parity with main create fields (per CHANGELOG); see `finance_manager_web/CHANGELOG.md` (KNOWN_ISSUES #3). Backlog index: `plans/S1/S1.B/PRODUCT_FEATURE_BACKLOG_INDEX.md` (**H-ISS-3**).
 
 ---
 

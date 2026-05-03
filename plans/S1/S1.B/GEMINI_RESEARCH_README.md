@@ -13,7 +13,7 @@
 3. **Active sub-plan README** in `plans/S1/S1.B/<sub-plan>/README.md` — scope, objectives, and **what is already locked**.
 4. This file — **how** to write research so Cursor agents can normalize and CPPRD.
 
-**Strategic mirrors:** When entity or payment **pipeline** changes, [`../../cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`](../../cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md) may need a short cross-reference (see §5.0 for operating entity pipeline). Do not duplicate long legal analysis there unless HitM asks.
+**Strategic mirrors:** When entity or payment **pipeline** changes, [`../../../strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`](../../../strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md) may need a short cross-reference (see §5.0 for operating entity pipeline). Do not duplicate long legal analysis there unless HitM asks.
 
 ---
 
@@ -24,7 +24,7 @@
 | [`entity-formation-research/`](./entity-formation-research/) | PH/US entity, Anti-Dummy, spouse involvement, KYB shape; **US LLC registration/tax prep** → [`entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`](./entity-formation-research/US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) §4 log | Invent **HitM locks** in `DECISION_MATRIX.md` — only **Patrick (HitM)** fills HitM lock rows after counsel review. |
 | [`payment-provider-research/`](./payment-provider-research/) | PayMongo, Xendit, Stripe, wallets, PSP economics; **locks** → [`payment-provider-research/DECISION_MATRIX.md`](./payment-provider-research/DECISION_MATRIX.md) **PM1–PM5** | Claim **PSP chosen** without HitM signoff; set **PM*** rows as `LOCKED` without HitM; mix US merchant rails into PH wedge without labeling contingency. |
 | [`pwa-install-offline-sync-research/`](./pwa-install-offline-sync-research/) | PWA, D0–D4, outbox, API version window | Contradict **locked** D0/D2/D3/D4 decisions in that folder’s README §1.x — those are **research locks** until governance reopens them. |
-| [`ai-economics-research/`](./ai-economics-research/), [`distribution-channels-research/`](./distribution-channels-research/), [`founder-content-cadence-research/`](./founder-content-cadence-research/), [`wedge-consistency-audit/`](./wedge-consistency-audit/), [`founding-member-program-backend/`](./founding-member-program-backend/) | Wedge audit: fill [`wedge-consistency-audit/AUDIT_REPORT.md`](./wedge-consistency-audit/AUDIT_REPORT.md) §2–§3; **verbatim** wedge only from [`00_strategic_context.md`](../../cursor/strategic-roadmap-reframe-53be/00_strategic_context.md) §1 | Drop unrelated entity/PSP essays into the wrong folder; do not change §1 wedge sentence from research. |
+| [`ai-economics-research/`](./ai-economics-research/), [`distribution-channels-research/`](./distribution-channels-research/), [`founder-content-cadence-research/`](./founder-content-cadence-research/), [`wedge-consistency-audit/`](./wedge-consistency-audit/), [`founding-member-program-backend/`](./founding-member-program-backend/) | Wedge audit: fill [`wedge-consistency-audit/AUDIT_REPORT.md`](./wedge-consistency-audit/AUDIT_REPORT.md) §2–§3; **verbatim** wedge only from [`00_strategic_context.md`](../../../strategy/strategic-roadmap-reframe-53be/00_strategic_context.md) §1 | Drop unrelated entity/PSP essays into the wrong folder; do not change §1 wedge sentence from research. |
 
 **PWA long-form drafts** belong under `pwa-install-offline-sync-research/` per [`AGENTS.md`](../../../AGENTS.md); do not park them under `finance_manager_web/docs/` unless HitM explicitly migrates after lock.
 
@@ -40,7 +40,7 @@
 
 - [`entity-formation-research/README.md`](./entity-formation-research/README.md) §0.2  
 - [`entity-formation-research/DECISION_MATRIX.md`](./entity-formation-research/DECISION_MATRIX.md) (L2–L4 HitM locks)  
-- [`../../cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`](../../cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md) §5.0  
+- [`../../../strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`](../../../strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md) §5.0  
 
 If new research **conflicts** with those sections, add a **dated “Tension / open question”** subsection in the relevant sub-plan README or artifact — do not silently overwrite locks.
 

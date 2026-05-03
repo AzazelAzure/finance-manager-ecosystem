@@ -4,7 +4,7 @@ Items raised during the huddle that are **substantial enough to need formal cons
 
 At Topic 11 close-out, each item gets one of three dispositions:
 
-- **Promoted** — converted into an Execution Plan (typically a Research Plan) under `plans/cursor/<branch>/`.
+- **Promoted** — converted into an Execution Plan (typically a Research Plan) under `plans/<Phase>/<Stage>/<sub-plan>/`.
 - **Lifted** — added to the Strategic Plan as a known deferred decision with explicit trigger conditions.
 - **Discarded** — explicitly removed from active consideration; reasons documented.
 

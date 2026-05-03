@@ -6,10 +6,10 @@
 
 - **Phase:** S1
 - **Stage:** S1.B (Distribution Readiness)
-- **Strategic link:** `plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` (Stage S1.B section + Appendix A)
+- **Strategic link:** `strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` (Stage S1.B section + Appendix A)
 - **Status:** active 2026-04-30 → estimated July 2026
 - **Entry triggers:** S1.A exit met (✅); Strategic Plan revision complete (✅ huddle output); Topic 8 velocity controls operational
-- **Exit triggers:** see `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B
+- **Exit triggers:** see `strategy/strategic-roadmap-reframe-53be/validation_gates.md` Phase S1 Stage S1.B
 
 ## Sub-plan index
 
@@ -24,7 +24,7 @@ Sub-plans under this Stage. Each follows the canonical Execution Plan template (
 | `ai-economics-deep-dive/`            | `shelved`   | unassigned (HitM-led)                 | `**entity-formation-research`**, `**payment-provider-research`** | Appendix A remainder **paused** 2026-05-01 until PSP + entity path; **§2.0 price/credit locks** already in `01_unit_economics_and_costs.md`.                                                                                                                                                                                                                                                                                                                                                                                   |
 | `distribution-channel-research/`     | `draft`     | unassigned (HitM-led decisions)       | none                                                             | PH-local channels (FB primary, AI video framing, family/friend WOM seed).                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | `wedge-consistency-audit/`           | `draft`     | unassigned                            | none; **parallel** with PWA + research                           | **Hub:** `[wedge-consistency-audit/README.md](./wedge-consistency-audit/README.md)` (§0.6 code map, §0.4 sequencing). **Report:** `[AUDIT_REPORT.md](./wedge-consistency-audit/AUDIT_REPORT.md)`. Huddle Topic 7 Q7.3; feeds **W3** polish — does not replace it.                                                                                                                                                                                                                                                              |
-| `pwa-install-offline-sync-research/` | `draft`     | unassigned (HitM-led decisions + web) | none; informs W3 and W6 vocabulary                               | **Decision + rationale hub:** `[pwa-install-offline-sync-research/README.md](./pwa-install-offline-sync-research/README.md)` §**1.1–1.7** (tier, D2 API, D3 auth, D4 smoke/ADR, **3mo seed + offline banners + atomicity**), §**6** production bar; `**[RESEARCH_ARTIFACTS.md](./pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md)`**; **D4-exec** on `:8443`; S1.B exit bullet in `[validation_gates.md](../../cursor/strategic-roadmap-reframe-53be/validation_gates.md)`. Sprint index: [below](#pwa-sprint-activation-index). |
+| `pwa-install-offline-sync-research/` | `draft`     | unassigned (HitM-led decisions + web) | none; informs W3 and W6 vocabulary                               | **Decision + rationale hub:** `[pwa-install-offline-sync-research/README.md](./pwa-install-offline-sync-research/README.md)` §**1.1–1.7** (tier, D2 API, D3 auth, D4 smoke/ADR, **3mo seed + offline banners + atomicity**), §**6** production bar; `**[RESEARCH_ARTIFACTS.md](./pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md)`**; **D4-exec** on `:8443`; S1.B exit bullet in `[validation_gates.md](../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md)`. Sprint index: [below](#pwa-sprint-activation-index). |
 | `pwa-implementation-branch/`       | `draft`     | unassigned (web + api)                | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` (registry `completed` before plan `ready`) | **Orchestration root:** `[pwa-implementation-branch/README.md](./pwa-implementation-branch/README.md)` — Advanced PWA tasks **T00–T16**, `validation_gates.md`, **SEO P0** with sprint / **SEO P1** after **BP_SPRINT_CLOSE**; links research hub + [`distribution-channel-research/SEO_PRIORITY_MATRIX.md`](./distribution-channel-research/SEO_PRIORITY_MATRIX.md). |
 
 ### Feature execution plans (`FEATURE_IDEAS.md` F-001–F-011)
@@ -69,7 +69,7 @@ Group E (parallel low-pri):    time-clock agent; huddle skill; hotfix workflow
 Group F (S1.C entry prep):     founding member backend; pricing page; ToS
 ```
 
-See `plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` Stage S1.B Workstreams W1–W6 for full detail.
+See `strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` Stage S1.B Workstreams W1–W6 for full detail.
 
 ## Pricing and tiering (sequencing note)
 
@@ -103,8 +103,8 @@ Use this block when the **flagship web Advanced PWA** implementation sprint is a
 
 | Read first                                                                                                                                | Why                                                                                                                     |
 | ----------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `[strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md](../../cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md)` | **W2** PWA research line, **W3** “worth paying for” order vs PWA, **W6** Android sync vocabulary alignment.             |
-| `[strategic-roadmap-reframe-53be/validation_gates.md](../../cursor/strategic-roadmap-reframe-53be/validation_gates.md)` (S1.B exit)                 | Authoritative **install-as-app** exit bullet; ties to sub-plan **completed** + **D0–D4** + **D4-exec**.                 |
+| `[strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md](../../../strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md)` | **W2** PWA research line, **W3** “worth paying for” order vs PWA, **W6** Android sync vocabulary alignment.             |
+| `[strategic-roadmap-reframe-53be/validation_gates.md](../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md)` (S1.B exit)                 | Authoritative **install-as-app** exit bullet; ties to sub-plan **completed** + **D0–D4** + **D4-exec**.                 |
 | `[pwa-install-offline-sync-research/README.md](./pwa-install-offline-sync-research/README.md)`                                            | **§1.1–§1.7** decision log + rationale; **§6** checklist; links to **D0 / D2 / D3 / D4 / seeding / API version** specs. |
 | `[pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md](./pwa-install-offline-sync-research/RESEARCH_ARTIFACTS.md)`                    | One-page index of all PWA research files.                                                                               |
 | `[governance/plan_registry.md](../../../governance/plan_registry.md)`                                                                         | Portfolio row `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` (status handoff).                                     |
@@ -113,10 +113,10 @@ Use this block when the **flagship web Advanced PWA** implementation sprint is a
 
 Deep specs (from sub-plan README §3 + §1.7): `[D0_BROWSER_MATRIX.md](./pwa-install-offline-sync-research/D0_BROWSER_MATRIX.md)`, `[D2_API_OUTBOX_CONTRACT.md](./pwa-install-offline-sync-research/D2_API_OUTBOX_CONTRACT.md)`, `[D3_AUTH_OFFLINE_SESSION.md](./pwa-install-offline-sync-research/D3_AUTH_OFFLINE_SESSION.md)`, `[D4_SMOKE_CHECKLIST_AND_ADR.md](./pwa-install-offline-sync-research/D4_SMOKE_CHECKLIST_AND_ADR.md)`, `[SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md](./pwa-install-offline-sync-research/SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md)`, `[API_VERSION_AND_CLIENT_WINDOW.md](./pwa-install-offline-sync-research/API_VERSION_AND_CLIENT_WINDOW.md)`.
 
-- Strategic context: `plans/cursor/strategic-roadmap-reframe-53be/00_strategic_context.md`
-- Unit economics: `plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`
-- Validation gates: `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`
-- Parking lot: `plans/cursor/strategic-roadmap-reframe-53be/PARKING_LOT.md`
+- Strategic context: `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md`
+- Unit economics: `strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`
+- Validation gates: `strategy/strategic-roadmap-reframe-53be/validation_gates.md`
+- Parking lot: `strategy/strategic-roadmap-reframe-53be/PARKING_LOT.md`
 - Branching workflow: `governance/branching_guidelines.md`
 - Plan template: `governance/plan_template.md`
 - Plan registry: `governance/plan_registry.md`

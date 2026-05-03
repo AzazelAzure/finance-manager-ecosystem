@@ -32,7 +32,7 @@ The **parent repository** is the integration shell: Docker blue-green compose fi
 
 ### 2.1 Canonical strategy and vocabulary
 
-- **Strategic anchor:** `plans/cursor/strategic-roadmap-reframe-53be/` (Phase **S1**, Stage **S1.B** as of locked README). Supersedes informal long-horizon planning in older `design_docs/20_Roadmap/` tone where they conflict.  
+- **Strategic anchor:** `strategy/strategic-roadmap-reframe-53be/` (Phase **S1**, Stage **S1.B** as of locked README). Supersedes informal long-horizon planning in older `design_docs/20_Roadmap/` tone where they conflict.  
 - **Vocabulary SSOT:** `governance/glossary.md` (Phase / Stage / Sprint; product launch states like `web:Tight Beta`; retired terms such as legacy “Phase 1/2”, “Track”).  
 - **Portfolio status:** `governance/plan_registry.md` — plan IDs, `draft` / `ready` / `in_progress` / `paused` / `completed`, dependencies, and the **hierarchical plan path convention** (Topic 11 lock).
 
@@ -77,7 +77,7 @@ Directory: `governance/`
 From `plan_registry.md` and `branching_guidelines.md`, **new** work should live under:
 
 ```text
-plans/cursor/<phase-stage>/          # e.g. plans/S1/S1.B/
+plans/<Phase>/<Stage>/          # e.g. plans/S1/S1.B/
   README.md                          # Stage umbrella
   <sub-plan>/README.md               # Execution plan body
   feat-<id>-<slug>/                  # Feature-track plans (F-001…)
@@ -88,13 +88,13 @@ Branches: `cursor/s1b/<sub-plan>`, `cursor/s1b/feat/<feature>`, etc.
 ### 3.2 Observed layout issues (consolidation candidates)
 
 1. **Mixed plan roots under `plans/`**
-  In addition to `plans/cursor/…`, the parent repo still has **sibling directories** at `plans/` for closed or legacy umbrellas, for example: `plans/api-reflex-beta-readiness-plan-53be/`, `plans/finance-manager-web-beta-rollout-53be/`, `plans/server-beta-install-bluegreen-53be/`, `plans/security-hardening-plan-53be/`, `plans/vps-beta-rollout-ops/`, `plans/vps-reflex-bluegreen-recovery-53be/`.  
-   **Health impact:** Agents must guess whether “active” work lives under `plans/S1/S1.B/` vs these legacy paths; cross-links may rot.
+  Closed **cursor-era** umbrellas now live under `plans/archived/cursor-layout-era/`; active Stage work is under `plans/S1/S1.B/`. Any remaining stray top-level plan folders outside those patterns should be triaged into `plans/archived/` or deleted.  
+   **Health impact:** Residual top-level plan dirs (outside `plans/S1/` and `plans/archived/`) still confuse “active vs historical” unless registry rows stay strict.
 2. `**plans/feat/web-reflex-parity-sweep-1/` still present**
   Registry notes former `plans/feat/` trees were moved under `plans/archived/` (2026-05-01). A **residual** `plans/feat/web-reflex-parity-sweep-1/` directory remains.  
    **Health impact:** Duplicate or stale coordination artifacts vs `plans/archived/feat/…`.
 3. **Root README vs governance**
-  `README.md` still says plans live at `plans/<proposed-git-branch-name>/` and points at `roadmap-rollout-planning` for structure; governance and `AGENTS.md` now center `**plans/cursor/<phase-stage>/`**.  
+  `README.md` still says plans live at `plans/<proposed-git-branch-name>/` and points at `roadmap-rollout-planning` for structure; governance and `AGENTS.md` now center `plans/<Phase>/<Stage>/` plus repo-root `strategy/`.  
    **Health impact:** Onboarding mismatch.
 4. **Large binary-ish artifacts at repo root**
   e.g. `migration_dump_*.json` (~10MB each) — clutter and accidental commit risk; not orchestration-critical but affects “ecosystem hygiene” perception.
@@ -108,7 +108,7 @@ Branches: `cursor/s1b/<sub-plan>`, `cursor/s1b/feat/<feature>`, etc.
 **Remote:** `git@github.com:AzazelAzure/finance-manager-design-docs.git`  
 **Parent pointer (snapshot):** submodule at commit on branch `cursor/s1b/pwa-vault-bridge` (see `git submodule status` in parent).
 
-**Role:** Long-lived architecture, runbooks, and historical roadmap packets. **Canonical strategy** for forward-looking decisions is still the `**plans/cursor/strategic-roadmap-reframe-53be/`** tree; `design_docs` is updated on behavior/contract changes per documentation sync protocol (`design_docs/10_Current_State/02_Documentation_Sync_Protocol.md`).
+**Role:** Long-lived architecture, runbooks, and historical roadmap packets. **Canonical strategy** for forward-looking decisions is still the `strategy/strategic-roadmap-reframe-53be/` tree (repo-root `strategy/` in the parent); `design_docs` is updated on behavior/contract changes per documentation sync protocol (`design_docs/10_Current_State/02_Documentation_Sync_Protocol.md`).
 
 **Notable paths:**
 
@@ -121,7 +121,7 @@ Branches: `cursor/s1b/<sub-plan>`, `cursor/s1b/feat/<feature>`, etc.
 | System design             | `design_docs/40_System_Design/` | Some sections rewritten for PH-primary / web flagship (per conflict log)                                                                            |
 
 
-**Health:** Design docs underwent a **post-beta alignment pass** (2026-05-01) documented in `10_Current_State/Strategic_doc_conflicts_pending_direction.md`. Residual risk is **stale cross-links** inside older packets, not missing strategic SSOT (that lives under `plans/`).
+**Health:** Design docs underwent a **post-beta alignment pass** (2026-05-01) documented in `10_Current_State/Strategic_doc_conflicts_pending_direction.md`. Residual risk is **stale cross-links** inside older packets, not missing strategic SSOT (that lives under repo-root `strategy/` in the parent).
 
 ---
 
@@ -131,7 +131,7 @@ Branches: `cursor/s1b/<sub-plan>`, `cursor/s1b/feat/<feature>`, etc.
 | Check                                   | Observation                                                                                                                                                                                                                              |
 | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Parent branch                           | `main` tracking `origin/main`                                                                                                                                                                                                            |
-| Uncommitted parent changes              | Modified `finance_manager_web` submodule pointer; modified `plans/cursor/PRODUCT_FEATURE_BACKLOG_INDEX.md`                                                                                                                               |
+| Uncommitted parent changes              | Modified `finance_manager_web` submodule pointer; modified `plans/S1/S1.B/PRODUCT_FEATURE_BACKLOG_INDEX.md`                                                                                                                               |
 | `finance_manager_web` submodule         | Shows `+` ahead of registered commit — **local web repo has commits not recorded in parent superproject** until submodule SHA is updated and committed                                                                                   |
 | Strategic plan registry                 | **In progress:** empty row (explicit placeholder). **Ready:** empty. **Draft:** many S1.B feature plans + PWA research. **Paused:** PWA implementation sprint (human verification paused; online tx / offline shell issues per registry) |
 | Stage umbrella                          | `plans/S1/S1.B/README.md` — active Stage S1.B index; drift-cleanup marked completed; several research tracks `draft` / `shelved`                                                                                                      |
@@ -146,10 +146,10 @@ Branches: `cursor/s1b/<sub-plan>`, `cursor/s1b/feat/<feature>`, etc.
 
 ## 6) Current directives overview (what agents should treat as law today)
 
-Derived from `plan_registry.md`, `plans/cursor/strategic-roadmap-reframe-53be/README.md`, `plans/S1/S1.B/README.md`, and `AGENTS.md`:
+Derived from `plan_registry.md`, `strategy/strategic-roadmap-reframe-53be/README.md`, `plans/S1/S1.B/README.md`, and `AGENTS.md`:
 
 1. **Phase / stage:** **S1.B — Distribution readiness** (flagship **web**; PH-only market for new acquisition; US deferred per parking lot).
-2. **Strategic read order:** `glossary.md` → `plan_registry.md` → strategic plan README → active stage `s1b/README.md` → specific sub-plan README.
+2. **Strategic read order:** `glossary.md` → `plan_registry.md` → `strategy/strategic-roadmap-reframe-53be/README.md` → active stage `plans/S1/S1.B/README.md` → specific sub-plan README.
 3. **PWA / offline:** Research decisions locked under `plans/S1/S1.B/pwa-install-offline-sync-research/`; implementation sprint hub `plans/S1/S1.B/pwa-implementation-branch/` is **paused** in registry until HitM re-test after fixes.
 4. **Feature backlog:** F-001–F-013 plans exist as **draft** registry rows under `plans/S1/S1.B/feat-*` / `feat-infra-*`; execution is gated by normal `ready` / branch / color-cycle rules.
 5. **Git workflow:** **One commit scope per sub-repo**; feature branches, not `main`; changelogs in touched sub-repo; PR link posted in Cursor chat when opened.
@@ -163,11 +163,11 @@ Derived from `plan_registry.md`, `plans/cursor/strategic-roadmap-reframe-53be/RE
 
 These are **opinionated next steps** derived from this snapshot:
 
-1. **Normalize all active and reference-only plan trees** under `plans/cursor/<phase-stage>/` or `plans/archived/`, and eliminate stray `plans/feat/` remnants or symlink them to archived canonical copies.
-2. **Update parent `README.md`** to match hierarchical `plans/cursor/` layout and link to `governance/plan_registry.md`.
+1. **Normalize all active and reference-only plan trees** under `plans/<Phase>/<Stage>/` or `plans/archived/`, and eliminate stray `plans/feat/` remnants or symlink them to archived canonical copies.
+2. **Update parent `README.md`** to match hierarchical `plans/<Phase>/<Stage>/` + `strategy/` layout and link to `governance/plan_registry.md`.
 3. **Add a single “orchestration index”** (could replace this temp file later) listing: governance files, strategic root, active stage root, paused items, and “do not use” legacy paths.
 4. **Submodule hygiene:** When web work stabilizes, commit parent with updated `finance_manager_web` SHA; avoid long-lived `+` drift without documenting intent.
-5. **design_docs:** Periodic link sweep using `Strategic_doc_conflicts…` as baseline; avoid duplicating strategy in design_docs when `plans/` already owns it.
+5. **design_docs:** Periodic link sweep using `Strategic_doc_conflicts…` as baseline; avoid duplicating strategy in design_docs when `strategy/` + `plans/` already own execution sequencing.
 
 ---
 
@@ -175,6 +175,6 @@ These are **opinionated next steps** derived from this snapshot:
 
 After the overhaul:
 
-- Fold any still-true bullets into `governance/README.md` or a short `plans/cursor/ORCHESTRATION_INDEX.md` (if you adopt that pattern).  
+- Fold any still-true bullets into `governance/README.md` (or a short repo-root orchestration index if you adopt that pattern).  
 - Delete this path: `plans/cursor/_TEMP_ECOSYSTEM_HEALTH_AND_DIRECTIVES_2026-05-04.md`.
 

@@ -15,7 +15,7 @@ target_repos:
 - finance_manager_web
 
 strategic_phase: S1
-strategic_link: plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
+strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
 depends_on: []
 blocks: []
@@ -41,7 +41,7 @@ standalone_notes: ""
 
 ## 0) Strategic Inheritance
 
-**Referenced from S1.B (when implementation sprint activates):** Stage hub [`plans/S1/S1.B/README.md`](../README.md) section **Sprint activation index — PWA** (anchor `#pwa-sprint-activation-index`); exit bar [`plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md`](../../../cursor/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B); phase/workstreams [`plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../../cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2/W3/W6); portfolio [`governance/plan_registry.md`](../../../../governance/plan_registry.md) (`PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01`).
+**Referenced from S1.B (when implementation sprint activates):** Stage hub [`plans/S1/S1.B/README.md`](../README.md) section **Sprint activation index — PWA** (anchor `#pwa-sprint-activation-index`); exit bar [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B); phase/workstreams [`strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../../../strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2/W3/W6); portfolio [`governance/plan_registry.md`](../../../../governance/plan_registry.md) (`PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01`).
 
 - **Wedge respected:** yes — PH-first implies **Chrome on Android** as the primary install surface; iOS Safari PWA limitations are documented risks, not blocking assumptions for v1.
 - **Locked decisions touched:** `00_strategic_context.md` §3.3 (Android pull-forward); offline/sync narrative must align with `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md` so web PWA patterns **reuse** the same mental model (outbox, idempotency) where possible.
@@ -106,8 +106,8 @@ Close the research track with **decision records** so engineering does not thras
 
 ## 3) Source Evidence
 
-- `plans/cursor/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B exit, S1.C entry).
-- `plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` (W2, W6).
+- `strategy/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B exit, S1.C entry).
+- `strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md` (W2, W6).
 - `design_docs/40_System_Design/08_Android_Offline_First_Sync_Architecture.md` (if present; else note gap in §7).
 - MDN: [Offline and background operation (PWAs)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Offline_and_background_operation).
 - web.dev: [Service workers](https://web.dev/learn/pwa/service-workers) and related PWA install guidance.
