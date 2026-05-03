@@ -56,7 +56,7 @@ Anchored to PH purchasing power. **PH-first market focus locked 2026-04-30** (`0
 
 - **GCash/Maya as primary payment method, not fallback** (per `00_strategic_context.md` §3.9). S1.B billing infra design must support direct GCash/Maya. Forcing PH users to have a credit card is a non-starter.
 - **Mobile wallet billing legality for US-incorporated business** is part of the S1.B research workstream.
-- **Still pending at PSP / implementation detail:** exact **annual** SKUs, **multi-currency display**, **optional PAYG volume packs** (must follow `PAYG_VOLUME_BUNDLES_RESEARCH.md`), and **real MDR** replacing **0.85** placeholder.
+- **Still pending at PSP / implementation detail:** exact **annual** SKUs, **multi-currency display**, and **optional PAYG volume packs** (must follow `PAYG_VOLUME_BUNDLES_RESEARCH.md`). The PSP MDR is locked at **~2.0%** blended for e-wallets (PM4).
 
 **Affordability vs margin (pricing discipline):**
 
@@ -133,7 +133,7 @@ Ship **privacy-respecting usage telemetry** alongside the AI gateway so margins 
 ### 4.1 Break-even (cover overhead only)
 
 - Overhead: **~$102/mo** recurring baseline (§1); **~$115–130/mo** with buffer and incidentals.
-- **Modeling shortcut (until PSP MDR replaces 0.85):** **Pro list locked ₱249** (2026-05-01, §2.0); use **~0.85 × list** as “net PHP after processor + rough AI allowance” for **Pro-only** napkin math. USD column uses **illustrative ₱56/$1**; refresh FX at lock.
+- **Modeling shortcut:** **Pro list locked ₱249** (2026-05-01, §2.0); use **~0.85 × list** as a highly conservative “net PHP after processor + rough AI allowance” for **Pro-only** napkin math (with PSP fee locked at ~2.0% blended, this leaves a generous ~13% buffer for AI COGS). USD column uses **illustrative ₱56/$1**; refresh FX at lock.
 - **Sensitivity — Pro list price vs break-even headcount** (all Pro PH, ~0.85 net, $125/mo all-in overhead, illustrative FX):
 
 

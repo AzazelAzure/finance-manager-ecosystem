@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-05 — Gemini research CPPRD batch (PSP locks, distribution SEO, entity counsel prep)
+
+- **`plans/cursor/s1b/payment-provider-research/`:** HitM-confirmed **PM1–PM4** (PayMongo primary, Xendit secondary, Maya auto-debit + GCash manual invoice, **~2.0%** blended wallet MDR); `DECISION_MATRIX` Matrices 1–3 filled; `PSP_COMPARISON_MATRIX`, `PAYMENT_ARCHITECTURE_SPLIT`, `README` §0.6/§1/§5 gates; new **`PSP_RESEARCH_NOTES_2026_05.md`** (rationale). Governance note: re-verify on PSP sites before production.
+- **`plans/cursor/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md`:** §2 bullets — PSP MDR **~2.0%** (PM4); §4.1 modeling note vs **~0.85** shortcut.
+- **`plans/cursor/s1b/distribution-channel-research/`:** `README` deliverables expanded; **`DECISION_MATRIX.md`**, **`DISTRIBUTION_RESEARCH_NOTES.md`**, **`SEO_GUIDE_01–03`**, **`SEO_PRIORITY_MATRIX.md`** (Gemini-assisted SEO / channel research).
+- **`plans/cursor/s1b/entity-formation-research/`:** `RESEARCH_ARTIFACTS` index; **`DTI_VS_OPC_COMPARISON.md`**, **`PH_COUNSEL_QUESTIONNAIRE.md`**, **`TAX_ADVISOR_QUESTIONNAIRE.md`**.
+
 ### 2026-05-05 — Wedge consistency audit execution pack
 
 - **`plans/cursor/s1b/wedge-consistency-audit/README.md`:** canonical wedge quote, sequencing vs PWA/W3, **`i18n.ts`** surface map (`en-US` + `tl-PH`), method + deliverables + gates.

@@ -2,7 +2,7 @@
 
 **Plan root:** [README.md](./README.md)  
 **Status:** draft (S1.B Group C)  
-**Last updated:** 2026-05-04 (README §0.4 execution posture; `US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`)
+**Last updated:** 2026-05-05 (DTI vs OPC comparison; PH + US advisor questionnaires — Gemini research CPPRD)
 
 All deliverables for this sub-plan live **under this folder only**. Cross-links from `plans/cursor/s1b/README.md` and the parent README point here.
 
@@ -19,6 +19,8 @@ All deliverables for this sub-plan live **under this folder only**. Cross-links 
 | [DECISION_MATRIX.md](./DECISION_MATRIX.md)                       | Decision matrices and signoff slots (fill as research lands)                     |
 | [US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md](./US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) | US LLC registration + tax pathway matrix; Gemini log; gates PWA vs PSP |
 | [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md)   | PH tax: BMBE (RA 9178), VAT/₱3M breakpoints, CIT/OSD, NIRC Sec. 34 — verified links |
-
+| [DTI_VS_OPC_COMPARISON.md](./DTI_VS_OPC_COMPARISON.md) | Pros and Cons comparison of DTI Sole Proprietorship vs. One Person Corporation (OPC) |
+| [PH_COUNSEL_QUESTIONNAIRE.md](./PH_COUNSEL_QUESTIONNAIRE.md) | Pre-engagement questionnaire for PH Legal Counsel (Anti-Dummy, Entity, IP) |
+| [TAX_ADVISOR_QUESTIONNAIRE.md](./TAX_ADVISOR_QUESTIONNAIRE.md) | Pre-engagement questionnaire for US CPAs and Tax Advisors (FEIE, LLC, Transfer Pricing) |
 
 **Disclaimer:** These files organize **research questions and evidence targets**. They are not legal, tax, or immigration advice. Philippines Bureau of Immigration, SEC, BIR, and embassy rules change; confirm with qualified PH and US advisors before acting.

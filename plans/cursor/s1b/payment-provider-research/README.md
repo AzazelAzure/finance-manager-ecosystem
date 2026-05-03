@@ -63,15 +63,15 @@ Use this section when **context drifts** between payment work and adjacent S1.B 
 
 **How payment research proceeds now**
 
-1. **Primary column:** PSP KYB and rails for the **PH spouse-led settlement entity** (DTI vs OPC **TBD** with counsel)—this is the **default** row in [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md).
-2. **US LLC column:** **Not** a PH PSP merchant of record; document only **cross-border settlement / invoicing** implications if any provider allows US entity to touch PH wallets (likely **no**—expect PH entity only for GCash/Maya-first wedge).
-3. **Contingency columns:** Keep slim fallback only if counsel or PSP rejects the default (reference [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) Matrix 1).
-4. **Working artifacts:** [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md) and [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md) — update from “hypothesis only” to **pipeline-aligned** drafts; **HitM PSP choice** still requires this plan’s §5 verification + signoff.
+1. **Primary PSP (PH wedge):** **PayMongo** — **PM1** locked (HitM CPPRd **2026-05-05**); rationale in [`PSP_RESEARCH_NOTES_2026_05.md`](./PSP_RESEARCH_NOTES_2026_05.md). **Contingency:** **Xendit** (**PM2**) if counsel or PSP forces a switch.
+2. **PH settlement entity:** PSP KYB remains on the **PH spouse-led** merchant (DTI vs OPC **TBD** with counsel); matrix rows assume DTI-capable onboarding.
+3. **US LLC column:** **Not** a PH PSP merchant of record; intercompany settlement unchanged from [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md).
+4. **Working artifacts:** [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md), [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md), [`DECISION_MATRIX.md`](./DECISION_MATRIX.md) — **PM1–PM4** filled; **re-verify** MDR and wallet recurring behavior on provider sites before integration hardens.
 5. **PH tax / VAT:** Map gross receipts to **VAT vs non-VAT** for the **PH MoR** using [PH_TAX_BMBE_AND_DEDUCTIONS.md](../entity-formation-research/PH_TAX_BMBE_AND_DEDUCTIONS.md).
 
-**Next research dependency:** Deep **PH BIR + US LLC / personal tax** pass (intercompany pricing, HitM compensation, spouse tax)—parallel to PSP lock; not a substitute for advisors.
+**Next research dependency:** Deep **PH BIR + US LLC / personal tax** pass (intercompany pricing, HitM compensation, spouse tax)—**parallel** to PSP integration prep; not a substitute for advisors.
 
-Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` is satisfied for **operating-structure** decisions; **payment provider choice** and **tax memos** remain open until HitM signoff on those plans.
+Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` is satisfied for **operating-structure** decisions. **Primary PSP choice (PM1–PM4)** is **HitM-signed** as of **2026-05-05**; **tax memos** and **L1** timeline remain open where applicable.
 
 ## 0.65) Decision matrix and payment locks
 
@@ -79,7 +79,7 @@ Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` is satisfied f
 
 ## 1) Objective
 
-Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate with the **locked PH spouse-led settlement entity** from `entity-formation-research` (**L2–L4**, 2026-05-03) plus contingency columns only if counsel requires. **HitM PSP signoff** remains the exit gate for this plan (L1 BI timeline is separate).
+**Primary outcome achieved (2026-05-05):** PayMongo **PM1** for the PH wedge (Maya auto-debit + GCash manual-invoice path per **PM3**); Xendit **PM2** contingency; **PM4** blended **~2.0%** wallet MDR for unit economics — see [`DECISION_MATRIX.md`](./DECISION_MATRIX.md) and [`PSP_RESEARCH_NOTES_2026_05.md`](./PSP_RESEARCH_NOTES_2026_05.md). **Ongoing:** integration spec, PSP doc re-verification before production billing, entity vehicle (DTI vs OPC), **L1** BI timeline — separate from PSP vendor choice.
 
 ## 2) Scope
 
@@ -113,6 +113,7 @@ Research document with:
 
 - Provider comparison matrix **pipeline-aligned** to PH spouse-led MoR (§0.6); **contingency** columns only if counsel requires; **HitM PSP signoff** still required for final primary provider.
 - Recommended primary + optional secondary provider, **after** signoff.
+- [PSP_RESEARCH_NOTES_2026_05.md](./PSP_RESEARCH_NOTES_2026_05.md) containing the raw findings and justification for the matrix values.
 - Mobile wallet integration path (specific API/SDK).
 - Estimated per-transaction effective margin at PHP-anchored prices.
 - HitM final lock decision (signoff) recorded in [DECISION_MATRIX.md](./DECISION_MATRIX.md) **HitM locks (payment)**.
@@ -120,8 +121,9 @@ Research document with:
 
 ## 5) Verification Gates
 
-- HitM has read research output and signed off on payment provider choice.
-- Decision migrated to `01_unit_economics_and_costs.md` §2 with explicit notes.
+- [x] HitM signed off on **PM1–PM4** (CPPRd **2026-05-05**).
+- [ ] Decision mirrored in `01_unit_economics_and_costs.md` §2 (MDR / net assumptions) — partial update in same batch; confirm tables if any **0.85** examples need refresh for modeling narrative.
+- [ ] Integration + KYB execution tracked in **web** / **API** repos when billing ships.
 
 ## 6) Documentation Sync Required
 

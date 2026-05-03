@@ -13,7 +13,7 @@
 
 **Money flow (conceptual):**
 
-1. PH user pays subscription in **PHP** via PSP (e.g. PayMongo / Xendit — **TBD**).
+1. PH user pays subscription in **PHP** via PSP (**PayMongo**).
 2. PSP settles to **PH business bank** in the merchant’s legal name.
 3. **Intercompany:** PH entity pays US entity per **written** license/support agreement; pricing must be **arm’s-length** (transfer-pricing memo — **do not** use informal percentage splits from chat as tax positions).
 
