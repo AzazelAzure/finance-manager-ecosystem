@@ -175,7 +175,19 @@ Ship **privacy-respecting usage telemetry** alongside the AI gateway so margins 
 
 These are pre-decided actions, not commitments to act now.
 
+### 5.0 Operating entity pipeline (HitM lock — 2026-05-03)
+
+Authoritative narrative for **how** revenue is intended to flow pending counsel, PSP KYB, and written agreements (see `plans/cursor/s1b/entity-formation-research/README.md` §0.2 and `DECISION_MATRIX.md` L2–L4):
+
+- **PH operating entity (spouse-led):** Filipino-owned vehicle is **merchant of record** for PHP customer receipts, PSP settlement, and PH tax filings. Spouse has **agreed** to genuine management responsibilities consistent with **Anti-Dummy** constraints.
+- **HitM US LLC:** Acts as **independent contractor** — software / IP **licensor** and technical **services vendor** to the PH entity under B2B contracts (arm’s-length pricing **TBD** with PH + US tax advisors).
+- **Personal tax:** US citizen receiving US LLC income while resident in PH is **high-sensitivity**; requires coordinated **US + PH advisor** modeling (FEIE, sourcing, intercompany deductibility)—**not** decided by this bullet.
+- **US market later:** Same US LLC supports **US-facing** revenue when roadmap gates allow (`PARKING_LOT.md` P-6), reducing need for a net-new US shell at that time.
+- **Future code/deploy split:** When volume and compliance warrant, **isolate** PH wallet integrations from US-only product surfaces and US card rails from PH-only surfaces (separate repos or deploy lanes)—engineering decision after **payment-provider** lock.
+
 ### 5.1 Trigger: MRR projects to ≥80% of FEIE within 12 months
+
+*Note (2026-05-03): The **initial** operating pattern is locked in **§5.0** (spouse-led PH MoR + HitM US LLC vendor). When this trigger fires, **PH + US tax counsel** must reconcile the generic restructuring checklist below with that pipeline (intercompany pricing, roles, and distributions)—do not treat the numbered list as literal order without advisor signoff.*
 
 Within 60 days of trigger:
 
@@ -197,7 +209,7 @@ Within 60 days of trigger:
 
 ### 5.3 Earlier dual-entity trigger (separate from §5.1)
 
-Per `PARKING_LOT.md` P-2: HFM US / HFM PH dual-entity structure may need to be considered *before* the FEIE trigger if PHP-denominated payment processing friction blocks user acquisition at material volume. Different scenario from FEIE; same eventual structural change.
+**Update (2026-05-03):** The **settlement dual-entity** pattern (PH spouse-led MoR + HitM US LLC vendor) is now **locked** in §5.0 for the PH wedge. Per `PARKING_LOT.md` P-2, additional **corporate** complexity (e.g. further PH vehicles, US C-Corp, or holding stacks) may still be needed *before* the §5.1 FEIE trigger if **payment or tax friction** at volume demands it—advisor-driven, distinct from the §5.0 operating pipeline lock.
 
 ## 6) Operating Cost Discipline Rules
 

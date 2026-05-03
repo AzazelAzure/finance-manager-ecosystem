@@ -2,7 +2,7 @@
 
 **Plan root:** [README.md](./README.md)  
 **Status:** draft (S1.B Group C)  
-**Last updated:** 2026-05-02 (L1 time gate + PSP coupling noted in README §0.2)
+**Last updated:** 2026-05-03 (HitM pipeline lock README §0.2; PSP coupling §0.3)
 
 All deliverables for this sub-plan live **under this folder only**. Cross-links from `plans/cursor/s1b/README.md` and the parent README point here.
 

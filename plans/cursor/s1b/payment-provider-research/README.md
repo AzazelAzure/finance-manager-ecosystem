@@ -3,7 +3,7 @@ plan_id: PLAN_RESEARCH_PAYMENT_PROVIDER_2026-04-30
 status: draft
 priority: P0
 created: 2026-04-30
-updated: 2026-05-02
+updated: 2026-05-03
 owner: pproctor
 
 plan_root: plans/cursor/s1b/payment-provider-research/
@@ -54,26 +54,28 @@ Use this section when **context drifts** between payment work and adjacent S1.B 
 | **Feature roadmap before final tiering** | **`01_unit_economics_and_costs.md` §2 (deferred block):** free vs paid entitlements are **not** final until S1.B **Group D** scope is stable. Payment flows (SKUs, one-time Founding vs recurring Pro) still land here as **provider capabilities**. |
 | **`PARKING_LOT.md` P-8 (Pro trial)** | **Trial + wallet verification:** industry pattern is first period free with **instrument on file**; copy and law are HitM—but **technical** questions (auth vs first charge, **failed renewal → downgrade**, whether wallet can be “verified” like a card) are **processor-specific**. This plan’s comparison matrix should include **subscription + trial** behavior for each short-listed PSP. |
 | **Charge failure policy** | Acceptable fallback discussed: **failed charge → stop paid entitlements** (vs strong pre-verification). Document what each provider supports and how it affects UX/refund language. |
-| **Entity formation (`depends_on`)** | Some wallet rails **require or favor a PH counterparty**; ties to **`PARKING_LOT.md` P-2** if US-only entity blocks the desired flow. **While L1 is time-gated** (BI validation after marriage + license), treat this dependency as **scenario documentation**, not a hard stop — see **§0.6** below. |
+| **Entity formation (`depends_on`)** | **L2–L4 locked (2026-05-03):** PH spouse-led MoR + HitM US LLC vendor — see [`../entity-formation-research/README.md`](../entity-formation-research/README.md) **§0.2**. **L1** (BI/marriage recognition) may still be **`TIME_GATED`** — see **§0.6**. |
 | **AI economics (parallel plan)** | PSP affects **net subscription revenue**; AI provider pricing affects **variable LLM cost**. Together they bound **true** Pro / Pro+ margin—see `../ai-economics-deep-dive/LLM_PROVIDER_COST_SNAPSHOT.md` for the LLM side. |
 
-## 0.6) Entity scenario coupling (L1 time gate)
+## 0.6) Entity coupling — L2–L4 locked; L1 time gate only
 
-**Entity plan hub:** [`../entity-formation-research/README.md`](../entity-formation-research/README.md) (see **§0.2** there). **Matrix 2 (timeline branch)** may remain **`TIME_GATED`** until **marriage → US license in hand → BI validation** (see [`../entity-formation-research/HITM_LOCAL_CONTEXT.md`](../entity-formation-research/HITM_LOCAL_CONTEXT.md) §1.1).
+**Entity plan hub:** [`../entity-formation-research/README.md`](../entity-formation-research/README.md) — **§0.2** operating pipeline (HitM lock **2026-05-03**), **§0.3** PSP seating. [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md): **L2–L4** locked; **L1** (BI / marriage recognition) may remain **`TIME_GATED`** until **marriage → US license in hand → BI validation** ([`../entity-formation-research/HITM_LOCAL_CONTEXT.md`](../entity-formation-research/HITM_LOCAL_CONTEXT.md) §1.1).
 
-**How payment research proceeds anyway**
+**How payment research proceeds now**
 
-1. **Comparison matrix columns** (minimum): `US entity (bridge)`, `PH entity (HitM-owned when eligible)`, `PH spouse-led interim`, `No entity yet` (only if [REGISTRATION_BREAKPOINTS.md](../entity-formation-research/REGISTRATION_BREAKPOINTS.md) allows).
-2. **Rows:** each short-listed PSP × KYB docs, settlement currency, wallet rails, recurring + trial behavior, known blockers for non-PH legal persons.
-3. **Working artifacts:** [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md) and [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md) document **hypothesis scenarios** for PSP evaluation—they are **not** HitM locks until [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) and this README’s verification gates are satisfied.
-4. **Outputs before L1 locks:** conditional recommendation (“**If** branch A … **then** …”; “**If** branch B … **then** …”) plus a **default engineering spike** path if HitM must pick one PSP for a prototype.
-5. **PH tax / VAT registration:** If the working assumption is a **PH settlement entity**, map gross receipts to **VAT vs non-VAT** using [PH_TAX_BMBE_AND_DEDUCTIONS.md](../entity-formation-research/PH_TAX_BMBE_AND_DEDUCTIONS.md) (threshold discussion and cites)—PSP settlement and invoice type must match BIR registration **once** that entity path is locked.
+1. **Primary column:** PSP KYB and rails for the **PH spouse-led settlement entity** (DTI vs OPC **TBD** with counsel)—this is the **default** row in [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md).
+2. **US LLC column:** **Not** a PH PSP merchant of record; document only **cross-border settlement / invoicing** implications if any provider allows US entity to touch PH wallets (likely **no**—expect PH entity only for GCash/Maya-first wedge).
+3. **Contingency columns:** Keep slim fallback only if counsel or PSP rejects the default (reference [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) Matrix 1).
+4. **Working artifacts:** [`PSP_COMPARISON_MATRIX.md`](./PSP_COMPARISON_MATRIX.md) and [`PAYMENT_ARCHITECTURE_SPLIT.md`](./PAYMENT_ARCHITECTURE_SPLIT.md) — update from “hypothesis only” to **pipeline-aligned** drafts; **HitM PSP choice** still requires this plan’s §5 verification + signoff.
+5. **PH tax / VAT:** Map gross receipts to **VAT vs non-VAT** for the **PH MoR** using [PH_TAX_BMBE_AND_DEDUCTIONS.md](../entity-formation-research/PH_TAX_BMBE_AND_DEDUCTIONS.md).
 
-Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` means **coherent cross-links and scenario answers** in both folders—not “freeze payment research until BI.”
+**Next research dependency:** Deep **PH BIR + US LLC / personal tax** pass (intercompany pricing, HitM compensation, spouse tax)—parallel to PSP lock; not a substitute for advisors.
+
+Plan YAML `depends_on: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30` is satisfied for **operating-structure** decisions; **payment provider choice** and **tax memos** remain open until HitM signoff on those plans.
 
 ## 1) Objective
 
-Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate well with the **entity scenario** from `entity-formation-research` (final pairing after HitM signoff and any L1/L2 locks).
+Decide payment processor strategy: which provider(s) accept PH users, support mobile wallets (GCash/Maya) as primary payment method (not just card fallback), and integrate with the **locked PH spouse-led settlement entity** from `entity-formation-research` (**L2–L4**, 2026-05-03) plus contingency columns only if counsel requires. **HitM PSP signoff** remains the exit gate for this plan (L1 BI timeline is separate).
 
 ## 2) Scope
 
@@ -98,13 +100,13 @@ Decide payment processor strategy: which provider(s) accept PH users, support mo
 - Stripe PH availability + GCash support (verify current product pages).
 - PayMongo product / pricing page.
 - Xendit product / pricing page.
-- HFM legal posture: **per entity scenario** until [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) HitM locks; cite chosen structure in final write-up.
+- HFM legal posture: **PH spouse-led MoR + HitM US LLC vendor** per [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2–L4 (2026-05-03); cite PSP KYB under PH entity name in final write-up.
 
 ## 4) Deliverables
 
 Research document with:
 
-- Provider comparison matrix **with entity-scenario columns** (§0.6); conditional recommendation acceptable until HitM locks entity + timeline branch.
+- Provider comparison matrix **pipeline-aligned** to PH spouse-led MoR (§0.6); **contingency** columns only if counsel requires; **HitM PSP signoff** still required for final primary provider.
 - Recommended primary + optional secondary provider, **after** signoff.
 - Mobile wallet integration path (specific API/SDK).
 - Estimated per-transaction effective margin at PHP-anchored prices.

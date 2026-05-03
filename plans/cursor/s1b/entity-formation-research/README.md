@@ -4,7 +4,7 @@ plan_id: PLAN_RESEARCH_ENTITY_FORMATION_2026-04-30
 status: draft
 priority: P0
 created: 2026-04-30
-updated: 2026-05-02
+updated: 2026-05-03
 owner: pproctor
 
 plan_root: plans/cursor/s1b/entity-formation-research/
@@ -64,11 +64,22 @@ standalone_notes: ""
 
 **Disclaimer:** This sub-plan contains **research scaffolding and questions**, not legal, tax, or immigration advice. Confirm with qualified advisors in PH and US before acting.
 
-## 0.2) Payment provider research — joint seating (entity × PSP)
+## 0.2) Operating pipeline (HitM lock — 2026-05-03)
+
+HitM confirms the **default operating structure** for the PH wedge (subject to counsel, PSP KYB, and written intercompany agreements):
+
+1. **PH primary business — spouse-led.** Filipino-owned vehicle (DTI sole proprietorship vs SEC **OPC** or other form **TBD** with counsel) is the **merchant of record** for PHP settlement, local tax filings, and PSP onboarding. Spouse has **agreed** to minimum genuine management and governance needed to mitigate **Anti-Dummy** risk; see [SPOUSE_INVOLVEMENT_REQUIREMENTS.md](./SPOUSE_INVOLVEMENT_REQUIREMENTS.md) and [PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md).
+2. **HitM US LLC — contracted vendor.** US entity acts as **independent technical / IP vendor** to the PH operating company (license + services), **not** as undisclosed controller of the PH business. Intercompany pricing and personal tax (US citizen; spouse tax posture) require a **dedicated PH + US advisor pass**—treat as **high priority follow-on research**, not implied by this lock alone.
+3. **US market later.** The same US LLC is the natural **sister / expansion** vehicle for US-facing revenue when roadmap gates (e.g. `PARKING_LOT.md` P-6) allow—avoids standing up a separate US shell solely for that unlock.
+4. **Future implementation split (when gates clear).** Plan for **separate product/repo or deploy lanes** so **PH wallet rails** (e.g. PayMongo / Xendit) are not entangled in US-only stacks and **US card rails** (e.g. Stripe) are not entangled in PH-only stacks—reduces regulatory and KYB cross-contamination. Exact split is an **engineering + compliance** decision after payment provider lock and volume thresholds.
+
+**L1 (BI / marriage recognition timeline)** remains **`TIME_GATED`** in [DECISION_MATRIX.md](./DECISION_MATRIX.md) Matrix 2; it does **not** invalidate the operating pipeline above.
+
+## 0.3) Payment provider research — joint seating (entity × PSP)
 
 **L1 (timeline branch)** may stay **`TIME_GATED`** for ~**two months** after the marriage month until **BI validates** recognition ([HITM_LOCAL_CONTEXT.md](./HITM_LOCAL_CONTEXT.md) §1.1, [DECISION_MATRIX.md](./DECISION_MATRIX.md) Matrix 2). That does **not** idle payment work.
 
-- **Run in parallel:** [`../payment-provider-research/README.md`](../payment-provider-research/README.md) with a comparison matrix keyed to **entity scenarios** (US LLC bridge, PH entity HitM-owned, PH spouse-led interim, delay entity). Capture **KYB / onboarding** requirements per PSP per scenario.
+- **Run in parallel:** [`../payment-provider-research/README.md`](../payment-provider-research/README.md) with PSP matrix keyed to the **locked PH spouse-led + US LLC vendor** pipeline (**§0.2**), plus **contingency columns** only if counsel requires a fallback. Capture **KYB / onboarding** per PSP for the PH settlement entity.
 - **Feed back:** PSP constraints update [DECISION_MATRIX.md](./DECISION_MATRIX.md) Matrix 3 (vehicle shortlist) and [REGISTRATION_BREAKPOINTS.md](./REGISTRATION_BREAKPOINTS.md) B1.
 - **Final lock:** When L1 becomes `LOCKED`, collapse PSP recommendation from conditional rows to a single **primary path** (or explicit hybrid), still subject to counsel.
 
@@ -79,8 +90,8 @@ YAML on the payment plan still lists `depends_on: entity-formation`; interpret t
 Research and **decide** (HitM signoff):
 
 1. **Timeline branch** — how marriage documentation affects **when** HitM can own or control a PH entity vs need a bridge ([TIMELINE_BRANCHES.md](./TIMELINE_BRANCHES.md)).
-2. **Operating entity** — US vs PH (or dual-track sequencing), including **LLC** (US), **sole prop / OPC / domestic corp** (PH) as the comparison set—not “US OPC” (PH uses **OPC**; US analog is typically LLC or corporation).
-3. **Fallback paths** — US entity serving PH customers ([US_ENTITY_PH_OPERATIONS.md](./US_ENTITY_PH_OPERATIONS.md)); spouse-led PH with later transfer ([PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md)).
+2. **Operating entity** — **Pipeline locked** per **§0.2** (spouse-led PH + HitM US LLC vendor); remaining work is **vehicle choice** (DTI vs OPC), **documentation**, and **advisor signoff**, not a greenfield structure search.
+3. **Fallback paths** — Retained as **contingency** reading if counsel or PSP forces a change ([US_ENTITY_PH_OPERATIONS.md](./US_ENTITY_PH_OPERATIONS.md); [PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md)).
 4. **Breakpoint discipline** — smallest entity that clears the next real gate ([REGISTRATION_BREAKPOINTS.md](./REGISTRATION_BREAKPOINTS.md)).
 
 Output: **HitM-locked** decisions recorded in [DECISION_MATRIX.md](./DECISION_MATRIX.md) and migrated to `01_unit_economics_and_costs.md` §5.
@@ -95,7 +106,7 @@ This is **HitM-led research**; agent role is to compile structure, questions, an
 - Tax and compliance **question lists** for US citizen living in PH (FEIE interactions; cross-border SaaS — advisor targets, not conclusions).
 - Cost of formation + ongoing compliance (US and PH paths).
 - **Philippine tax:** BMBE vs regular domestic corporation, revenue registration breakpoints (e.g. VAT), deductible expenses — [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md) (statute + PwC summaries; counsel for application).
-- Payment infrastructure compatibility (which legal person PSPs accept for GCash/Maya-heavy flows — **joint task** with [`../payment-provider-research/`](../payment-provider-research/README.md); see **§0.2** above).
+- Payment infrastructure compatibility (which legal person PSPs accept for GCash/Maya-heavy flows — **joint task** with [`../payment-provider-research/`](../payment-provider-research/README.md); see **§0.3** above).
 - Immigration **timing as input** to corporate sequencing (not visa legal work product).
 
 ### Out of scope

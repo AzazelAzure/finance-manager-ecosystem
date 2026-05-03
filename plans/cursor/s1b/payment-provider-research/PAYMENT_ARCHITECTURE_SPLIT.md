@@ -1,13 +1,13 @@
-# Payment architecture split — hypothesis (PH vs US)
+# Payment architecture split — PH vs US
 
-**Status:** Research draft. Flows below assume a **dual-entity** pattern (PH operating merchant + US technical vendor) **only if** counsel and HitM adopt that structure. **Not** implementation spec until signed off.
+**Status:** Research draft aligned to **HitM pipeline lock (2026-05-03)** — spouse-led PH MoR + HitM US LLC vendor ([`../entity-formation-research/README.md`](../entity-formation-research/README.md) §0.2). **Not** implementation spec until PSP + counsel artifacts are complete.
 
-## Phase 1 — PH wedge (S1.B assumption space)
+## Phase 1 — PH wedge (S1.B)
 
-**Entities (hypothesis):**
+**Entities (HitM lock):**
 
-1. **PH merchant of record** — Filipino-owned vehicle suitable for PSP KYB (e.g. DTI sole prop or corp — **vehicle TBD**).
-2. **US vendor** — HitM-owned US LLC (or other US entity) providing license/services **under contract**, if counsel approves.
+1. **PH merchant of record** — **Spouse-led** Filipino vehicle for PSP KYB (DTI sole prop vs SEC **OPC** — **TBD** with counsel).
+2. **US vendor** — HitM-owned **US LLC** under **written** B2B license/support agreements with the PH entity (arm’s-length fees **TBD** with tax advisors).
 
 **Money flow (conceptual):**
 
