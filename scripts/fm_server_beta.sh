@@ -69,6 +69,9 @@ Environment:
   FM_PUBLIC_APP_HOST                 Host header for frontend smoke probes.
   FM_PUBLIC_API_HOST                 Host header for API smoke probes.
   FM_PUBLIC_BASE_URL                 Base URL for proxy smoke probes (default: https://localhost:8443).
+
+Note: smoke/wait/reload use direct container exec (not compose exec) so compose-interpolated
+secrets are not echoed into terminal logs by podman-compose.
 EOF
 }
 
@@ -91,7 +94,7 @@ wait_api_service_ready() {
   local i
   log "Waiting for $svc /api/health/ ..."
   for i in $(seq 1 60); do
-    if compose_cmd exec -T "$svc" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
+    if compose_exec_tty "$svc" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
       log "$svc is healthy (${i}s)."
       return 0
     fi
@@ -143,6 +146,25 @@ detect_runtime_bin() {
 compose_cmd() {
   # shellcheck disable=SC2086
   ${COMPOSE_CMD[@]} -p "$PROJECT_NAME" -f "$COMPOSE_FILE" "${COMPOSE_ENV_FILE_ARGS[@]}" "$@"
+}
+
+# podman-compose (and some docker-compose wrappers) print the full translated
+# `podman exec ... --env KEY=...` line before running, which leaks compose-interpolated
+# secrets from .env into operator logs. Prefer direct runtime exec for probes.
+container_id_for_service() {
+  local svc="$1"
+  "$RUNTIME_BIN" ps -q \
+    --filter "label=com.docker.compose.project=${PROJECT_NAME}" \
+    --filter "label=com.docker.compose.service=${svc}" 2>/dev/null | head -n1 | tr -d '[:space:]'
+}
+
+compose_exec_tty() {
+  local svc="$1"
+  shift
+  local cid
+  cid="$(container_id_for_service "$svc")"
+  [[ -n "$cid" ]] || die "compose service not running (no container id): $svc (project=$PROJECT_NAME)"
+  "$RUNTIME_BIN" exec -T "$cid" "$@"
 }
 
 require_paths() {
@@ -320,9 +342,9 @@ smoke_cmd() {
   local web_upstream="web-$color"
   log "Smoke target color: $color"
 
-  compose_cmd exec -T redis redis-cli ping >/dev/null
-  compose_cmd exec -T "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
-  compose_cmd exec -T "$web_upstream" sh -c "wget -qO- http://127.0.0.1/ >/dev/null"
+  compose_exec_tty redis redis-cli ping >/dev/null
+  compose_exec_tty "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
+  compose_exec_tty "$web_upstream" sh -c "wget -qO- http://127.0.0.1/ >/dev/null"
 
   if using_parallel_compose; then
     log "Parallel stack: public edge still serves legacy single-stack; skipped Host-header curls to $PUBLIC_BASE_URL"
@@ -337,8 +359,8 @@ reload_proxy() {
   if using_parallel_compose; then
     die "reload_proxy: parallel compose has no 'proxy' service. Point edge at blue/green or use full docker-compose.bluegreen.yml for switch."
   fi
-  compose_cmd exec -T proxy nginx -t >/dev/null
-  compose_cmd exec -T proxy nginx -s reload >/dev/null
+  compose_exec_tty proxy nginx -t >/dev/null
+  compose_exec_tty proxy nginx -s reload >/dev/null
 }
 
 switch_cmd() {
