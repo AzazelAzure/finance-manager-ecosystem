@@ -6,6 +6,8 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 
 **Format:** ID, title, what it does, why it matters, rough notes.
 
+**Ids:** **F-001**–**F-007** (original brain dump), **F-008**–**F-011** (huddle / S1.B candidates + living marketing), **B-001**–**B-003** (sticky-note bugs).
+
 ---
 
 ## F-001: Balance History & Trend Tracking
@@ -176,6 +178,65 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 - Tour completion state tracked per user (don't re-show tours they've completed)
 - Consider: video snippets embedded in tour steps for complex features (savings goals, projections)
 - Consider: localized tour content (Tagalog/English) when localization ships
+
+---
+
+## F-008: Family Ledger (Household / Multi-Person)
+
+**What:** A household- or family-scoped view of money: multiple people (or roles) tied to one logical “home” budget — shared bills, shared goals, and clear who spent what. Read/write permissions per member (e.g. primary + partner read-only, or teens with capped visibility) are part of the product shape, not an afterthought.
+
+**Current state:** Single-user ledger; no shared household entity.
+
+**Why it matters:** PH wedge persona often pools money across earners and extended family. A notebook does not sync; a solo PFM does not match how money actually moves in the household.
+
+**Rough notes:**
+
+- Start narrow: “invite viewer” + shared upcoming list vs full multi-write — scope TBD before build.
+- Security, consent, and ZK posture are design gates (what is visible server-side vs device-only).
+- Cross-reference S1.B “worth paying for” candidate list (Topic 6 Q6.4).
+
+---
+
+## F-009: Recurring Expense Automation
+
+**What:** **Automation** around bills the user already marks as **recurring** (today: upcoming expenses + `is_recurring`). This is **not** “add recurring rows” alone — the app already models that. Here it means **cutting repeated manual work** across pay cycles: smarter rollover, fewer taps to mark paid + link to a transaction, optional **templates** (amount/due pattern from history), optional **suggestions** for the next period, and later **rules** or **batch** assists (e.g. end-of-month checklist) — exact bundles ship incrementally.
+
+**Why it matters:** Recurring without automation still leaves the thin-margin user doing the same admin every month. The wedge is “survive until payday,” not “re-type the electric bill.”
+
+**Rough notes:**
+
+- Overlaps **B-003** (rollover when paid without tx) — automation story fails if rollover is flaky.
+- Distinct from **F-002** (tag split) and **F-003** (projections); may feed projection inputs once bills land predictably.
+
+---
+
+## F-010: Export & Sharing (Data Portability)
+
+**What:** First-class **export** (e.g. CSV / structured backup of transactions and key aggregates) and **sharing** (e.g. PDF month summary, read-only link or export for a partner/accountant, scope TBD). Offline-capable PWA raises the bar: users expect to **own a copy** of their data and sometimes to **show** someone else a month without full account access.
+
+**Current state:** No dedicated export/share product path tied to retention and trust.
+
+**Why it matters:** Portability supports trust (“I can leave with my data”), support burden (send this month to HitM), and PH household reality (one person manages money for the home).
+
+**Rough notes:**
+
+- Time near **PWA exit** — ship or harden alongside Advanced PWA / outbox story so offline users are not locked in without export.
+- **Verification:** PWA implementation is merged in repo; **owner manual verification** (including D4-exec on `:8443` per `pwa-install-offline-sync-research`) still gates “PWA done” before marketing this as complete.
+
+---
+
+## F-011: Wedge-Aligned Landing & Hero (Living Surfaces)
+
+**What:** Public **landing**, **hero**, **value props**, **feature showcase**, and related marketing copy — kept aligned with the canonical wedge sentence in `design_docs/01_Business_Vision.md` as **shipped features grow**.
+
+**Current state:** Post-huddle queue **H-W3-1** (landing polish + wedge in hero); hero lists will age as F-008+ land.
+
+**Why it matters:** Marketing must not undersell real product, or oversell vapor. Hero “feature bullets” should expand when net-new capabilities (ledger, export, PWA install, etc.) are real in production.
+
+**Rough notes:**
+
+- Re-run **wedge consistency audit** static rows after each material feature release (`plans/cursor/s1b/wedge-consistency-audit/AUDIT_REPORT.md`).
+- Not a one-time ticket — **ongoing** with major releases.
 
 ---
 
