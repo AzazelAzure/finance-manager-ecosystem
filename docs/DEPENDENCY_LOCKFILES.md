@@ -15,33 +15,35 @@ So the goal is **reproducible, reviewable installs**—harder for dependency cha
 
 ## Current state in this workspace (snapshot)
 
-| Area | Today | Next step toward “real” locks |
-|------|--------|--------------------------------|
-| `finance_manager_api/` | `pyproject.toml` + `uv.lock` with runtime deps and a `dev` dependency group. | Keep lock refreshed via `uv lock`; use `uv sync --frozen --group dev` in CI. |
-| `finance_manager_cli/` | `pyproject.toml` + `uv.lock` are in place. | Continue resolving via `uv lock`; install with `uv sync --frozen`. |
-| `finance_manager_web/` | `package-lock.json` (or project lockfile) for the Vite SPA. | Install with `npm ci` (or equivalent) in CI/images; fail if lock drifts. |
-| `finance_manager_reflex/` (archived) | Historical `pyproject.toml` + `uv.lock` may remain. | No longer a production delivery surface. |
-| `finance_manager_rust_tools/` | `Cargo.toml` + committed **`Cargo.lock`** | CI uses `cargo test --locked` / `cargo clippy --locked`; refresh the lock when direct deps change. |
+
+| Area                                 | Today                                                                        | Next step toward “real” locks                                                                      |
+| ------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `finance_manager_api/`               | `pyproject.toml` + `uv.lock` with runtime deps and a `dev` dependency group. | Keep lock refreshed via `uv lock`; use `uv sync --frozen --group dev` in CI.                       |
+| `finance_manager_cli/`               | `pyproject.toml` + `uv.lock` are in place.                                   | Continue resolving via `uv lock`; install with `uv sync --frozen`.                                 |
+| `finance_manager_web/`               | `package-lock.json` (or project lockfile) for the Vite SPA.                  | Install with `npm ci` (or equivalent) in CI/images; fail if lock drifts.                           |
+| `finance_manager_reflex/` (archived) | Historical `pyproject.toml` + `uv.lock` may remain.                          | No longer a production delivery surface.                                                           |
+| `finance_manager_rust_tools/`        | `Cargo.toml` + committed `**Cargo.lock`**                                    | CI uses `cargo test --locked` / `cargo clippy --locked`; refresh the lock when direct deps change. |
+
 
 ## Recommended directions (pick one stack per repo, stay consistent)
 
 ### Option A — **uv** (modern, fast; good for multi-repo later)
 
 - Declare direct deps in `pyproject.toml` (or `requirements.in`).
-- Run `uv lock` → commit **`uv.lock`**.
+- Run `uv lock` → commit `**uv.lock`**.
 - CI/prod: `uv sync --frozen` (or equivalent) so installs **fail** if lock is out of date.
 - Optional: enable hash modes where supported for release builds.
 
 ### Option B — **Poetry**
 
-- `poetry lock` → commit **`poetry.lock`**.
+- `poetry lock` → commit `**poetry.lock`**.
 - Deploy with `poetry install --no-dev` (or export to constraints for containers).
 
 ### Option C — **pip-tools** (minimal change if you like `requirements.txt`)
 
-- Maintain **`requirements.in`** (high-level, human-edited) with only top-level packages (ranges allowed).
-- Run **`pip-compile`** → generates **`requirements.txt`** with **all** transitive pins (optionally `--generate-hashes`).
-- Install in CI/prod with `pip install -r requirements.txt` and consider **`pip install --require-hashes`** when hashes are present.
+- Maintain `**requirements.in`** (high-level, human-edited) with only top-level packages (ranges allowed).
+- Run `**pip-compile**` → generates `**requirements.txt**` with **all** transitive pins (optionally `--generate-hashes`).
+- Install in CI/prod with `pip install -r requirements.txt` and consider `**pip install --require-hashes`** when hashes are present.
 
 ### Rust
 
@@ -49,7 +51,7 @@ So the goal is **reproducible, reviewable installs**—harder for dependency cha
 
 ### Web / JS (`finance_manager_web`)
 
-- Commit **`package-lock.json`** (npm), **`pnpm-lock.yaml`**, or **`yarn.lock`**—never rely on unconstrained installs in CI or production images.
+- Commit `**package-lock.json**` (npm), `**pnpm-lock.yaml**`, or `**yarn.lock**`—never rely on unconstrained installs in CI or production images.
 
 ## Migration checklist (per Python repo)
 
@@ -69,5 +71,5 @@ So the goal is **reproducible, reviewable installs**—harder for dependency cha
 
 ## Related
 
-- Repo split, versioning, and contract testing: see **`notes.txt`** sections 2–5.
-- When the Rust middleware repo exists, add the same discipline: **`Cargo.lock` + locked CI builds**.
+- Repo split, versioning, and contract testing: see `**notes.txt`** sections 2–5.
+- When the Rust middleware repo exists, add the same discipline: `**Cargo.lock` + locked CI builds**.
