@@ -2,7 +2,7 @@
 
 **Status:** Research draft — **not** a HitM lock. MDR figures and product rules **change**; confirm on each provider’s **current** pricing and API documentation before modeling margin.
 
-**Scenario focus:** One column of investigation is **PH DTI sole proprietorship** (e.g. spouse-led operating entity) because wallet-first PSP KYB often assumes a **local** merchant. Other entity columns remain in [`README.md`](./README.md) §0.6.
+**Scenario focus:** Default KYB column is the **PH spouse-led settlement entity** (DTI vs OPC per counsel) per [`../entity-formation-research/README.md`](../entity-formation-research/README.md) §0.2 and [DECISION_MATRIX.md](../entity-formation-research/DECISION_MATRIX.md) L2–L4. Contingency columns only as needed — see [`README.md`](./README.md) §0.6.
 
 ## 1. High-level comparison
 

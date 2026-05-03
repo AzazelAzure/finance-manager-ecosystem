@@ -61,6 +61,10 @@ See `plans/cursor/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.
 - ₱100/mo runtime cost cap; Cursor cap as forcing function (no overages).
 - First quarterly self-review 2026-06-30.
 
+### External research (Gemini / Antigravity)
+
+Read **[`GEMINI_RESEARCH_README.md`](./GEMINI_RESEARCH_README.md)** before adding or editing S1.B research so folder boundaries, HitM-only locks, and CPPRD hygiene match this workspace.
+
 ## Cross-references
 
 <a id="pwa-sprint-activation-index"></a>
