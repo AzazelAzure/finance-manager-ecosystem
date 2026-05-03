@@ -25,15 +25,15 @@ scripts/fm_services.sh restart
 | Field | Value |
 | ----- | ----- |
 | **Runtime owner** | _(unassigned — set on first test batch)_ |
-| **Mode** | containerized vs local — _(record; avoid mixed mode)_ |
-| **Last lifecycle command** | _(e.g. `scripts/fm_docker.sh status`)_ |
-| **Last :8443 / D4 checkpoint** | _(date + PASS/FAIL + link to T14 notes)_ |
+| **Mode** | VPS containerized blue/green (`~/finance_manager`, Podman) |
+| **Last lifecycle command** | `FM_PUBLIC_*` override + `./scripts/fm_server_beta.sh status` + `smoke --color active` (2026-05-03) |
+| **Last :8443 / D4 checkpoint** | **PARTIAL** — §2 smoke PASS; §3–§4 Chrome manual pending — [`evidence/D4_EXEC_2026-05-03.md`](evidence/D4_EXEC_2026-05-03.md) |
 
 ## Smoke log
 
 | Date | Task / BP | Color | Result | Notes |
 | ---- | --------- | ----- | ------ | ----- |
-| _(append)_ | | | | |
+| 2026-05-03 | BP_D4_EXEC §2 / T14 | blue (active) | PASS | VPS `fm_server_beta.sh smoke --color active`; see evidence file. |
 
 ## Rollback
 
