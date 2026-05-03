@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `plans/`, `deploy
 
 ## [Unreleased]
 
+### 2026-05-05 — KNOWN_ISSUES: P0 #8 source balance after transaction delete
+
+- **`plans/archived/post_beta_huddle_2026-04-30/KNOWN_ISSUES.md`:** Issue **#8** (S1) — source balance recalculation broken when transactions are deleted; summary table updated.
+
 ### 2026-05-05 — Gemini research CPPRD batch (PSP locks, distribution SEO, entity counsel prep)
 
 - **`plans/cursor/s1b/payment-provider-research/`:** HitM-confirmed **PM1–PM4** (PayMongo primary, Xendit secondary, Maya auto-debit + GCash manual invoice, **~2.0%** blended wallet MDR); `DECISION_MATRIX` Matrices 1–3 filled; `PSP_COMPARISON_MATRIX`, `PAYMENT_ARCHITECTURE_SPLIT`, `README` §0.6/§1/§5 gates; new **`PSP_RESEARCH_NOTES_2026_05.md`** (rationale). Governance note: re-verify on PSP sites before production.
