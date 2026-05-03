@@ -1,7 +1,7 @@
 # Offline exchange rates — minimal matrix (follow-up)
 
-**Status:** parking / future implementation (not blocking current PWA “mostly usable offline” goal).  
-**Context:** Web overlay math today uses **identity** when `tx.currency` ≠ source row currency or ≠ profile `base_currency` (see `finance_manager_web` `src/offline/transactionOutboxOverlay.ts` header). That is acceptable for **single-currency** users and as a **bridge** until Android enables richer native integration.
+**Status:** **Web implementation landed (2026-05-03)** — `GET /finance/exchange_rates/` + Dexie meta `offline_exchange_rates_v1` + `syncMinimalExchangeRates()` (see `finance_manager_web` `src/offline/exchangeRates.ts`). Rows still **fall back to identity** when a pair is missing from the last fetch.  
+**Context:** Android can later reuse the same “minimal matrix” idea with native refresh.
 
 ## Design intent (HitM — 2026-05-03)
 
