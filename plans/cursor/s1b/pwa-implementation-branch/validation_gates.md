@@ -109,7 +109,7 @@ Each breakpoint must be **PASS** before the orchestrator opens the next dependen
 ## BP_D4_EXEC
 
 - **Pass when:** T14: all applicable boxes in `[../pwa-install-offline-sync-research/D4_SMOKE_CHECKLIST_AND_ADR.md](../pwa-install-offline-sync-research/D4_SMOKE_CHECKLIST_AND_ADR.md)` §2–§4 executed on **VPS HTTPS :8443** with Chrome certified; results recorded in plan folder or linked artifact.
-- **Status:** **PARTIAL** (2026-05-03) — **§2** automated smoke **PASS** on VPS (see [`evidence/D4_EXEC_2026-05-03.md`](evidence/D4_EXEC_2026-05-03.md)). **§3–§4** Chrome desktop + Android certified checklist **not run** in this session; complete and re-sign before claiming full **PASS** or closing strategic S1.B PWA bullet.
+- **Status:** **PARTIAL** (2026-05-03) — **§2** automated smoke **PASS** on VPS (see `[evidence/D4_EXEC_2026-05-03.md](evidence/D4_EXEC_2026-05-03.md)`). **§3–§4** Chrome desktop + Android certified checklist **not run** in this session; complete and re-sign before claiming full **PASS** or closing strategic S1.B PWA bullet.
 
 ---
 

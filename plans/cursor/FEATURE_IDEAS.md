@@ -24,8 +24,8 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 | F-009 | `[s1b/feat-f009-recurring-auto-deduct/README.md](./s1b/feat-f009-recurring-auto-deduct/README.md)`             |
 | F-010 | `[s1b/feat-f010-export-sharing/README.md](./s1b/feat-f010-export-sharing/README.md)`                           |
 | F-011 | `[s1b/feat-f011-wedge-landing-hero/README.md](./s1b/feat-f011-wedge-landing-hero/README.md)`                   |
-| F-012 | `[s1b/feat-infra-support-intake/README.md](./s1b/feat-infra-support-intake/README.md)`                       |
-| F-013 | `[s1b/feat-infra-user-activity-logs/README.md](./s1b/feat-infra-user-activity-logs/README.md)`                   |
+| F-012 | `[s1b/feat-infra-support-intake/README.md](./s1b/feat-infra-support-intake/README.md)`                         |
+| F-013 | `[s1b/feat-infra-user-activity-logs/README.md](./s1b/feat-infra-user-activity-logs/README.md)`                 |
 
 
 ---
@@ -256,7 +256,7 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 **Rough notes:**
 
 - Re-run **wedge consistency audit** static rows after each material feature release (`plans/cursor/s1b/wedge-consistency-audit/AUDIT_REPORT.md`).
-- **Brand icons:** ecosystem folder **`resources/hfm_icon_web/`** — cropped and transparent PNGs (multiple sizes + master). Use as the web/PWA chrome source of truth. Created with **Google Gemini** image tooling; **HitM-owned** (no external asset license). Tracked in **F-011** execution plan (`plans/cursor/s1b/feat-f011-wedge-landing-hero/README.md`).
+- **Brand icons:** ecosystem folder `**resources/hfm_icon_web/`** — cropped and transparent PNGs (multiple sizes + master). Use as the web/PWA chrome source of truth. Created with **Google Gemini** image tooling; **HitM-owned** (no external asset license). Tracked in **F-011** execution plan (`plans/cursor/s1b/feat-f011-wedge-landing-hero/README.md`).
 - Not a one-time ticket — **ongoing** with major releases.
 
 ---
@@ -273,7 +273,7 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 
 - PII minimization: never auto-attach full ledger; user-provided description only unless explicit export attach (see **F-010**).
 - Rate limits + spam controls; link to privacy policy.
-- **Execution plan:** [`s1b/feat-infra-support-intake/README.md`](./s1b/feat-infra-support-intake/README.md).
+- **Execution plan:** `[s1b/feat-infra-support-intake/README.md](./s1b/feat-infra-support-intake/README.md)`.
 
 ---
 
@@ -289,7 +289,7 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 
 - Retention TTL, export/delete alignment with privacy commitments; may share storage patterns with audit trail for **F-008** later — keep schema extension points documented.
 - Coordinate redaction rules with API logging (`LOG_FULL_USERNAME` style) so two surfaces do not contradict.
-- **Execution plan:** [`s1b/feat-infra-user-activity-logs/README.md`](./s1b/feat-infra-user-activity-logs/README.md).
+- **Execution plan:** `[s1b/feat-infra-user-activity-logs/README.md](./s1b/feat-infra-user-activity-logs/README.md)`.
 
 ---
 
