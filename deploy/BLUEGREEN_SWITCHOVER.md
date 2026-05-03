@@ -30,9 +30,11 @@ Run from the ecosystem repo root on a host that can drive Compose + proxy (VPS o
 
 2. **Ship code to the *inactive* color**  
    - In each sub-repo, checkout the commit you intend to release.  
-   - Rebuild images and recreate services for that color, e.g.  
-     `podman-compose -p fm-beta -f docker-compose.bluegreen.yml --env-file .secrets/server.env build api-green web-green`  
-     and `up -d` (or use `./scripts/fm_server_beta.sh deploy green` which brings up the candidate stack).
+   - **Preferred (Podman + this repo):** from the ecosystem root, rebuild and recreate **only** that color’s API + web **and** bounce the shared proxy (avoids `depends_on` / `--requires` remove failures):  
+     `./scripts/fm_server_beta.sh rebuild-color green`  
+     Use `--no-build` if images are already built. The proxy restarts briefly (both colors share one edge).  
+   - **First-time / missing containers only:** `./scripts/fm_server_beta.sh deploy green` (no image rebuild).  
+   - **Manual:** `podman-compose … build api-green web-green` then the same `rebuild-color` stop/rm/up sequence the script encodes — do not rely on `up -d --force-recreate api-green web-green` alone on Podman while `proxy` is running.
 
 3. **Smoke the candidate (inactive) stack**  
    `./scripts/fm_server_beta.sh smoke --color green` (or `inactive` / the color you will promote).  
@@ -89,7 +91,7 @@ If **`jsdevtesting` looks unchanged**, typical causes are:
 | `proxy/nginx.bluegreen.conf` | Apex + `api` + `api-jsdevtesting` + `jsdevtesting`. |
 | `proxy/active_color.conf` | `map $request_uri $fm_active_color { default <blue\|green>; }` — **single source of truth** for which color is active. |
 | `finance_manager_web/src/lib/apiBaseUrl.ts` | Picks staging API base URL on `jsdevtesting` host only. |
-| `scripts/fm_server_beta.sh` | Updates `active_color.conf`, reloads proxy, `deploy` / `smoke` / `switch` / `rollback`. |
+| `scripts/fm_server_beta.sh` | Updates `active_color.conf`, reloads proxy, `deploy`, **`rebuild-color`**, `smoke` / `switch` / `rollback`. |
 
 ## Gaps to avoid next time
 
@@ -99,4 +101,4 @@ If **`jsdevtesting` looks unchanged**, typical causes are:
 4. **Editing Nginx on the server but not in Git** — drift. Treat repo as source of truth; copy and reload, then commit.  
 5. **Skipping smoke before `switch`** — the script runs a pre-switch smoke, but you should also manually verify critical flows for your release.
 6. **Missing `api-jsdevtesting` in DNS or TLS** — the staging hostname will not resolve or will show cert warnings.
-7. **Podman: cannot `rm` inactive `api-*` / `web-*` while proxy exists** — `docker-compose.bluegreen.yml` lists `depends_on` for `proxy` on all four app containers, which Podman implements as `--requires`. To replace inactive backends with fresh containers after a rebuild, **stop and remove the `proxy` container first**, recreate `api-{inactive}` / `web-{inactive}`, then `podman-compose … up -d proxy` again. Expect a brief outage on the proxy ports during that window. Using `build --no-cache` for the API image avoids stale `COPY` layers when validating a cutover candidate.
+7. **Podman + `depends_on` / `--requires` on `proxy`** — do not rely on `podman-compose up --force-recreate api-* web-*` alone; removal often fails while `proxy` exists. Use **`./scripts/fm_server_beta.sh rebuild-color <blue|green>`** (stops proxy + that color’s api/web, `podman rm`s by compose labels, then `up -d` db/redis/api/web/proxy). Expect a **short** interruption on shared proxy ports (`:8443` / `:8080`) during that window. For API-only cache busting, add `--no-build` on web when appropriate, or extend the script pattern as needed.

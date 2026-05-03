@@ -43,6 +43,11 @@ Commands:
   status                          Show compose status and active/inactive color.
   check                           Validate compose and nginx blue/green configuration.
   deploy [--dry-run] <color>      Start inactive color services (or explicit color).
+  rebuild-color [--no-build] <blue|green>
+                                  Build api/web for one color, then safely recreate those
+                                  containers (and proxy). Use this after image changes on
+                                  Podman: plain "up --force-recreate" often fails because
+                                  proxy lists depends_on on all app containers (--requires).
   smoke --color <active|inactive|blue|green>
                                   Run API and web (React) smoke checks for selected color.
   switch --to <blue|green>        Promote color by updating proxy active color and reloading proxy.
@@ -65,6 +70,34 @@ Environment:
   FM_PUBLIC_API_HOST                 Host header for API smoke probes.
   FM_PUBLIC_BASE_URL                 Base URL for proxy smoke probes (default: https://localhost:8443).
 EOF
+}
+
+# Remove a compose-managed container by project + service labels (works for Podman and Docker).
+remove_compose_service_container() {
+  local svc="$1"
+  local ids
+  ids=$("$RUNTIME_BIN" ps -aq \
+    --filter "label=com.docker.compose.project=${PROJECT_NAME}" \
+    --filter "label=com.docker.compose.service=${svc}" 2>/dev/null || true)
+  if [[ -n "${ids//[$' \t\n']/}" ]]; then
+    # shellcheck disable=SC2086
+    "$RUNTIME_BIN" rm -f $ids || true
+  fi
+}
+
+# After (re)creating an API container, Django may need a few seconds before :8000 listens.
+wait_api_service_ready() {
+  local svc="$1"
+  local i
+  log "Waiting for $svc /api/health/ ..."
+  for i in $(seq 1 60); do
+    if compose_cmd exec -T "$svc" curl -fsS "http://localhost:8000/api/health/" >/dev/null 2>&1; then
+      log "$svc is healthy (${i}s)."
+      return 0
+    fi
+    sleep 2
+  done
+  die "$svc did not respond to /api/health/ within ~120s (check logs: $0 logs $svc)"
 }
 
 using_parallel_compose() {
@@ -208,6 +241,67 @@ deploy_cmd() {
   compose_cmd "${command[@]}"
   log "Deployed candidate color: $color"
   log "Note: DB migrations should be run via repo migration workflow before switch if required."
+}
+
+rebuild_color_cmd() {
+  local color=""
+  local do_build=1
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --no-build)
+        do_build=0
+        ;;
+      blue|green)
+        color="$1"
+        ;;
+      *)
+        die "rebuild-color: unknown argument '$1' (expected --no-build and/or blue|green)"
+        ;;
+    esac
+    shift || true
+  done
+  [[ -n "$color" ]] || die "rebuild-color requires a color: blue|green (after optional --no-build)"
+
+  local api_service="api-$color"
+  local web_service="web-$color"
+
+  if using_parallel_compose; then
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+      log "dry-run: would build (if enabled) and force-recreate $api_service $web_service"
+      return 0
+    fi
+    if [[ "$do_build" -eq 1 ]]; then
+      log "Building $api_service and $web_service..."
+      compose_cmd build "$api_service" "$web_service"
+    fi
+    log "Recreating $api_service and $web_service (parallel compose; no proxy in this file)."
+    compose_cmd up -d --force-recreate "$api_service" "$web_service"
+    wait_api_service_ready "$api_service"
+    log "Rebuild complete for $color."
+    return 0
+  fi
+
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    log "dry-run: would stop proxy + $api_service + $web_service, rm those containers, build (if enabled), up db/redis/$api_service/$web_service/proxy"
+    return 0
+  fi
+
+  if [[ "$do_build" -eq 1 ]]; then
+    log "Building $api_service and $web_service..."
+    compose_cmd build "$api_service" "$web_service"
+  fi
+
+  log "Recreating $api_service and $web_service with fresh containers."
+  log "Note: proxy shares :8443/:8080 for both colors — it will restart briefly (typically a few seconds)."
+  compose_cmd stop proxy "$api_service" "$web_service" || true
+  remove_compose_service_container "proxy"
+  remove_compose_service_container "$api_service"
+  remove_compose_service_container "$web_service"
+
+  log "Starting db, redis, $api_service, $web_service, proxy..."
+  compose_cmd up -d db redis "$api_service" "$web_service" proxy
+  wait_api_service_ready "$api_service"
+  log "Rebuild complete for $color. Run: $0 smoke --color $color"
 }
 
 smoke_cmd() {
@@ -363,6 +457,9 @@ main() {
     deploy)
       [[ $# -gt 0 ]] || die "deploy requires target color (blue|green)"
       deploy_cmd "$1"
+      ;;
+    rebuild-color)
+      rebuild_color_cmd "$@"
       ;;
     smoke)
       [[ "${1:-}" == "--color" && -n "${2:-}" ]] || die "usage: smoke --color <active|inactive|blue|green>"
