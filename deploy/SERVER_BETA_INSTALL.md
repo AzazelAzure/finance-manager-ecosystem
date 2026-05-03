@@ -87,6 +87,9 @@ Use script-first operations from repo root:
 3. Deploy candidate color (typically inactive first):
    - `./scripts/fm_server_beta.sh deploy green --dry-run`
    - `./scripts/fm_server_beta.sh deploy green`
+3b. **After Dockerfile / app code changes on the host** (rebuild images for one color — especially **Podman**):  
+   - `./scripts/fm_server_beta.sh rebuild-color green`  
+   Recreates `api-green`, `web-green`, and the shared `proxy` so Podman’s `depends_on` / `--requires` graph does not block container replacement. Omit image build with `rebuild-color --no-build green` if you already ran `podman-compose … build` separately.
 4. Smoke-test candidate before cutover:
    - `./scripts/fm_server_beta.sh smoke --color green`
 5. Promote by proxy-only switch:

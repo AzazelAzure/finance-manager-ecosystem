@@ -76,8 +76,11 @@ Execute in order. Each command is run via the local Slack bridge runner (host-lo
      --remote-dir {inactive_color_path}
 4. Verify release manifest on VPS (push script does this; confirm output):
    verifies bundle_name, commit SHA, dirty/clean flag, runtime_profile
-5. Deploy to inactive color:
+5. Deploy to inactive color (first-time bring-up, or after `down`):
    ./scripts/fm_server_beta.sh deploy {inactive_color}
+   If you **rebuilt images** on the VPS for that color (Dockerfile / `git pull` + build), use instead:
+   ./scripts/fm_server_beta.sh rebuild-color {inactive_color}
+   so Podman does not fail removing `api-*` / `web-*` while `proxy` still references them (`depends_on` → `--requires`). Expect a brief shared-proxy restart.
 6. Run smoke against inactive color:
    ./scripts/fm_server_beta.sh smoke --color {inactive_color}
 ```
