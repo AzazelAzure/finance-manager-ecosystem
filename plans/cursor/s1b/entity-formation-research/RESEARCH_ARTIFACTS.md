@@ -2,7 +2,7 @@
 
 **Plan root:** [README.md](./README.md)  
 **Status:** draft (S1.B Group C)  
-**Last updated:** 2026-05-03 (HitM pipeline lock README §0.2; PSP coupling §0.3)
+**Last updated:** 2026-05-04 (README §0.4 execution posture; `US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md`)
 
 All deliverables for this sub-plan live **under this folder only**. Cross-links from `plans/cursor/s1b/README.md` and the parent README point here.
 
@@ -17,6 +17,7 @@ All deliverables for this sub-plan live **under this folder only**. Cross-links 
 | [PH_SPOUSE_LED_AND_TRANSFER.md](./PH_SPOUSE_LED_AND_TRANSFER.md) | Research scaffold: spouse-led PH entity, later transfer — legality and mechanics |
 | [REGISTRATION_BREAKPOINTS.md](./REGISTRATION_BREAKPOINTS.md)     | When a formal business entity becomes *necessary* vs optional                    |
 | [DECISION_MATRIX.md](./DECISION_MATRIX.md)                       | Decision matrices and signoff slots (fill as research lands)                     |
+| [US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md](./US_LLC_REGISTRATION_AND_TAX_PATHWAYS.md) | US LLC registration + tax pathway matrix; Gemini log; gates PWA vs PSP |
 | [PH_TAX_BMBE_AND_DEDUCTIONS.md](./PH_TAX_BMBE_AND_DEDUCTIONS.md)   | PH tax: BMBE (RA 9178), VAT/₱3M breakpoints, CIT/OSD, NIRC Sec. 34 — verified links |
 
 
