@@ -18,21 +18,21 @@ Each breakpoint must be **PASS** before the orchestrator opens the next dependen
 ## BP_API_D2_CORE
 
 - **Pass when:** T01 definition of done: idempotency storage + mutating allowlist behavior matches [`../pwa-install-offline-sync-research/D2_API_OUTBOX_CONTRACT.md`](../pwa-install-offline-sync-research/D2_API_OUTBOX_CONTRACT.md) for agreed routes; API tests/lint pass per repo standards.
-- **Status:** pending.
+- **Status:** **PASS** (2026-05-03) — `IdempotencyRecord` + `PwaWriteContractMiddleware`; targeted tests in `finance/tests/test_pwa_write_contract.py`.
 
 ---
 
 ## BP_API_D2_BUILD
 
 - **Pass when:** T02 definition of done: `X-Client-Build` enforcement path + standardized **409** force-upgrade body on writes when configured; contract documented in API changelog.
-- **Status:** pending.
+- **Status:** **PASS** (2026-05-03) — optional `CLIENT_BUILD_MIN_WRITE`; health payload fields; changelog + README env table.
 
 ---
 
 ## BP_WEB_BUILD
 
 - **Pass when:** T03: web sends `X-Client-Build` on mutating requests; handles 409 with user-visible upgrade/reload path per [`../pwa-install-offline-sync-research/API_VERSION_AND_CLIENT_WINDOW.md`](../pwa-install-offline-sync-research/API_VERSION_AND_CLIENT_WINDOW.md).
-- **Status:** pending.
+- **Status:** **PASS** (2026-05-03) — Axios request header from Vite-injected build id; `ClientBuildUpgradeGate` on `CLIENT_BUILD_UNSUPPORTED`.
 
 ---
 
