@@ -1,53 +1,65 @@
 # Runtime Handoff — F-007 Guided Walkthroughs
 
-## Status: Slices Verified (2026-05-04)
+## Status: V3 FAIL — Requires Rework (2026-05-04)
 
-**Plan of record:** [`README.md`](./README.md) §4 (tasks **T##** / slices **T##.SL#**). **Stance:** treat prior implementation as **guilty until each slice PASSes** — see [`tasks/T00_baseline_rebuild_audit.md`](./tasks/T00_baseline_rebuild_audit.md).
+**V3 Verifier:** HitM (browser verification on staging)
+**Deployment:** Blue (inactive), `https://jsdevtesting.thehivemanager.com` (:8443)
+**Branch:** `cursor/s1b/feat/f007-guided-walkthroughs`
+**Latest Commit:** `7e6db58`
 
-### Accomplishments (historical — re-verify under T00)
-- **Persistent Help Mode**: Global help mode in `TourProvider` now stays active until manually toggled off. Highlights use pulsed green borders.
-- **Contextual Form Guides**: Integrated `? Guide` buttons in the headers of:
-    - Quick Add modals (Income, Expense, Transfer, Bill).
-    - Main Transaction Editor (Single and Transfer modes).
-    - Upcoming Expenses Editor.
-- **Step-through Form Tours**: Added "Start step-by-step guide" buttons to all form guides. These trigger repeatable `react-joyride` tours for the specific form fields.
-- **Transfer Polish**: Added specific guidance for fees and currency differences: *"Put the amount sent here. Include any fees in the total."*
-- **Dashboard Walkthrough**: Automatic linear tour for new users (triggered 1s after data load for stability).
-- **Profile Persistence**: API support for `completed_tours` field on the user profile to track walkthrough progress.
+---
 
-### Current Deployment
-- **Stack**: Blue *(confirm at test time — may drift)*
-- **URL**: `https://jsdevtesting.thehivemanager.com:8443`
-- **Branch**: `cursor/s1b/feat/f007-guided-walkthroughs` (Confirmed in both `finance_manager_web` and `finance_manager_api`)
-- **PR:** 
-  - Web: https://github.com/AzazelAzure/finance-manager-web/pull/55
-  - API: https://github.com/AzazelAzure/finance-manager-api/pull/32
+## HitM V3 Findings (2026-05-04 19:36 PHT)
 
-### Known Issues / Next Steps
-- **UI/UX Direction**: The user suggests removing the "Guide" toggle within forms and instead moving directly to the step-through tour or providing a cancelable guide experience. The "Persistent Help" (green highlights) might be redundant within forms if the step-through is the primary learning path.
-- **Button Visibility**: "Start step-by-step guide" buttons were updated to the `primary` variant for high visibility.
-- **Form Specifics**: The `TourProvider`'s `startTour` now supports a `force: true` parameter for manual (repeatable) triggers.
+### BUG 1: Dashboard tour fires once, never again — no `isTourCompleted` guard
+- **Severity:** High
+- **Detail:** `DashboardPage.tsx:153-202` calls `startTour('dashboard_linear_tour', ...)` inside a `useEffect` that fires when `data` loads. There is **no** `isTourCompleted('dashboard_linear_tour')` guard. The tour fires on every data load, then immediately gets marked as completed via `markTourCompleted` in the Joyride callback. After first completion, the tour ID is in `completed_tours` on the API, but the `startTour` call **ignores** that — it fires anyway, Joyride sees it's already completed, and silently skips. Result: works once on first load, never triggers again even if user wants it.
+- **Root cause in code:** `startTour` does not check `isTourCompleted` before running. The `useEffect` has no guard either.
 
-### Handoff Note for Next Agent
-- Do **not** assume infrastructure is “solid” until **T02** slices PASS; update this section when they do.
-- UX streamlining (single “Guide” entry vs toggle + card) is gated on **T00.SL3** in the parent plan.
-- New forms: `id`-based Joyride targets (e.g. `#tx-form-source`, `#bill-form-name`); add targets in the **same slice** as the form change.
+### BUG 2: Tour requires button press instead of being automatic for new users
+- **Severity:** Medium
+- **Detail:** While the dashboard `useEffect` auto-fires (broken per BUG 1), the transactions page (`TransactionsPage.tsx:502-519`) also has a `useEffect` auto-start, and other pages require explicit button clicks. Inconsistent UX — new users don't understand what "Start guide" means or why some pages auto-tour and others don't.
+- **Expected:** First visit to any page should auto-trigger that page's tour (once, then mark completed). Manual "Start guide" buttons should re-trigger for users who want a refresher.
 
-### Slice verification log (append rows during execution)
+### BUG 3: Tours only work on Dashboard
+- **Severity:** High
+- **Detail:** Transactions, Upcoming Expenses, and Quick Actions tours exist in code but do not trigger for the user. The transactions `useEffect` auto-start exists but has the same no-guard problem. Upcoming/QuickActions only trigger on button clicks inside form modals — those buttons are not discoverable.
+- **Expected:** Each page should have its own auto-trigger on first visit + a discoverable "Start guide" button.
 
-| Date | Slice | PASS / FAIL / WAIVE | Notes |
-| --- | --- | --- | --- |
-| 2026-05-04 | — | — | Plan rebuilt; matrix in `README.md` §4 |
-| 2026-05-04 | T00.SL1 | PASS | Branches confirmed, no PRs open currently |
-| 2026-05-04 | T00.SL2 | WAIVE | Agent cannot test interactive flows on inactive staging without login. Handled as WAIVE, will rebuild and verify in subsequent slices. |
-| 2026-05-04 | T00.SL3 | PASS | UX decisions documented in DECISIONS_F007.md (Hybrid, Auto-start on, Always repeatable). |
-| 2026-05-04 | T01.SL1 | PASS | Completed_tours replace-merge logic tested. |
-| 2026-05-04 | T01.SL2 | PASS | Completed_tours merge rule documented in user_services.py docstring. |
-| 2026-05-04 | T02.SL1 | PASS | Joyride runs, skips/finishes, state handled correctly in TourProvider. |
-| 2026-05-04 | T02.SL2 | PASS | Persistence wired via markTourCompleted mutation + invalidation. |
-| 2026-05-04 | T02.SL3 | PASS | Help mode aligns with UX Hybrid decision. |
-| 2026-05-04 | T03.SL1 | PASS | Dashboard DOM targets confirmed. |
-| 2026-05-04 | T03.SL2 | PASS | Auto-start triggers on dashboard per defaults. |
-| 2026-05-04 | T03.SL3 | PASS | Help wrapper accessibility checks reasonable. |
-| 2026-05-04 | T04-T06 | PASS | Form targets/tour toggles exist across Transactions, Quick Actions, and Upcoming. |
-| 2026-05-04 | T07.SL1 | PASS | Added Reset Tours button to Settings/Profile page. |
+### BUG 4: Help Mode green dotted outlines are ugly
+- **Severity:** Low (cosmetic)
+- **Detail:** `TourProvider.tsx:204` applies `outline: '2px dashed #10b981'` (Tailwind green) to `HelpModeWrapper` divs when help mode is active. This clashes with the app's dark theme and looks like a debug border, not a polished UX feature.
+- **Expected:** Solid outline using brand accent color, or a subtle glow/shadow effect. Reference the app's existing CSS variables.
+
+### BUG 5: Form guides don't work
+- **Severity:** High
+- **Detail:** `startTour` calls inside modal forms (e.g., `tx_single_tour`, `tx_transfer_tour`, `bill_form_tour`, `quick_*_tour`) target elements that don't exist when the modal hasn't been opened, or the tour fires before the modal DOM is ready. The `setTimeout(100)` hack in `startTour` is insufficient for modals that animate in.
+- **Expected:** Form guide tours should only trigger AFTER the modal is fully mounted and visible. Need a `MutationObserver` or callback-based approach rather than a fixed timeout.
+
+---
+
+## Slice verification log
+
+| Date | Slice | V-Tier | PASS/FAIL/WAIVE | Notes |
+|------|-------|--------|-----------------|-------|
+| 2026-05-04 | T03.SL1-3 | V2 (claimed) | **V3 FAIL** | Dashboard tour fires but has no completion guard; cosmetic issues |
+| 2026-05-04 | T04.SL1-2 | V2 (claimed) | **V3 FAIL** | Transactions tour does not trigger for users |
+| 2026-05-04 | T05.SL1 | V2 (claimed) | **V3 FAIL** | Quick Add form guides don't work — modal DOM timing |
+| 2026-05-04 | T06.SL1 | V2 (claimed) | **V3 FAIL** | Upcoming form guide doesn't work — same modal timing issue |
+| 2026-05-04 | T07.SL1 | V1 | PASS | Reset Tours button works in Settings |
+
+---
+
+## Rework Slices (Pipeline Test — Gemini Executor)
+
+These slices will be the first test of the `#sprint-queue` → `#review-queue` → `#hitm-gate` pipeline.
+
+| Slice | Scope | Files | V-Tier | Acceptance |
+|-------|-------|-------|--------|------------|
+| **R01** | Add `isTourCompleted` guard to all auto-start `useEffect` hooks; per-page first-visit auto-trigger | `TourProvider.tsx`, `DashboardPage.tsx`, `TransactionsPage.tsx` | V2 | Each page auto-tours once on first visit; subsequent visits skip; reset button re-enables all |
+| **R02** | Add discoverable "Start guide" button to every page header (dashboard, transactions, upcoming) | `DashboardPage.tsx`, `TransactionsPage.tsx`, `UpcomingExpensesPage.tsx` | V2 | Button visible in page header; clicking triggers page tour regardless of completed state |
+| **R03** | Fix form guide modal timing — replace `setTimeout(100)` with DOM-ready detection | `TourProvider.tsx`, `QuickActions.tsx`, `TransactionsPage.tsx`, `UpcomingExpensesPage.tsx` | V3 | Opening any form modal → "Guide" button → tour targets render correctly over modal |
+| **R04** | Replace help mode green dashed outline with brand-consistent styling | `TourProvider.tsx` | V2 | Help mode outlines use app's accent/brand color, solid or glow, not dashed green |
+| **R05** | Per-page tour IDs instead of blanket flag | `TourProvider.tsx`, all page files | V1 | Each page has its own tour ID in `completed_tours`; resetting one page doesn't reset all |
+
+**Execution order:** R05 → R01 → R02 → R03 → R04 (R05 is the data model fix that R01-R03 depend on)

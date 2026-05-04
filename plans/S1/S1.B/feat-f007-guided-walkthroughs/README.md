@@ -98,23 +98,23 @@ Replace single popup with **per-page** and **per-widget** guided tours; persist 
 
 Execute **in order**. Each **slice** must reach **PASS** (or explicit HitM **WAIVE** with reason) before starting the next slice.
 
-| Task | Slice | Scope (single surface) | Verify (minimum) |
-| --- | --- | --- | --- |
-| **T00** | [tasks/T00_baseline_rebuild_audit.md](./tasks/T00_baseline_rebuild_audit.md) | Audit + decisions | SL1–SL3 checklists in that file |
-| **T01** | T01.SL1 | **API only:** `completed_tours` field migration applied; GET returns list; PATCH append idempotent | API tests or scripted PATCH twice → stable list |
-| **T01** | T01.SL2 | **API contract:** document merge rule (replace vs union) in serializer/service; align web payload | Contract note in README or serializer docstring + one web integration test if present |
-| **T02** | T02.SL1 | **`TourProvider` only:** Joyride runs; skip/finish clears state; no page auto-starts | Manual: mount provider story or minimal route; no dashboard import side effects |
-| **T02** | T02.SL2 | **Persistence wire:** `markTourCompleted` updates profile; refetch shows tour id | Network tab + refresh |
-| **T02** | T02.SL3 | **Help mode vs Joyride:** behavior matches **T00.SL3** decision (remove redundant paths if required) | UX signoff |
-| **T03** | T03.SL1 | **Dashboard:** DOM targets for `dashboard_linear_tour` exist when tour runs | No missing-target console errors; tour completes or skips cleanly |
-| **T03** | T03.SL2 | **Dashboard:** auto-start policy (on / flagged / off) implemented per decision | PASS against decision doc |
-| **T03** | T03.SL3 | **Dashboard:** `HelpModeWrapper` a11y (focus, modal z-index vs Joyride `zIndex: 10000`) | Keyboard + screen reader smoke as bar allows |
-| **T04** | T04.SL1 | **Transactions:** linear tour targets + completion id stable | Same verify bar as T03.SL1 |
-| **T04** | T04.SL2 | **Transactions:** single + transfer form tours; `force` repeatability | Two passes; profile id list sane |
-| **T05** | T05.SL1 | **QuickActions:** one modal type at a time (e.g. expense only first) | PASS then next modal type |
-| **T05** | T05.SL2 | **QuickActions:** remaining modal types | Full matrix PASS |
-| **T06** | T06.SL1 | **Upcoming:** `bill_form_tour` only | Targets exist in open editor |
-| **T07** | T07.SL1 | **Settings** (if still in scope) or **global:** entry point for “Help” / tours (shell, nav) | Single agreed entry; no duplicate toggles per T00.SL3 |
+| Task | Slice | Scope (single surface) | V-Tier | Verify (minimum) |
+| --- | --- | --- | --- | --- |
+| **T00** | [tasks/T00_baseline_rebuild_audit.md](./tasks/T00_baseline_rebuild_audit.md) | Audit + decisions | V0 | SL1–SL3 checklists in that file |
+| **T01** | T01.SL1 | **API only:** `completed_tours` field migration applied; GET returns list; PATCH append idempotent | V1 | API tests or scripted PATCH twice → stable list |
+| **T01** | T01.SL2 | **API contract:** document merge rule (replace vs union) in serializer/service; align web payload | V1 | Contract note in README or serializer docstring + one web integration test |
+| **T02** | T02.SL1 | **`TourProvider` only:** Joyride runs; skip/finish clears state; no page auto-starts | V2 | Deploy to inactive; manual verify mount/unmount |
+| **T02** | T02.SL2 | **Persistence wire:** `markTourCompleted` updates profile; refetch shows tour id | V2 | Network tab + refresh on inactive color |
+| **T02** | T02.SL3 | **Help mode vs Joyride:** behavior matches **T00.SL3** decision | V3 | HitM UX signoff with screenshot |
+| **T03** | T03.SL1 | **Dashboard:** KPI & Filter Tutorials | V3 | No missing-target console errors; screenshot evidence |
+| **T03** | T03.SL2 | **Dashboard:** Chart-level Discovery | V3 | Screenshot against decision doc |
+| **T03** | T03.SL3 | **Dashboard:** Balances & Sidebar Guidance | V3 | Keyboard + screen reader smoke as bar allows |
+| **T04** | T04.SL1 | **Transactions:** List & Search Discovery | V3 | Same verify bar as T03.SL1 |
+| **T04** | T04.SL2 | **Transactions:** Detailed Form Field Walkthroughs | V3 | Two passes; profile id list sane; screenshot |
+| **T05** | T05.SL1 | **QuickActions:** Quick Add Modal Guidance | V3 | Screenshot of each modal tour |
+| **T05** | T05.SL2 | **QuickActions:** remaining modal types | V3 | Full matrix screenshot evidence |
+| **T06** | T06.SL1 | **Upcoming:** `bill_form_tour` only | V3 | Targets exist in open editor; screenshot |
+| **T07** | T07.SL1 | **Settings** (if still in scope) or **global:** entry point for "Help" / tours (shell, nav) | V2 | Single agreed entry; no duplicate toggles per T00.SL3 |
 
 **Parallel rule:** Do not run T04 until T03.SL1 is PASS or waived (same pattern downstream) unless HitM accepts explicit cross-page risk.
 

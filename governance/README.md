@@ -25,6 +25,8 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `glossary.md`                | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.)   | First, every session                                          |
 | `HITM_SCHEDULE_AND_TASKS.md` | khal + todoman paths, sprint/absence workflow, how to refresh agent snapshot | Before dense sprint planning or availability assumptions      |
 | `HITM_SCHEDULE_SNAPSHOT.md`  | **Generated** (`../scripts/schedule_agent_sync.sh`); gitignored               | When present locally: calendar window + open tasks for agents |
+| `runtime_handoff_template.md`| Structured YAML template for feature sprint `runtime_handoff.md` files       | When starting any new feature sprint (copy template to plan root) |
+| `agent_workspace_isolation.md`| Directory layout, git identity, and concurrency rules for multi-agent workspaces | Setting up agent workspaces or debugging push/identity issues |
 
 
 ## Reading sequences
@@ -34,7 +36,7 @@ This manual defines how AI agents author and execute plans **consistently** acro
 1. `README.md`
 2. `plan_registry.md` → list active plans → check conflicts
 3. `strategy/strategic-roadmap-reframe-53be/phases/S<n>_*.md` → strategic context for declared phase
-4. `plan_template.md` → fill schema
+4. `plan_template.md` → fill schema (multi-surface plans: add **slices** `T##.SL#` per §1a)
 5. `plan_lifecycle.md` §Stage 1 + §Stage 2 → execute Birth + Validation
 6. Append registry row → status `draft` or `ready`
 
@@ -165,8 +167,9 @@ These values are normative. AI agents must use only these strings. Validation fa
 
 ## What this directory does not contain
 
-- Actual plans. **Active tactical plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (see `branching_guidelines.md`). **Closed or superseded plans** live under `plans/archived/` (flat `PLAN_*.md`, huddle folders like `post_beta_huddle_2026-04-30/`, nested `archived/feat/`, `archived/fix/`, `archived/volatile*`, and **`archived/cursor-layout-era/`** for pre–2026-05-04 `plans/cursor/*` umbrellas).
+- Actual plans. **Active tactical plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (see `branching_guidelines.md`). **Closed or superseded plans** live under `plans/archived/` (flat `PLAN_*.md`, nested `archived/feat/`, `archived/fix/`, `archived/volatile*`, and **`archived/cursor-layout-era/`** for pre–2026-05-04 `plans/cursor/*` umbrellas).
 - Strategic context. That lives in `strategy/strategic-roadmap-reframe-53be/`.
+- Huddles. **Huddle artifacts** live in `strategy/huddles/<date>-<topic>/` (not in `governance/`). Decisions from huddles propagate to governance files at huddle exit.
 - Tooling. Governance is documentation, not enforcement code.
 
 ## Forbidden actions for agents

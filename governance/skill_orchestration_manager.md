@@ -36,6 +36,7 @@ Coordinate execution against active plans by delegating to workflow-specific ski
 ## Orchestration workflow
 
 - [ ] Locate the active plan under `plans/<Phase>/<Stage>/<sub-plan>/` (or the path given at launch) and read scope and todos.
+- [ ] Prefer **slice-level** (`T##.SL#`) batches per `plan_template.md` §1a when the plan lists slices; avoid assigning “entire feature” in one packet.
 - [ ] Identify executable task batches.
 - [ ] Classify each task into the routing map.
 - [ ] Delegate with explicit scope, success criteria, and expected handoff format.
@@ -47,7 +48,7 @@ Coordinate execution against active plans by delegating to workflow-specific ski
 
 Every delegated task should include:
 
-1. Plan task ID and current objective  
+1. Plan **task or slice ID** (`T##` or `T##.SL#`) and current objective  
 2. Scope boundary (repo, path, or system boundary)  
 3. Definition of done  
 4. Required verification command or checklist  

@@ -40,6 +40,7 @@ Treat orchestration as a dedicated reusable agent profile:
 ## Orchestration Workflow
 
 - [ ] Locate the active plan under `plans/<Phase>/<Stage>/<sub-plan>/` (or the path given at launch) and read scope/todos.
+- [ ] Prefer delegating **slice** units (`T##.SL#`) per `governance/plan_template.md` §1a when the plan defines them.
 - [ ] Read active plan and identify executable task batches.
 - [ ] Classify each task into the routing map above.
 - [ ] Delegate with explicit scope, success criteria, and expected handoff format.
@@ -51,7 +52,7 @@ Treat orchestration as a dedicated reusable agent profile:
 
 Every delegated task must include:
 
-1. Plan task ID and current objective
+1. Plan **task or slice ID** (`T##` or `T##.SL#`) and current objective
 2. Scope boundary (repo/path/system boundary)
 3. Definition of done
 4. Required verification command/checklist

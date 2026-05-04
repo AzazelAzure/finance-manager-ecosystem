@@ -17,7 +17,7 @@ Use this skill when a request affects two or more repos:
 ## Orchestration Routine
 
 - [ ] Identify initiating repo and final user-visible outcome.
-- [ ] Split work into per-repo deliverables (one intent per repo).
+- [ ] Split work into per-repo deliverables (one intent per repo), and when a governed plan exists, align slices to **`T##.SL#`** per `governance/plan_template.md` §1a (one surface per slice where possible).
 - [ ] Define dependency order (upstream contract first, consumers second).
 - [ ] Ensure each touched repo uses its own feature branch.
 - [ ] For each repo: implement, verify, and record handoff.

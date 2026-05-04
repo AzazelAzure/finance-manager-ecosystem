@@ -10,6 +10,6 @@ This directory holds **governed execution plans** and **archives**. It does **no
 | **Legacy Gemini templates** | **`archived/gemini_plan_templates/`** | Historical only. |
 | **Scratch** | **`cursor/_TEMP_*.md`** | Disposable; not in **`governance/plan_registry.md`**. |
 
-**Do not** recreate top-level **`plans/feat/`**, **`plans/fix/`**, or **`plans/volatile/`** — new work belongs under **`plans/<Phase>/<Stage>/<sub-plan>/`** per **`governance/plan_template.md`**.
+**Do not** recreate top-level **`plans/feat/`**, **`plans/fix/`**, or **`plans/volatile/`** — new work belongs under **`plans/<Phase>/<Stage>/<sub-plan>/`** per **`governance/plan_template.md`**. Execution decomposition uses **tasks** `T##` and **slices** `T##.SL#` (§1a; **`SL`** distinct from Phase **S** notation).
 
 See also: [`../strategy/README.md`](../strategy/README.md), [`../governance/README.md`](../governance/README.md), [`../governance/orchestration.md`](../governance/orchestration.md) (strategy / plans / Cursor / runtime map).

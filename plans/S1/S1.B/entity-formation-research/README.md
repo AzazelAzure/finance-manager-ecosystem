@@ -38,6 +38,10 @@ standalone_notes: ""
 
 # S1.B Sub-Plan — Entity Formation Research
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): when execution work is authored from this plan, use **tasks** `T##` and **slices** `T##.SL#` (**`SL`** avoids collision with Phase/Stage **S** notation). Executors must **ask clarifying questions** when decisions are underspecified instead of guessing.
+
 ## 0) Strategic Inheritance
 
 - **Wedge respected:** yes — entity choice constrains payment infrastructure (PH wallet support); wedge requires PH-friendly billing.

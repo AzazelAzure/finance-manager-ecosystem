@@ -1,4 +1,5 @@
 ---
+
 plan_id: PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05
 status: draft
 priority: P2
@@ -11,9 +12,10 @@ intended_branch: cursor/s1b/feat/f002-smart-tag-estimation
 parent_plan: plans/S1/S1.B/
 
 target_repos:
-  - finance_manager_api
-  - finance_manager_web
-  - finance_manager_rust_tools
+
+- finance_manager_api
+- finance_manager_web
+- finance_manager_rust_tools
 
 strategic_phase: S1
 strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
@@ -38,13 +40,17 @@ deployment:
     - Tag reports / allocation endpoint smoke after integration
   notes: Integrate `finance_manager_rust_tools` (proportional allocation, solo-means weights) via FFI/WASM/batch worker — choose binding in T01; do not duplicate matrix logic in Python long-term.
 
-standalone: true
+## standalone: true
+
 standalone_notes: ""
----
 
 # F-002 — Smart tag value estimation
 
-**Feature idea:** [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) (F-002). **Rust numerics:** [`../../../../finance_manager_rust_tools/README.md`](../../../../finance_manager_rust_tools/README.md) (crate `tag_allocation`, `projection` building blocks).
+**Feature idea:** `[../../FEATURE_IDEAS.md](../../FEATURE_IDEAS.md)` (F-002). **Rust numerics:** `[../../../../finance_manager_rust_tools/README.md](../../../../finance_manager_rust_tools/README.md)` (crate `tag_allocation`, `projection` building blocks).
+
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): decompose execution into **tasks** (`T##`, with task branch `…/t##-<slug>` when shipping code) and **slices** (`T##.SL#`). **`SL`** avoids collision with Phase/Stage **S** notation (`S1`, `S1.B`). Default one slice per **web route/page** or per **API model/viewset seam**; do not assign whole-product scope to a single agent pass unless the touched surface is trivially small. Executors must **ask clarifying questions** when acceptance criteria or contracts are underspecified instead of guessing.
 
 ## 0) Strategic Inheritance
 
@@ -71,7 +77,7 @@ Apportion multi-tagged transaction amounts across tags using **historical signal
 
 ## 3) Source Evidence
 
-- [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) §F-002.
+- `[../../FEATURE_IDEAS.md](../../FEATURE_IDEAS.md)` §F-002.
 - `finance_manager_rust_tools/src/tag_allocation.rs`, `CHANGELOG.md`.
 
 ## 4) Phase Plan or Task List
@@ -104,6 +110,7 @@ Close updates W3 evidence; registry `completed`.
 
 ## 10) Risks and Rollback
 
-| Risk | Trigger | Rollback | Owner |
-| ---- | ------- | -------- | ----- |
+
+| Risk                               | Trigger              | Rollback                                           | Owner |
+| ---------------------------------- | -------------------- | -------------------------------------------------- | ----- |
 | FFI/WASM complexity slips schedule | binding T01 overruns | Ship API-only fallback with caps; schedule binding | cross |

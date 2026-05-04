@@ -52,6 +52,10 @@ standalone_notes: ""
 
 **Orchestration root:** this directory (`plans/S1/S1.B/pwa-implementation-branch/`, not `plans/cursor/pwa-implementation-branch/`). **Host branch:** `cursor/s1b/pwa-implementation-branch`. **Research SSoT:** [`../pwa-install-offline-sync-research/README.md`](../pwa-install-offline-sync-research/README.md) (§1.1–1.7 Advanced tier, §6 production bar, D4-exec). **SEO matrix:** [`../distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../distribution-channel-research/SEO_PRIORITY_MATRIX.md). **Live blockers + VPS color + execution priority:** [`runtime_handoff.md`](runtime_handoff.md) (**Priority** table + continuation).
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): **T00–T16** task files are **tasks** (`T##`). Large tasks must still be executed as **slices** `T##.SL#` (one route, one API family, or one integration seam per slice unless trivial). **`SL`** avoids collision with Phase/Stage **S** notation (`S1`, `S1.B`). Name the active slice in PRs and handoffs. Executors must **ask clarifying questions** when specs are silent instead of guessing.
+
 ## 0) Strategic Inheritance
 
 - **Wedge respected:** yes — PH-first, **Chrome desktop + Chrome Android** certified per D0 Option B; iOS/WebKit not blocking v1.

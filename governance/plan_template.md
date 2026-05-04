@@ -15,6 +15,52 @@ plans/<Phase>/<Stage>/<sub-plan>/   # e.g. plans/S1/S1.B/drift-cleanup/
 └── validation_gates.md  ← optional; inline if simple plan
 ```
 
+## 1a) Task slices (`T##.SL#`) — execution decomposition
+
+**Why:** Whole-feature or whole-site tasks cause large regressions and unreviewable diffs. Execution plans must decompose work so each agent turn has **tight scope**.
+
+| ID | Meaning |
+| --- | --- |
+| **`T##`** | Task — a numbered unit in the plan (often one `tasks/T##_<slug>.md` file). Maps to a **task branch** when code ships: `cursor/<phase-stage>/feat/<feature-name>/t##-<slug>` per `branching_guidelines.md` (or the sub-plan’s equivalent). |
+| **`T##.SL#`** | **Slice** (sub-step within a task). **`SL`** = slice — use this form so **`S`** is never confused with **Phase/Stage** notation (`S1`, `S1.B`). Sequential per task: `T01.SL1`, `T01.SL2`, … |
+
+**Default slice granularity (pick one primary surface per slice):**
+
+- **Web:** one **route/page** (or a single shared shell + one child), not “the entire SPA.”
+- **API:** one **model/viewset family** or one **integration seam**, not every endpoint at once.
+- **Cross-repo:** still one slice per side when possible; state ordering in the plan README.
+
+**Where to author slices:** In the plan `README.md` (table under each task), and/or inside `tasks/T##_<slug>.md` as an explicit checklist. PR titles or descriptions should name the slice when work is slice-scoped.
+
+**Clarifying questions (mandatory behavior):** If acceptance criteria, API contracts, UX, data shapes, or sequencing are **not** explicit in this plan or linked authoritative docs, **executors must ask HitM (or the orchestrator relays questions)** before implementing. Prefer a **short numbered question list** over guessing product intent.
+
+### Verification tiers (mandatory per slice checklist item)
+
+*Locked 2026-05-04 — Emergency Orchestration Huddle (D1).*
+
+Every checklist item in a slice file must declare its **verification tier**. Agents **cannot mark a slice PASS** without meeting the tier requirement and linking evidence.
+
+| Tier | Name | What counts as PASS | When to use |
+|------|------|---------------------|-------------|
+| `V0` | **Code audit** | Agent reads source, confirms logic. | Pure docs, governance, plan authoring |
+| `V1` | **Local build** | `npm run build` / `pytest` passes locally. Evidence: build log. | API logic, type-safety, unit tests |
+| `V2` | **Staging deploy** | Deployed to inactive color; smoke script passes. Evidence: smoke log. | Any user-visible behavior change |
+| `V3` | **Browser verify** | Agent opens app in browser (or HitM confirms on device); screenshot/recording captured. | Interactive UI, tours, offline behavior, forms |
+
+**Checklist format** — from:
+```
+- [ ] Verify X
+```
+to:
+```
+- [ ] [V2] Deploy to inactive color and confirm X via smoke script
+- [ ] [V3] Browser-verify X on jsdevtesting; capture screenshot
+```
+
+**Evidence linking:** Each V1+ item must reference an evidence artifact (log, screenshot, or recording) in an `evidence/` directory within the plan root. Format: `evidence/T##.SL#_<descriptor>.<ext>`.
+
+**Role separation (locked 2026-05-04, D5):** The agent that **writes** code (Executor) may run V0/V1 checks but **must not** self-certify V2/V3. A separate **Reviewer** (or HitM) runs V2+. See `strategy/huddles/2026-05-04-orchestration-overhaul/DECISIONS.md` D5.
+
 ## 2) Metadata header (YAML, mandatory)
 
 Place at top of `README.md` between `---` fences.
@@ -126,11 +172,11 @@ All enum values are defined in `README.md` §"Canonical enums". Use only those e
 ## 4) Phase Plan or Task List
 
 <For multi-phase: phase blocks per strategic-roadmap README>
-<For single-batch: task file references>
+<For single-batch: task file references; include **slice** rows `T##.SL#` when a task spans multiple pages or API seams — see §1a>
 
 ## 5) Execution Order
 
-1. tasks/T01_<slug>.md
+1. tasks/T01_<slug>.md — slices e.g. `T01.SL1` → `T01.SL2` (order explicit in task file or README table)
 2. tasks/T02_<slug>.md
 
 ## 6) Verification Gates
@@ -199,6 +245,7 @@ Validator (agent) must verify all of:
 [ ] Body §0 Strategic Inheritance has all four bullets answered
 [ ] Body §2 Out of scope is non-empty
 [ ] Body §6 Verification Gates is testable (no aspirational language)
+[ ] Multi-surface plans: body §4 or task files name **slices** `T##.SL#` per §1a (or justify single-slice tasks)
 [ ] Plan is registered in plan_registry.md
 ```
 

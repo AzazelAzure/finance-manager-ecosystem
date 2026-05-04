@@ -1,7 +1,7 @@
 # Product & feature backlog — consolidated index
 
 **Created:** 2026-05-05  
-**Updated:** 2026-05-21 (+F-012/F-013 infra intake + user activity logs; governed plans under `feat-f`* and `feat-infra-`*.)
+**Updated:** 2026-05-04 (F-012 queue + beta-only feature requests; F-013 = Loguru diagnostic files per UUID, ops-side.)
 
 **Purpose:** One entry point that ties together **brain-dump feature ideas**, **post-beta huddle (2026-04-30) planned product work**, **S1.B strategic workstreams**, **known issues with a feature shape**, and **pointers into design docs**. It does **not** replace detailed specs elsewhere; it dedupes and cross-references.
 
@@ -88,8 +88,8 @@ Governed **draft** plans: `plans/S1/S1.B/feat-f`* + `feat-infra-`* (see `[FEATUR
 | Recurring expense automation             | **F-009**                              | `[feat-f009-recurring-auto-deduct/README.md](./feat-f009-recurring-auto-deduct/README.md)`             | Topic 6 Q6.4                                                | Draft plan; source → **auto_deduct** funnel                                 |
 | Export & sharing                         | **F-010**                              | `[feat-f010-export-sharing/README.md](./feat-f010-export-sharing/README.md)`                           | PWA + trust                                                 | Draft plan (**P1**); with PWA exit / verification                           |
 | Wedge-aligned landing & hero             | **F-011**                              | `[feat-f011-wedge-landing-hero/README.md](./feat-f011-wedge-landing-hero/README.md)`                   | **H-W3-1**                                                  | **Living draft** — refresh when material features ship                      |
-| Bug reports & feature requests (intake)  | **F-012**                              | `[feat-infra-support-intake/README.md](./feat-infra-support-intake/README.md)`                         | Infra / support product                                     | Draft plan                                                                  |
-| Per-user activity & diagnostic logs      | **F-013**                              | `[feat-infra-user-activity-logs/README.md](./feat-infra-user-activity-logs/README.md)`                 | Infra / trust + PWA debug                                   | Draft plan                                                                  |
+| Bug reports & feature requests (intake)  | **F-012**                              | `[feat-infra-support-intake/README.md](./feat-infra-support-intake/README.md)`                         | Infra / support product                                     | Draft plan; **DB queue**; feature requests **beta-only**                    |
+| Per-user diagnostic log files (Loguru)   | **F-013**                              | `[feat-infra-user-activity-logs/README.md](./feat-infra-user-activity-logs/README.md)`                 | Infra / support correlation                               | Draft plan (folder name historical)                                         |
 | Cash / source currency onboarding        | **B-001**, **B-002**                   | —                                                                                                              | QoL / bugs                                                  | Triaged in FEATURE_IDEAS                                                    |
 | Upcoming rollover when paid untagged     | **B-003**                              | —                                                                                                              | Bug                                                         | Triaged in FEATURE_IDEAS                                                    |
 | Quick pay bill (+Bill)                   | *(optional F-012 or keep design-only)* | `[quick-pay-bill-design/DESIGN_DECISION.md](./quick-pay-bill-design/DESIGN_DECISION.md)`               | **H-ISS-2**, KNOWN_ISSUES #2                                | **Design staged**                                                           |
@@ -110,7 +110,7 @@ Promote to **F-014+** in `[FEATURE_IDEAS.md](./FEATURE_IDEAS.md)` when you want 
 - **Bill payment reminders** (notifications / calendar).
 - **OFW / tax-aware categorization** presets.
 
-*(Family ledger, recurring automation meaning, export/sharing, living landing/hero **F-008–F-011**; support intake + user activity logs **F-012–F-013**.)*
+*(Family ledger, recurring automation meaning, export/sharing, living landing/hero **F-008–F-011**; support intake + per-user diagnostic log files **F-012–F-013**.)*
 
 ---
 

@@ -41,6 +41,10 @@ standalone_notes: ""
 
 # S1.B Sub-Plan — Wedge Consistency Audit
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): decompose execution into **tasks** (`T##`, with task branch `…/t##-<slug>` when shipping code) and **slices** (`T##.SL#`). **`SL`** avoids collision with Phase/Stage **S** notation (`S1`, `S1.B`). Default one slice per **web route/page** or per **API model/viewset seam**; do not assign whole-product scope to a single agent pass unless the touched surface is trivially small. Executors must **ask clarifying questions** when acceptance criteria or contracts are underspecified instead of guessing.
+
 ## 0) Strategic Inheritance
 
 - **Wedge respected:** this audit **is** the wedge-consistency mechanism for public-facing copy.

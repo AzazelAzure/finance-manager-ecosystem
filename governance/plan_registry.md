@@ -50,7 +50,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 | `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-010** export/share + PWA trust; **P1**: `plans/S1/S1.B/feat-f010-export-sharing/README.md`. |
 | `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-011** living landing/hero (H-W3-1): `plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md`. |
 | `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-012** bug reports + feature requests: `plans/S1/S1.B/feat-infra-support-intake/README.md`; branch `cursor/s1b/feat/infra-support-intake`. |
-| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-013** per-user activity/diagnostic logs (shell): `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`; branch `cursor/s1b/feat/infra-user-activity-logs`. |
+| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-013** per-user **Loguru diagnostic files** on VPS (UUID-keyed, ops-side; not shell Activity UI): `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`; branch `cursor/s1b/feat/infra-user-activity-logs`. |
 
 ## Paused
 
@@ -116,6 +116,8 @@ cursor/s1b/<sub-plan-name>                            (sub-plan branch)
 cursor/s1b/feat/<feature-name>                        (feature branch)
 cursor/s1b/feat/<feature-name>/t<NN>-<slug>           (task branch)
 ```
+
+**Slices:** Within a task, execution steps are documented as **`T##.SL#`** (see `plan_template.md` §1a). Slice IDs are **plan artifacts**, not extra branch segments by default.
 
 Pre-existing plans NOT retroactively moved. Each plan’s `plan_root` in its README metadata is authoritative (some legacy rows may still show historical `plans/cursor/...` paths until migrated).
 

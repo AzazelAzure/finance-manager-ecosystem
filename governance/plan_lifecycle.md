@@ -53,7 +53,8 @@ archived     → *                  ❌  (open new plan; don't unarchive)
 5. Create README.md from plan_template.md
 6. Fill metadata header (status: draft)
 7. Fill required body sections per template §4
-8. Append row to plan_registry.md "Draft / Planning"
+8. If the plan touches multiple web routes or API surfaces: enumerate **tasks and slices** `T##.SL#` per `plan_template.md` §1a before heavy execution
+9. Append row to plan_registry.md "Draft / Planning"
 ```
 
 ## §A.HF Hotfix variant deltas

@@ -46,6 +46,10 @@ standalone_notes: "Shelved 2026-05-01: resume after entity formation + payment p
 
 **S1.B exit** still requires **Appendix A / 16-question closure** before S1.C — this shelf defers **remaining** open rows, not a repeal of the gate.
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): when execution work is authored from this plan, use **tasks** `T##` and **slices** `T##.SL#` (**`SL`** avoids collision with Phase/Stage **S** notation). Executors must **ask clarifying questions** when decisions are underspecified instead of guessing.
+
 ## 0) Strategic Inheritance
 
 - **Wedge respected:** yes — AI tier is the upsell that makes Pro+ subscriptions worth paying for; AI cost discipline keeps free tier sustainable.

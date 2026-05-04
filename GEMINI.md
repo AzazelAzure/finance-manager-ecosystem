@@ -41,7 +41,7 @@ git submodule update --init --recursive
 | **Legacy Gemini templates (archived)** | `**plans/archived/gemini_plan_templates/`**    | Historical copies only; **do not** use for new work.                                                                                                                                                                                                                                                |
 
 
-New governed work: **materialize** a directory under `**plans/<Phase>/<Stage>/<sub-plan>/`**, YAML header in `**README.md**` per `**governance/plan_template.md**`, register in `**governance/plan_registry.md**`, and tie to a `**strategic_link**` under `**strategy/strategic-roadmap-reframe-53be/phases/**` (not the strategic README alone).
+New governed work: **materialize** a directory under `**plans/<Phase>/<Stage>/<sub-plan>/`**, YAML header in `**README.md**` per `**governance/plan_template.md**`, register in `**governance/plan_registry.md**`, and tie to a `**strategic_link**` under `**strategy/strategic-roadmap-reframe-53be/phases/**` (not the strategic README alone). Multi-surface delivery: author **tasks** `T##` and **slices** `T##.SL#` per `**governance/plan_template.md**` §1a (**`SL`** avoids collision with Phase **S1** / Stage **S1.B**); executors **ask clarifying questions** when specs are silent.
 
 ---
 

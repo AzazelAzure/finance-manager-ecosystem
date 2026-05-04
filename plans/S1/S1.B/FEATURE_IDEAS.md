@@ -263,33 +263,35 @@ Unstructured feature capture. No implementation plans yet. Each entry is a produ
 
 ## F-012: In-App Bug Reports & Feature Requests (Support Intake)
 
-**What:** Authenticated paths for users to submit **bug reports** and **feature requests** with structured fields (environment, repro steps, severity self-rating, screenshots optional), deduplication hints, and a clear delivery path to HitM (email queue, ticketing integration, or GitHub private link — **TBD in plan tasks**). Optionally expose status “received / triaged” without building a full public ticket UI v1.
+**What:** Authenticated paths for users to submit **bug reports** with structured fields (environment, repro steps, severity self-rating, screenshots optional), deduplication hints, and a **durable queue** in the API (not email-only) plus notification to HitM. **Feature requests** ship **beta-only** for now (feature flag or entitlement): same intake pipeline and storage model with `report_type=feature`, but hidden or disabled outside tight beta. Delivery to operators: email, webhook, and/or ticketing — **TBD in plan tasks**. Optionally expose status “received / triaged” without a full public ticket UI v1.
 
-**Current state:** Ad hoc channels (Slack, DMs); no durable per-user intake tied to the product.
+**Current state:** API has an email-forwarding bug report endpoint; no DB-backed queue, no structured triage export. Ad hoc channels (Slack, DMs) still exist.
 
-**Why it matters:** Tight beta and PWA rollout will spike feedback volume; structured intake reduces duplicate context-gathering and keeps PII out of random threads. Aligns with founding-member support expectations.
+**Why it matters:** Tight beta and PWA rollout will spike feedback volume; structured intake plus queue IDs gives a **functional work queue** and pairs with **F-013** diagnostic files keyed by the same pseudonymous user id.
 
 **Rough notes:**
 
 - PII minimization: never auto-attach full ledger; user-provided description only unless explicit export attach (see **F-010**).
+- Persist `AppProfile.user_id` (UUID) on each submission for correlation with per-user Loguru files (**F-013**).
 - Rate limits + spam controls; link to privacy policy.
 - **Execution plan:** `[feat-infra-support-intake/README.md](./feat-infra-support-intake/README.md)`.
 
 ---
 
-## F-013: Per-User Activity & Diagnostic Logs (Top-Level)
+## F-013: Per-User Diagnostic Log Files (Loguru, VPS)
 
-**What:** A **top-level** (app shell) surface for the signed-in user to see **their own** operational history: sign-ins, sensitive settings changes, failed mutations, client build / PWA events (where applicable), and support-relevant errors — **not** a second ledger of every transaction row (that stays in existing views). Distinct from server-only request logs: this is **user-visible**, permission-scoped, and retention-bounded.
+**What:** **Server-side only:** extend Loguru configuration so each authenticated user’s warnings, errors, tracebacks (and optionally selected INFO) append to **dedicated files** on the VPS, one file (or small set) per **`AppProfile.user_id` UUID** — pseudonymous on disk, no email in the filename. Operators **grep/tail** by that id when a bug report references it. **Not** a user-visible “activity” timeline in the app shell.
 
-**Current state:** Server logs exist for ops; users have no self-service timeline for “what did the app do on my account?”
+**Current state:** Global level-based rotation in `logging_config.py`; `UserLogContextMiddleware` already injects `uid` / redacted username into log records.
 
-**Why it matters:** Debugging PWA/offline/outbox issues with founders requires a shared vocabulary (“this line at 14:32”); reduces back-and-forth. Trust posture: transparency without exposing other users.
+**Why it matters:** Bug reports become actionable: match queue row → same UUID directory/filename → stack traces and warnings without sharing usernames in logs.
 
 **Rough notes:**
 
-- Retention TTL, export/delete alignment with privacy commitments; may share storage patterns with audit trail for **F-008** later — keep schema extension points documented.
-- Coordinate redaction rules with API logging (`LOG_FULL_USERNAME` style) so two surfaces do not contradict.
+- Same redaction rules as global logs; never log ledger payloads or tokens.
+- Retention TTL and volume caps; coordinate mount path with Docker/deploy docs.
 - **Execution plan:** `[feat-infra-user-activity-logs/README.md](./feat-infra-user-activity-logs/README.md)`.
+- A future **separate** product idea (not F-013): user-visible security/activity timeline if still desired.
 
 ---
 

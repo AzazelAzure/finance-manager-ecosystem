@@ -4,6 +4,17 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-04 — F-007 guided walkthroughs: slice-based rebuild plan
+
+- **Plans:** [`plans/S1/S1.B/feat-f007-guided-walkthroughs/README.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/README.md) — rebuild stance, code inventory, tasks **T00–T07** with **T##.SL#** verify-first gates; [`tasks/T00_baseline_rebuild_audit.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/tasks/T00_baseline_rebuild_audit.md); [`runtime_handoff.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/runtime_handoff.md) aligned (PR placeholder removed, slice log table).
+
+### 2026-05-04 — Task slices (`T##.SL#`) and clarifying-questions protocol
+
+- **Governance:** [`governance/plan_template.md`](governance/plan_template.md) §1a defines **tasks** `T##` and **slices** `T##.SL#` (**`SL`** distinct from Phase/Stage **S** notation); validator, body template, and execution-order examples updated. [`governance/glossary.md`](governance/glossary.md) §3, [`governance/branching_guidelines.md`](governance/branching_guidelines.md) §2.1, [`governance/plan_registry.md`](governance/plan_registry.md) hierarchy note, [`governance/orchestration.md`](governance/orchestration.md) directives, [`governance/plan_lifecycle.md`](governance/plan_lifecycle.md) §A, [`governance/README.md`](governance/README.md) Sequence A, and skill mirrors [`governance/skill_orchestration_manager.md`](governance/skill_orchestration_manager.md), [`governance/skill_roadmap_rollout_planning.md`](governance/skill_roadmap_rollout_planning.md) aligned.
+- **Cursor:** [`feature-implementation-loop`](.cursor/skills/feature-implementation-loop/SKILL.md), [`bugfix-investigation-loop`](.cursor/skills/bugfix-investigation-loop/SKILL.md), [`orchestration-manager`](.cursor/skills/orchestration-manager/SKILL.md) (+ [`AGENT_PROMPT_TEMPLATE.md`](.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md)), [`roadmap-rollout-planning`](.cursor/skills/roadmap-rollout-planning/SKILL.md), [`multi-repo-orchestration`](.cursor/skills/multi-repo-orchestration/SKILL.md), [`shared-subagent-handoff`](.cursor/skills/shared-subagent-handoff/SKILL.md); [`.cursor/rules/core-standards.mdc`](.cursor/rules/core-standards.mdc) and [`.cursor/rules/agent-delegation.mdc`](.cursor/rules/agent-delegation.mdc).
+- **Parent docs:** [`AGENTS.md`](AGENTS.md), [`GEMINI.md`](GEMINI.md), [`plans/README.md`](plans/README.md), [`plans/templates/README.md`](plans/templates/README.md), [`plans/S1/S1.B/README.md`](plans/S1/S1.B/README.md).
+- **Stage S1.B plan READMEs:** Task-and-slice section added (or research-oriented variant); **F-007** (`feat-f007-guided-walkthroughs`) received a **shelved** note only pending a future slice pass.
+
 ### 2026-05-04 — Archive `plans/templates/GEMINI_PLAN_TEMPLATE*.md`
 
 - **Moved** `GEMINI_PLAN_TEMPLATE.md`, `GEMINI_PLAN_TEMPLATE_V2.md`, and `GEMINI_PLAN_TEMPLATE_QUICK.md` to [`plans/archived/gemini_plan_templates/`](plans/archived/gemini_plan_templates/) with index README. **`governance/plan_template.md`** is the only active plan schema; [`plans/templates/README.md`](plans/templates/README.md) points authors there. Updated [`governance/plan_template.md`](governance/plan_template.md) intro and [`GEMINI.md`](GEMINI.md).

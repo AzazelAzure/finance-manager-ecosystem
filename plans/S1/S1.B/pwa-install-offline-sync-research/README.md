@@ -39,6 +39,10 @@ standalone_notes: ""
 
 # S1.B Sub-Plan — PWA Install-as-App + Offline / Resync Research
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): when this research plan spawns implementation tasks, decompose into **tasks** `T##` and **slices** `T##.SL#` (**`SL`** avoids collision with Phase/Stage **S** notation). Default one slice per **web route/page** or per **API model/viewset seam**. Executors must **ask clarifying questions** when acceptance criteria are underspecified instead of guessing.
+
 ## 0) Strategic Inheritance
 
 **Referenced from S1.B (when implementation sprint activates):** Stage hub [`plans/S1/S1.B/README.md`](../README.md) section **Sprint activation index — PWA** (anchor `#pwa-sprint-activation-index`); exit bar [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](../../../../strategy/strategic-roadmap-reframe-53be/validation_gates.md) (S1.B); phase/workstreams [`strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md`](../../../../strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md) (W2/W3/W6); portfolio [`governance/plan_registry.md`](../../../../governance/plan_registry.md) (`PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01`).

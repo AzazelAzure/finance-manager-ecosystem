@@ -78,6 +78,7 @@ Treat **`plan_registry.md`**, **`strategy/.../README.md`**, **`plans/S1/S1.B/REA
 - **Phase / stage:** Forward-looking execution is **S1.B** (distribution readiness; flagship **web**; PH-only new acquisition unless plan says otherwise).
 - **PWA / offline:** Research locks under `plans/S1/S1.B/pwa-install-offline-sync-research/`; implementation sprint hub `plans/S1/S1.B/pwa-implementation-branch/` — follow registry row for **paused** vs active.
 - **Git:** One commit scope per sub-repo; feature branches, not default `main` for feature work; changelogs in touched sub-repo; when opening a PR, send the **PR link in the Cursor chat** (repo, branch, URL) per workspace rules; reconcile **GitHub** mergeability and required checks before merge.
+- **Tasks and slices:** Delegation uses **slice IDs** `T##.SL#` when plans split work (see `governance/plan_template.md` §1a, `glossary.md` §3). Agents **ask clarifying questions** instead of guessing when specs are silent.
 - **Reflex:** Archived product stream — not production architecture.
 - **D0 browser matrix:** See `AGENTS.md` (Chrome desktop + Chrome Android for certified exit smoke).
 

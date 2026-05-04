@@ -56,6 +56,10 @@ Per `governance/branching_guidelines.md`:
 - Feature branch on inactive color: `cursor/s1b/feat/<feature-name>` (e.g. `cursor/s1b/feat/email-uniqueness-fix`)
 - Task branch under feature: `cursor/s1b/feat/<feature-name>/t<NN>-<slug>`
 
+### Task slices (`T##.SL#`)
+
+Per [`governance/plan_template.md`](../../../governance/plan_template.md) §1a and [`governance/branching_guidelines.md`](../../../governance/branching_guidelines.md) §2.1: within each **task** `T##`, author **slices** `T01.SL1`, `T01.SL2`, … (**`SL`** = slice — not bare `S##`, which reads like **Phase/Stage** `S1`, `S1.B`). Default **one web route/page** or **one API model/viewset seam** per slice; document slices in the plan README or `tasks/` before delegating. Agents **ask clarifying questions** when scope or contracts are ambiguous.
+
 ## Sequencing
 
 Per huddle Topic 9 group ordering:

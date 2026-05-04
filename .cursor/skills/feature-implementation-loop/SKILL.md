@@ -8,6 +8,8 @@ description: Deliver scoped features and refactors through incremental changes w
 ## Workflow Checklist
 
 - [ ] Confirm repository scope and relevant architecture rules.
+- [ ] If work comes from a governed plan, confirm the assigned **task or slice** (`T##` or `T##.SL#` per `governance/plan_template.md` §1a) and stay inside that surface (typically one page or one API seam).
+- [ ] If acceptance criteria, contracts, or UX are underspecified, **ask clarifying questions** before coding; do not guess product intent.
 - [ ] Define acceptance criteria and constraints.
 - [ ] Implement incrementally in reviewable steps.
 - [ ] Verify behavior with focused tests/checks.

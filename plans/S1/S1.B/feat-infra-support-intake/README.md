@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_SUPPORT_INTAKE_2026-05-21
 status: draft
 priority: P2
 created: 2026-05-21
-updated: 2026-05-21
+updated: 2026-05-04
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-infra-support-intake/
@@ -45,6 +45,10 @@ standalone_notes: ""
 
 **Feature idea:** [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) (F-012).
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): decompose execution into **tasks** (`T##`, with task branch `…/t##-<slug>` when shipping code) and **slices** (`T##.SL#`). **`SL`** avoids collision with Phase/Stage **S** notation (`S1`, `S1.B`). Default one slice per **web route/page** or per **API model/viewset seam**; do not assign whole-product scope to a single agent pass unless the touched surface is trivially small. Executors must **ask clarifying questions** when acceptance criteria or contracts are underspecified instead of guessing.
+
 ## 0) Strategic Inheritance
 
 - **Wedge respected:** yes — lowers friction for thin-margin users reporting breakage; keeps support humane.
@@ -54,15 +58,15 @@ standalone_notes: ""
 
 ## 1) Objective
 
-Ship **first-class in-app intake** for bugs and feature ideas with structured payloads, authenticated user context, and a reliable operator delivery path (mechanism chosen in T01).
+Ship **first-class in-app intake** for **bugs** (all targeted beta users) and **feature requests** (**beta-only** for now: gated in web + API so production outside tight beta does not expose the feature-request path). Structured payloads, authenticated user context, a **durable API queue** (DB or equivalent) for triage—not email as the only store—and a reliable operator delivery path (mechanism chosen in T01). Each stored row should include **`AppProfile.user_id`** so operators can open **F-013** per-user diagnostic log files on the VPS.
 
 ## 2) Scope
 
 ### In scope
 
-- Web: forms or modal flows; client-side validation; optional screenshot upload with size/type limits.
-- API: persistence model (or forward-only queue), auth, rate limiting, redaction of secrets in text fields.
-- Operator path: at minimum durable store + notification; optional GitHub Issue creation, Linear, or email — **decide in T01**.
+- Web: forms or modal flows; client-side validation; optional screenshot upload with size/type limits; **feature request UI/API behind a beta flag** (env or server-driven config).
+- API: **persistence model** (queue table or forward-only store), auth, rate limiting, redaction of secrets in text fields; fields aligned with `design_docs/.../15_Beta_Week_Incident_Triage...` envelope where practical (`incident_id`, `report_type`, severity, etc.).
+- Operator path: durable store + notification; optional GitHub Issue creation, Linear, or email — **decide in T01**.
 
 ### Out of scope
 
@@ -96,7 +100,7 @@ Registry `completed` when intake is live and operators can process tickets on a 
 
 ## 9) Completion Criteria
 
-- Production path from app → operator queue with documented triage SLA (even if “best effort”).
+- Production path from app → **persisted** operator queue (queryable, not email-only) with documented triage SLA (even if “best effort”); bug path always available to beta cohort; feature-request path only when beta flag is on.
 
 ## 10) Risks and Rollback
 

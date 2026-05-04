@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21
 status: draft
 priority: P2
 created: 2026-05-21
-updated: 2026-05-21
+updated: 2026-05-04
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-infra-user-activity-logs/
@@ -19,7 +19,8 @@ strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_po
 
 depends_on: []
 blocks: []
-parallel_safe_with: []
+parallel_safe_with:
+  - feat-infra-support-intake
 conflicts_with: []
 
 slack_gates:
@@ -29,77 +30,90 @@ slack_gates:
 
 deployment:
   required: true
-  target_services: [api, js]
+  target_services: [api]
   bundle_required: true
   rollback_plan_id: null
   smoke_targets:
     - GET /api/health/
-    - Activity log list endpoint paginates; only self visible
-  notes: Coordinate event emission with PWA/offline flows so client-side failures can be logged when back online without duplicating server rows.
+    - Authenticated request produces or appends to diagnostic file for that user's pseudonymous id
+  notes: >-
+    Folder name is historical ("user-activity"); scope is **server-side diagnostic log files**, not a user-visible activity timeline.
+    Coordinate with **F-012** so each bug report stores `profile_user_id` (or equivalent) for grep/tail on the VPS.
 
 standalone: true
-standalone_notes: ""
+standalone_notes: "Scope corrected 2026-05-04: Loguru per-user diagnostic files on disk, ops-only."
 ---
 
-# F-013 — Per-user activity & diagnostic logs (top-level)
+# F-013 — Per-user diagnostic log files (Loguru, ops-side)
 
 **Feature idea:** [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) (F-013).
 
+## Task and slice IDs
+
+Per [`governance/plan_template.md`](../../../../governance/plan_template.md) **§1a Task slices (T##.SL#)** and [`governance/branching_guidelines.md`](../../../../governance/branching_guidelines.md): decompose execution into **tasks** (`T##`, with task branch `…/t##-<slug>` when shipping code) and **slices** (`T##.SL#`). **`SL`** avoids collision with Phase/Stage **S** notation (`S1`, `S1.B`). Default one slice per **web route/page** or per **API model/viewset seam**; do not assign whole-product scope to a single agent pass unless the touched surface is trivially small. Executors must **ask clarifying questions** when acceptance criteria or contracts are underspecified instead of guessing.
+
 ## 0) Strategic Inheritance
 
-- **Wedge respected:** yes — transparency for “what happened on my account” builds trust during rough beta.
-- **Locked decisions touched:** logging redaction policy; alignment with **F-012** if support asks user to paste log IDs.
-- **Cost cap impact:** retention TTL + index size; batch prune job.
-- **Validation gates affected:** optional PWA D4 support checklist item when logs include offline replay events.
+- **Wedge respected:** yes — faster, privacy-conscious support during tight beta without pasting usernames into shared channels.
+- **Locked decisions touched:** redaction policy (`LOG_FULL_USERNAME`, no ledger amounts in logs); alignment with **F-012** (intake rows reference the same pseudonymous id for correlation).
+- **Cost cap impact:** bounded disk (per-file rotation, retention job, max file count policy).
+- **Validation gates affected:** optional support-readiness item when PWA/client errors need server-side correlation.
 
 ## 1) Objective
 
-Expose a **top-level** (shell) **user-visible** timeline of security-relevant and diagnostic events for **that user only**, complementing—not replacing—transaction and server-only ops logs.
+Configure **Loguru** so that, for **authenticated** API traffic, warnings/errors/tracebacks (and optionally INFO for support windows) are written to **per-user files** on the VPS under a dedicated directory, keyed by **`AppProfile.user_id`** (UUID primary key — already bound into log context as `uid` in `UserLogContextMiddleware`). Operators can **search by that UUID** when a bug report arrives, without tying filenames to email or username.
 
 ## 2) Scope
 
 ### In scope
 
-- Event taxonomy: login/session, settings changes, failed API writes, PWA sync milestones (as defined with PWA owners), explicit “support bundle” correlation id optional.
-- API: append-only or insert-only store, pagination, filters; export line items may defer to **F-010**.
-- Web: “Activity” or “Security & logs” entry in shell nav; mobile-friendly list.
+- Loguru sink(s): e.g. `logs/diagnostic/{user_id}.log` (exact layout TBD in T01; may split by level or use one combined diagnostic file per user).
+- Filter: only records where `extra["uid"]` is a real UUID (exclude `anonymous`).
+- Rotation, retention TTL, and documented **grep/tail** runbook for HitM.
+- Optional: include `X-Client-Build` or request id in format string when present (contract with web later).
+- **Intake correlation:** **F-012** persisted submissions should store the same id (and optional `incident_id`) so ops can open the matching file.
 
 ### Out of scope
 
-- Full SIEM; cross-user admin search (separate future ops tool unless explicitly added later); raw HTTP trace replay.
+- **User-visible** “Activity” / security timeline UI in the shell (that was a prior draft interpretation — defer to a separate feature if product still wants it; not part of F-013).
+- Full SIEM, cross-user admin search UI, or shipping raw request bodies to disk.
 
 ## 3) Source Evidence
 
 - [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) §F-013.
-- Existing API redaction / logging modules.
+- [`../feat-infra-support-intake/README.md`](../feat-infra-support-intake/README.md) (F-012).
+- `finance_manager_api/finance/management/logging_config.py`, `finance_manager_api/finance/middleware/user_log_context.py`.
+- [`../../../../design_docs/40_System_Design/06_Logging_and_Support.md`](../../../../design_docs/40_System_Design/06_Logging_and_Support.md).
 
 ## 4) Phase Plan or Task List
 
-T01 event schema + privacy review → T02 API + writer hooks from auth/settings/mutation paths → T03 web shell page → T04 retention job + metrics.
+T01 layout + threat model (what must never appear in diagnostic files) → T02 Loguru sinks + middleware contract → T03 retention/prune + deploy volume mount if needed → T04 runbook + **F-012** cross-field (`diagnostic_log_key`).
 
 ## 5) Execution Order
 
-Schema + writer contracts before UI to avoid empty screens changing shape.
+Threat model and redaction rules before enabling new sinks in production.
 
 ## 6) Verification Gates
 
-- Isolation tests: user A never sees user B events.
-- Volume test: pagination stable at max retention window.
+- Anonymous requests do not create diagnostic files (or write only to global ops logs, unchanged).
+- Synthetic burst: rotation works; no path traversal via forged `uid`.
+- Spot-check: one user's ERROR appears only under that user's file name.
 
 ## 7) Documentation Sync Required
 
-- Changelogs; user-facing help blurb; design_docs if retention affects encryption story.
+- API `CHANGELOG.md`; operator runbook; update `06_Logging_and_Support.md` when paths are fixed.
 
 ## 8) Strategic Phase Impact
 
-Registry completion; may reference in support runbook for founding beta.
+Support velocity for beta; pairs with intake queue.
 
 ## 9) Completion Criteria
 
-- Live self-service log view + documented retention; hooks for at least three event categories.
+- Production API writes per-`user_id` diagnostic logs under an agreed path; documented procedure links intake id → log file.
 
 ## 10) Risks and Rollback
 
 | Risk | Trigger | Rollback | Owner |
 | ---- | ------- | -------- | ----- |
-| Accidental PII in event payload | developer logging | Strip field; hotfix writer | api |
+| Disk exhaustion | noisy logger + many users | Tighten level filter; shorten retention; disable sink | api |
+| Accidental PII | new log lines with payloads | Redact in code; scrub affected files per policy | api |
