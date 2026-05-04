@@ -1,0 +1,127 @@
+# Antigravity CLI — command interface (automation bridge)
+
+Skeleton for wiring **Slack → slack runner → headless/batch automation → `antigravity chat`**.  
+Scripting, severity rules, and hard limits will be defined elsewhere; this document only captures the **CLI contract** and **I/O expectations** as currently observed on Fedora (`antigravity --help`, `antigravity chat --help`).
+
+---
+
+## 1. Purpose
+
+- Give operators and future automation a **single reference** for how to invoke Antigravity from the shell.
+- Align the **slack runner** (or companion queue) with a **stable command shape** so implementation can change without rediscovering flags.
+
+---
+
+## 2. Binary and version
+
+- Default entrypoint: `/usr/bin/antigravity` (symlink to `/usr/share/antigravity/bin/antigravity`).
+- Check version: `antigravity -v` / `antigravity --version`.
+- **Note:** Some subcommands (e.g. `serve-web`, `tunnel`) may reference helper binaries (e.g. `antigravity-tunnel`) that are not present on all installs; prefer **`chat`** for automation until verified.
+
+---
+
+## 3. Core automation command: `antigravity chat`
+
+**Intent:** Run a **chat session in the current working directory** (cwd matters—open the repo or worktree before invoking).
+
+```text
+antigravity chat [options] [prompt]
+```
+
+### 3.1 Modes (`-m` / `--mode`)
+
+| Mode   | When to use (draft) |
+|--------|----------------------|
+| `ask`  | TBD — narrow Q&A, no edits. |
+| `edit` | TBD — edits expected; gate carefully in automation. |
+| `agent`| **Default** — broader agent behavior. |
+
+Custom mode identifiers may exist; document allowed IDs when finalized.
+
+### 3.2 Prompt input
+
+- **Argv:** trailing `[prompt]` string.
+- **Stdin:** append `-` to read prompt from stdin, e.g.  
+  `printf '%s' '…' | antigravity chat -`  
+  (Pattern matches top-level `antigravity` help: stdin + `-`.)
+
+**TBD:** Max prompt length, encoding (UTF-8 assumed), and whether multiline stdin is officially supported for automation.
+
+### 3.3 Context files
+
+- **`-a` / `--add-file <path>`** — attach file(s) to the session (repeat flag as needed if supported).
+- **TBD:** Glob expansion, max files, size limits, secrets scanning before attach.
+
+### 3.4 UI / window behavior
+
+- **`--maximize`** — maximize chat view.
+- **`-r` / `--reuse-window`** — use last active window.
+- **`-n` / `--new-window`** — open empty window for chat.
+- **`--profile <profileName>`** — profile for workspace association.
+
+**TBD:** Headless vs GUI assumptions on servers; whether automation must force `-n` or reuse.
+
+---
+
+## 4. Process exit and output (prompt “returns”)
+
+**Automation must define:**
+
+- Where **model output** goes (stdout only vs mixed logs vs JSONL — **not documented here**; verify empirically per Antigravity release).
+- Which **exit codes** mean success, user abort, tool failure, or IDE not running.
+- Timeouts and **hang** detection (runner-level vs `timeout` wrapper).
+
+**Placeholder checklist for the slack runner:**
+
+1. Run from the **correct cwd** (repo root or designated worktree).
+2. Export/record **environment** if Antigravity requires display or dbus (**TBD**).
+3. Capture **stdout/stderr** to a log path keyed by Slack `ts` / ticket id.
+4. Map exit code → Slack thread reply template (**TBD**).
+
+---
+
+## 5. Related launcher flags (optional for bridge)
+
+These are on the top-level `antigravity` binary, not only `chat`, but useful for maintenance runs:
+
+- **MCP profile:** `--add-mcp '<json>'` with shape `{"name":"server-name","command":...}`.
+- **Extensions:** `--list-extensions`, `--install-extension`, etc.
+- **Diagnostics:** `-s` / `--status`, `--log <level>`, `--verbose` (implies `--wait` at top level—verify interaction with `chat`).
+
+---
+
+## 6. Slack ↔ runner ↔ Antigravity (integration skeleton)
+
+**Inbound (draft):**
+
+1. Slack event (e.g. bug report + severity) lands in **inbox / queue** (existing companion or finance_manager runner — **TBD**).
+2. Runner classifies **severity** and selects **cwd**, **mode**, and **prompt template** (**TBD**).
+3. Runner invokes `antigravity chat` with agreed flags and captures output (**section 4**).
+4. Runner posts condensed result back to Slack (thread or channel — **TBD**).
+
+**Hard limits (to be filled in later):**
+
+- Allowed directories / worktrees.
+- Forbidden paths (e.g. production secrets, unrelated repos).
+- Rate limits per channel / per user.
+- Max concurrent `antigravity` jobs.
+
+---
+
+## 7. Non-goals (this file)
+
+- Does **not** implement shell/Python for Slack.
+- Does **not** define severity taxonomy or channel IDs.
+- Does **not** replace product-specific runbooks in other repos.
+
+---
+
+## 8. Verification commands (maintenance)
+
+```bash
+antigravity --help
+antigravity chat --help
+antigravity -v
+```
+
+Update this readme when Antigravity upgrades change flags or output behavior.

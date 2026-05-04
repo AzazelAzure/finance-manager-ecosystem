@@ -8,6 +8,7 @@ description: Run a reproduce-isolate-fix-verify loop focused on root cause and m
 ## Workflow Checklist
 
 - [ ] Confirm active sub-repo and scope boundary.
+- [ ] If work is tied to a governed plan, respect the assigned **task or slice** (`T##` / `T##.SL#` per `governance/plan_template.md` §1a); ask clarifying questions when reproduction scope is ambiguous instead of expanding to “whole app.”
 - [ ] Reproduce the failure with a concrete command or scenario.
 - [ ] Isolate root cause (not only symptom path).
 - [ ] Apply minimal coherent fix.

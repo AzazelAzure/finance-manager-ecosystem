@@ -24,6 +24,7 @@ This is **implicit** for all roadmap outputs that transition from planning to ex
 
 ## Planning Routine
 
+- [ ] For multi-surface features, author **tasks** `T##` and **slices** `T##.SL#` in plan artifacts per `governance/plan_template.md` §1a (`SL` avoids confusion with Phase `S1` / Stage `S1.B`).
 - [ ] Define phase goals and completion criteria.
 - [ ] Set breakpoints (decision gates) between phases.
 - [ ] Define triggers for moving to next phase.

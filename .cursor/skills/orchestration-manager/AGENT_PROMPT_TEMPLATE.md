@@ -25,7 +25,7 @@ Execution context:
 
 Required behavior:
 1. Classify tasks and route to the correct workflow skill/subagent path.
-2. Delegate with explicit task packet (objective, scope, DoD, validation).
+2. Delegate with explicit task packet (objective, scope, DoD, validation), naming the **slice** `T##.SL#` or task `T##` from the plan when applicable (`governance/plan_template.md` §1a).
 3. Enforce testing breakpoints and handoff requirements.
 4. Enforce PR protocol: post opened PR links in **Cursor chat**; reconcile GitHub mergeability and required checks before merge; follow `governance/execution_protocols.md` for Slack gates when required by the plan.
 5. If a task fails or PR gate mismatches (approved in chat or Slack but GitHub conflicting or dirty), reclassify/reorder and retask.

@@ -28,6 +28,7 @@ Do not leave execution-ready plans only in chat or ad hoc paths.
 
 ## Planning routine
 
+- [ ] For multi-surface delivery, decompose into **tasks** `T##` and **slices** `T##.SL#` per `plan_template.md` §1a (one page or one API seam per slice by default).
 - [ ] Define phase goals and completion criteria.
 - [ ] Set breakpoints (decision gates) between phases.
 - [ ] Define triggers for moving to the next phase.

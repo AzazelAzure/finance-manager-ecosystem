@@ -104,6 +104,13 @@ Five plan-type categories, each with distinct scope and lifecycle:
 | **Implementation Guide** | Agent-facing how-to for repeatable work patterns. | Permanent; revised when patterns change. | `design_docs/40_System_Design/implementation_guides/` |
 | **Branching Guideline** | Specific to deploy/branch strategy. Extends `deployment_protocol.md`. | Permanent; revised when deploy strategy changes. | `branching_guidelines.md` |
 
+### Task and slice IDs (execution plans)
+
+| Term | Meaning |
+| --- | --- |
+| **Task `T##`** | Numbered work unit in an execution plan; often one `tasks/T##_<slug>.md` and one **task branch** `…/t##-<slug>` when shipping code. |
+| **Slice `T##.SL#`** | Sub-step inside a task: the **default unit for agent delegation**. **`SL`** = slice (not bare `S##`, which is reserved for **Phase/Stage** like `S1`, `S1.B`). Typical slice = one web route/page or one API model/viewset seam. Full rules: `plan_template.md` §1a. |
+
 ### Retired vocabulary
 
 | Retired | Replacement |
@@ -200,7 +207,52 @@ Active markets:
 
 ---
 
-## 9) Update protocol
+## 9) Verification tiers (V-tier)
+
+*Added 2026-05-04 — Emergency Orchestration Huddle (D1).*
+
+Every task slice checklist item declares a verification tier. Agents cannot mark PASS without meeting the tier.
+
+| Tier | Name | What counts as PASS | Typical use |
+|------|------|---------------------|-------------|
+| `V0` | **Code audit** | Agent reads source, confirms logic. | Docs, governance, plan authoring |
+| `V1` | **Local build** | Build/test passes locally; evidence: log. | API logic, type-safety, unit tests |
+| `V2` | **Staging deploy** | Deployed to inactive color; smoke passes; evidence: smoke log. | User-visible behavior changes |
+| `V3` | **Browser verify** | Browser verification with screenshot/recording evidence. | Interactive UI, tours, offline, forms |
+
+See `plan_template.md` §1a "Verification tiers" for full enforcement rules.
+
+---
+
+## 10) Agent roles (pipeline)
+
+*Added 2026-05-04 — Emergency Orchestration Huddle (D5).*
+
+| Role | Definition | Model tier |
+|------|-----------|-----------|
+| **Orchestrator** | Plans work, decomposes tasks/slices, assigns V-tiers. Does not write production code. | Strong (Gemini Pro / Opus) |
+| **Executor** | Writes code, runs V0/V1 checks, commits to slice/feature branch. Cannot self-certify V2+. | Efficient (Cursor auto / Gemini Flash) |
+| **Reviewer** | Reviews code, runs V2 deploy verification, approves or rejects slices. Does not write new feature code. | Strong (Gemini Pro / Opus) |
+| **HitM Gate** | Human. V3 browser verify, production flip authority, merge authority. | Human |
+
+---
+
+## 11) Huddles
+
+*Added 2026-05-04 — Emergency Orchestration Huddle (D4).*
+
+| Term | Definition |
+|------|-----------|
+| **Huddle** | A first-class strategic discussion artifact for course correction. Lives in `strategy/huddles/<date>-<topic>/`. |
+| **Scheduled huddle** | Triggered at every Stage transition. |
+| **Emergency huddle** | Triggered by HitM when systemic issues surface. |
+| **Sprint retro** | Brief huddle at end of each Production Sprint. |
+
+Huddle template: `README.md`, `TALKING_POINTS.md`, `DECISIONS.md`, `ACTIONS.md`.
+
+---
+
+## 12) Update protocol
 
 This glossary is locked at the level of the categories above. Adding or modifying terms requires:
 

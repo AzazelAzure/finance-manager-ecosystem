@@ -43,11 +43,13 @@ Commands:
   status                          Show compose status and active/inactive color.
   check                           Validate compose and nginx blue/green configuration.
   deploy [--dry-run] <color>      Start inactive color services (or explicit color).
-  rebuild-color [--no-build] <blue|green>
+  rebuild-color [--no-build] [--no-cache] <blue|green>
                                   Build api/web for one color, then safely recreate those
                                   containers (and proxy). Use this after image changes on
                                   Podman: plain "up --force-recreate" often fails because
                                   proxy lists depends_on on all app containers (--requires).
+                                  Use --no-cache to force a clean build (recommended after
+                                  code changes to prevent stale cached layers).
   smoke --color <active|inactive|blue|green>
                                   Run API and web (React) smoke checks for selected color.
   switch --to <blue|green>        Promote color by updating proxy active color and reloading proxy.
@@ -246,21 +248,25 @@ deploy_cmd() {
 rebuild_color_cmd() {
   local color=""
   local do_build=1
+  local no_cache=0
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --no-build)
         do_build=0
         ;;
+      --no-cache)
+        no_cache=1
+        ;;
       blue|green)
         color="$1"
         ;;
       *)
-        die "rebuild-color: unknown argument '$1' (expected --no-build and/or blue|green)"
+        die "rebuild-color: unknown argument '$1' (expected --no-build, --no-cache, and/or blue|green)"
         ;;
     esac
     shift || true
   done
-  [[ -n "$color" ]] || die "rebuild-color requires a color: blue|green (after optional --no-build)"
+  [[ -n "$color" ]] || die "rebuild-color requires a color: blue|green (after optional --no-build/--no-cache)"
 
   local api_service="api-$color"
   local web_service="web-$color"
@@ -271,8 +277,11 @@ rebuild_color_cmd() {
       return 0
     fi
     if [[ "$do_build" -eq 1 ]]; then
-      log "Building $api_service and $web_service..."
-      compose_cmd build "$api_service" "$web_service"
+      local build_args=(build)
+      [[ "$no_cache" -eq 1 ]] && build_args+=(--no-cache)
+      build_args+=("$api_service" "$web_service")
+      log "Building $api_service and $web_service${no_cache:+ (--no-cache)}..."
+      compose_cmd "${build_args[@]}"
     fi
     log "Recreating $api_service and $web_service (parallel compose; no proxy in this file)."
     compose_cmd up -d --force-recreate "$api_service" "$web_service"
@@ -287,8 +296,11 @@ rebuild_color_cmd() {
   fi
 
   if [[ "$do_build" -eq 1 ]]; then
-    log "Building $api_service and $web_service..."
-    compose_cmd build "$api_service" "$web_service"
+    local build_args=(build)
+    [[ "$no_cache" -eq 1 ]] && build_args+=(--no-cache)
+    build_args+=("$api_service" "$web_service")
+    log "Building $api_service and $web_service${no_cache:+ (--no-cache)}..."
+    compose_cmd "${build_args[@]}"
   fi
 
   log "Recreating $api_service and $web_service with fresh containers."

@@ -11,7 +11,7 @@ Use this exact section order:
 
 ```markdown
 ## Objective
-<what was requested and scope boundary>
+<what was requested and scope boundary; include plan **task or slice ID** (`T##` / `T##.SL#`) when work came from a governed plan>
 
 ## Assumptions and Unknowns
 - ...
