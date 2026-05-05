@@ -74,11 +74,12 @@ Adjust `WORKSPACE_PATH` / `BRANCH` suffix to match the executor’s actual check
 
 ## After a slice completes (review + next slice)
 
-**Automated (default):** run [`scripts/sprint_slack_pipeline_bridge.py`](../../../../scripts/sprint_slack_pipeline_bridge.py) with `SLACK_BOT_TOKEN` and channel envs. In the **sprint task thread**, append one line:
+**Automated (default):** run [`scripts/sprint_slack_pipeline_bridge.py`](../../../../scripts/sprint_slack_pipeline_bridge.py) with `SLACK_BOT_TOKEN` and channel envs. Signal **`READY_FOR_REVIEW`** either:
 
-`SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW",...}`
+- **Local (no Slack thread paste):** set **`SPRINT_PIPELINE_LOCAL_INBOX`** to a JSONL path on the PA host and run [`scripts/sprint_pipeline_emit_ready.py`](../../../../scripts/sprint_pipeline_emit_ready.py) when the slice exits clean (same schema as the spec), or
+- **Slack thread:** append one line `SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW",...}` under the sprint task.
 
-per [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint_queue_message_spec_v1.md) §**Machine-readable pipeline**. Optional next-slice file under [`evidence/pipeline_queue/`](./evidence/pipeline_queue/README.md).
+See [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint_queue_message_spec_v1.md) §**Machine-readable pipeline**. Next-slice queue files live under the shared [`plans/pipeline_queue/`](../../../pipeline_queue/README.md) tree (set **`SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`** there). With default **`SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM`**, you do not need a separate human **PASS** in `#review-queue` when `requires_hitm` is false.
 
 **Manual fallback:** top-level `#review-queue` prose envelope + verdict, same as before.
 
@@ -90,9 +91,9 @@ Post **one Slack message** in the **same thread** as the original `#sprint-queue
 SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW","slice_id":"T00.SL1","plan_root":"plans/S1/S1.B/feat-f007-walkthrough-polish/","plan_id":"PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21","repo":"finance_manager_web","branch":"cursor/s1b/feat/f007-walkthrough-polish","commit":"COMMIT","v1_evidence":"tasks/T00_protocol_and_acceptance.md + evidence/T00.SL1_V0_acceptance_notes.md; PR https://github.com/AzazelAzure/finance-manager-ecosystem/pull/55","verify_tiers":"V0","requires_hitm":false,"next_queue_message_path":"next_t00_sl2.txt"}
 ```
 
-- **`next_queue_message_path`:** relative to `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` (see [`evidence/pipeline_queue/README.md`](./evidence/pipeline_queue/README.md)); file [`next_t00_sl2.txt`](./evidence/pipeline_queue/next_t00_sl2.txt) is the queued **T00.SL2** sprint top-level.
-- **`verify_tiers":"V0"`** + `SPRINT_BRIDGE_AUTO_PASS_V0=1` → bridge posts synthetic **PASS** and then posts `next_t00_sl2.txt` to `#sprint-queue` automatically.
-- For **V1+** slices, set `verify_tiers` accordingly and have a reviewer post **`REVIEW_VERDICT`** JSON in `#review-queue` (or extend automation later).
+- **`next_queue_message_path`:** relative to `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` (see [`plans/pipeline_queue/README.md`](../../../pipeline_queue/README.md)); file [`next_t00_sl2.txt`](../../../pipeline_queue/next_t00_sl2.txt) is the queued **T00.SL2** sprint top-level.
+- **`verify_tiers":"V0"`** with default **`SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM`** (on unless set to `0`) → bridge posts synthetic **PASS** when `requires_hitm` is false, then posts `next_t00_sl2.txt` to `#sprint-queue`. For V0-only auto-pass with stricter review on V1+, set `SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM=0` and keep `SPRINT_BRIDGE_AUTO_PASS_V0=1`.
+- For **V1+** slices when auto-pass is off, set `verify_tiers` accordingly and have a reviewer post **`REVIEW_VERDICT`** JSON in `#review-queue`.
 
 **Executor workspace:** if the clone is a collaborator mirror, run `git fetch origin main && git merge origin/main` (or rebase) on the feature branch before T00.SL2 so `scripts/` and `governance/` match this ecosystem repo.
 
