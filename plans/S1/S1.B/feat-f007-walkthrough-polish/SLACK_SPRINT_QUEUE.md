@@ -28,10 +28,10 @@ Match the executor machine layout before posting; wrong root sends work to a tre
 
 ## Example — `T00.SL1` (copy into Slack)
 
-Use **`Task Id:`** (capital **I**, lowercase **d**) on line 2 — required for **cursor-agent** queue routing (not local Cursor chat).
+Use **`@CursorPA`** on line 1 (no space — `@Cursor PA` breaks the mention in HitM’s Slack) and **`Task Id:`** (capital **I**, lowercase **d**) on line 2 — required for **cursor-agent** queue routing (not local Cursor chat).
 
 ```text
-@Cursor PA
+@CursorPA
 Task Id: F-007
 REPO: finance_manager_web
 WORKSPACE_PATH: ~/agent-workspaces/cursor-executor/finance_manager
