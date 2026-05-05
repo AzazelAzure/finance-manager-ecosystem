@@ -2,6 +2,8 @@
 
 **Purpose:** Single reference for what SEO work to do and when. Gated by development phase and linked to the detailed guides. Reference this file at the start of every feature sprint that touches public-facing pages.
 
+**Rollout bar:** This matrix is part of ecosystem **definition of done** — see [`governance/definition_of_done.md`](../../../governance/definition_of_done.md) §3 (P0 in-PR when touching listed files; tier updates at rollout close).
+
 **Decision (2026-05-03):** SEO P0 quick wins ride with the **PWA sprint** (next sprint). All other SEO work is deferred to the appropriate phase gate below.
 
 ---

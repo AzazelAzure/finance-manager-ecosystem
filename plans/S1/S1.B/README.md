@@ -13,7 +13,7 @@
 
 ## Sub-plan index
 
-Sub-plans under this Stage. Each follows the canonical Execution Plan template (`governance/plan_template.md`) with hierarchical metadata.
+Sub-plans under this Stage. Each follows the canonical Execution Plan template ([`governance/plan_template.md`](../../governance/plan_template.md)) with hierarchical metadata. **Definition of done** (PWA, i18n, SEO, F-011, sprint order): [`governance/definition_of_done.md`](../../governance/definition_of_done.md).
 
 
 | Sub-plan                             | Status      | Owner                                 | Dependencies                                                     | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |

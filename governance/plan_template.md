@@ -61,6 +61,10 @@ to:
 
 **Role separation (locked 2026-05-04, D5):** The agent that **writes** code (Executor) may run V0/V1 checks but **must not** self-certify V2/V3. A separate **Reviewer** (or HitM) runs V2+. See `strategy/huddles/2026-05-04-orchestration-overhaul/DECISIONS.md` D5.
 
+### 1b) Interconnected rollout bars (PWA, i18n, SEO, beta surfaces)
+
+Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
+
 ## 2) Metadata header (YAML, mandatory)
 
 Place at top of `README.md` between `---` fences.

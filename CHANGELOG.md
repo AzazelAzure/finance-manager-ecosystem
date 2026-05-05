@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-22 — Definition of done, F-011 beta subpages, rollout-order huddle
+
+- **Governance:** [`governance/definition_of_done.md`](governance/definition_of_done.md) — PWA completeness note, class **A/B**, mandatory localization vs **shelved** signoff, SEO matrix + in-sprint P0 expectation, F-011 beta comms, completion checklist; linked from [`governance/plan_template.md`](governance/plan_template.md) §1b, [`governance/glossary.md`](governance/glossary.md) §12–§13, [`governance/README.md`](governance/README.md), [`governance/orchestration.md`](governance/orchestration.md).
+- **Huddle:** [`strategy/huddles/2026-05-22-feature-rollout-sprint-order/`](strategy/huddles/2026-05-22-feature-rollout-sprint-order/) — README, talking points, `DECISIONS`/`ACTIONS` stubs for product · beta · infra sprint order.
+- **F-011:** [`plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md`](plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md) — beta subpages scope (about, pipeline, release notes + bugfixes).
+- **F-007 polish:** [`plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`](plans/S1/S1.B/feat-f007-walkthrough-polish/README.md) — shelved i18n for tours + `definition_of_done` cross-links.
+
 ### 2026-05-21 — AGENTS.md sync + F-007 walkthrough polish plan
 
 - **AGENTS.md:** Continual-learning updates (Cursor PA / Antigravity orchestration, slice-scope bias, breakpoint handoff) for agent workspaces.
