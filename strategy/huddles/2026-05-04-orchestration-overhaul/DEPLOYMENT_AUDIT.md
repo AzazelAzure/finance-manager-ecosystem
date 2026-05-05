@@ -75,6 +75,11 @@ It runs `manage.py runserver` directly, which is only for Lane A local dev. No i
 ## Action Items
 
 - [ ] VPS orphan cleanup (requires SSH, potentially disruptive — coordinate with HitM)
-- [ ] Add `--no-cache` flag to `rebuild-color`
+- [x] Add `--no-cache` flag to `rebuild-color` (landed 2026-05-04 per `ACTIONS.md`)
 - [ ] Add version endpoint to API (`/api/version/`) returning git SHA
 - [ ] Update script header comments
+
+## 2026-05-05 — Automation follow-up
+
+- [`scripts/sprint_verify.sh`](../../../scripts/sprint_verify.sh) — SSH + remote `scripts/fm_server_beta.sh` rebuild + optional smoke; write logs under `--evidence` for V2 slice proof.
+- [`scripts/jsdevtesting_stack_check.sh`](../../../scripts/jsdevtesting_stack_check.sh) — optional HTTPS probes for `jsdevtesting` / `api-jsdevtesting` (does not replace VPS orphan inventory above).

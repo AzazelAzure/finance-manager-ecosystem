@@ -4,7 +4,7 @@ plan_id: PLAN_CROSS_GUIDED_TOURS_F007_2026-05-05
 status: draft
 priority: P2
 created: 2026-05-05
-updated: 2026-05-04
+updated: 2026-05-21
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f007-guided-walkthroughs/
@@ -44,6 +44,8 @@ deployment:
 standalone_notes: ""
 
 # F-007 — Guided page walkthroughs
+
+**Follow-up polish (HitM 2026-05):** Help-mode extra click, form step-by-step gaps, and **transaction calendar** tours are tracked under **[`../feat-f007-walkthrough-polish/README.md`](../feat-f007-walkthrough-polish/README.md)** with explicit **V0–V3** slices and `scripts/sprint_verify.sh` evidence (automation protocol test).
 
 **Feature idea:** `[../../FEATURE_IDEAS.md](../../FEATURE_IDEAS.md)` (F-007).
 

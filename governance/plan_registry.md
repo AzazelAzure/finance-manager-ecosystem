@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-05-21 (PWA implementation sprint paused in registry; F-012–F-013 registered)
+**Last updated:** 2026-05-21 (F-007 polish plan registered; PWA sprint paused)
 
 ## Update protocol
 
@@ -45,6 +45,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 | `PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-005** savings goals: `plans/S1/S1.B/feat-f005-savings-goals/README.md`. |
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-006** customizable dashboard: `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md`. |
 | `PLAN_CROSS_GUIDED_TOURS_F007_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-007** guided walkthroughs: `plans/S1/S1.B/feat-f007-guided-walkthroughs/README.md`. |
+| `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-007 polish** — help-mode flow, form step-by-step, calendar tour; V0–V3 + `sprint_verify.sh`: `plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`; branch `cursor/s1b/feat/f007-walkthrough-polish`. |
 | `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-009** recurring automation + **source → auto_deduct**: `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md`. |
 | `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-010** export/share + PWA trust; **P1**: `plans/S1/S1.B/feat-f010-export-sharing/README.md`. |
