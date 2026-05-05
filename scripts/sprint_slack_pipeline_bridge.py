@@ -80,6 +80,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import http.client
 import json
 import logging
 import os
@@ -131,18 +132,27 @@ def _slack_api(token: str, method: str, payload: dict[str, Any]) -> dict[str, An
         },
         method="POST",
     )
-    try:
-        with urllib.request.urlopen(req, timeout=90) as resp:
-            body = resp.read().decode("utf-8")
-    except urllib.error.HTTPError as e:
-        err = e.read().decode("utf-8", errors="replace")
-        raise RuntimeError(f"Slack HTTP {e.code}: {err}") from e
-    except OSError as e:
-        raise RuntimeError(f"Slack request failed: {e}") from e
-    out = json.loads(body)
-    if not out.get("ok"):
-        raise RuntimeError(f"Slack API {method} error: {out!r}")
-    return out
+    last_err: Optional[Exception] = None
+    for attempt in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                body = resp.read().decode("utf-8")
+            out = json.loads(body)
+            if not out.get("ok"):
+                raise RuntimeError(f"Slack API {method} error: {out!r}")
+            return out
+        except urllib.error.HTTPError as e:
+            err = e.read().decode("utf-8", errors="replace")
+            raise RuntimeError(f"Slack HTTP {e.code}: {err}") from e
+        except json.JSONDecodeError as e:
+            last_err = e
+        except http.client.IncompleteRead as e:
+            last_err = e
+        except OSError as e:
+            last_err = e
+        if attempt < 2:
+            time.sleep(0.6 * (attempt + 1))
+    raise RuntimeError(f"Slack request failed after retries: {last_err}")
 
 
 def resolve_channel_id(token: str, raw: str) -> str:
@@ -354,8 +364,6 @@ class PipelineBridge:
 
     def _run_reviewer_agent(self, ready: dict[str, Any]) -> Optional[dict[str, Any]]:
         if not self.review_agent_enabled:
-            return None
-        if _truthy(ready.get("requires_hitm", False)):
             return None
         if not self.review_workspace:
             LOG.warning("Review agent enabled but SPRINT_BRIDGE_REVIEW_WORKSPACE unset")
