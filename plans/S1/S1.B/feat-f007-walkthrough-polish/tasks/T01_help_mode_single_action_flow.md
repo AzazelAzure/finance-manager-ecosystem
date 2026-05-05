@@ -29,5 +29,3 @@
 | T01.SL2 | `evidence/T01.SL2_web_build.log`                           |
 | T01.SL3 | `evidence/sprint_verify_<ts>.log` (from sprint_verify run) |
 | T01.SL4 | `evidence/T01.SL4_help_flow.png`                           |
-
-

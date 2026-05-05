@@ -1,0 +1,40 @@
+@CursorPA
+Task Id: F-007
+REPO: finance_manager_web
+WORKSPACE_PATH: ~/agent-workspaces/cursor-executor/finance_manager
+BRANCH: cursor/s1b/feat/f007-walkthrough-polish (already checked out)
+SLICE: T01.SL4 — Browser verify and HitM gate handoff
+
+READ FIRST:
+~/agent-workspaces/cursor-executor/finance_manager/governance/branching_guidelines.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/README.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+
+TASKS:
+
+1. Complete T01.SL4 in `plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md`.
+2. Perform jsdevtesting browser verification for help-mode -> tour flow.
+3. Save visual evidence as `plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/T01.SL4_help_flow.png` (or `.webp`).
+4. Update `runtime_handoff.md` with T01.SL4 V3 evidence row.
+
+FILES TO MODIFY:
+
+- plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+- plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/T01.SL4_help_flow.png
+- plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+
+ACCEPTANCE:
+
+- T01.SL4 checkbox marked complete with artifact path.
+- V3 evidence artifact exists at `evidence/T01.SL4_help_flow.png` (or `.webp`).
+- runtime_handoff includes T01.SL4 row with V3 claim and artifact path.
+- Post completion summary and include one machine-readable line:
+  `SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW","slice_id":"T01.SL4","plan_root":"plans/S1/S1.B/feat-f007-walkthrough-polish/","plan_id":"PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21","repo":"finance_manager_web","branch":"cursor/s1b/feat/f007-walkthrough-polish","commit":"<sha-or-none>","v1_evidence":"T01.SL4 browser verify artifact + runtime_handoff row","verify_tiers":"V3","requires_hitm":true}`
+
+SPEC: sprint-queue-v1
+PLAN_ID: PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21
+PLAN_ROOT: plans/S1/S1.B/feat-f007-walkthrough-polish/
+SLICE_ID: T01.SL4
+VERIFY_TIERS: V3
+RETRY_OF: none
