@@ -263,7 +263,7 @@ Normative checklist for **when a governed feature plan may claim complete** rela
 | **PWA scope class** | Each feature declares **A** (PWA-safe + shipped compatibly) or **B** (PWA-safe, **online-only** — documented in plan scope + user-facing copy). |
 | **SEO** | Rollout close includes SEO gate per **[`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md)**; new public surfaces should include **P0** matrix items **during** the sprint when they touch those files. |
 | **Beta comms (F-011)** | Wedge / pipeline transparency for testers rolls up under **F-011** (landing + subpages). |
-| **`#sprint-queue` (`sprint-queue-v1`)** | Slack posts for Cursor PA → cursor-agent routing use the normative shape in **[`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)** (`@Cursor PA` line 1, `Task Id:` line 2, fixed sections, `BRANCH:` suffix). |
+| **`#sprint-queue` (`sprint-queue-v1`)** | Slack posts for Cursor PA → cursor-agent routing use the normative shape in **[`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)** (`@CursorPA` line 1 — no space; `Task Id:` line 2; fixed sections; `BRANCH:` suffix). |
 
 Sprint **ordering** across F-* plans is set by HitM-led huddle output: **[`strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md`](../strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md)**.
 

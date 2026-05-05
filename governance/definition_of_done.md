@@ -53,7 +53,7 @@ Features that would **break** PWA (SW scope regressions, broken offline core led
 
 ## 5b) `#sprint-queue` (Cursor PA → cursor-agent)
 
-When work is queued to **`#sprint-queue`**, every post **must** follow [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md) (`sprint-queue-v1`): `@Cursor PA` line 1, **`Task Id:`** line 2 (stable intake id), fixed block order, tilde paths, and `BRANCH:` suffix `(already checked out)` / `(checkout required)`. **Do not** fork the spec into per-plan copies — link the governance file and keep plan-local files to **examples + slice order** only.
+When work is queued to **`#sprint-queue`**, every post **must** follow [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md) (`sprint-queue-v1`): **`@CursorPA`** line 1 (no space — `@Cursor PA` breaks the mention), **`Task Id:`** line 2 (stable intake id), fixed block order, tilde paths, and `BRANCH:` suffix `(already checked out)` / `(checkout required)`. **Do not** fork the spec into per-plan copies — link the governance file and keep plan-local files to **examples + slice order** only.
 
 ---
 
