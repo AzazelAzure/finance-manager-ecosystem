@@ -43,7 +43,7 @@ cursor/s1b/feat/quick-pay-bill/t03-wire-transaction-seed
 
 ### 2.1 Task slices (`T##.SL#`) — documentation vs branches
 
-Per `governance/plan_template.md` §1a, plans decompose work into **tasks** (`T##`) and **slices** (`T##.SL#`). **`SL`** avoids ambiguity with **Phase/Stage `S`** notation (`S1`, `S1.B`).
+Per `governance/plan_template.md` §1a, plans decompose work into **tasks** (`T##`) and **slices** (`T##.SL#`). `**SL`** avoids ambiguity with **Phase/Stage `S`** notation (`S1`, `S1.B`).
 
 - **Branches stay at the task level by default:** one branch `…/t##-<slug>` per task; multiple slices merge as **sequential commits or PRs** to that same task branch. Name the active slice in commit messages or PR descriptions (`T03.SL2: transactions offline read`).
 - **Optional finer isolation:** HitM may open a short-lived branch such as `…/t03-sl2-<slug>` if two slices must not share a branch; still document parent task `T03` and slice IDs in the plan README.
@@ -249,11 +249,11 @@ If a feature branch has had no commits for >1 week:
 
 | Concept                                            | File                                                                                            |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Slack gate templates (`pre_deploy`, `pre_cutover`) | `execution_protocols.md` §1                                                         |
-| VPS deployment commands                            | `deployment_protocol.md` §4-§6                                                      |
-| Plan template metadata                             | `plan_template.md`                                                                  |
-| Status transitions                                 | `plan_lifecycle.md`                                                                 |
-| Vocabulary (Sprint types, etc.)                    | `glossary.md`                                                                       |
+| Slack gate templates (`pre_deploy`, `pre_cutover`) | `execution_protocols.md` §1                                                                     |
+| VPS deployment commands                            | `deployment_protocol.md` §4-§6                                                                  |
+| Plan template metadata                             | `plan_template.md`                                                                              |
+| Status transitions                                 | `plan_lifecycle.md`                                                                             |
+| Vocabulary (Sprint types, etc.)                    | `glossary.md`                                                                                   |
 | Incident triage                                    | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
 
 
