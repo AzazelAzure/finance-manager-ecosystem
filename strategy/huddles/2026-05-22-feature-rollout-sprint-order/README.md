@@ -4,6 +4,8 @@
 **Owner:** HitM  
 **Goal:** Lock a **single stack-ranked sprint order** for F-* and infra work so agents, registry, and Cursor automation do not infer conflicting priorities.
 
+**Provenance:** Cursor session `2d3663f0-2e98-4ec6-a2c3-09757db0880d` informed ecosystem definition-of-done tightening and promotion of [`governance/sprint_queue_message_spec_v1.md`](../../../governance/sprint_queue_message_spec_v1.md).
+
 ## Why now
 
 - **PWA** remains open with bugs/QoL gaps — “complete” is blocked until those are honest in registry + plan state.

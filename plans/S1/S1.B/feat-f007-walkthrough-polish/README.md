@@ -87,7 +87,7 @@ Per `[governance/plan_template.md](../../../governance/plan_template.md)` §1a a
 
 ### 4a) Slice catalog (subletting for V0–V3)
 
-Each row is one `**T##.SL#`** checkpoint. Checklist detail and evidence filenames live in the linked task file. **Executor** may self-run **V0/V1** only; **V2/V3** require Reviewer or HitM per `governance/plan_template.md` D5.
+Each row is one **`T##.SL#`** checkpoint. Checklist detail and evidence filenames live in the linked task file. **Executor** may self-run **V0/V1** only; **V2/V3** require Reviewer or HitM per `governance/plan_template.md` D5.
 
 
 | Slice   | Summary                                                | Tiers in slice | Evidence (required)                                        |
@@ -109,7 +109,7 @@ Each row is one `**T##.SL#`** checkpoint. Checklist detail and evidence filename
 | T03.SL4 | Browser: calendar tour screenshot                      | V3             | `evidence/T03.SL4_calendar_tour.png`                       |
 
 
-**Slack intake:** [SLACK_SPRINT_QUEUE.md](./SLACK_SPRINT_QUEUE.md) — `#sprint-queue` posts must start with `@Cursor PA` then `**Task ID:`** (runner requirement for **cursor-agent** workspace routing); see full template there.
+**Slack intake:** [SLACK_SPRINT_QUEUE.md](./SLACK_SPRINT_QUEUE.md) — **`sprint-queue-v1`**: fixed field order; `@Cursor PA` then **`Task ID:`** on lines 1–2; **`BRANCH:`** must end with **`(already checked out)`** or **`(checkout required)`** for queue automation.
 
 ## 4b) Rollout phases by verification tier (V0–V3)
 

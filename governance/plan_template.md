@@ -65,6 +65,8 @@ to:
 
 Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
 
+When queuing executor work via **`#sprint-queue`**, follow **[`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)** (`sprint-queue-v1`); keep plan-local Slack files to **examples + slice order** only.
+
 ## 2) Metadata header (YAML, mandatory)
 
 Place at top of `README.md` between `---` fences.
