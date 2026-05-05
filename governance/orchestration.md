@@ -37,7 +37,7 @@
 | `cursor_pa_slack_visibility.md` | Cursor PA + JSONL outbox vs IDE Slack MCP (automation status). |
 | `definition_of_done.md`     | PWA, localization, SEO, F-011 bars + sprint order huddle link.              |
 | `sprint_queue_message_spec_v1.md` | `#sprint-queue` post shape (`sprint-queue-v1`) + `SPRINT_PIPELINE_JSON` handoffs + bridge runbook (see §Machine-readable pipeline). |
-| `scripts/sprint_slack_pipeline_bridge.py` | Polls Slack: sprint thread `READY_FOR_REVIEW` → `#review-queue` → verdict `PASS` → next slice file or `#hitm-gate`. |
+| `scripts/sprint_slack_pipeline_bridge.py` | Polls Slack + optional `SPRINT_PIPELINE_LOCAL_INBOX` JSONL: `READY_FOR_REVIEW` → `#review-queue` → (default) auto `PASS` when `requires_hitm` is false → next slice file or `#hitm-gate`. |
 | `deployment_protocol.md` | CPPR+D, blue-green, VPS. |
 | `branching_guidelines.md` | Inactive-color feature work; one feature at a time on inactive color (locked 2026-04-30). |
 

@@ -10,21 +10,30 @@ Machine-readable lines (embed in a thread reply under the sprint task, or top-le
   SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW",...}
   SPRINT_PIPELINE_JSON: {"status":"REVIEW_VERDICT",...}
 
-Executor / Cursor PA should append a single-line SPRINT_PIPELINE_JSON when a slice is ready for review.
+Executor / Cursor PA can signal readiness **without** posting in Slack:
 
-Coordination with Cursor PA (`cursor_slack_runner.py`)
--------------------------------------------------------
-Canonical Socket Mode runner (outside this monorepo):
+- Append one line to the file set by **`SPRINT_PIPELINE_LOCAL_INBOX`** (JSONL). Same schema as
+  `READY_FOR_REVIEW` (either raw JSON or `SPRINT_PIPELINE_JSON: {...}`). The bridge drains this
+  file on the **same host** and posts to `#review-queue` like a sprint-thread READY.
 
-  ~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py
+Optional: use **`scripts/sprint_pipeline_emit_ready.py`** from an agent wrapper after exit 0.
 
-At ``~/CursorAgent/headless-cursor-agent/`` (runner repo root): **inbox** ``cursor_slack_inbox.jsonl``,
-**outbox** ``cursor_slack_outbox.jsonl`` — see that script's docstring and ``ROOT / ...`` constants.
+Coordination with Socket Mode runner (`slack_socket_runner.py`)
+----------------------------------------------------------------
+Canonical companion runner (Socket Mode + outbox drain) lives in **mma_creation**:
 
-This bridge uses **Slack Web API polling** only; it does **not** read or write PA inbox/outbox. Run it
-on the **same host** as ``cursor_slack_runner.py`` when you want PA task execution plus automated
-pipeline handoffs; align ``CURSOR_PA_CHANNEL_ALLOWLIST`` / ``CURSOR_PA_BLOCK_CHANNEL_IDS`` with the
-channels this bridge watches. Full layout: ``governance/cursor_pa_slack_visibility.md``.
+  ``~/Documents/mma_creation/local_instance/scripts/slack_socket_runner.py``
+
+When **SPRINT_PIPELINE_BRIDGE_IN_RUNNER** is true and **SPRINT_PIPELINE_LOCAL_INBOX** is set (e.g. in
+``local_instance/.secrets/slack.env`` or ``companion_boot.env``), that runner periodically invokes
+**this script** with ``--once`` so ``sprint_pipeline_emit_ready.py`` lines are drained without a
+separate long-lived ``sprint_slack_pipeline_bridge.py`` process. Optional: **SPRINT_PIPELINE_BRIDGE_SCRIPT**,
+**SPRINT_PIPELINE_BRIDGE_CWD**, **SPRINT_PIPELINE_BRIDGE_INTERVAL_SEC** (default 25).
+
+This bridge uses **Slack Web API polling** and an optional **local JSONL inbox**. You may still run
+``python3 scripts/sprint_slack_pipeline_bridge.py`` standalone on the same host if you prefer. Align
+Slack scopes and channel IDs with ``design_docs/.../12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md`` and
+``governance/cursor_pa_slack_visibility.md`` where applicable.
 
 Environment (required)
 ----------------------
@@ -37,9 +46,13 @@ Environment (optional)
   SPRINT_PIPELINE_HITM_CHANNEL     #hitm-gate — when verdict requires HitM
   SPRINT_PIPELINE_POLL_SEC         Poll interval (default: 25)
   SPRINT_PIPELINE_STATE_FILE       JSON state path (default: <cwd>/.sprint_pipeline_bridge_state.json)
-  SPRINT_BRIDGE_AUTO_PASS_V0       If 1/true: after forwarding READY_FOR_REVIEW with verify_tiers "V0"
-                                   only, immediately post a synthetic PASS verdict (same process)
-                                   so the chain continues without a human reviewer for doc-only slices.
+  SPRINT_PIPELINE_LOCAL_INBOX      If set (tilde-expanded path to a JSONL file), each poll reads new
+                                   lines with READY_FOR_REVIEW — no Slack sprint-thread reply needed.
+  SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM  Default true: after READY, if requires_hitm is false, post
+                                   synthetic PASS and continue the chain (no human #review-queue reply).
+                                   Set to 0/false to require a human verdict for V1+ slices.
+  SPRINT_BRIDGE_AUTO_PASS_V0       Default true: when AUTO_PASS_IF_NON_HITM is false, still auto-PASS
+                                   when verify_tiers is exactly "V0". When NON_HITM is true, this is redundant.
   SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR  Required if READY / VERDICT JSON uses next_queue_message_path;
                                    must be an absolute or tilde path; file paths must resolve under it.
 
@@ -54,7 +67,7 @@ Usage
   export SPRINT_PIPELINE_SPRINT_CHANNEL='#sprint-queue'
   export SPRINT_PIPELINE_REVIEW_CHANNEL='#review-queue'
   export SPRINT_PIPELINE_HITM_CHANNEL='#hitm-gate'
-  export SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR="$HOME/Documents/python/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/pipeline_queue"
+  export SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR="$HOME/Documents/python/finance_manager/plans/pipeline_queue"
   python3 scripts/sprint_slack_pipeline_bridge.py
 
   python3 scripts/sprint_slack_pipeline_bridge.py --dry-run --once   # log actions only, single iteration
@@ -152,6 +165,24 @@ def extract_pipeline_jsons(text: str) -> list[dict[str, Any]]:
     return out
 
 
+def parse_local_inbox_line(line: str) -> list[dict[str, Any]]:
+    """Accept either Slack-style prefix or one raw JSON object per line (executor emit)."""
+    s = line.strip()
+    if not s:
+        return []
+    if s.startswith("SPRINT_PIPELINE_JSON:"):
+        return extract_pipeline_jsons(s)
+    if s.startswith("{"):
+        try:
+            obj = json.loads(s)
+        except json.JSONDecodeError as e:
+            LOG.warning("Bad JSON in local inbox line: %s", e)
+            return []
+        if isinstance(obj, dict):
+            return [obj]
+    return []
+
+
 def _truthy(val: Any) -> bool:
     if isinstance(val, bool):
         return val
@@ -187,6 +218,8 @@ class PipelineBridge:
         state_path: Path,
         poll_sec: float,
         auto_pass_v0: bool,
+        auto_pass_if_non_hitm: bool,
+        local_inbox: Optional[Path],
         next_base: Optional[Path],
         dry_run: bool,
     ) -> None:
@@ -197,6 +230,8 @@ class PipelineBridge:
         self.state_path = state_path
         self.poll_sec = poll_sec
         self.auto_pass_v0 = auto_pass_v0
+        self.auto_pass_if_non_hitm = auto_pass_if_non_hitm
+        self.local_inbox = local_inbox.expanduser().resolve() if local_inbox else None
         self.next_base = next_base.resolve() if next_base else None
         self.dry_run = dry_run
         self.state: dict[str, Any] = {}
@@ -217,6 +252,16 @@ class PipelineBridge:
             self.state["done_keys"] = []
         if "verdict_done_keys" not in self.state:
             self.state["verdict_done_keys"] = []
+        if "local_inbox_done_keys" not in self.state:
+            self.state["local_inbox_done_keys"] = []
+
+    def _should_auto_pass(self, ready: dict[str, Any]) -> bool:
+        if _truthy(ready.get("requires_hitm")):
+            return False
+        if self.auto_pass_if_non_hitm:
+            return True
+        tiers = str(ready.get("verify_tiers", "")).strip().upper()
+        return bool(self.auto_pass_v0 and tiers == "V0")
 
     @staticmethod
     def _verdict_dedupe_key(verdict: dict[str, Any]) -> str:
@@ -302,7 +347,42 @@ class PipelineBridge:
                     break
         self.state["waterline_sprint_reply_ts"] = str(max(max_seen, wl))
 
-    def _handle_ready(self, parent_ts: str, reply_ts: str, ready: dict[str, Any]) -> None:
+    def scan_local_inbox(self) -> None:
+        if not self.local_inbox:
+            return
+        p = self.local_inbox
+        if not p.is_file():
+            return
+        try:
+            raw = p.read_text(encoding="utf-8")
+        except OSError as e:
+            LOG.warning("Local inbox read failed %s: %s", p, e)
+            return
+        for line in raw.splitlines():
+            s = line.strip()
+            if not s:
+                continue
+            for obj in parse_local_inbox_line(s):
+                if str(obj.get("status", "")) != "READY_FOR_REVIEW":
+                    continue
+                slice_id = str(obj.get("slice_id", "")).strip()
+                if not slice_id:
+                    continue
+                key = hashlib.sha256(
+                    json.dumps(obj, sort_keys=True, separators=(",", ":")).encode()
+                ).hexdigest()[:32]
+                if not self._dedupe_add("local_inbox_done_keys", key):
+                    continue
+                self._handle_ready("local-inbox", key, obj, source="local_inbox")
+
+    def _handle_ready(
+        self,
+        parent_ts: str,
+        reply_ts: str,
+        ready: dict[str, Any],
+        *,
+        source: str = "slack_thread",
+    ) -> None:
         slice_id = str(ready.get("slice_id", ""))
         plan_root = str(ready.get("plan_root", ""))
         plan_id = str(ready.get("plan_id", ""))
@@ -312,9 +392,19 @@ class PipelineBridge:
         v1 = str(ready.get("v1_evidence", ""))
         tiers = str(ready.get("verify_tiers", "")).strip()
 
+        if source == "local_inbox":
+            thread_info = (
+                f"*Source:* local machine (`SPRINT_PIPELINE_LOCAL_INBOX`) "
+                f"(ref `{reply_ts}`; no `#sprint-queue` thread correlation)."
+            )
+        else:
+            thread_info = (
+                f"Sprint thread: parent_ts `{parent_ts}` completion reply `{reply_ts}`"
+            )
+
         body = (
             f"*Automated review request*\n"
-            f"Sprint thread: parent_ts `{parent_ts}` completion reply `{reply_ts}`\n"
+            f"{thread_info}\n"
             f"*SLICE_ID:* `{slice_id}`\n"
             f"*PLAN_ROOT:* `{plan_root}`\n"
             f"*PLAN_ID:* `{plan_id}`\n"
@@ -329,18 +419,23 @@ class PipelineBridge:
         LOG.info("Forwarding READY_FOR_REVIEW slice=%s to review channel", slice_id)
         self.post_message(self.review_id, body)
 
-        if self.auto_pass_v0 and tiers.upper() == "V0":
+        if self._should_auto_pass(ready):
+            v2 = (
+                "auto-pass non-HitM slice (SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM)"
+                if self.auto_pass_if_non_hitm
+                else "auto-pass V0 slice (SPRINT_BRIDGE_AUTO_PASS_V0)"
+            )
             verdict = {
                 "status": "REVIEW_VERDICT",
                 "slice_id": slice_id,
                 "verdict": "PASS",
                 "reviewer": "sprint_slack_pipeline_bridge",
                 "requires_hitm": _truthy(ready.get("requires_hitm", False)),
-                "v2_evidence": "auto-pass V0 slice (SPRINT_BRIDGE_AUTO_PASS_V0)",
+                "v2_evidence": v2,
                 "next_queue_message_path": ready.get("next_queue_message_path", ""),
             }
             line = f"SPRINT_PIPELINE_JSON: {json.dumps(verdict, separators=(',', ':'))}"
-            LOG.info("Auto PASS for V0 slice %s", slice_id)
+            LOG.info("Auto PASS slice %s (tiers=%s)", slice_id, tiers or "?")
             self.post_message(self.review_id, line)
             self._process_verdict(verdict)
 
@@ -420,6 +515,7 @@ class PipelineBridge:
         self.post_message(self.sprint_id, nxt)
 
     def run_once(self) -> None:
+        self.scan_local_inbox()
         self.scan_sprint_threads()
         self.scan_review_channel()
         self._save_state()
@@ -458,7 +554,10 @@ def main() -> None:
         if raw_state
         else Path.cwd() / ".sprint_pipeline_bridge_state.json"
     )
-    auto_v0 = _env_bool("SPRINT_BRIDGE_AUTO_PASS_V0", default=False)
+    auto_v0 = _env_bool("SPRINT_BRIDGE_AUTO_PASS_V0", default=True)
+    auto_non = _env_bool("SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM", default=True)
+    raw_inbox = os.environ.get("SPRINT_PIPELINE_LOCAL_INBOX", "").strip()
+    local_inbox = Path(raw_inbox).expanduser() if raw_inbox else None
     raw_base = os.environ.get("SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR", "").strip()
     next_base = Path(raw_base).expanduser() if raw_base else None
 
@@ -470,6 +569,8 @@ def main() -> None:
         state_path=state_path,
         poll_sec=poll,
         auto_pass_v0=auto_v0,
+        auto_pass_if_non_hitm=auto_non,
+        local_inbox=local_inbox,
         next_base=next_base,
         dry_run=args.dry_run,
     )

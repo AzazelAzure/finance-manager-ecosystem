@@ -1,19 +1,19 @@
 # Sprint queue message spec — `sprint-queue-v1`
 
-**Status:** normative (ecosystem). **Origin:** Materialized from Cursor agent session (transcript id `2d3663f0-2e98-4ec6-a2c3-09757db0880d`) + HitM runner requirements; **do not** fork this spec into per-plan copies — link here and extend only via **`sprint-queue-v2`** when that huddle lands.
+**Status:** normative (ecosystem). **Origin:** Materialized from Cursor agent session (transcript id `2d3663f0-2e98-4ec6-a2c3-09757db0880d`) + HitM runner requirements; **do not** fork this spec into per-plan copies — link here and extend only via `**sprint-queue-v2`** when that huddle lands.
 
-**Bridge doc:** [`design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md`](../design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md)  
-**Outbox / PA policy:** [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md)
+**Bridge doc:** `[design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md](../design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md)`  
+**Outbox / PA policy:** `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)`
 
 ---
 
 ## Why this exists
 
-Orchestrators post **one top-level message per slice** to **`#sprint-queue`** so **Cursor PA** routes work to the **cursor-agent / executor** workspace. Without the **`Task Id:`** line in the correct position, the runner may treat the post as **local daemon** intake and create bottlenecks.
+Orchestrators post **one top-level message per slice** to `**#sprint-queue`** so **Cursor PA** routes work to the **cursor-agent / executor** workspace. Without the `**Task Id:`** line in the correct position, the runner may treat the post as **local daemon** intake and create bottlenecks.
 
 ### First-line mention (Slack)
 
-Line 1 **must** be **`@CursorPA`** (no space). In HitM’s workspace, **`@Cursor PA`** (with a space) **does not** resolve to the runner’s user mention, so the ping breaks and tasks may skip the **cursor-agent** queue. The Slack app’s *display* name may still read “Cursor PA”; the **mention handle** for `#sprint-queue` is **`@CursorPA`** unless the runner config documents otherwise.
+Line 1 **must** be `**@CursorPA`** (no space). In HitM’s workspace, `**@Cursor PA**` (with a space) **does not** resolve to the runner’s user mention, so the ping breaks and tasks may skip the **cursor-agent** queue. The Slack app’s *display* name may still read “Cursor PA”; the **mention handle** for `#sprint-queue` is `**@CursorPA`** unless the runner config documents otherwise.
 
 ---
 
@@ -24,9 +24,9 @@ All posts **must** use this **exact block order** (blank line between major sect
 
 | #   | Field              | Rule                                                                                                                                                 |
 | --- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 1   | `@CursorPA`        | Alone on the first line — **no space** (see “First-line mention” above).                                                                                |
+| 1   | `@CursorPA`        | Alone on the first line — **no space** (see “First-line mention” above).                                                                             |
 | 2   | `Task Id:`         | **Second line always.** Stable feature / intake id (e.g. `F-007`). Without this line, the runner does **not** treat the message as a workspace task. |
-| 3   | `REPO:`            | Sub-repo name: `finance_manager_web` \| `finance_manager_api` \| `finance_manager_cli` \| etc.                                                      |
+| 3   | `REPO:`            | Sub-repo name: `finance_manager_web` | `finance_manager_api` | `finance_manager_cli` | etc.                                                          |
 | 4   | `WORKSPACE_PATH:`  | Executor **tilde** path to the **checkout root for that REPO** (not the monorepo parent unless REPO is parent).                                      |
 | 5   | `BRANCH:`          | Git branch name **plus** a **Branch suffix** (below). No bare branch.                                                                                |
 | 6   | `SLICE:`           | One line: plan slice id + em dash + short title, e.g. `T00.SL1 — Protocol acceptance`.                                                               |
@@ -56,7 +56,7 @@ The `BRANCH:` line **must** end with one of these parentheticals:
 
 ## Optional footer metadata (after `ACCEPTANCE:`)
 
-Parsers may ignore unknown keys. Include **`SPEC: sprint-queue-v1`** when using a footer block.
+Parsers may ignore unknown keys. Include `**SPEC: sprint-queue-v1`** when using a footer block.
 
 ```text
 SPEC: sprint-queue-v1
@@ -99,7 +99,7 @@ ACCEPTANCE:
 - Evidence paths when V1+
 ```
 
-**`WORKSPACE_PATH`:** Must match the **executor** layout Cursor PA expects (example shows web sub-repo root).
+`**WORKSPACE_PATH`:** Must match the **executor** layout Cursor PA expects (example shows web sub-repo root).
 
 ---
 
@@ -121,19 +121,19 @@ The Slack MCP is often **not** in this repo. Register from **user-level** Cursor
 
 Search under `~/.cursor/plugins/cache/cursor-public/slack/` if the hash changes.
 
-Cursor PA **Socket / outbox** remains the durable automation path; see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md).
+Cursor PA **Socket / outbox** remains the durable automation path; see `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)`.
 
 ---
 
 ## Shelved: `sprint-queue-v2` (MCP + channel/thread policy)
 
-**Not in v1.** Letting cursor-agents use Slack MCP (or equivalent) to **dictate** channels and threads (sprint vs review vs status) needs runner support, auth review, and a spec bump — tracked in [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md).
+**Not in v1.** Letting cursor-agents use Slack MCP (or equivalent) to **dictate** channels and threads (sprint vs review vs status) needs runner support, auth review, and a spec bump — tracked in `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)`.
 
 ---
 
 ## Worked examples (plan-local)
 
-F-007 polish includes a **filled T00.SL1** example and ordering notes: [`plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md`](../plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md).
+F-007 polish includes a **filled T00.SL1** example and ordering notes: `[plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md](../plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md)`.
 
 ---
 
@@ -145,27 +145,29 @@ F-007 polish includes a **filled T00.SL1** example and ordering notes: [`plans/S
 
 ## Pipeline continuity — intake vs automation
 
-**`sprint-queue-v1` standardizes intake** (top-level `#sprint-queue` posts). **Continuation** (review → next slice → HitM) is driven by either **manual** posts or the **in-repo bridge** below.
+`**sprint-queue-v1` standardizes intake** (top-level `#sprint-queue` posts). **Continuation** (review → next slice → HitM) is driven by either **manual** posts or the **in-repo bridge** below.
 
 ### In-repo automation: `scripts/sprint_slack_pipeline_bridge.py`
 
 Long-lived poller (Slack Web API, same token family as other finance_manager Slack scripts):
 
-1. Watches **thread replies** in `#sprint-queue` for a **single line** `SPRINT_PIPELINE_JSON: {...}` with `"status":"READY_FOR_REVIEW"` (see §Machine-readable pipeline).
-2. Posts a formatted handoff to **`#review-queue`**.
-3. Watches **`#review-queue`** for `SPRINT_PIPELINE_JSON` with `"status":"REVIEW_VERDICT"`. On **`PASS`**:
-   - If `requires_hitm` is true → posts a short request to **`#hitm-gate`** (HitM verifies V3 / production — **human gate**).
-   - Else if `next_queue_message_path` points to a file under `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` → posts that file’s **full text** as the **next** top-level `#sprint-queue` message (must already match `sprint-queue-v1`).
+1. Watches `**READY_FOR_REVIEW`** from either:
+  - **thread replies** in `#sprint-queue` containing a line `SPRINT_PIPELINE_JSON: {...}`, or
+  - `**SPRINT_PIPELINE_LOCAL_INBOX`** — a JSONL file on the **same machine** as the bridge (one compact JSON object per line, same fields as below). Use this when the executor and bridge are co-located so nobody has to paste READY into Slack.
+2. Posts a formatted handoff to `**#review-queue`**.
+3. Watches `**#review-queue**` for `SPRINT_PIPELINE_JSON` with `"status":"REVIEW_VERDICT"`. On `**PASS**`:
+  - If `requires_hitm` is true → posts a short request to `**#hitm-gate**` (HitM verifies V3 / production — **human gate**).
+  - Else if `next_queue_message_path` points to a file under `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` → posts that file’s **full text** as the **next** top-level `#sprint-queue` message (must already match `sprint-queue-v1`).
 
-Optional **`SPRINT_BRIDGE_AUTO_PASS_V0=1`:** when `verify_tiers` is exactly `V0`, the bridge posts a synthetic **PASS** verdict so doc-only slices advance without a separate reviewer process (still **no** V2/V3 substitute — set `requires_hitm: true` in READY JSON when HitM must verify).
+Default automation on the bridge host: `**SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM`** is **on** unless set to `0`/`false` — when `requires_hitm` is **false** in `READY_FOR_REVIEW`, the bridge posts a synthetic **PASS** and continues the chain without a human typing a verdict in `#review-queue`. Set `**SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM=0`** when you want human review for V1+ slices; you can still use `**SPRINT_BRIDGE_AUTO_PASS_V0=1**` alone for doc-only auto-advance when non-HitM auto-pass is off. `**requires_hitm: true**` still routes **PASS** to `**#hitm-gate`** (human gate — not auto-skipped).
 
-Runbook: script docstring + env vars. **MCP** in Cursor is **not** a substitute for this daemon (IDE-bound); run the script on the host that holds `SLACK_BOT_TOKEN`.
+Runbook: script docstring + env vars. Point **`SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`** at the shared **`plans/pipeline_queue/`** directory in the monorepo (not under a single feature plan) so multiple phases can enqueue next-slice bodies without path churn. **MCP** in Cursor is **not** a substitute for this daemon (IDE-bound); run the script on the host that holds `SLACK_BOT_TOKEN`.
 
-**Same host as Cursor PA:** Socket Mode intake lives in **`~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py`** with inbox/outbox at that repo root (`cursor_slack_inbox.jsonl`, `cursor_slack_outbox.jsonl`) — see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md) §Runtime layout. The bridge **complements** that runner; it does not read PA inbox/outbox.
+**Same host as Cursor PA:** Socket Mode intake lives in `**~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py`** with inbox/outbox at that repo root (`cursor_slack_inbox.jsonl`, `cursor_slack_outbox.jsonl`) — see `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)` §Runtime layout. The bridge **complements** that runner; it does not read PA inbox/outbox.
 
 Per **[relay contract § Phased Rollout](../design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md)** — Phase 1 manual envelopes remain valid; the bridge is the **default** automation path in this repo for Web-API handoffs until PA absorbs the same graph.
 
-See also [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md) §**Sprint pipeline: what PA does not do yet** (updated to reference the bridge).
+See also `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)` §**Sprint pipeline: what PA does not do yet** (updated to reference the bridge).
 
 ---
 
@@ -179,19 +181,21 @@ Embed **exactly one JSON object per line** (no pretty-printed multi-line JSON). 
 
 Posted as a **thread reply** under the active sprint task in `#sprint-queue` when the slice is ready for review:
 
-| Field | Required | Notes |
-|--------|-----------|--------|
-| `status` | yes | literal `READY_FOR_REVIEW` |
-| `slice_id` | yes | e.g. `T00.SL1` |
-| `plan_root` | yes | repo-relative, e.g. `plans/S1/S1.B/feat-f007-walkthrough-polish/` |
-| `plan_id` | recommended | e.g. `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21` |
-| `repo` | yes | e.g. `finance_manager_web` |
-| `branch` | yes | git branch name |
-| `commit` | yes | sha or `none` |
-| `v1_evidence` | yes | free text; paths, log names, or “doc-only” |
-| `verify_tiers` | yes | e.g. `V0`, `V1`, `V1,V2` (bridge auto-pass only when value is exactly `V0` and env enabled) |
-| `requires_hitm` | no | if true, PASS routes to `#hitm-gate` |
-| `next_queue_message_path` | no | file name **relative to** `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` (e.g. `next_t00_sl2.txt`) — file content is the **next** sprint-queue top-level message |
+
+| Field                     | Required    | Notes                                                                                                                                                  |
+| ------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `status`                  | yes         | literal `READY_FOR_REVIEW`                                                                                                                             |
+| `slice_id`                | yes         | e.g. `T00.SL1`                                                                                                                                         |
+| `plan_root`               | yes         | repo-relative, e.g. `plans/S1/S1.B/feat-f007-walkthrough-polish/`                                                                                      |
+| `plan_id`                 | recommended | e.g. `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21`                                                                                                   |
+| `repo`                    | yes         | e.g. `finance_manager_web`                                                                                                                             |
+| `branch`                  | yes         | git branch name                                                                                                                                        |
+| `commit`                  | yes         | sha or `none`                                                                                                                                          |
+| `v1_evidence`             | yes         | free text; paths, log names, or “doc-only”                                                                                                             |
+| `verify_tiers`            | yes         | e.g. `V0`, `V1`, `V1,V2` (bridge auto-pass only when value is exactly `V0` and env enabled)                                                            |
+| `requires_hitm`           | no          | if true, PASS routes to `#hitm-gate`                                                                                                                   |
+| `next_queue_message_path` | no          | file name **relative to** `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` (e.g. `next_t00_sl2.txt`) — file content is the **next** sprint-queue top-level message |
+
 
 Example line:
 
@@ -201,15 +205,17 @@ Example line:
 
 Posted as a **top-level** or threaded message in `#review-queue`:
 
-| Field | Required | Notes |
-|--------|-----------|--------|
-| `status` | yes | `REVIEW_VERDICT` |
-| `slice_id` | yes | |
-| `verdict` | yes | `PASS` or `FAIL` |
-| `reviewer` | recommended | id or handle |
-| `requires_hitm` | yes for PASS routing | if true → `#hitm-gate` |
-| `v2_evidence` | recommended | text or `n/a` for V0-only |
-| `next_queue_message_path` | conditional | required for PASS → next sprint when `requires_hitm` is false |
+
+| Field                     | Required             | Notes                                                         |
+| ------------------------- | -------------------- | ------------------------------------------------------------- |
+| `status`                  | yes                  | `REVIEW_VERDICT`                                              |
+| `slice_id`                | yes                  |                                                               |
+| `verdict`                 | yes                  | `PASS` or `FAIL`                                              |
+| `reviewer`                | recommended          | id or handle                                                  |
+| `requires_hitm`           | yes for PASS routing | if true → `#hitm-gate`                                        |
+| `v2_evidence`             | recommended          | text or `n/a` for V0-only                                     |
+| `next_queue_message_path` | conditional          | required for PASS → next sprint when `requires_hitm` is false |
+
 
 On **FAIL**, the bridge does not post the next slice; fix work and emit a new `READY_FOR_REVIEW` from the sprint thread when ready.
 
@@ -233,4 +239,4 @@ READY_FOR: <reviewer identity or role, e.g. antigravity-reviewer | HitM>
 SPRINT_THREAD: <optional link to #sprint-queue parent message for correlation>
 ```
 
-For **full automation** with `sprint_slack_pipeline_bridge.py`, still append a **`SPRINT_PIPELINE_JSON`** `READY_FOR_REVIEW` line in the sprint thread so the bridge always fires.
+For **full automation** with `sprint_slack_pipeline_bridge.py`, either append `**SPRINT_PIPELINE_JSON`** `READY_FOR_REVIEW` in the sprint **thread**, or append the same JSON (one object per line) to `**SPRINT_PIPELINE_LOCAL_INBOX`** and run `[scripts/sprint_pipeline_emit_ready.py](../scripts/sprint_pipeline_emit_ready.py)` from the executor wrapper when the slice completes.
