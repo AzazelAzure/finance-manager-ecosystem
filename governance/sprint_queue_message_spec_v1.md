@@ -1,15 +1,15 @@
 # Sprint queue message spec — `sprint-queue-v1`
 
-**Status:** normative (ecosystem). **Origin:** Materialized from Cursor agent session (transcript id `2d3663f0-2e98-4ec6-a2c3-09757db0880d`) + HitM runner requirements; **do not** fork this spec into per-plan copies — link here and extend only via `**sprint-queue-v2`** when that huddle lands.
+**Status:** normative (ecosystem). **Origin:** Materialized from Cursor agent session (transcript id `2d3663f0-2e98-4ec6-a2c3-09757db0880d`) + HitM runner requirements; **do not** fork this spec into per-plan copies — link here and extend only via **`sprint-queue-v2`** when that huddle lands.
 
-**Bridge doc:** `[design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md](../design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md)`  
-**Outbox / PA policy:** `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)`
+**Bridge doc:** [`design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md`](../design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md)  
+**Outbox / PA policy:** [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md)
 
 ---
 
 ## Why this exists
 
-Orchestrators post **one top-level message per slice** to `**#sprint-queue`** so **Cursor PA** routes work to the **cursor-agent / executor** workspace. Without the `**Task Id:`** line in the correct position, the runner may treat the post as **local daemon** intake and create bottlenecks.
+Orchestrators post **one top-level message per slice** to **`#sprint-queue`** so **Cursor PA** routes work to the **cursor-agent / executor** workspace. Without the **`Task Id:`** line in the correct position, the runner may treat the post as **local daemon** intake and create bottlenecks.
 
 ### First-line mention (Slack)
 
@@ -26,7 +26,7 @@ All posts **must** use this **exact block order** (blank line between major sect
 | --- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | `@CursorPA`        | Alone on the first line — **no space** (see “First-line mention” above).                                                                                |
 | 2   | `Task Id:`         | **Second line always.** Stable feature / intake id (e.g. `F-007`). Without this line, the runner does **not** treat the message as a workspace task. |
-| 3   | `REPO:`            | Sub-repo name: `finance_manager_web`                                                                                                                 |
+| 3   | `REPO:`            | Sub-repo name: `finance_manager_web` \| `finance_manager_api` \| `finance_manager_cli` \| etc.                                                      |
 | 4   | `WORKSPACE_PATH:`  | Executor **tilde** path to the **checkout root for that REPO** (not the monorepo parent unless REPO is parent).                                      |
 | 5   | `BRANCH:`          | Git branch name **plus** a **Branch suffix** (below). No bare branch.                                                                                |
 | 6   | `SLICE:`           | One line: plan slice id + em dash + short title, e.g. `T00.SL1 — Protocol acceptance`.                                                               |
@@ -56,7 +56,7 @@ The `BRANCH:` line **must** end with one of these parentheticals:
 
 ## Optional footer metadata (after `ACCEPTANCE:`)
 
-Parsers may ignore unknown keys. Include `**SPEC: sprint-queue-v1`** when using a footer block.
+Parsers may ignore unknown keys. Include **`SPEC: sprint-queue-v1`** when using a footer block.
 
 ```text
 SPEC: sprint-queue-v1
@@ -99,7 +99,7 @@ ACCEPTANCE:
 - Evidence paths when V1+
 ```
 
-`**WORKSPACE_PATH`:** Must match the **executor** layout Cursor PA expects (example shows web sub-repo root).
+**`WORKSPACE_PATH`:** Must match the **executor** layout Cursor PA expects (example shows web sub-repo root).
 
 ---
 
@@ -121,19 +121,19 @@ The Slack MCP is often **not** in this repo. Register from **user-level** Cursor
 
 Search under `~/.cursor/plugins/cache/cursor-public/slack/` if the hash changes.
 
-Cursor PA **Socket / outbox** remains the durable automation path; see `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)`.
+Cursor PA **Socket / outbox** remains the durable automation path; see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md).
 
 ---
 
 ## Shelved: `sprint-queue-v2` (MCP + channel/thread policy)
 
-**Not in v1.** Letting cursor-agents use Slack MCP (or equivalent) to **dictate** channels and threads (sprint vs review vs status) needs runner support, auth review, and a spec bump — tracked in `[cursor_pa_slack_visibility.md](./cursor_pa_slack_visibility.md)`.
+**Not in v1.** Letting cursor-agents use Slack MCP (or equivalent) to **dictate** channels and threads (sprint vs review vs status) needs runner support, auth review, and a spec bump — tracked in [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md).
 
 ---
 
 ## Worked examples (plan-local)
 
-F-007 polish includes a **filled T00.SL1** example and ordering notes: `[plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md](../plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md)`.
+F-007 polish includes a **filled T00.SL1** example and ordering notes: [`plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md`](../plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md).
 
 ---
 
