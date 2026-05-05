@@ -28,12 +28,13 @@ Each outbox line (or Slack post derived from it) should be easy to grep:
 
 [`scripts/cursor_headless_slack_agent.py`](../scripts/cursor_headless_slack_agent.py) is a **separate** Web-API poller pattern in this workspace. It is **not** required when Cursor PA + outbox is the operational standard.
 
-## Sprint pipeline: what PA does not do yet (2026-05-06)
+## Sprint pipeline: automation vs PA (2026-05-06)
 
-- **`sprint-queue-v1`** (this repo’s [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)) defines **only** how work **enters** `#sprint-queue`. It does **not** require or implement automatic posting to **`#review-queue`**, reviewer assignment, merge, or the **next** slice.
-- **Phase 1 (current)** per **[`14_Inter_Agent_Message_Relay_and_Ownership_Contract.md`](../design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md)** §Phased Rollout: after an executor finishes, someone must post a **top-level** **`#review-queue`** completion envelope (see **Pipeline continuity** in `sprint_queue_message_spec_v1.md`). Thread replies on the sprint task are **not** a substitute for that post unless your runner explicitly bridges them.
-- **Closing the loop in automation** means extending **Cursor PA** (or a dedicated small service) to emit `#review-queue` (+ optional next `#sprint-queue`) on success — not something the finance_manager repo ships as a finished daemon today.
-- **`scripts/antigravity_slack_runner.py`** is **deprecated** for new sprint orchestration; do not rely on it as the primary review path without an explicit HitM decision to revive Phase-2 pollers.
+- **`sprint-queue-v1`** ([`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)) defines **intake** to `#sprint-queue`.
+- **In-repo bridge:** [`scripts/sprint_slack_pipeline_bridge.py`](../scripts/sprint_slack_pipeline_bridge.py) polls Slack and automates **`#sprint-queue` thread (READY JSON) → `#review-queue` → (optional) next `#sprint-queue` file or `#hitm-gate`**. Run it where `SLACK_BOT_TOKEN` lives; it complements PA intake and does **not** replace PA Socket Mode for executor prompting unless you consolidate hosts.
+- **HitM gate:** when `requires_hitm` is true in the machine-readable verdict path, the bridge posts to **`#hitm-gate`** — human verification is **intentionally** not automated.
+- **Cursor PA** may later duplicate or supersede the bridge’s graph inside `~/CursorAgent/headless-cursor-agent/`; until then, use the bridge + `SPRINT_PIPELINE_JSON` lines per the sprint spec.
+- **`scripts/antigravity_slack_runner.py`** remains **deprecated** for new sprint orchestration.
 
 ## Shelved (future versioning)
 

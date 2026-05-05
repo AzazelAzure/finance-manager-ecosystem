@@ -74,10 +74,13 @@ Adjust `WORKSPACE_PATH` / `BRANCH` suffix to match the executor’s actual check
 
 ## After a slice completes (review + next slice)
 
-Completing work in a **`#sprint-queue`** thread does **not** auto-route to a code reviewer or enqueue the next slice. Per [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint_queue_message_spec_v1.md) **Pipeline continuity** and [`governance/cursor_pa_slack_visibility.md`](../../../../governance/cursor_pa_slack_visibility.md):
+**Automated (default):** run [`scripts/sprint_slack_pipeline_bridge.py`](../../../../scripts/sprint_slack_pipeline_bridge.py) with `SLACK_BOT_TOKEN` and channel envs. In the **sprint task thread**, append one line:
 
-1. Post a **top-level** message to **`#review-queue`** with completion evidence (V1 or doc-only summary) and `SLICE_ID` / `PLAN_ROOT` / `COMMIT` as in the governance spec.
-2. After review **PASS**, post the next **`#sprint-queue`** slice (or `#hitm-gate` when V3 is required) — still manual or PA-extended until automation is implemented.
+`SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW",...}`
+
+per [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint_queue_message_spec_v1.md) §**Machine-readable pipeline**. Optional next-slice file under [`evidence/pipeline_queue/`](./evidence/pipeline_queue/README.md).
+
+**Manual fallback:** top-level `#review-queue` prose envelope + verdict, same as before.
 
 ## Ordering
 
