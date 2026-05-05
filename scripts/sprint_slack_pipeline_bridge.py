@@ -84,6 +84,7 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
 from pathlib import Path
 from typing import Any, Optional
@@ -99,13 +100,17 @@ def _env_bool(name: str, default: bool = False) -> bool:
 
 def _slack_api(token: str, method: str, payload: dict[str, Any]) -> dict[str, Any]:
     url = f"https://slack.com/api/{method}"
-    data = json.dumps(payload).encode("utf-8")
+    # Slack Web API methods are reliably accepted as form-encoded payloads.
+    # Some methods (notably conversations.replies) can reject JSON bodies as
+    # missing required args even when fields are present.
+    form_payload = {k: v for k, v in payload.items() if v is not None}
+    data = urllib.parse.urlencode(form_payload).encode("utf-8")
     req = urllib.request.Request(
         url,
         data=data,
         headers={
             "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json; charset=utf-8",
+            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
         },
         method="POST",
     )
