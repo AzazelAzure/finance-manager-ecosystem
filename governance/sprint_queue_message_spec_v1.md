@@ -161,7 +161,9 @@ Optional **`SPRINT_BRIDGE_AUTO_PASS_V0=1`:** when `verify_tiers` is exactly `V0`
 
 Runbook: script docstring + env vars. **MCP** in Cursor is **not** a substitute for this daemon (IDE-bound); run the script on the host that holds `SLACK_BOT_TOKEN`.
 
-Per **[relay contract § Phased Rollout](../design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md)** — Phase 1 manual envelopes remain valid; the bridge is the **default** automation path in this repo until Cursor PA implements the same graph out-of-repo.
+**Same host as Cursor PA:** Socket Mode intake lives in **`~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py`** with inbox/outbox at that repo root (`cursor_slack_inbox.jsonl`, `cursor_slack_outbox.jsonl`) — see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md) §Runtime layout. The bridge **complements** that runner; it does not read PA inbox/outbox.
+
+Per **[relay contract § Phased Rollout](../design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md)** — Phase 1 manual envelopes remain valid; the bridge is the **default** automation path in this repo for Web-API handoffs until PA absorbs the same graph.
 
 See also [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md) §**Sprint pipeline: what PA does not do yet** (updated to reference the bridge).
 
