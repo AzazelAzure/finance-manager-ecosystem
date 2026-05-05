@@ -10,6 +10,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **Huddle:** [`strategy/huddles/2026-05-22-feature-rollout-sprint-order/`](strategy/huddles/2026-05-22-feature-rollout-sprint-order/) — README (incl. transcript provenance), talking points, `DECISIONS`/`ACTIONS` stubs for product · beta · infra sprint order.
 - **F-011:** [`plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md`](plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md) — beta subpages scope (about, pipeline, release notes + bugfixes).
 - **F-007 polish:** [`plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`](plans/S1/S1.B/feat-f007-walkthrough-polish/README.md) — shelved i18n for tours + `definition_of_done` cross-links; [`SLACK_SPRINT_QUEUE.md`](plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md) — examples + slice order (spec lives under `governance/`). **Design:** [`design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md`](design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md) — `#sprint-queue` pointers aligned to governance + `Task Id:` spelling.
+- **design_docs submodule:** bumped to **`finance-manager-design-docs` `main` @ `b7fdab3`** (GitHub merge of bridge PR #19) so clones/rebases track the same Slack sprint-queue contract as `governance/sprint_queue_message_spec_v1.md`.
 
 ### 2026-05-21 — AGENTS.md sync + F-007 walkthrough polish plan
 
