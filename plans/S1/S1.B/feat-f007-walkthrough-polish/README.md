@@ -109,7 +109,7 @@ Each row is one **`T##.SL#`** checkpoint. Checklist detail and evidence filename
 | T03.SL4 | Browser: calendar tour screenshot                      | V3             | `evidence/T03.SL4_calendar_tour.png`                       |
 
 
-**Slack intake:** [SLACK_SPRINT_QUEUE.md](./SLACK_SPRINT_QUEUE.md) — **`sprint-queue-v1`**: fixed field order; `@Cursor PA` then **`Task ID:`** on lines 1–2; **`BRANCH:`** must end with **`(already checked out)`** or **`(checkout required)`** for queue automation.
+**Slack intake:** [SLACK_SPRINT_QUEUE.md](./SLACK_SPRINT_QUEUE.md) — **`sprint-queue-v1`** per [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint_queue_message_spec_v1.md): **`@CursorPA`** line 1 (no space; `@Cursor PA` breaks the ping), **`Task Id:`** line 2; **`BRANCH:`** must end with **`(already checked out)`** or **`(checkout required)`**.
 
 ## 4b) Rollout phases by verification tier (V0–V3)
 

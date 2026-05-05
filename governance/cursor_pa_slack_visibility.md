@@ -2,12 +2,32 @@
 
 *Aligned with 2026-05-04 orchestration huddle reconciliation (2026-05-05).*
 
+## Runtime layout (Cursor PA checkout)
+
+Canonical Socket Mode runner (read this file on the PA host for exact behavior):
+
+**`~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py`**
+
+Repo root for that install: **`~/CursorAgent/headless-cursor-agent/`** (`ROOT = parent of scripts/` in the runner).
+
+| Artifact | Path (relative to that root) | Role |
+|----------|-------------------------------|------|
+| **Inbox** | `cursor_slack_inbox.jsonl` | Queued inbound Slack work (legacy / compatibility); runner **drains in-process** after Socket events — see runner docstring. |
+| **Outbox** | `cursor_slack_outbox.jsonl` | Outbound lines for Slack; runner drains after agent replies (compatibility / inspection). |
+| **Agent** | `bin/agent-prompt` | Invoked by the runner to execute queued tasks. |
+
+Tokens / env file: typically **`~/.secrets/mma_companion/slack.env`** (see runner docstring: `SLACK_BOT_TOKEN`, `SLACK_APP_TOKEN`, optional `SLACK_ENV_FILE`).
+
+Older docs sometimes said `slack_outbox.jsonl` — **Cursor PA headless stack uses the names above** unless your checkout has been customized.
+
+**In-repo sprint bridge:** [`scripts/sprint_slack_pipeline_bridge.py`](../scripts/sprint_slack_pipeline_bridge.py) uses the **same** `SLACK_BOT_TOKEN` family but **polls** `#sprint-queue` / `#review-queue` via Web API — it does **not** replace Socket Mode intake. Run it **alongside** `cursor_slack_runner.py` on the same host when you want automated slice handoffs; keep **channel allowlists** (`CURSOR_PA_CHANNEL_ALLOWLIST` / `CURSOR_PA_BLOCK_CHANNEL_IDS`) coherent so PA and the bridge do not fight over unrelated traffic.
+
 ## What is canonical
 
 **Slack status during production and sprint automation** is owned by **Cursor PA** on HitM’s machine (repository is **outside** this monorepo; paths use `~`, not machine-specific absolutes in shared docs).
 
-- **Runner bot** uses the Slack Web API with a bot token (long-lived process).
-- **Automation and agents** append **structured JSON lines** to the runner’s **outbox JSONL file** (commonly named `slack_outbox.jsonl` — confirm the exact filename in your Cursor PA checkout). The runner **drains** that file and **posts to Slack** so HitM stays in the loop without opening the IDE.
+- **Runner bot** uses Slack **Socket Mode** in `cursor_slack_runner.py` (see table above).
+- **Automation and agents** may append lines to **`cursor_slack_outbox.jsonl`** for the runner to post; prefer the runner’s own paths over ad-hoc filenames.
 
 ## What is not the same thing
 
@@ -27,6 +47,14 @@ Each outbox line (or Slack post derived from it) should be easy to grep:
 ## In-repo references (optional)
 
 [`scripts/cursor_headless_slack_agent.py`](../scripts/cursor_headless_slack_agent.py) is a **separate** Web-API poller pattern in this workspace. It is **not** required when Cursor PA + outbox is the operational standard.
+
+## Sprint pipeline: automation vs PA (2026-05-06)
+
+- **`sprint-queue-v1`** ([`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)) defines **intake** to `#sprint-queue`.
+- **In-repo bridge:** [`scripts/sprint_slack_pipeline_bridge.py`](../scripts/sprint_slack_pipeline_bridge.py) polls Slack and automates **`#sprint-queue` thread (READY JSON) → `#review-queue` → (optional) next `#sprint-queue` file or `#hitm-gate`**. Run it where `SLACK_BOT_TOKEN` lives; it complements PA intake and does **not** replace PA Socket Mode for executor prompting unless you consolidate hosts.
+- **HitM gate:** when `requires_hitm` is true in the machine-readable verdict path, the bridge posts to **`#hitm-gate`** — human verification is **intentionally** not automated.
+- **Evolving PA:** logic that mirrors the bridge can move into `cursor_slack_runner.py` / headless repo over time; until then, run **bridge + runner** together per §Runtime layout.
+- **`scripts/antigravity_slack_runner.py`** remains **deprecated** for new sprint orchestration.
 
 ## Shelved (future versioning)
 
