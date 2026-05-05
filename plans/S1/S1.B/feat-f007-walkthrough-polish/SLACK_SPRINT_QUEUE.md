@@ -69,3 +69,16 @@ RETRY_OF: none
 ```
 
 Adjust `WORKSPACE_PATH` / `BRANCH` suffix to match the executor’s actual checkout before posting.
+
+---
+
+## After a slice completes (review + next slice)
+
+Completing work in a **`#sprint-queue`** thread does **not** auto-route to a code reviewer or enqueue the next slice. Per [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint_queue_message_spec_v1.md) **Pipeline continuity** and [`governance/cursor_pa_slack_visibility.md`](../../../../governance/cursor_pa_slack_visibility.md):
+
+1. Post a **top-level** message to **`#review-queue`** with completion evidence (V1 or doc-only summary) and `SLICE_ID` / `PLAN_ROOT` / `COMMIT` as in the governance spec.
+2. After review **PASS**, post the next **`#sprint-queue`** slice (or `#hitm-gate` when V3 is required) — still manual or PA-extended until automation is implemented.
+
+## Ordering
+
+Post slices in execution order (README §4a): **T00.SL1 → T00.SL2 → T01.SL1 → …** One message per slice.

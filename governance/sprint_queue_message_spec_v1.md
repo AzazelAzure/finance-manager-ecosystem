@@ -140,3 +140,47 @@ F-007 polish includes a **filled T00.SL1** example and ordering notes: [`plans/S
 ## Ordering rule
 
 **One message per slice** unless Cursor PA documents an explicit batching exception; order follows the plan README slice catalog / execution order.
+
+---
+
+## Pipeline continuity — why review and “next task” do not auto-fire
+
+**`sprint-queue-v1` standardizes only intake** (the top-level post Cursor PA / cursor-agent picks up from **`#sprint-queue`**). It does **not**, by itself, enqueue code review, V2 deploy smoke, V3 browser proof, or the **next** slice.
+
+Per **[`design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md`](../design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md)** §**Phased Rollout**:
+
+| Phase | What runs today | Review / continuation |
+|--------|-----------------|------------------------|
+| **Phase 1 (current)** | Tasks land in `#sprint-queue`; executor completes work and may reply **in thread**. | **Executor (or HitM / orchestrator) must post a new top-level message to `#review-queue`** with V1 evidence and slice metadata. Reviewer reacts there. **Next** `#sprint-queue` slice is a **separate** top-level post — not emitted automatically by this repo. |
+| **Phase 2 (designed, not turnkey)** | Optional `scripts/cursor_headless_slack_agent.py` polling `#sprint-queue`; optional second `antigravity_slack_runner.py` on `#review-queue`. | Antigravity runner is **deprecated** for new sprint traffic; Cursor PA + outbox is canonical — **extend PA** if you want the same process to drain completion and post `#review-queue`. |
+| **Phase 3 (future)** | Structured relay + automated slice progression when V-tiers allow. | See relay contract §**Phase 3**. |
+
+### What to fix (concrete)
+
+1. **Cursor PA** (`~/CursorAgent/headless-cursor-agent/`): on successful slice completion, **post** (or outbox-drain) a **`#review-queue`** message using the **Slice completion** envelope in the relay contract (`SLICE`, `PLAN`, `COMMIT`, `V1_EVIDENCE`, `READY_FOR`, …). Optionally **enqueue** the next `sprint-queue-v1` top-level when review returns **PASS** (or gate that behind human ack).
+2. **Until PA does that:** HitM or orchestrator performs the **`#review-queue`** post **manually** after reading the executor thread, then tracks reviewer verdict and posts the next slice or `#hitm-gate` per relay rules.
+3. **Do not assume** IDE Slack MCP or in-repo pollers close the loop — they are orthogonal to PA Socket Mode intake.
+
+See also [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md) §**Sprint pipeline: what PA does not do yet**.
+
+---
+
+## `#review-queue` — completion envelope (normative handoff)
+
+Use a **top-level** post (not only a thread under `#sprint-queue`) so a reviewer or Phase-2 poller can own the handoff. Align fields with **[relay contract § Message format](../design_docs/40_System_Design/14_Inter_Agent_Message_Relay_and_Ownership_Contract.md)**; minimal set:
+
+```text
+SLICE_ID: T00.SL1
+PLAN_ROOT: plans/S1/S1.B/feat-f007-walkthrough-polish/
+REPO: finance_manager_web
+BRANCH: cursor/s1b/feat/f007-walkthrough-polish
+COMMIT: <sha>
+EXECUTOR: cursor-executor
+V_TIER: V1
+V1_EVIDENCE: |
+  <build log path, or "doc-only slice — task file updated" + paths>
+READY_FOR: <reviewer identity or role, e.g. antigravity-reviewer | HitM>
+SPRINT_THREAD: <optional link to #sprint-queue parent message for correlation>
+```
+
+Reviewer posts **verdict** in `#review-queue` (or `#hitm-gate` when promoting) with `VERDICT: PASS | FAIL`, `NEXT: hitm-gate | sprint-queue`, and `FEEDBACK` on FAIL.
