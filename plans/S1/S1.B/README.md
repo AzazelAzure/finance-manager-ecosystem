@@ -40,6 +40,7 @@ Each row is a **draft** governed plan (`plan_id` in YAML); work branches: `curso
 | F-005 | [`feat-f005-savings-goals/README.md`](./feat-f005-savings-goals/README.md) |
 | F-006 | [`feat-f006-dashboard-widgets-custom/README.md`](./feat-f006-dashboard-widgets-custom/README.md) |
 | F-007 | [`feat-f007-guided-walkthroughs/README.md`](./feat-f007-guided-walkthroughs/README.md) |
+| F-007 polish (follow-up) | [`feat-f007-walkthrough-polish/README.md`](./feat-f007-walkthrough-polish/README.md) |
 | F-008 | [`feat-f008-family-ledger/README.md`](./feat-f008-family-ledger/README.md) |
 | F-009 | [`feat-f009-recurring-auto-deduct/README.md`](./feat-f009-recurring-auto-deduct/README.md) |
 | F-010 | [`feat-f010-export-sharing/README.md`](./feat-f010-export-sharing/README.md) |

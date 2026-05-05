@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-21 — AGENTS.md sync + F-007 walkthrough polish plan
+
+- **AGENTS.md:** Continual-learning updates (Cursor PA / Antigravity orchestration, slice-scope bias, breakpoint handoff) for agent workspaces.
+- **Plans:** [`plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`](plans/S1/S1.B/feat-f007-walkthrough-polish/README.md) — T00–T03 tasks with V0–V3 evidence hooks + `sprint_verify.sh`; registry + S1.B index + F-007 README cross-link.
+
 ### 2026-05-05 — Orchestration huddle execution: sprint verify + Cursor PA Slack docs
 
 - **Scripts:** [`scripts/sprint_verify.sh`](scripts/sprint_verify.sh) — SSH to VPS, git update selected subrepos, `fm_server_beta.sh rebuild-color` + optional `smoke`; evidence logs under `--evidence`. [`scripts/jsdevtesting_stack_check.sh`](scripts/jsdevtesting_stack_check.sh) — HTTPS probes for `jsdevtesting` + `api-jsdevtesting`.
