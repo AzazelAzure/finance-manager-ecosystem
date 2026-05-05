@@ -82,6 +82,20 @@ per [`governance/sprint_queue_message_spec_v1.md`](../../../../governance/sprint
 
 **Manual fallback:** top-level `#review-queue` prose envelope + verdict, same as before.
 
+### Thread reply — `SPRINT_PIPELINE_JSON` (pick up by `sprint_slack_pipeline_bridge.py`)
+
+Post **one Slack message** in the **same thread** as the original `#sprint-queue` task (reply to parent). The body should be **only** the line below (no leading fence in Slack — fences here are for doc display). Replace `COMMIT` with the short SHA you pushed (or `none` before first push).
+
+```text
+SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW","slice_id":"T00.SL1","plan_root":"plans/S1/S1.B/feat-f007-walkthrough-polish/","plan_id":"PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21","repo":"finance_manager_web","branch":"cursor/s1b/feat/f007-walkthrough-polish","commit":"COMMIT","v1_evidence":"tasks/T00_protocol_and_acceptance.md + evidence/T00.SL1_V0_acceptance_notes.md; PR https://github.com/AzazelAzure/finance-manager-ecosystem/pull/55","verify_tiers":"V0","requires_hitm":false,"next_queue_message_path":"next_t00_sl2.txt"}
+```
+
+- **`next_queue_message_path`:** relative to `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` (see [`evidence/pipeline_queue/README.md`](./evidence/pipeline_queue/README.md)); file [`next_t00_sl2.txt`](./evidence/pipeline_queue/next_t00_sl2.txt) is the queued **T00.SL2** sprint top-level.
+- **`verify_tiers":"V0"`** + `SPRINT_BRIDGE_AUTO_PASS_V0=1` → bridge posts synthetic **PASS** and then posts `next_t00_sl2.txt` to `#sprint-queue` automatically.
+- For **V1+** slices, set `verify_tiers` accordingly and have a reviewer post **`REVIEW_VERDICT`** JSON in `#review-queue` (or extend automation later).
+
+**Executor workspace:** if the clone is a collaborator mirror, run `git fetch origin main && git merge origin/main` (or rebase) on the feature branch before T00.SL2 so `scripts/` and `governance/` match this ecosystem repo.
+
 ## Ordering
 
 Post slices in execution order (README §4a): **T00.SL1 → T00.SL2 → T01.SL1 → …** One message per slice.
