@@ -1,5 +1,7 @@
 # Runtime Handoff — F-007 Guided Walkthroughs
 
+**`ACTIONS.md` #7 (2026-05-05):** HitM V3 findings in this file are the reconciliation source. Prior V2 claims lacked `sprint_verify.sh` logs; see [`evidence/V2_ORCHESTRATION_2026-05-05.md`](./evidence/V2_ORCHESTRATION_2026-05-05.md) for the evidence contract before the next verification cycle.
+
 ## Status: V3 FAIL — Requires Rework (2026-05-04)
 
 **V3 Verifier:** HitM (browser verification on staging)
@@ -50,9 +52,9 @@
 
 ---
 
-## Rework Slices (Pipeline Test — Gemini Executor)
+## Rework Slices (Pipeline test — Cursor-first)
 
-These slices will be the first test of the `#sprint-queue` → `#review-queue` → `#hitm-gate` pipeline.
+These slices will exercise the `#sprint-queue` → `#review-queue` → `#hitm-gate` flow with **Cursor PA** + JSONL outbox for Slack status (see `governance/cursor_pa_slack_visibility.md`); Antigravity is not the orchestration path for new work.
 
 | Slice | Scope | Files | V-Tier | Acceptance |
 |-------|-------|-------|--------|------------|

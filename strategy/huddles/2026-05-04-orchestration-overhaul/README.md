@@ -16,7 +16,7 @@
 
 ## Exit Criteria
 
-See `DECISIONS.md` for all locked decisions and `ACTIONS.md` for concrete deliverables.
+See `DECISIONS.md` for all locked decisions and **`ACTIONS.md`** for concrete deliverables (canonical). Reconciliation delta: [`VERIFICATION_DELTA.md`](./VERIFICATION_DELTA.md). [`implementation_plan.md`](./implementation_plan.md) is narrative context; its exit-criteria table mirrors `ACTIONS.md`.
 
 ## Source Artifacts
 

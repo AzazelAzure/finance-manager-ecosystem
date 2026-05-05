@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-05-05 — Orchestration huddle execution: sprint verify + Cursor PA Slack docs
+
+- **Scripts:** [`scripts/sprint_verify.sh`](scripts/sprint_verify.sh) — SSH to VPS, git update selected subrepos, `fm_server_beta.sh rebuild-color` + optional `smoke`; evidence logs under `--evidence`. [`scripts/jsdevtesting_stack_check.sh`](scripts/jsdevtesting_stack_check.sh) — HTTPS probes for `jsdevtesting` + `api-jsdevtesting`.
+- **Governance:** [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md); [`governance/agent_workspace_isolation.md`](governance/agent_workspace_isolation.md) and [`governance/README.md`](governance/README.md) / [`governance/orchestration.md`](governance/orchestration.md) updated for Cursor PA + JSONL outbox vs IDE MCP; Antigravity runner marked legacy in [`scripts/antigravity_slack_runner.py`](scripts/antigravity_slack_runner.py); note in [`scripts/cursor_headless_slack_agent.py`](scripts/cursor_headless_slack_agent.py).
+- **Huddle:** [`strategy/huddles/2026-05-04-orchestration-overhaul/VERIFICATION_DELTA.md`](strategy/huddles/2026-05-04-orchestration-overhaul/VERIFICATION_DELTA.md); [`implementation_plan.md`](strategy/huddles/2026-05-04-orchestration-overhaul/implementation_plan.md) exit table synced to canonical [`ACTIONS.md`](strategy/huddles/2026-05-04-orchestration-overhaul/ACTIONS.md); [`README.md`](strategy/huddles/2026-05-04-orchestration-overhaul/README.md) pointers.
+- **F-007:** [`plans/S1/S1.B/feat-f007-guided-walkthroughs/evidence/V2_ORCHESTRATION_2026-05-05.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/evidence/V2_ORCHESTRATION_2026-05-05.md) + `runtime_handoff.md` ACTIONS #7 line.
+
 ### 2026-05-04 — F-007 guided walkthroughs: slice-based rebuild plan
 
 - **Plans:** [`plans/S1/S1.B/feat-f007-guided-walkthroughs/README.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/README.md) — rebuild stance, code inventory, tasks **T00–T07** with **T##.SL#** verify-first gates; [`tasks/T00_baseline_rebuild_audit.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/tasks/T00_baseline_rebuild_audit.md); [`runtime_handoff.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/runtime_handoff.md) aligned (PR placeholder removed, slice log table).

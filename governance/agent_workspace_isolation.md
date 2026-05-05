@@ -15,24 +15,21 @@
   GitHub account: Proctor-Cursor-Agents (collaborator, push)
   role: EXECUTOR — writes production code on feature branches
   branch policy: feature branches only (cursor/s1b/feat/...)
-  Slack channel: #sprint-queue (intake), posts to #review-queue
-  agent binary: cursor agent (via cursor_headless_slack_agent.py)
+  Slack visibility: **Cursor PA** (local, out of repo) — status via **JSONL outbox** (e.g. `slack_outbox.jsonl`); see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md). Optional in-repo poller: `scripts/cursor_headless_slack_agent.py`.
+  agent binary: `cursor agent` (invoked by Cursor PA or locally)
+
+### Legacy — Antigravity workspaces (do not use for new orchestration)
+
+The following layouts are **historical**. New sprints should use **Cursor** executors/reviewers and Cursor PA for Slack; do not route new work through `antigravity_slack_runner.py`.
 
 ~/agent-workspaces/antigravity-executor/finance_manager/
   git identity: Proctor-Gemini-Executor <gemini-executor@hivemanager.com>
-  GitHub account: Proctor-Gemini-Executor (collaborator, push)
-  role: EXECUTOR — writes production code on feature branches (Gemini Flash)
-  branch policy: feature branches only (antigravity/s1b/feat/...)
-  Slack channel: #sprint-queue (intake), posts to #review-queue
-  agent binary: antigravity chat --mode agent (via antigravity_slack_runner.py)
+  role: (legacy) executor — **unsupported** for new orchestration
+  agent binary: (legacy) antigravity chat — see repo `scripts/antigravity_slack_runner.py` header
 
 ~/agent-workspaces/antigravity-reviewer/finance_manager/
   git identity: Proctor-Gemini-Agent <antigravity-agent@hivemanager.com>
-  GitHub account: Proctor-Gemini-Agent (collaborator, push)
-  role: REVIEWER — reviews code, runs V2 deploy verification
-  branch policy: read-only on feature branches; writes only to review branches
-  Slack channel: #review-queue (intake), posts to #hitm-gate or #sprint-queue
-  agent binary: antigravity chat --mode agent (via antigravity_slack_runner.py)
+  role: (legacy) reviewer — **unsupported** for new orchestration
 ```
 
 ## Isolation Rules
