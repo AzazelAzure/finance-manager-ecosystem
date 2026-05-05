@@ -15,7 +15,7 @@
   GitHub account: Proctor-Cursor-Agents (collaborator, push)
   role: EXECUTOR — writes production code on feature branches
   branch policy: feature branches only (cursor/s1b/feat/...)
-  Slack visibility: **Cursor PA** (local, out of repo) — status via **JSONL outbox** (e.g. `slack_outbox.jsonl`); see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md). Optional in-repo poller: `scripts/cursor_headless_slack_agent.py`.
+  Slack visibility: **Cursor PA** (local, out of repo) — `~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py` + **`cursor_slack_outbox.jsonl`** / **`cursor_slack_inbox.jsonl`** at that repo root; see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md). Optional in-repo poller: `scripts/cursor_headless_slack_agent.py`. Sprint handoff bridge: `scripts/sprint_slack_pipeline_bridge.py`.
   agent binary: `cursor agent` (invoked by Cursor PA or locally)
 
 ### Legacy — Antigravity workspaces (do not use for new orchestration)

@@ -12,6 +12,20 @@ Machine-readable lines (embed in a thread reply under the sprint task, or top-le
 
 Executor / Cursor PA should append a single-line SPRINT_PIPELINE_JSON when a slice is ready for review.
 
+Coordination with Cursor PA (`cursor_slack_runner.py`)
+-------------------------------------------------------
+Canonical Socket Mode runner (outside this monorepo):
+
+  ~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py
+
+At ``~/CursorAgent/headless-cursor-agent/`` (runner repo root): **inbox** ``cursor_slack_inbox.jsonl``,
+**outbox** ``cursor_slack_outbox.jsonl`` — see that script's docstring and ``ROOT / ...`` constants.
+
+This bridge uses **Slack Web API polling** only; it does **not** read or write PA inbox/outbox. Run it
+on the **same host** as ``cursor_slack_runner.py`` when you want PA task execution plus automated
+pipeline handoffs; align ``CURSOR_PA_CHANNEL_ALLOWLIST`` / ``CURSOR_PA_BLOCK_CHANNEL_IDS`` with the
+channels this bridge watches. Full layout: ``governance/cursor_pa_slack_visibility.md``.
+
 Environment (required)
 ----------------------
   SLACK_BOT_TOKEN              xoxb-... (channels:history, channels:read, chat:write)
