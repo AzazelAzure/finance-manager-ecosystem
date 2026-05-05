@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05
 status: draft
 priority: P2
 created: 2026-05-05
-updated: 2026-05-21
+updated: 2026-05-22
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f011-wedge-landing-hero/
@@ -66,6 +66,7 @@ Keep **landing**, **hero**, **value props**, and **feature showcase** aligned wi
 - Copy + layout updates in `finance_manager_web` public shell / i18n; optional screenshots.
 - Process: after each major feature plan closes, add a **pass** task here or bump `updated` and run audit checklist rows.
 - **Brand icons (HitM asset drop):** canonical raster set lives in the **ecosystem parent repo** at **`resources/hfm_icon_web/`** (transparent + trimmed variants, square master, 16–512px exports). Icons were produced with **Google Gemini** image generation; **no third-party stock rights** — HitM-owned. Implementation: copy or pipeline into `finance_manager_web` (`public/`, favicon, **PWA manifest** icons, Apple touch, OG / social preview as needed) and update wedge audit **Public chrome** / **PWA** rows. Add a task (e.g. `tasks/Txx_brand_icons_web.md`) when scheduling the pass.
+- **Beta tester subpages (2026-05 huddle direction):** extend the public shell with **honest, navigable** subpages so tight-beta users see what is shipping and what is next — e.g. **About**, **Planned features / pipeline** (snapshot from registry or curated list), **Version & release notes** (per release: headline features + **notable bugfixes**). Routes, i18n, and SEO must follow [`governance/definition_of_done.md`](../../../../governance/definition_of_done.md) and [`../distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../distribution-channel-research/SEO_PRIORITY_MATRIX.md). Author as explicit tasks (`tasks/Txx_about_page.md`, etc.) when this huddle slot is approved.
 
 ### Out of scope
 

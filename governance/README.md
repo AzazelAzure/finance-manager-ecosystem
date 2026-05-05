@@ -17,6 +17,8 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `skill_roadmap_rollout_planning.md` | Governance mirror of roadmap-rollout-planning (materialize `plans/<Phase>/<Stage>/`) | Authoring phased plans for disk + registry             |
 | `skill_orchestration_manager.md`   | Governance mirror of orchestration-manager (delegate, gates, retask)        | Running execution batches over an active plan root           |
 | `plan_template.md`           | Schema for new plans                                                         | Authoring a plan                                              |
+| `definition_of_done.md`     | PWA class A/B, i18n, SEO matrix, F-011 beta bar + link to sprint-order huddle | Before claiming plan complete or scoping feature vs PWA      |
+| `sprint_queue_message_spec_v1.md` | `#sprint-queue` message format (`sprint-queue-v1`) for Cursor PA posts | When posting slices to Slack for cursor-agent intake |
 | `plan_registry.md`           | Portfolio status of all plans                                                | Before authoring or executing (conflict + dependency check)   |
 | `plan_lifecycle.md`          | State machine + transition actions                                           | At every status transition                                    |
 | `execution_protocols.md`     | Exact Slack gate + handoff templates                                         | Producing any HitM-facing message                             |
@@ -38,6 +40,7 @@ This manual defines how AI agents author and execute plans **consistently** acro
 2. `plan_registry.md` → list active plans → check conflicts
 3. `strategy/strategic-roadmap-reframe-53be/phases/S<n>_*.md` → strategic context for declared phase
 4. `plan_template.md` → fill schema (multi-surface plans: add **slices** `T##.SL#` per §1a)
+4b. `definition_of_done.md` → declare PWA class **A/B**, localization (or shelved signoff), SEO matrix touchpoints, F-011 beta comms when relevant; if using `#sprint-queue`, `sprint_queue_message_spec_v1.md`
 5. `plan_lifecycle.md` §Stage 1 + §Stage 2 → execute Birth + Validation
 6. Append registry row → status `draft` or `ready`
 

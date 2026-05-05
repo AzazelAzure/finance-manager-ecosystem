@@ -28,6 +28,10 @@ Each outbox line (or Slack post derived from it) should be easy to grep:
 
 [`scripts/cursor_headless_slack_agent.py`](../scripts/cursor_headless_slack_agent.py) is a **separate** Web-API poller pattern in this workspace. It is **not** required when Cursor PA + outbox is the operational standard.
 
+## Shelved (future versioning)
+
+- **MCP + cursor-agent channel/thread policy:** Allowing cursor-agents to use Slack MCP (or equivalent) so automation can **dictate** target channels and threads (e.g. `#sprint-queue` top-level vs review threads) would simplify orchestration, but needs runner support, auth scope review, and a **`sprint-queue-v2`**-style spec bump. Canonical **v1** queue shape (including `BRANCH: … (already checked out)` / `(checkout required)`): [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md). F-007 plan holds **worked examples** only: [`plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md`](../plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md).
+
 ## Related governance
 
 - [`agent_workspace_isolation.md`](./agent_workspace_isolation.md) — executor identity and isolation; Antigravity paths are **legacy** for orchestration.
