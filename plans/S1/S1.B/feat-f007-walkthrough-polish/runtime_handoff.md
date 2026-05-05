@@ -8,6 +8,7 @@
 
 | Date | Slice | V-tier claimed | Evidence path | PASS/FAIL |
 |------|-------|----------------|-----------------|-----------|
+| 2026-05-06 | T00.SL1 | V0 | `evidence/T00.SL1_V0_acceptance_notes.md` + `tasks/T00_protocol_and_acceptance.md` | PASS (PR #55) |
 | | | | | |
 
 ## Notes

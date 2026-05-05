@@ -1,0 +1,36 @@
+@CursorPA
+Task Id: F-007
+REPO: finance_manager_web
+WORKSPACE_PATH: ~/agent-workspaces/cursor-executor/finance_manager
+BRANCH: cursor/s1b/feat/f007-walkthrough-polish (already checked out)
+SLICE: T00.SL2 — sprint_verify dry-run (web)
+
+READ FIRST:
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T00_protocol_and_acceptance.md
+~/agent-workspaces/cursor-executor/finance_manager/scripts/sprint_verify.sh
+
+TASKS:
+
+1. Sync this branch with ecosystem `main` (`git fetch origin main` then merge or rebase so the executor tree matches current governance/scripts).
+2. From ecosystem repo root, run `./scripts/sprint_verify.sh --dry-run --color blue --branch cursor/s1b/feat/f007-walkthrough-polish --repos web --evidence plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/`
+3. Save full stdout to `plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/T00.SL2_sprint_verify_dryrun.log`
+4. Check off T00.SL2 in `tasks/T00_protocol_and_acceptance.md` and append this plan’s `runtime_handoff.md` slice row.
+
+FILES TO MODIFY:
+
+- plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/T00.SL2_sprint_verify_dryrun.log
+- plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T00_protocol_and_acceptance.md
+- plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+
+ACCEPTANCE:
+
+- Dry-run log is non-empty and names branch + evidence directory.
+- Commit/push on `cursor/s1b/feat/f007-walkthrough-polish`; update PR #55 or follow-on PR per repo policy.
+
+SPEC: sprint-queue-v1
+PLAN_ID: PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21
+PLAN_ROOT: plans/S1/S1.B/feat-f007-walkthrough-polish/
+SLICE_ID: T00.SL2
+VERIFY_TIERS: V1
+RETRY_OF: none
