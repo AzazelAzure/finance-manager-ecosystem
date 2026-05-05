@@ -9,6 +9,11 @@ agent context. Here we use the Slack Web API with a bot token so a long-lived
 process can poll the channel, forward prompts to `cursor agent -p`, and post
 replies in thread.
 
+NOTE (2026-05-05): For sprint/production **status to Slack**, HitM’s canonical path is
+**Cursor PA** (out of this repo) using a **JSONL outbox** drained by the runner bot;
+see `governance/cursor_pa_slack_visibility.md`. This script remains an optional
+in-repo poller pattern (e.g. #cli-interface / PR channels), not a replacement for Cursor PA.
+
 Environment (core)
 -----------------
   CURSOR_API_KEY          API key for Cursor (also accepted by the agent binary).

@@ -27,6 +27,7 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `HITM_SCHEDULE_SNAPSHOT.md`  | **Generated** (`../scripts/schedule_agent_sync.sh`); gitignored               | When present locally: calendar window + open tasks for agents |
 | `runtime_handoff_template.md`| Structured YAML template for feature sprint `runtime_handoff.md` files       | When starting any new feature sprint (copy template to plan root) |
 | `agent_workspace_isolation.md`| Directory layout, git identity, and concurrency rules for multi-agent workspaces | Setting up agent workspaces or debugging push/identity issues |
+| `cursor_pa_slack_visibility.md` | Cursor PA + JSONL outbox vs IDE Slack MCP; durable automation status to Slack | Wiring sprint/production visibility to HitM without conflating MCP and runner bots |
 
 
 ## Reading sequences
