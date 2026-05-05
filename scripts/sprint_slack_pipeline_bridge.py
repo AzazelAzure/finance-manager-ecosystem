@@ -48,11 +48,14 @@ Environment (optional)
   SPRINT_PIPELINE_STATE_FILE       JSON state path (default: <cwd>/.sprint_pipeline_bridge_state.json)
   SPRINT_PIPELINE_LOCAL_INBOX      If set (tilde-expanded path to a JSONL file), each poll reads new
                                    lines with READY_FOR_REVIEW — no Slack sprint-thread reply needed.
-  SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM  Default true: after READY, if requires_hitm is false, post
-                                   synthetic PASS and continue the chain (no human #review-queue reply).
-                                   Set to 0/false to require a human verdict for V1+ slices.
-  SPRINT_BRIDGE_AUTO_PASS_V0       Default true: when AUTO_PASS_IF_NON_HITM is false, still auto-PASS
-                                   when verify_tiers is exactly "V0". When NON_HITM is true, this is redundant.
+  SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM  Default false: if true, after READY and requires_hitm=false, post
+                                   synthetic PASS and continue chain (no human/reviewer verdict needed).
+  SPRINT_BRIDGE_AUTO_PASS_V0       Default false: when AUTO_PASS_IF_NON_HITM is false, optionally auto-PASS
+                                   when verify_tiers is exactly "V0".
+  SPRINT_BRIDGE_REVIEW_AGENT_ENABLED  If true and auto-pass is off: run cursor-agent to produce REVIEW_VERDICT.
+  SPRINT_BRIDGE_REVIEW_WORKSPACE      Workspace path for reviewer agent run.
+  SPRINT_BRIDGE_REVIEW_TIMEOUT_SEC    Reviewer agent timeout seconds (default: 420).
+  SPRINT_BRIDGE_REVIEW_MODEL          Optional cursor-agent model slug for reviewer runs.
   SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR  Required if READY / VERDICT JSON uses next_queue_message_path;
                                    must be an absolute or tilde path; file paths must resolve under it.
 
@@ -81,6 +84,8 @@ import json
 import logging
 import os
 import re
+import shutil
+import subprocess
 import sys
 import time
 import urllib.error
@@ -90,6 +95,18 @@ from pathlib import Path
 from typing import Any, Optional
 
 LOG = logging.getLogger("sprint_pipeline_bridge")
+
+
+def _ts_format(v: float) -> str:
+    return f"{float(v):.6f}"
+
+
+def _ts_parse(raw: Any, default: float) -> float:
+    try:
+        return float(str(raw))
+    except (TypeError, ValueError):
+        return default
+
 
 def _env_bool(name: str, default: bool = False) -> bool:
     v = os.environ.get(name)
@@ -224,6 +241,10 @@ class PipelineBridge:
         poll_sec: float,
         auto_pass_v0: bool,
         auto_pass_if_non_hitm: bool,
+        review_agent_enabled: bool,
+        review_workspace: Optional[Path],
+        review_timeout_sec: int,
+        review_model: Optional[str],
         local_inbox: Optional[Path],
         next_base: Optional[Path],
         dry_run: bool,
@@ -236,6 +257,10 @@ class PipelineBridge:
         self.poll_sec = poll_sec
         self.auto_pass_v0 = auto_pass_v0
         self.auto_pass_if_non_hitm = auto_pass_if_non_hitm
+        self.review_agent_enabled = review_agent_enabled
+        self.review_workspace = review_workspace.expanduser().resolve() if review_workspace else None
+        self.review_timeout_sec = max(60, min(int(review_timeout_sec), 1800))
+        self.review_model = review_model.strip() if review_model else None
         self.local_inbox = local_inbox.expanduser().resolve() if local_inbox else None
         self.next_base = next_base.resolve() if next_base else None
         self.dry_run = dry_run
@@ -250,15 +275,25 @@ class PipelineBridge:
                 LOG.warning("Resetting state: %s", e)
                 self.state = {}
         if "waterline_sprint_reply_ts" not in self.state:
-            self.state["waterline_sprint_reply_ts"] = str(time.time())
+            self.state["waterline_sprint_reply_ts"] = _ts_format(time.time())
         if "waterline_review_ts" not in self.state:
-            self.state["waterline_review_ts"] = str(time.time())
+            self.state["waterline_review_ts"] = _ts_format(time.time())
+        self.state["waterline_sprint_reply_ts"] = _ts_format(
+            _ts_parse(self.state.get("waterline_sprint_reply_ts"), time.time())
+        )
+        self.state["waterline_review_ts"] = _ts_format(
+            _ts_parse(self.state.get("waterline_review_ts"), time.time())
+        )
         if "done_keys" not in self.state:
             self.state["done_keys"] = []
         if "verdict_done_keys" not in self.state:
             self.state["verdict_done_keys"] = []
         if "local_inbox_done_keys" not in self.state:
             self.state["local_inbox_done_keys"] = []
+        if "next_posted_keys" not in self.state:
+            self.state["next_posted_keys"] = []
+        if "hitm_posted_keys" not in self.state:
+            self.state["hitm_posted_keys"] = []
 
     def _should_auto_pass(self, ready: dict[str, Any]) -> bool:
         if _truthy(ready.get("requires_hitm")):
@@ -272,6 +307,16 @@ class PipelineBridge:
     def _verdict_dedupe_key(verdict: dict[str, Any]) -> str:
         return hashlib.sha256(
             json.dumps(verdict, sort_keys=True, separators=(",", ":")).encode()
+        ).hexdigest()[:48]
+
+    @staticmethod
+    def _transition_key(verdict: dict[str, Any]) -> str:
+        """Stable idempotency key for PASS transition side-effects."""
+        slice_id = str(verdict.get("slice_id", "")).strip()
+        requires_hitm = _truthy(verdict.get("requires_hitm"))
+        next_path = str(verdict.get("next_queue_message_path", "")).strip()
+        return hashlib.sha256(
+            f"{slice_id}|pass|hitm={int(requires_hitm)}|next={next_path}".encode()
         ).hexdigest()[:48]
 
     def _save_state(self) -> None:
@@ -292,6 +337,99 @@ class PipelineBridge:
     def _msg_text(msg: dict[str, Any]) -> str:
         return str(msg.get("text", "") or "")
 
+    @staticmethod
+    def _extract_json_line(text: str, prefix: str) -> Optional[dict[str, Any]]:
+        for line in text.splitlines():
+            s = line.strip()
+            if not s.startswith(prefix):
+                continue
+            raw = s[len(prefix) :].strip()
+            try:
+                obj = json.loads(raw)
+            except json.JSONDecodeError:
+                continue
+            if isinstance(obj, dict):
+                return obj
+        return None
+
+    def _run_reviewer_agent(self, ready: dict[str, Any]) -> Optional[dict[str, Any]]:
+        if not self.review_agent_enabled:
+            return None
+        if _truthy(ready.get("requires_hitm", False)):
+            return None
+        if not self.review_workspace:
+            LOG.warning("Review agent enabled but SPRINT_BRIDGE_REVIEW_WORKSPACE unset")
+            return None
+        exe = shutil.which("cursor-agent")
+        if not exe:
+            LOG.warning("Review agent enabled but cursor-agent not found on PATH")
+            return None
+        if not os.environ.get("CURSOR_API_KEY"):
+            LOG.warning("Review agent enabled but CURSOR_API_KEY is unset")
+            return None
+
+        slice_id = str(ready.get("slice_id", "")).strip()
+        next_path = str(ready.get("next_queue_message_path", "")).strip()
+        prompt = (
+            "You are a strict review agent for sprint handoff automation.\n"
+            "Review this READY_FOR_REVIEW payload and run lightweight repo checks as needed.\n"
+            "If acceptable, output EXACTLY one line prefixed with 'SPRINT_PIPELINE_JSON: ' containing\n"
+            "a JSON object with status=REVIEW_VERDICT, verdict=PASS, reviewer=review-agent, requires_hitm,\n"
+            "v2_evidence, and next_queue_message_path.\n"
+            "If not acceptable, output the same schema with verdict=FAIL and explain in v2_evidence.\n"
+            "Important: if next_queue_message_path is set and missing under SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR,\n"
+            "create the file first (using existing queue-file style) before returning PASS.\n"
+            "READY payload JSON:\n"
+            + json.dumps(ready, ensure_ascii=True)
+        )
+        cmd: list[str] = [
+            exe,
+            "--workspace",
+            str(self.review_workspace),
+            "--print",
+            "--output-format",
+            "text",
+            "--trust",
+            "--force",
+            "--approve-mcps",
+            "--sandbox",
+            "disabled",
+        ]
+        if self.review_model:
+            cmd.extend(["--model", self.review_model])
+        cmd.append(prompt)
+        try:
+            proc = subprocess.run(
+                cmd,
+                cwd=str(self.review_workspace),
+                capture_output=True,
+                text=True,
+                timeout=self.review_timeout_sec,
+            )
+        except subprocess.TimeoutExpired:
+            LOG.warning("Review agent timeout slice=%s timeout=%ss", slice_id, self.review_timeout_sec)
+            return None
+        except OSError as e:
+            LOG.warning("Review agent execution failed: %s", e)
+            return None
+        out = (proc.stdout or "").strip()
+        err = (proc.stderr or "").strip()
+        if proc.returncode != 0:
+            LOG.warning("Review agent exit=%s slice=%s stderr=%s", proc.returncode, slice_id, err[:300])
+            return None
+        verdict = self._extract_json_line(out, "SPRINT_PIPELINE_JSON:")
+        if not verdict:
+            LOG.warning("Review agent produced no REVIEW_VERDICT JSON slice=%s", slice_id)
+            return None
+        if str(verdict.get("status", "")) != "REVIEW_VERDICT":
+            LOG.warning("Review agent verdict missing status=REVIEW_VERDICT slice=%s", slice_id)
+            return None
+        if not str(verdict.get("slice_id", "")).strip():
+            verdict["slice_id"] = slice_id
+        if next_path and not str(verdict.get("next_queue_message_path", "")).strip():
+            verdict["next_queue_message_path"] = next_path
+        return verdict
+
     def post_message(self, channel_id: str, text: str) -> Optional[str]:
         if self.dry_run:
             LOG.info("[dry-run] post to %s: %s", channel_id, text[:500])
@@ -304,7 +442,7 @@ class PipelineBridge:
         return str(data.get("ts", ""))
 
     def scan_sprint_threads(self) -> None:
-        wl = float(self.state["waterline_sprint_reply_ts"])
+        wl = _ts_parse(self.state.get("waterline_sprint_reply_ts"), time.time())
         data = _slack_api(
             self.token,
             "conversations.history",
@@ -350,7 +488,7 @@ class PipelineBridge:
                 page = (rep.get("response_metadata") or {}).get("next_cursor") or None
                 if not page:
                     break
-        self.state["waterline_sprint_reply_ts"] = str(max(max_seen, wl))
+        self.state["waterline_sprint_reply_ts"] = _ts_format(max(max_seen, wl))
 
     def scan_local_inbox(self) -> None:
         if not self.local_inbox:
@@ -425,6 +563,24 @@ class PipelineBridge:
         self.post_message(self.review_id, body)
 
         if self._should_auto_pass(ready):
+            raw_next = str(ready.get("next_queue_message_path", "") or "").strip()
+            if raw_next and not _truthy(ready.get("requires_hitm", False)):
+                next_path = _safe_next_path(raw_next, self.next_base)
+                if not next_path or not next_path.is_file():
+                    missing_note = (
+                        "*Auto-pass held — missing next queue file*\n"
+                        f"*SLICE_ID:* `{slice_id}`\n"
+                        f"*Expected path:* `{raw_next}` under `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`\n"
+                        "Create the next task file first, then post `REVIEW_VERDICT` PASS with the same "
+                        "`next_queue_message_path`."
+                    )
+                    LOG.warning(
+                        "Auto PASS held for slice %s: next queue file missing (%s)",
+                        slice_id,
+                        next_path,
+                    )
+                    self.post_message(self.review_id, missing_note)
+                    return
             v2 = (
                 "auto-pass non-HitM slice (SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM)"
                 if self.auto_pass_if_non_hitm
@@ -443,15 +599,23 @@ class PipelineBridge:
             LOG.info("Auto PASS slice %s (tiers=%s)", slice_id, tiers or "?")
             self.post_message(self.review_id, line)
             self._process_verdict(verdict)
+            return
+
+        verdict = self._run_reviewer_agent(ready)
+        if verdict:
+            line = f"SPRINT_PIPELINE_JSON: {json.dumps(verdict, separators=(',', ':'))}"
+            LOG.info("Review agent verdict slice=%s verdict=%s", slice_id, verdict.get("verdict"))
+            self.post_message(self.review_id, line)
+            self._process_verdict(verdict)
 
     def scan_review_channel(self) -> None:
-        wl = float(self.state["waterline_review_ts"])
+        wl = _ts_parse(self.state.get("waterline_review_ts"), time.time())
         all_msgs: list[dict[str, Any]] = []
         page: Optional[str] = None
         while True:
             payload: dict[str, Any] = {"channel": self.review_id, "limit": 200}
             if wl > 0:
-                payload["oldest"] = str(wl)
+                payload["oldest"] = _ts_format(wl)
             if page:
                 payload["cursor"] = page
             data = _slack_api(self.token, "conversations.history", payload)
@@ -470,7 +634,7 @@ class PipelineBridge:
                 if obj.get("status") != "REVIEW_VERDICT":
                     continue
                 self._process_verdict(obj)
-        self.state["waterline_review_ts"] = str(max(max_ts, wl))
+        self.state["waterline_review_ts"] = _ts_format(max(max_ts, wl))
 
     def _process_verdict(self, verdict: dict[str, Any]) -> None:
         if str(verdict.get("status", "")) != "REVIEW_VERDICT":
@@ -486,7 +650,14 @@ class PipelineBridge:
         if vd != "PASS":
             LOG.info("Verdict %s — no downstream automation for slice %s", vd, verdict.get("slice_id"))
             return
+        transition_key = self._transition_key(verdict)
         if _truthy(verdict.get("requires_hitm")):
+            if not self._dedupe_add("hitm_posted_keys", transition_key):
+                LOG.info(
+                    "Duplicate PASS transition for slice %s (hitm route) — skip",
+                    verdict.get("slice_id"),
+                )
+                return
             if not self.hitm_id:
                 LOG.warning("requires_hitm but SPRINT_PIPELINE_HITM_CHANNEL unset")
                 return
@@ -503,6 +674,12 @@ class PipelineBridge:
         raw_next = str(verdict.get("next_queue_message_path", "") or "").strip()
         if not raw_next:
             LOG.info("PASS with no next_queue_message_path; stop chain here.")
+            return
+        if not self._dedupe_add("next_posted_keys", transition_key):
+            LOG.info(
+                "Duplicate PASS transition for slice %s (next route) — skip",
+                verdict.get("slice_id"),
+            )
             return
         path = _safe_next_path(raw_next, self.next_base)
         if not path or not path.is_file():
@@ -559,8 +736,16 @@ def main() -> None:
         if raw_state
         else Path.cwd() / ".sprint_pipeline_bridge_state.json"
     )
-    auto_v0 = _env_bool("SPRINT_BRIDGE_AUTO_PASS_V0", default=True)
-    auto_non = _env_bool("SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM", default=True)
+    auto_v0 = _env_bool("SPRINT_BRIDGE_AUTO_PASS_V0", default=False)
+    auto_non = _env_bool("SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM", default=False)
+    review_agent_enabled = _env_bool("SPRINT_BRIDGE_REVIEW_AGENT_ENABLED", default=False)
+    raw_review_ws = os.environ.get("SPRINT_BRIDGE_REVIEW_WORKSPACE", "").strip()
+    review_ws = Path(raw_review_ws).expanduser() if raw_review_ws else None
+    try:
+        review_timeout = int(str(os.environ.get("SPRINT_BRIDGE_REVIEW_TIMEOUT_SEC", "420")).strip() or "420")
+    except ValueError:
+        review_timeout = 420
+    review_model = os.environ.get("SPRINT_BRIDGE_REVIEW_MODEL", "").strip() or None
     raw_inbox = os.environ.get("SPRINT_PIPELINE_LOCAL_INBOX", "").strip()
     local_inbox = Path(raw_inbox).expanduser() if raw_inbox else None
     raw_base = os.environ.get("SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR", "").strip()
@@ -575,6 +760,10 @@ def main() -> None:
         poll_sec=poll,
         auto_pass_v0=auto_v0,
         auto_pass_if_non_hitm=auto_non,
+        review_agent_enabled=review_agent_enabled,
+        review_workspace=review_ws,
+        review_timeout_sec=review_timeout,
+        review_model=review_model,
         local_inbox=local_inbox,
         next_base=next_base,
         dry_run=args.dry_run,

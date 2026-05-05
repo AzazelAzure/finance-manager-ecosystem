@@ -1,0 +1,40 @@
+@CursorPA
+Task Id: F-007
+REPO: finance_manager_web
+WORKSPACE_PATH: ~/agent-workspaces/cursor-executor/finance_manager
+BRANCH: cursor/s1b/feat/f007-walkthrough-polish (already checked out)
+SLICE: T01.SL1 — Audit help-mode → spotlight → Joyride state machine
+
+READ FIRST:
+~/agent-workspaces/cursor-executor/finance_manager/governance/branching_guidelines.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/README.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+
+TASKS:
+
+1. Complete T01.SL1 in `plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md` by mapping the current state machine: help-mode click → spotlight → which user action starts Joyride.
+2. List concrete files/components/handlers touched by this flow (include path + short role note) directly in the task file under T01.SL1.
+3. Do not implement behavior changes in this slice; this is V0 audit only.
+4. If you commit, keep branch on `cursor/s1b/feat/f007-walkthrough-polish` (or task sub-branch off it) and push there.
+
+FILES TO MODIFY:
+
+- plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+- plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md (append T01.SL1 row only if your process records V0 PASS rows)
+
+ACCEPTANCE:
+
+- T01.SL1 checkbox marked complete with an explicit state-machine map + file/handler inventory.
+- No web build required for this V0 audit slice.
+- Branch policy (required): merge any task sub-branch back into `cursor/s1b/feat/f007-walkthrough-polish`; do NOT open or merge PR to `main` until HitM feature verification gate approves F-007 rollout.
+- Before posting PASS / READY, create `plans/pipeline_queue/next_t01_sl2.txt` (or update to the actual next file name) so bridge handoff does not stall.
+- Post completion summary and include one machine-readable line:
+  `SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW","slice_id":"T01.SL1","plan_root":"plans/S1/S1.B/feat-f007-walkthrough-polish/","plan_id":"PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21","repo":"finance_manager_web","branch":"cursor/s1b/feat/f007-walkthrough-polish","commit":"<sha-or-none>","v1_evidence":"T01.SL1 checklist + state-machine notes in task file","verify_tiers":"V0","requires_hitm":false,"next_queue_message_path":"next_t01_sl2.txt"}`
+
+SPEC: sprint-queue-v1
+PLAN_ID: PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21
+PLAN_ROOT: plans/S1/S1.B/feat-f007-walkthrough-polish/
+SLICE_ID: T01.SL1
+VERIFY_TIERS: V0
+RETRY_OF: none

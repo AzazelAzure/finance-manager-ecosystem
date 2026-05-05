@@ -158,8 +158,9 @@ Long-lived poller (Slack Web API, same token family as other finance_manager Sla
 3. Watches `**#review-queue**` for `SPRINT_PIPELINE_JSON` with `"status":"REVIEW_VERDICT"`. On `**PASS**`:
   - If `requires_hitm` is true → posts a short request to `**#hitm-gate**` (HitM verifies V3 / production — **human gate**).
   - Else if `next_queue_message_path` points to a file under `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR` → posts that file’s **full text** as the **next** top-level `#sprint-queue` message (must already match `sprint-queue-v1`).
+  - Reviewer responsibility: create/update that `next_queue_message_path` file before posting `PASS`; missing files hold transition and the bridge posts a blocker message in `#review-queue` instead of silently continuing.
 
-Default automation on the bridge host: `**SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM`** is **on** unless set to `0`/`false` — when `requires_hitm` is **false** in `READY_FOR_REVIEW`, the bridge posts a synthetic **PASS** and continues the chain without a human typing a verdict in `#review-queue`. Set `**SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM=0`** when you want human review for V1+ slices; you can still use `**SPRINT_BRIDGE_AUTO_PASS_V0=1**` alone for doc-only auto-advance when non-HitM auto-pass is off. `**requires_hitm: true**` still routes **PASS** to `**#hitm-gate`** (human gate — not auto-skipped).
+Default safety posture on the bridge host: keep `SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM=0` and `SPRINT_BRIDGE_AUTO_PASS_V0=0` so verdicts come from a reviewer agent or human in `#review-queue`. Enable either auto-pass flag only when intentionally bypassing reviewer latency. `requires_hitm: true` still routes **PASS** to `#hitm-gate` (human gate — not auto-skipped).
 
 Runbook: script docstring + env vars. Point **`SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`** at the shared **`plans/pipeline_queue/`** directory in the monorepo (not under a single feature plan) so multiple phases can enqueue next-slice bodies without path churn. **MCP** in Cursor is **not** a substitute for this daemon (IDE-bound); run the script on the host that holds `SLACK_BOT_TOKEN`.
 

@@ -1,0 +1,42 @@
+@CursorPA
+Task Id: F-007
+REPO: finance_manager_web
+WORKSPACE_PATH: ~/agent-workspaces/cursor-executor/finance_manager
+BRANCH: cursor/s1b/feat/f007-walkthrough-polish (already checked out)
+SLICE: T01.SL2 — Implement streamlined help-mode -> Joyride flow + web build
+
+READ FIRST:
+~/agent-workspaces/cursor-executor/finance_manager/governance/branching_guidelines.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/README.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+
+TASKS:
+
+1. Complete T01.SL2 in `plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md`.
+2. Implement UX so that either Joyride auto-starts when guided target is activated in help mode, or one consolidated control starts the linear tour (no second mystery button).
+3. Document chosen behavior path in your completion summary.
+4. Run `cd finance_manager_web && npm run build` and save full stdout to `plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/T01.SL2_web_build.log`.
+
+FILES TO MODIFY:
+
+- finance_manager_web/src/... (actual flow files touched for T01.SL2)
+- plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+- plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/T01.SL2_web_build.log
+- plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md (append T01.SL2 row)
+
+ACCEPTANCE:
+
+- T01.SL2 checkbox marked complete with implementation note.
+- Build log exists and is non-empty at `evidence/T01.SL2_web_build.log`.
+- Branch policy (required): merge any task sub-branch back into `cursor/s1b/feat/f007-walkthrough-polish`; do NOT open or merge PR to `main` until HitM feature verification gate approves F-007 rollout.
+- Before posting PASS / READY, create `plans/pipeline_queue/next_t01_sl3.txt` (or update to the actual next file name) so bridge handoff does not stall.
+- Post completion summary and include one machine-readable line:
+  `SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW","slice_id":"T01.SL2","plan_root":"plans/S1/S1.B/feat-f007-walkthrough-polish/","plan_id":"PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21","repo":"finance_manager_web","branch":"cursor/s1b/feat/f007-walkthrough-polish","commit":"<sha-or-none>","v1_evidence":"T01.SL2 implementation + evidence/T01.SL2_web_build.log","verify_tiers":"V1","requires_hitm":false,"next_queue_message_path":"next_t01_sl3.txt"}`
+
+SPEC: sprint-queue-v1
+PLAN_ID: PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21
+PLAN_ROOT: plans/S1/S1.B/feat-f007-walkthrough-polish/
+SLICE_ID: T01.SL2
+VERIFY_TIERS: V1
+RETRY_OF: none

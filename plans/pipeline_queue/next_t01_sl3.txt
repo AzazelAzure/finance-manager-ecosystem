@@ -1,0 +1,42 @@
+@CursorPA
+Task Id: F-007
+REPO: finance_manager_web
+WORKSPACE_PATH: ~/agent-workspaces/cursor-executor/finance_manager
+BRANCH: cursor/s1b/feat/f007-walkthrough-polish (already checked out)
+SLICE: T01.SL3 — Inactive-color sprint_verify (non-dry) for help-mode flow
+
+READ FIRST:
+~/agent-workspaces/cursor-executor/finance_manager/governance/branching_guidelines.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/README.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+~/agent-workspaces/cursor-executor/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+~/agent-workspaces/cursor-executor/finance_manager/scripts/sprint_verify.sh
+
+TASKS:
+
+1. Complete T01.SL3 in `plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md`.
+2. From ecosystem repo root, run `./scripts/sprint_verify.sh --color blue --branch cursor/s1b/feat/f007-walkthrough-polish --repos web --evidence plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/`.
+3. Record the generated `evidence/sprint_verify_*.log` path in both the T01 task file and `runtime_handoff.md`.
+4. Keep rollout scoped to feature branch workflow only (no merge to `main` before HitM gate).
+
+FILES TO MODIFY:
+
+- plans/S1/S1.B/feat-f007-walkthrough-polish/tasks/T01_help_mode_single_action_flow.md
+- plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/sprint_verify_*.log
+- plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md
+
+ACCEPTANCE:
+
+- T01.SL3 checkbox marked complete with concrete `sprint_verify_*.log` path.
+- `runtime_handoff.md` includes a T01.SL3 row with V2 claim and evidence path.
+- Branch policy (required): merge any task sub-branch back into `cursor/s1b/feat/f007-walkthrough-polish`; do NOT open or merge PR to `main` until HitM feature verification gate approves F-007 rollout.
+- Before posting PASS / READY, create `plans/pipeline_queue/next_t01_sl4.txt` (or update to the actual next file name) so bridge handoff does not stall.
+- Post completion summary and include one machine-readable line:
+  `SPRINT_PIPELINE_JSON: {"status":"READY_FOR_REVIEW","slice_id":"T01.SL3","plan_root":"plans/S1/S1.B/feat-f007-walkthrough-polish/","plan_id":"PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21","repo":"finance_manager_web","branch":"cursor/s1b/feat/f007-walkthrough-polish","commit":"<sha-or-none>","v1_evidence":"T01.SL3 sprint_verify log + runtime_handoff row","verify_tiers":"V2","requires_hitm":false,"next_queue_message_path":"next_t01_sl4.txt"}`
+
+SPEC: sprint-queue-v1
+PLAN_ID: PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21
+PLAN_ROOT: plans/S1/S1.B/feat-f007-walkthrough-polish/
+SLICE_ID: T01.SL3
+VERIFY_TIERS: V2
+RETRY_OF: none
