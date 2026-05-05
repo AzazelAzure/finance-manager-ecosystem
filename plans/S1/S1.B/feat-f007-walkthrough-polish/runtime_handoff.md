@@ -10,6 +10,7 @@
 |------|-------|----------------|-----------------|-----------|
 | 2026-05-06 | T00.SL1 | V0 | `evidence/T00.SL1_V0_acceptance_notes.md` + `tasks/T00_protocol_and_acceptance.md` | PASS (PR #55) |
 | 2026-05-05 | T00.SL2 | V1 | `evidence/T00.SL2_sprint_verify_dryrun.log` | PASS |
+| 2026-05-05 | T00.SL2 | V1 | `evidence/T00.SL2_sprint_verify_dryrun.log` | PASS (dry-run rerun after branch sync with `origin/main`) |
 | | | | | |
 
 ## Notes
