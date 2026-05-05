@@ -35,6 +35,8 @@
 | `plan_lifecycle.md` | Status machine. |
 | `execution_protocols.md` | Slack gates, handoffs. |
 | `cursor_pa_slack_visibility.md` | Cursor PA + JSONL outbox vs IDE Slack MCP (automation status). |
+| `definition_of_done.md`     | PWA, localization, SEO, F-011 bars + sprint order huddle link.              |
+| `sprint_queue_message_spec_v1.md` | `#sprint-queue` post shape (`sprint-queue-v1`) for Cursor PA → cursor-agent. |
 | `deployment_protocol.md` | CPPR+D, blue-green, VPS. |
 | `branching_guidelines.md` | Inactive-color feature work; one feature at a time on inactive color (locked 2026-04-30). |
 

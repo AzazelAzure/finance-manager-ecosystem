@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-05-21 (F-007 polish plan registered; PWA sprint paused)
+**Last updated:** 2026-05-22 (definition_of_done + rollout-order huddle scaffold)
 
 ## Update protocol
 
