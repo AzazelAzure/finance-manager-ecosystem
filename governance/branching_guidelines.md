@@ -93,10 +93,10 @@ When all tasks for the feature are merged into the feature branch:
   - Inactive color smoke per `deployment_protocol.md` §6.
   - Feature behaves end-to-end (manual review on inactive color).
 2. Open PR: feature branch → `main`.
-3. Apply `pre_deploy` Slack gate (HitM authorization to deploy).
+3. Apply `pre_deploy` manual gate (HitM authorization to deploy).
 4. On approval: merge PR.
 5. Trigger color flip (deploy via `scripts/fm_server_beta.sh switch --to <inactive-color>`).
-6. Apply `pre_cutover` Slack gate (HitM authorization for the flip itself).
+6. Apply `pre_cutover` manual gate (HitM authorization for the flip itself).
 7. Post-cutover smoke per `deployment_protocol.md` §6.
 8. Update `plan_registry.md`: feature as `completed`.
 
@@ -136,7 +136,7 @@ If no feature is currently active: open a "maintenance feature branch" (`cursor/
 2. Create hotfix branch from `main`: `git checkout -b cursor/<phase-stage>/hotfix/<slug>`.
 3. Implement minimum viable fix (no scope creep).
 4. PR hotfix branch → `main` directly (skip feature branch).
-5. Apply hotfix-specific Slack gates (`pre_deploy` required; `pre_cutover` required; per `deployment_protocol.md`).
+5. Apply hotfix-specific manual gates (`pre_deploy` required; `pre_cutover` required; per `deployment_protocol.md`).
 6. On approval: merge + color flip.
 7. **After hotfix lands:** the previously-paused feature branch needs the hotfix re-rolled into it before resumption:
   - Either rebase the feature branch on the new main (clean), or
@@ -147,7 +147,7 @@ If no feature is currently active: open a "maintenance feature branch" (`cursor/
 
 ### 4.3 What about S0 production incidents (data corruption, auth breach)?
 
-These follow the incident triage flow per `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md`. Branching follows §4.2 (hotfix path) but with shortened Slack gate cadence allowed at HitM discretion.
+These follow the incident triage flow per `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md`. Branching follows §4.2 (hotfix path) but with shortened manual gate cadence allowed at HitM discretion.
 
 ---
 
@@ -172,7 +172,7 @@ Hotfix interrupts the active feature (per §4.2). Only one hotfix at a time.
 
 ---
 
-## 6) Color flip authorization (Slack gate cadence)
+## 6) Color flip authorization (Manual gate cadence)
 
 
 | Event                            | `pre_deploy` gate             | `pre_cutover` gate |
@@ -236,7 +236,7 @@ If a feature branch has had no commits for >1 week:
 
 - ❌ Multiple feature branches accumulated on inactive color simultaneously.
 - ❌ Task PRs going directly to main (always go to feature branch first).
-- ❌ Color flip without `pre_cutover` Slack gate authorization.
+- ❌ Color flip without `pre_cutover` manual gate authorization.
 - ❌ Skipping the inactive-color smoke before flip.
 - ❌ Squashing task branch history when merging task PR (preserve task-level history within feature branch).
 - ❌ Force-pushing to feature branch after task PRs have landed.
@@ -249,7 +249,7 @@ If a feature branch has had no commits for >1 week:
 
 | Concept                                            | File                                                                                            |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Slack gate templates (`pre_deploy`, `pre_cutover`) | `execution_protocols.md` §1                                                                     |
+| Manual gate templates (`pre_deploy`, `pre_cutover`) | `execution_protocols.md` §1                                                                     |
 | VPS deployment commands                            | `deployment_protocol.md` §4-§6                                                                  |
 | Plan template metadata                             | `plan_template.md`                                                                              |
 | Status transitions                                 | `plan_lifecycle.md`                                                                             |

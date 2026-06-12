@@ -16,7 +16,7 @@ hotfix: (none) ──birth──> in_progress  (skips draft, ready)
 ## Transition table
 
 
-| From          | To            | Trigger                                                            | Required actions                   | Slack gate                                                                             |
+| From          | To            | Trigger                                                            | Required actions                   | Manual gate                                                                             |
 | ------------- | ------------- | ------------------------------------------------------------------ | ---------------------------------- | -------------------------------------------------------------------------------------- |
 | `(none)`      | `draft`       | New work identified                                                | §A Birth actions                   | none                                                                                   |
 | `(none)`      | `in_progress` | Hotfix only                                                        | §A Birth + §A.HF hotfix variant    | none for pre_execution                                                                 |
@@ -65,7 +65,7 @@ Hotfix overrides §A and §B:
 status: in_progress (from creation)
 priority: P0
 strategic_phase: hotfix
-slack_gates: pre_execution=none, pre_merge=required, pre_close=none
+manual_gates: pre_execution=none, pre_merge=required, pre_close=none
 Body sections: may be filled retroactively within 24h
 Registry: append row directly to "In Progress" section
 ```
@@ -87,8 +87,8 @@ Registry: append row directly to "In Progress" section
 1. Re-check plan_registry.md:
    - All depends_on plans status: completed
    - No conflicts_with plans currently in_progress
-2. If slack_gates.pre_execution == required:
-   a. Post Slack gate per execution_protocols.md §1.1
+2. If manual_gates.pre_execution == required:
+   a. Post manual gate per execution_protocols.md §1.1
    b. Wait for HitM reply
    c. On 👍 / approve / yes → continue
    d. On 👎 / reject / no  → stay ready, post reason as next-step
@@ -115,7 +115,7 @@ Registry: append row directly to "In Progress" section
 1. Set status: blocked
 2. Update metadata: updated, blocker, resolution_owner
 3. Move registry row from "In Progress" to "Blocked"
-4. Notify HitM via Slack thread reply (no gate prompt; informational)
+4. Notify HitM via IDE Chat (no gate prompt; informational)
 ```
 
 ## §E Close actions (`in_progress → completed`)
@@ -125,8 +125,8 @@ Pre-conditions:
 ```
 [ ] All exit criteria in plan body §6 met
 [ ] All verification commands pass
-[ ] PR opened, posted to #pull-requests
-[ ] Slack #pull-requests automation reconciled with GitHub state
+[ ] PR opened, posted to IDE Chat
+[ ] IDE Chat automation reconciled with GitHub state
 [ ] PR merged
 [ ] If deployment.required == true:
       [ ] pre_deploy gate authorized (deployment_protocol.md §3)
@@ -134,7 +134,7 @@ Pre-conditions:
       [ ] pre_cutover gate authorized (deployment_protocol.md §5)
       [ ] Cutover executed and post-cutover smoke passed (deployment_protocol.md §6)
       [ ] Monitoring window complete with no rollback (deployment_protocol.md §7)
-[ ] If slack_gates.pre_close == required: HitM 👍 received
+[ ] If manual_gates.pre_close == required: HitM 👍 received
       (pre_close gate must include deployment evidence per deployment_protocol.md §9 when deployment.required == true)
 ```
 
@@ -154,8 +154,8 @@ Then:
 5. Documentation sync (if §7 lists files):
    - Invoke design-docs-sync skill
    - Stage and commit doc changes if needed (separate commit from code)
-6. Slack handoff (informational, no gate):
-   - Post completion to plan thread or #cli-interface
+6. IDE Chat handoff (informational, no gate):
+   - Post completion to IDE Chat
    - Format: see execution_protocols.md §2.1 with type=close_summary
 ```
 

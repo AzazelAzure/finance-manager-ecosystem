@@ -1,8 +1,8 @@
 # Orchestration index (parent repo)
 
-**Purpose:** Single entry map for how **strategy**, **governance**, **tactical plans**, **Cursor rules/skills**, and **runtime** fit together. Supplements `governance/README.md` (protocols and enums) with **cross-cutting navigation** for multi-agent work.
+**Purpose:** Single entry map for how **strategy**, **governance**, **tactical plans**, **Antigravity plugins/skills**, and **runtime** fit together. Supplements `governance/README.md` (protocols and enums) with **cross-cutting navigation** for multi-agent work.
 
-**Audience:** AI agents and HitM. For Slack gate text and lifecycle mechanics, use `execution_protocols.md` and `plan_lifecycle.md`.
+**Audience:** AI agents and HitM. For manual gate text and lifecycle mechanics, use `execution_protocols.md` and `plan_lifecycle.md`.
 
 ---
 
@@ -32,33 +32,32 @@
 | `skill_orchestration_manager.md` | Mirror of orchestration-manager skill (delegate, gates, retask). |
 | `plan_registry.md` | Single portfolio table. |
 | `plan_template.md` | Schema for new governed plans. |
-| `plan_lifecycle.md` | Status machine. |
-| `execution_protocols.md` | Slack gates, handoffs. |
-| `cursor_pa_slack_visibility.md` | Cursor PA + JSONL outbox vs IDE Slack MCP (automation status). |
-| `definition_of_done.md`     | PWA, localization, SEO, F-011 bars + sprint order huddle link.              |
-| `sprint_queue_message_spec_v1.md` | `#sprint-queue` post shape (`sprint-queue-v1`) + `SPRINT_PIPELINE_JSON` handoffs + bridge runbook (see §Machine-readable pipeline). |
-| `scripts/sprint_slack_pipeline_bridge.py` | Polls Slack + optional `SPRINT_PIPELINE_LOCAL_INBOX` JSONL: `READY_FOR_REVIEW` → `#review-queue` → (default) auto `PASS` when `requires_hitm` is false → next slice file or `#hitm-gate`. |
+| `execution_protocols.md` | Manual gates, handoffs. |
+| `definition_of_done.md` | PWA, localization, SEO, F-011 bars + sprint order huddle link. |
+| (Archived) | Antigravity PA + JSONL outbox vs IDE Slack MCP. |
+| (Archived) | `#sprint-queue` post shape. |
+| (Archived) | Polls Slack for pipelines. |
 | `deployment_protocol.md` | CPPR+D, blue-green, VPS. |
 | `branching_guidelines.md` | Inactive-color feature work; one feature at a time on inactive color (locked 2026-04-30). |
 
 ---
 
-## 3) Cursor / IDE layer
+## 3) IDE layer
 
 | Area | Path |
 | --- | --- |
-| **Rules** | `.cursor/rules/` — sub-repo boundaries, container testing via `scripts/`, git workflow, core standards. |
-| **Skills** | `.cursor/skills/` — workflow skills (`feature-implementation-loop`, `repo-exploration-briefing`, `pr-ops-merge-readiness`, etc.). |
-| **Delegation map** | `.cursor/rules/agent-delegation.mdc` — maps user intents to skills/subagents. |
+| **Rules** | User Rules in IDE settings. |
+| **Skills** | Antigravity skills. |
+| **Delegation map** | `AGENTS.md` and `governance/` protocols. |
 
-**Skill mirrors in `governance/`:** The `skill_*.md` files duplicate the **substance** of selected skills for agents that read `governance/` only. **Cursor wiring** (frontmatter, tool hooks) remains authoritative in `.cursor/skills/<name>/SKILL.md`; update **both** when workflow rules change (CPPRD).
+**Skill mirrors in `governance/`:** The `skill_*.md` files duplicate the **substance** of selected skills for agents that read `governance/` only.
 
 ---
 
 ## 4) Runtime and verification
 
 - **Authoritative product check:** VPS blue-green **HTTPS on host :8443** (see `AGENTS.md`, `finance_manager_web/README.md`). Not Vite-only ports for full-stack truth.
-- **Containers:** `scripts/fm_docker.sh`, `scripts/fm_services.sh` per `.cursor/rules/container-testing-orchestration.mdc`.
+- **Containers:** `scripts/fm_docker.sh`, `scripts/fm_services.sh`.
 - **Runtime ownership:** `design_docs/30_Releases/Runtime_Signup_Sheet.md` (when `design_docs` submodule is present).
 
 ---
@@ -81,7 +80,7 @@ Treat **`plan_registry.md`**, **`strategy/.../README.md`**, **`plans/S1/S1.B/REA
 
 - **Phase / stage:** Forward-looking execution is **S1.B** (distribution readiness; flagship **web**; PH-only new acquisition unless plan says otherwise).
 - **PWA / offline:** Research locks under `plans/S1/S1.B/pwa-install-offline-sync-research/`; implementation sprint hub `plans/S1/S1.B/pwa-implementation-branch/` — follow registry row for **paused** vs active.
-- **Git:** One commit scope per sub-repo; feature branches, not default `main` for feature work; changelogs in touched sub-repo; when opening a PR, send the **PR link in the Cursor chat** (repo, branch, URL) per workspace rules; reconcile **GitHub** mergeability and required checks before merge.
+- **Git:** One commit scope per sub-repo; feature branches, not default `main` for feature work; changelogs in touched sub-repo; when opening a PR, send the **PR link in the Antigravity chat** (repo, branch, URL) per workspace rules; reconcile **GitHub** mergeability and required checks before merge.
 - **Tasks and slices:** Delegation uses **slice IDs** `T##.SL#` when plans split work (see `governance/plan_template.md` §1a, `glossary.md` §3). Agents **ask clarifying questions** instead of guessing when specs are silent.
 - **Reflex:** Archived product stream — not production architecture.
 - **D0 browser matrix:** See `AGENTS.md` (Chrome desktop + Chrome Android for certified exit smoke).
@@ -90,4 +89,4 @@ Treat **`plan_registry.md`**, **`strategy/.../README.md`**, **`plans/S1/S1.B/REA
 
 ## 7) Retiring scratch snapshots
 
-Disposable health snapshots under `plans/cursor/_TEMP_*.md` should fold into this file + `governance/README.md` over time, then **delete** the temp path when superseded.
+Disposable health snapshots under `plans/agy/_TEMP_*.md` should fold into this file + `governance/README.md` over time, then **delete** the temp path when superseded.

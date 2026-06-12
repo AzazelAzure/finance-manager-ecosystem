@@ -2,8 +2,8 @@
 
 Repo location: **`governance/`** (workspace root, sibling to `plans/` and `strategy/`). Tactical **execution plans** live under `plans/<Phase>/<Stage>/<sub-plan>/` (e.g. `plans/S1/S1.B/`); the **Strategic Plan** lives under `strategy/strategic-roadmap-reframe-53be/`. This directory holds **protocols** (registry, lifecycle, deploy, branching, vocabulary).
 
-Primary audience: AI agents (Cursor desktop, Cursor cloud, headless Slack bridge, any future agent).
-Secondary audience: HitM (Human in the Middle = `pproctor`) at Slack confirmation gates only.
+Primary audience: AI agents (Antigravity IDE, CLI orchestrators, any future agent).
+Secondary audience: HitM (Human in the Middle = `pproctor`) at manual confirmation gates.
 
 This manual defines how AI agents author and execute plans **consistently** across runs and across agent types.
 
@@ -18,10 +18,10 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `skill_orchestration_manager.md`   | Governance mirror of orchestration-manager (delegate, gates, retask)        | Running execution batches over an active plan root           |
 | `plan_template.md`           | Schema for new plans                                                         | Authoring a plan                                              |
 | `definition_of_done.md`     | PWA class A/B, i18n, SEO matrix, F-011 beta bar + link to sprint-order huddle | Before claiming plan complete or scoping feature vs PWA      |
-| `sprint_queue_message_spec_v1.md` | `#sprint-queue` message format (`sprint-queue-v1`) for Cursor PA posts | When posting slices to Slack for cursor-agent intake |
+| (Archived)                   | `#sprint-queue` message format                                               | Reference only                                                |
 | `plan_registry.md`           | Portfolio status of all plans                                                | Before authoring or executing (conflict + dependency check)   |
 | `plan_lifecycle.md`          | State machine + transition actions                                           | At every status transition                                    |
-| `execution_protocols.md`     | Exact Slack gate + handoff templates                                         | Producing any HitM-facing message                             |
+| `execution_protocols.md`     | Exact HitM gate + handoff templates                                          | Producing any HitM-facing message                             |
 | `deployment_protocol.md`     | CPPR+D cycle, blue-green deploy, SSH rules                                   | Plan has `deployment.required: true`                          |
 | `branching_guidelines.md`    | Per-feature color-cycle workflow                                             | Producing or executing a feature on inactive color            |
 | `glossary.md`                | Canonical vocabulary (Phase/Stage/Sprint, launch states, plan types, etc.)   | First, every session                                          |
@@ -29,7 +29,10 @@ This manual defines how AI agents author and execute plans **consistently** acro
 | `HITM_SCHEDULE_SNAPSHOT.md`  | **Generated** (`../scripts/schedule_agent_sync.sh`); gitignored               | When present locally: calendar window + open tasks for agents |
 | `runtime_handoff_template.md`| Structured YAML template for feature sprint `runtime_handoff.md` files       | When starting any new feature sprint (copy template to plan root) |
 | `agent_workspace_isolation.md`| Directory layout, git identity, and concurrency rules for multi-agent workspaces | Setting up agent workspaces or debugging push/identity issues |
-| `cursor_pa_slack_visibility.md` | Cursor PA + JSONL outbox vs IDE Slack MCP; durable automation status to Slack | Wiring sprint/production visibility to HitM without conflating MCP and runner bots |
+| (Archived)                   | Cursor PA Slack visibility                                                   | Reference only                                                |
+| `agent_context_delivery.md` | **P1:** READ FIRST blocks, condensed handoff rules, append-only decision logs, session-start enforcement | Starting any agent session; configuring orchestrator pre-flight |
+| `sprint_task_specification.md` | **P2:** End-state-driven task specs, scope locks, anti-patterns, dual-track sprint model, biweekly QA sweeps | Writing sprint tasks; planning next sprint; onboarding executor agents |
+| `examples/` | Worked examples of governance formats (task specs, sprint-queue messages) | Reference when authoring new plans or tasks |
 
 
 ## Reading sequences
@@ -40,7 +43,7 @@ This manual defines how AI agents author and execute plans **consistently** acro
 2. `plan_registry.md` → list active plans → check conflicts
 3. `strategy/strategic-roadmap-reframe-53be/phases/S<n>_*.md` → strategic context for declared phase
 4. `plan_template.md` → fill schema (multi-surface plans: add **slices** `T##.SL#` per §1a)
-4b. `definition_of_done.md` → declare PWA class **A/B**, localization (or shelved signoff), SEO matrix touchpoints, F-011 beta comms when relevant; if using `#sprint-queue`, `sprint_queue_message_spec_v1.md`
+4b. `definition_of_done.md` → declare PWA class **A/B**, localization (or shelved signoff), SEO matrix touchpoints, F-011 beta comms when relevant;
 5. `plan_lifecycle.md` §Stage 1 + §Stage 2 → execute Birth + Validation
 6. Append registry row → status `draft` or `ready`
 
@@ -49,7 +52,7 @@ This manual defines how AI agents author and execute plans **consistently** acro
 1. `README.md`
 2. `plan_registry.md` → confirm `status: ready` and all `depends_on` are `completed`
 3. `<plan_root>/README.md` → strategic inheritance + tasks
-4. `execution_protocols.md` → produce required Slack gate messages
+4. `execution_protocols.md` → produce required HitM gate messages
 5. `plan_lifecycle.md` §Stage 3..§Stage 5 → execute through to close
 6. If `deployment.required: true`: also follow Sequence E
 7. Update registry row at every transition
@@ -67,13 +70,28 @@ This manual defines how AI agents author and execute plans **consistently** acro
 3. If hotfix touches deployed code: `deployment_protocol.md` still applies (skip optional gates only with HitM authorization)
 4. Retroactive plan body within 24h of resolution
 
-### Sequence F: multi-agent orchestration (Cursor or headless)
+### Sequence F: multi-agent orchestration (Antigravity)
 
 1. `orchestration.md` → roots, directives snapshot, legacy-path warnings  
 2. `plan_registry.md` → status and dependencies for the active plan  
 3. `skill_orchestration_manager.md` and/or `skill_roadmap_rollout_planning.md` → delegation and materialization rules  
 4. Active plan root under `plans/<Phase>/<Stage>/<sub-plan>/` → `README.md` and tasks  
-5. `.cursor/rules/agent-delegation.mdc` when routing from Cursor  
+5. Use `scripts/orchestrator.py` or `invoke_subagent` for execution
+
+### Sequence G: sprint planning (dual-track model)
+
+Used by HitM or a planning AI (e.g. Antigravity) to write task specs for the **next** sprint while the current sprint executes.
+
+1. `sprint_task_specification.md` → task spec format, end-state writing guide, scope lock rules
+2. `agent_context_delivery.md` → READ FIRST, decision log, and handoff requirements
+3. `plan_template.md` → YAML metadata + required body sections
+4. `definition_of_done.md` → PWA class, i18n, SEO, beta bars to declare
+5. (Archived sequence step — no longer drafting sprint-queue messages)
+6. `examples/sprint_task_spec_worked_example.md` → reference for spec quality bar
+7. Write specs to `plans/<Phase>/<Stage>/<sub-plan>/tasks/T##_<slug>.md`
+8. Pre-populate `DECISION_LOG.md` with architectural decisions
+9. Initialize `runtime_handoff.md` from `runtime_handoff_template.md`
+10. (Archived sequence step — no longer drafting sprint-queue messages)
 
 ### Sequence E: deploying a plan to VPS (CPPR+D)
 
@@ -132,7 +150,7 @@ These values are normative. AI agents must use only these strings. Validation fa
 | `hotfix`      | Production incident response                        |
 
 
-### `slack_gates.`*
+### `manual_gates.`*
 
 
 | Value      | Meaning                                                        |
@@ -181,5 +199,5 @@ These values are normative. AI agents must use only these strings. Validation fa
 - Authoring or modifying files in the repo-root `governance/` directory (this manual) without explicit HitM authorization.
 - Modifying `strategy/strategic-roadmap-reframe-53be/` files except via `plan_lifecycle.md` Stage 5 close-out updates to `validation_gates.md` and `kill_commit_gates.md`.
 - Skipping validation (`draft → in_progress` directly) outside hotfix variant.
-- Merging without required HitM authorization surfaces defined in `execution_protocols.md` **and** without reconciling **GitHub** mergeability and required checks. PR links must be posted in **Cursor chat** when an agent opens a PR (`AGENTS.md`); Slack gates apply where the plan or protocol still requires them.
+- Merging without required HitM authorization surfaces defined in `execution_protocols.md` **and** without reconciling **GitHub** mergeability and required checks. PR links must be posted in **Antigravity chat** when an agent opens a PR (`AGENTS.md`); manual gates apply where the plan or protocol still requires them.
 - Authoring plans without `strategic_phase` and `strategic_link` populated.

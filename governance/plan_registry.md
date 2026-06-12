@@ -38,26 +38,26 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
 | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/S1/S1.B/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `strategy/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
-| `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `cursor/s1b/feat/f001-balance-history`. |
+| `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `agy/s1b/feat/f001-balance-history`. |
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
 | `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
 | `PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-004** STS pay cycles, partial pay, volatile vs rigid bills + expansion annex: `plans/S1/S1.B/feat-f004-sts-pay-cycles-bill-realism/README.md`; **P1**. |
 | `PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-005** savings goals: `plans/S1/S1.B/feat-f005-savings-goals/README.md`. |
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-006** customizable dashboard: `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md`. |
 | `PLAN_CROSS_GUIDED_TOURS_F007_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-007** guided walkthroughs: `plans/S1/S1.B/feat-f007-guided-walkthroughs/README.md`. |
-| `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-007 polish** — help-mode flow, form step-by-step, calendar tour; V0–V3 + `sprint_verify.sh`: `plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`; branch `cursor/s1b/feat/f007-walkthrough-polish`. |
+| `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-007 polish** — help-mode flow, form step-by-step, calendar tour; V0–V3 + `sprint_verify.sh`: `plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`; branch `agy/s1b/feat/f007-walkthrough-polish`. |
 | `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-009** recurring automation + **source → auto_deduct**: `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md`. |
 | `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-010** export/share + PWA trust; **P1**: `plans/S1/S1.B/feat-f010-export-sharing/README.md`. |
 | `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-011** living landing/hero (H-W3-1): `plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md`. |
-| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-012** bug reports + feature requests: `plans/S1/S1.B/feat-infra-support-intake/README.md`; branch `cursor/s1b/feat/infra-support-intake`. |
-| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-013** per-user **Loguru diagnostic files** on VPS (UUID-keyed, ops-side; not shell Activity UI): `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`; branch `cursor/s1b/feat/infra-user-activity-logs`. |
+| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-012** bug reports + feature requests: `plans/S1/S1.B/feat-infra-support-intake/README.md`; branch `agy/s1b/feat/infra-support-intake`. |
+| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | pproctor | 2026-05-21 | **F-013** per-user **Loguru diagnostic files** on VPS (UUID-keyed, ops-side; not shell Activity UI): `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`; branch `agy/s1b/feat/infra-user-activity-logs`. |
 
 ## Paused
 
 | plan_id | phase | paused_date | paused_reason | resume_trigger |
 |---|---|---|---|---|
-| `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | 2026-05-21 | **Hub:** `plans/S1/S1.B/pwa-implementation-branch/README.md` · **Host branch:** `cursor/s1b/pwa-implementation-branch` · Human verification **paused** — online tx network error + offline shell still repro; `runtime_handoff.md` **Open issues (paused)** | HitM re-test after web/API fixes + deploy; clear handoff issues |
+| `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | 2026-05-21 | **Hub:** `plans/S1/S1.B/pwa-implementation-branch/README.md` · **Host branch:** `agy/s1b/pwa-implementation-branch` · Human verification **paused** — online tx network error + offline shell still repro; `runtime_handoff.md` **Open issues (paused)** | HitM re-test after web/API fixes + deploy; clear handoff issues |
 
 ## Blocked
 
@@ -113,9 +113,9 @@ plans/<Phase>/<Stage>/                               ← Stage umbrella (e.g. pl
 Branch names follow the hierarchy:
 
 ```
-cursor/s1b/<sub-plan-name>                            (sub-plan branch)
-cursor/s1b/feat/<feature-name>                        (feature branch)
-cursor/s1b/feat/<feature-name>/t<NN>-<slug>           (task branch)
+agy/s1b/<sub-plan-name>                            (sub-plan branch)
+agy/s1b/feat/<feature-name>                        (feature branch)
+agy/s1b/feat/<feature-name>/t<NN>-<slug>           (task branch)
 ```
 
 **Slices:** Within a task, execution steps are documented as **`T##.SL#`** (see `plan_template.md` §1a). Slice IDs are **plan artifacts**, not extra branch segments by default.

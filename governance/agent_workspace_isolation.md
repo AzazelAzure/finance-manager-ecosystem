@@ -10,26 +10,13 @@
   role: HitM work, orchestration, manual verification, production flips
   branch policy: any branch; main for governance/strategy edits
 
-~/agent-workspaces/cursor-executor/finance_manager/
-  git identity: Proctor-Cursor-Agents <cursor-agent@hivemanager.com>
-  GitHub account: Proctor-Cursor-Agents (collaborator, push)
-  role: EXECUTOR — writes production code on feature branches
-  branch policy: feature branches only (cursor/s1b/feat/...)
-  Slack visibility: **Cursor PA** (local, out of repo) — `~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py` + **`cursor_slack_outbox.jsonl`** / **`cursor_slack_inbox.jsonl`** at that repo root; see [`cursor_pa_slack_visibility.md`](./cursor_pa_slack_visibility.md). Optional in-repo poller: `scripts/cursor_headless_slack_agent.py`. Sprint handoff bridge: `scripts/sprint_slack_pipeline_bridge.py`.
-  agent binary: `cursor agent` (invoked by Cursor PA or locally)
-
-### Legacy — Antigravity workspaces (do not use for new orchestration)
-
-The following layouts are **historical**. New sprints should use **Cursor** executors/reviewers and Cursor PA for Slack; do not route new work through `antigravity_slack_runner.py`.
-
 ~/agent-workspaces/antigravity-executor/finance_manager/
-  git identity: Proctor-Gemini-Executor <gemini-executor@hivemanager.com>
-  role: (legacy) executor — **unsupported** for new orchestration
-  agent binary: (legacy) antigravity chat — see repo `scripts/antigravity_slack_runner.py` header
-
-~/agent-workspaces/antigravity-reviewer/finance_manager/
-  git identity: Proctor-Gemini-Agent <antigravity-agent@hivemanager.com>
-  role: (legacy) reviewer — **unsupported** for new orchestration
+  git identity: Proctor-Antigravity-Agents <antigravity-agent@hivemanager.com>
+  GitHub account: Proctor-Antigravity-Agents (collaborator, push)
+  role: EXECUTOR — writes production code on feature branches
+  branch policy: feature branches only (agy/s1b/feat/...)
+  Visibility: Dispatched via `scripts/orchestrator.py` (CLI wrapper) and logged to `logs/dispatch/`
+  agent binary: `agy` CLI or IDE subagents
 ```
 
 ## Isolation Rules
@@ -45,21 +32,19 @@ The following layouts are **historical**. New sprints should use **Cursor** exec
 | Account | GitHub Username | Role | Permission |
 |---------|----------------|------|------------|
 | HitM | AzazelAzure | Owner + Orchestrator | admin (owner) |
-| Cursor Agent | Proctor-Cursor-Agents | Executor (Cursor auto/flash) | push (collaborator) |
-| Gemini Executor | Proctor-Gemini-Executor | Executor (Gemini Flash) | push (collaborator) |
-| Gemini Reviewer | Proctor-Gemini-Agent | Reviewer (Gemini Pro) | push (collaborator) |
+| Antigravity Agent | Proctor-Antigravity-Agents | Executor | push (collaborator) |
 
 ## Concurrency Safety
 
 | Scenario | Safe? | Why |
 |----------|-------|-----|
-| Cursor writes to `finance_manager_web/src/pages/Foo.tsx` while Gemini Executor writes `finance_manager_api/` | ✅ | Different clones, different subrepos, different slices |
+| Antigravity Grunt 1 writes to `finance_manager_web/src/pages/Foo.tsx` while Grunt 2 writes `finance_manager_api/` | ✅ | Different clones, different subrepos, different slices |
 | Both executors work on different slices of the same feature | ✅ | Different clones, non-overlapping file scope enforced by Orchestrator |
 | Reviewer reads a branch while Executor pushes to it | ✅ | Reviewer pulls a snapshot; no write conflict |
 | All agents pull main at the same time | ✅ | Read-only, separate `.git` databases |
 | All agents push different branches | ✅ | Non-overlapping branches |
 | Two agents push to the SAME branch | ❌ | Force-push race. Prevented by governance: only one agent works on a feature branch at a time |
-| Any agent builds docker on VPS while another deploys | ❌ | VPS is shared. Sequence via Slack: one agent at a time on VPS operations |
+| Any agent builds docker on VPS while another deploys | ❌ | VPS is shared. Sequence manually: one agent at a time on VPS operations |
 
 ## Sync Script
 

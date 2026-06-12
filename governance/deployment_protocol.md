@@ -2,18 +2,18 @@
 
 Defines how merged code reaches the running VPS. Extends the standard CPPR cycle with a fifth step: **Deploy**.
 
-This protocol assumes the operating model in `design_docs/40_System_Design/13_Server_Runtime_Agent_Operations_Contract.md`: cloud agents are the **control plane** (planning, PR review, deploy intent); a host-local Slack bridge agent is the **execution plane** (runs scripted deploy commands with SSH access). Cloud agents do not SSH directly to the VPS.
+This protocol assumes the operating model in `design_docs/40_System_Design/13_Server_Runtime_Agent_Operations_Contract.md`: cloud agents are the **control plane** (planning, PR review, deploy intent); the Orchestrator CLI is the **execution plane** (runs scripted deploy commands with SSH access). Cloud agents do not SSH directly to the VPS.
 
 ## 1) CPPR+D cycle
 
 
-| Step  | Action                       | Where                     | Who                  | Slack gate                                      |
+| Step  | Action                       | Where                     | Who                  | Manual gate                                      |
 | ----- | ---------------------------- | ------------------------- | -------------------- | ----------------------------------------------- |
 | C     | Commit                       | local feature branch      | author agent         | none                                            |
 | P     | Push                         | origin remote             | author agent         | none                                            |
 | PR    | Open PR                      | GitHub via `gh`           | author agent         | `pre_merge` (workspace rule)                    |
-| M     | Merge                        | GitHub                    | author agent or HitM | reconciles `#pull-requests` + GitHub state      |
-| **D** | Deploy to VPS inactive color | local Slack bridge runner | execution plane      | `**pre_deploy`, `pre_cutover`** (this protocol) |
+| M     | Merge                        | GitHub                    | author agent or HitM | reconciles IDE Chat + GitHub state              |
+| **D** | Deploy to VPS inactive color | Orchestrator CLI          | execution plane      | `**pre_deploy`, `pre_cutover`** (this protocol) |
 
 
 For docs-only or pure-governance plans: the D step is skipped. The plan's metadata `deployment.required: false` declares this.
@@ -42,7 +42,7 @@ If `deployment.required: false`: skip §3-§7 entirely. Close the plan via `plan
 
 Posted by the execution plane after PR merge, before any VPS-touching action.
 
-Channel: `#cli-interface` (plan task thread).
+Interface: IDE Chat or Terminal
 
 ```text
 [GATE: pre_deploy]
@@ -64,7 +64,7 @@ Wait condition: agent blocks until reply OR 24h timeout (timeout → status `pau
 
 ## 4) Deploy actions (after `pre_deploy` approved)
 
-Execute in order. Each command is run via the local Slack bridge runner (host-local execution plane).
+Execute in order. Each command is run via the Orchestrator CLI (host-local execution plane).
 
 ```
 1. Confirm runtime owner per design_docs/30_Releases/Runtime_Signup_Sheet.md
@@ -95,7 +95,7 @@ If any step fails:
 
 Posted after smoke passes on inactive color, before proxy switch.
 
-Channel: `#cli-interface` (plan task thread).
+Interface: IDE Chat or Terminal
 
 ```text
 [GATE: pre_cutover]
@@ -130,7 +130,7 @@ Wait condition: agent blocks until reply OR 24h timeout.
    ./scripts/fm_server_beta.sh smoke --color active
 3. Tail logs briefly:
    ./scripts/fm_server_beta.sh logs --color active --since 5m
-4. Record evidence in plan task thread (chunked Slack message)
+4. Record evidence in plan task thread (IDE Chat or Terminal)
 ```
 
 Cutover is proxy-only (rewrites `proxy/active_color.conf`, reloads nginx). No container restart on the previously-active color; it remains warm for fast rollback.
@@ -226,18 +226,18 @@ If a future agent or runbook needs to know the canonical VPS target, **read this
 ### 10.2 Where SSH credentials live
 
 ```
-- VPS SSH private key: ONLY on the host running the local Slack bridge agent
+- VPS SSH private key: ONLY on the host running the Orchestrator CLI
 - Stored at: ~/.ssh/<key_name> with restrictive permissions (0600)
 - Resolved automatically via ~/.ssh/config Host entry; deploy scripts do not need --identity
 - Never committed to any repo; gitignored at workspace level
-- Never echoed to Slack or any log
+- Never echoed to IDE Chat or any log
 ```
 
 ### 10.3 Who can SSH to VPS
 
 ```
 Authorized identity: dev@dev@<VPS_HOST> (the configured deploy user; not root)
-Cloud agents: never. Cloud agents post deploy tasks to Slack and wait for execution-plane response.
+Cloud agents: never. Cloud agents dispatch deploy tasks to the Orchestrator and wait for execution-plane response.
 HitM: directly, for emergency / out-of-band ops only
 ```
 
@@ -246,15 +246,15 @@ HitM: directly, for emergency / out-of-band ops only
 ```
 Quarterly (every 90 days), or immediately if:
   - Key suspected compromised
-  - Host running bridge agent changes
-  - Bridge agent role transferred to a different host
+  - Host running Orchestrator changes
+  - Orchestrator role transferred to a different host
 HitM-managed; not an agent task.
 ```
 
 ### 10.5 Deploy environment secrets
 
 ```
-.secrets/server.env on the local bridge host: gitignored, contains:
+.secrets/server.env on the local orchestrator host: gitignored, contains:
   - VPS_HOST=dev@<VPS_HOST>
   - VPS_SSH_USER=dev
   - VPS_SSH_IDENTITY (optional; ~/.ssh/config usually resolves)
@@ -270,7 +270,7 @@ Per workspace rule `container-testing-orchestration.mdc`: only one agent owns co
 During a deploy:
 
 ```
-- The execution-plane agent (local Slack bridge) is the runtime owner for the deploy duration
+- The execution-plane agent (local Orchestrator) is the runtime owner for the deploy duration
 - Other agents do not start/stop/rebuild containers on VPS during deploy
 - Other agents may continue read-only ops (status checks, log reads) on the active color only
 - After cutover + monitoring window: ownership returns to whoever was the prior steady-state owner
@@ -341,7 +341,7 @@ Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/fm_server_b
 | Compose layout                               | `docker-compose.bluegreen.yml`                                                     |
 | Active color state                           | `proxy/active_color.conf`                                                          |
 | Runtime ownership tracking                   | `design_docs/30_Releases/Runtime_Signup_Sheet.md`                                  |
-| Slack gate templates                         | `execution_protocols.md` §1                                            |
+| Manual gate templates                        | `execution_protocols.md` §1                                            |
 | Status transitions                           | `plan_lifecycle.md`                                                    |
 
 

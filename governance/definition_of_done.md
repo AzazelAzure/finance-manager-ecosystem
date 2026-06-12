@@ -1,6 +1,6 @@
 # Definition of done — feature rollouts & sprints (ecosystem)
 
-**Status:** living governance (HitM + agents). **Related:** [`plan_template.md`](./plan_template.md) §1a (V-tiers), [`glossary.md`](./glossary.md) §12, [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md) (`#sprint-queue`), [`branching_guidelines.md`](./branching_guidelines.md), [`deployment_protocol.md`](./deployment_protocol.md).
+**Status:** living governance (HitM + agents). **Related:** [`plan_template.md`](./plan_template.md) §1a (V-tiers), [`glossary.md`](./glossary.md) §12, [`branching_guidelines.md`](./branching_guidelines.md), [`deployment_protocol.md`](./deployment_protocol.md).
 
 This document ties together **interconnected** bars so “PASS” on a slice checklist does not silently contradict PWA, i18n, SEO, or beta expectations.
 
@@ -51,12 +51,6 @@ Features that would **break** PWA (SW scope regressions, broken offline core led
 
 ---
 
-## 5b) `#sprint-queue` (Cursor PA → cursor-agent)
-
-When work is queued to **`#sprint-queue`**, every post **must** follow [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md) (`sprint-queue-v1`): **`@CursorPA`** line 1 (no space — `@Cursor PA` breaks the mention), **`Task Id:`** line 2 (stable intake id), fixed block order, tilde paths, and `BRANCH:` suffix `(already checked out)` / `(checkout required)`. **Do not** fork the spec into per-plan copies — link the governance file and keep plan-local files to **examples + slice order** only.
-
----
-
 ## 6) Checklist before marking a plan `completed`
 
 - [ ] V-tiers and evidence per [`plan_template.md`](./plan_template.md) §1a.
@@ -64,5 +58,4 @@ When work is queued to **`#sprint-queue`**, every post **must** follow [`sprint_
 - [ ] Localization satisfied **or** shelved with signed follow-up link.
 - [ ] SEO matrix row(s) updated if public surfaces changed; P0 items in-PR where applicable.
 - [ ] F-011 updated if hero/pipeline copy or beta subpages should reflect this release (or explicit waive in huddle).
-- [ ] If `#sprint-queue` was used: messages matched [`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md) (no ad-hoc field order).
 - [ ] `plan_registry.md` and plan `README` metadata `updated:` field match reality.
