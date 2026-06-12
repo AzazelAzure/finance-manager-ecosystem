@@ -8,6 +8,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Known issues list is not complete and will be a continuous working point.
 
 ---
@@ -16,6 +17,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Jun/Jul hire dates.
 - Gated by birth costs.
 
@@ -23,7 +25,10 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP3: Feature rollout scheduling
 
-**Status:** `pending`
+**Status:** `decided`  
+**Session:** TP16 + Cluster C combined  
+**Deep-dive:** `sessions/session-tp16-cluster-c/TP16_AND_CLUSTER_C.md`  
+**Outcome:** Conservative timeline (mid 2027) adopted. Priority: PWA fix → F-007 → F-011 (expanded) → wedge features. New DoD doctrine locked.
 
 ---
 
@@ -35,7 +40,10 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP5: Automation hardening
 
-**Status:** `pending`
+**Status:** `decided`  
+**Session:** Session 5 (Tooling & Agents)  
+**Deep-dive:** `sessions/session-05-tooling-agents/SESSION5_AUTOMATION_AND_TOOLING.md`  
+**Outcome:** Slack is monitoring+initiation only (not routing). Orchestrator script manages internal coder→reviewer→coder loop. PA is functional; backend scripts are the gap. P1+P2 (context delivery, task spec) this week. Orchestrator implementation end-of-week.
 
 ---
 
@@ -47,8 +55,12 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP7: Workspace subagent commands alignment
 
-**Status:** `pending`  
+**Status:** `decided`  
+**Session:** Session 5 (Tooling & Agents)  
+**Deep-dive:** `sessions/session-05-tooling-agents/SESSION5_AUTOMATION_AND_TOOLING.md`  
+**Outcome:** Most commands already work. VPS deploy stays manual. Agents handle code→test→push→READY. Orchestrator handles agent-to-agent handoffs internally.  
 **Notes seed:**
+
 - Align commands with automation workflows.
 
 ---
@@ -61,7 +73,10 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP9: Efficiency improvement avenues
 
-**Status:** `pending`
+**Status:** `decided`  
+**Session:** TP16 + Cluster C combined  
+**Deep-dive:** `sessions/session-tp16-cluster-c/TP16_AND_CLUSTER_C.md`  
+**Outcome:** Biggest efficiency bet is automation pipeline hardening (→ Session 5). Process simplifications parked for post-Session 5.
 
 ---
 
@@ -73,8 +88,11 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP11: Business expansion gates
 
-**Status:** `pending`  
+**Status:** `discussing`  
+**Session:** 1 (Legal & Entity)  
+**Deep-dive:** `[sessions/session-01-legal-entity/TP11_EXPANSION_GATES.md](./sessions/session-01-legal-entity/TP11_EXPANSION_GATES.md)`  
 **Notes seed:**
+
 - New hire gates.
 - Training vs out-of-school hires.
 - Legality research.
@@ -96,8 +114,12 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP14: Potential Claude inclusion into workflows
 
-**Status:** `pending`  
+**Status:** `decided`  
+**Session:** Session 5 (Tooling & Agents)  
+**Deep-dive:** `sessions/session-05-tooling-agents/SESSION5_AUTOMATION_AND_TOOLING.md`  
+**Outcome:** $200/mo Cursor upgrade deferred to June billing cycle (no funds now). Dev deadzone likely until May 28 reset. Reviewer should use higher model; near-term via $200 plan, future via Claude API. MCP browser tools needed for CLI visual verification (not blocking).  
 **Notes seed:**
+
 - Pros/cons.
 - Overhead changes.
 - Economics changes for success metrics.
@@ -115,25 +137,28 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - May tie back to other talking points.
 
 ---
 
 ## TP16: Human relief points
 
-**Status:** `pending`  
-**Notes seed:**
-- Baby factor.
-- Workflow automations vs human integrations.
-- What can be automated reliably with HitM verification vs what needs HitM hands-on.
-- Reference TP14 for potential outs.
+**Status:** `decided`  
+**Session:** TP16 + Cluster C combined session  
+**Deep-dive:** `sessions/session-tp16-cluster-c/TP16_AND_CLUSTER_C.md`  
+**Outcome:** 5–12 hrs/day babysitting AI is THE emergency. Automation pipeline hardening is #1 priority (→ Session 5). SMM onboarding requirements locked. Concurrent features possible when automation governance solidifies.
 
 ---
 
 ## TP17: Current Antigravity integration
 
-**Status:** `pending`  
+**Status:** `decided`  
+**Session:** Session 5 (Tooling & Agents)  
+**Deep-dive:** `sessions/session-05-tooling-agents/SESSION5_AUTOMATION_AND_TOOLING.md`  
+**Outcome:** Antigravity stays for planning/strategy/synthesis (like this huddle). Deprecated for code execution. Cost absorbed by HitM. Formal scope gates parked for post-huddle.  
 **Notes seed:**
+
 - Antigravity has context window superiority; coding quality is weak.
 - Costs are absorbed by HitM, not the businesses; define where/when usage is allowed via gates.
 - Mitigate issues between agentic organizations across business scopes.
@@ -142,25 +167,21 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP18: Entity creation timelines
 
-**Status:** `pending`  
-**Notes seed:**
-- Feasibility vs current production velocity and HitM schedules/requirements.
-- Cost breakpoints against HitM budget.
-- All business costs are absorbed directly by HitM living funds.
-  - If budget pressure is reached, create live documents at that point.
-- Need for human expansion.
-  - References: TP14, TP15, TP11, TP10, TP9, TP4.
-- How legal documents are handled.
-  - Agentic workflows based on outcomes of TP19.
-  - What must be human-handled.
-    - Where workflow requires new hire support (TP16, TP11, TP2).
+**Status:** `decided` (cascading from TP11 deferrals)  
+**Session:** 1 (Legal & Entity)  
+**Deep-dive:** `[sessions/session-01-legal-entity/TP18_ENTITY_TIMELINES.md](./sessions/session-01-legal-entity/TP18_ENTITY_TIMELINES.md)`  
+**Outcome:** All entity timelines deferred post-baby. Realistic first revenue ~Q1 2027. Product work proceeds in parallel.
 
 ---
 
 ## TP19: Potential agentic skills/rules split by domain
 
-**Status:** `pending`  
+**Status:** `decided`  
+**Session:** Session 5 (Tooling & Agents)  
+**Deep-dive:** `sessions/session-05-tooling-agents/SESSION5_AUTOMATION_AND_TOOLING.md`  
+**Outcome:** Engineering vs planning domain split is incremental work, starts after P1+P2 artifacts exist. SMM assistant scope deferred. AI content generation limits noted but not blocking.  
 **Notes seed:**
+
 - Separate skill/rule scopes for admin vs engineering vs social media.
 - Requires ecosystem restructuring (TP12) for subfile scope separation.
 - Requires Antigravity/Gemini integrations (TP17) for social media rollouts.
@@ -170,26 +191,30 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 ## TP20: Avenues for increasing success changes
 
-**Status:** `pending`
+**Status:** `decided`  
+**Session:** TP16 + Cluster C combined  
+**Deep-dive:** `sessions/session-tp16-cluster-c/TP16_AND_CLUSTER_C.md`  
+**Outcome:** Nail wedge features + Facebook-first distribution. Don't spread thin.
 
 ---
 
 ## TP21: Beta expansion protocols
 
-**Status:** `pending`  
-**Notes seed:**
-- Current beta is invite-only.
-  - Good for limiting scope, but depends on invitees actively using product and submitting requests.
-    - Currently no tester submission channel beyond direct DMs to HitM.
-- Expansion requires SMM and SEO optimization to drive engagement and controlled beta signups.
-- If expansion proceeds, define interaction with founders, profit projections, and success gates.
+**Status:** `decided`  
+**Session:** TP16 + Cluster C combined  
+**Deep-dive:** `sessions/session-tp16-cluster-c/TP16_AND_CLUSTER_C.md`  
+**Outcome:** Beta expansion = S1.B→S1.C gate. No intermediate expansion step. Pre-expansion actions (feedback form, tester check-ins) can start now.
 
 ---
 
 ## TP22: Governance export as installable Cursor doctrine
 
-**Status:** `pending`  
+**Status:** `decided`  
+**Session:** Session 5 (Tooling & Agents)  
+**Deep-dive:** `sessions/session-05-tooling-agents/SESSION5_AUTOMATION_AND_TOOLING.md`  
+**Outcome:** Deferred — no employees until S1.C+. Document the need, revisit when hiring is imminent. Bigger investment is the TP19 domain split which serves HitM's own needs now.  
 **Notes seed:**
+
 - Expansion subnote: define how governance can be exported into installable assets for employee Cursor instances.
 - Target doctrine surfaces:
   - skills
@@ -206,6 +231,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Compare Slack vs Discord capabilities for business-facing operations and expansion readiness.
 - Research requirement: full Slack capability mapping vs Discord baseline (including bot/automation depth).
 - Working context: stronger direct historical experience with Discord bots; validate whether that still aligns with business expansion needs.
@@ -224,6 +250,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Define realistic near-term hires by function (engineering, admin ops, SMM, hybrid roles).
 - Establish PH-market wage bands by role seniority and scope.
 - Separate full-time, part-time, and contract structures for affordability planning.
@@ -236,6 +263,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Define fallback legal/entity paths if spouse-led registration does not proceed.
 - Map immediate operational continuity plan (billing, contracts, compliance ownership).
 - Identify time, cost, and legal-risk deltas between fallback options.
@@ -248,6 +276,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Define security coding baseline to reduce exploit surface before incidents occur.
 - Decide proactive controls vs reactive controls for current stage affordability.
 - Establish defensive coding protocols for auth, input handling, permissions, and sensitive data paths.
@@ -261,6 +290,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Investigate spouse sister schedule for June against expected birthing window.
 - Identify required assistance coverage before, during, and immediately after birth window.
 - Map likely support gaps that could affect HitM execution capacity.
@@ -272,6 +302,7 @@ Per-topic record for the planned admin meeting. Initial state is pre-commencemen
 
 **Status:** `pending`  
 **Notes seed:**
+
 - Evaluate whether to build internal business-management software that connects directly to current production workflows.
 - Define which operational domains should be included first (admin, finance ops, hiring, project orchestration, reporting).
 - Identify integration points with existing automation, governance artifacts, and runtime workflows.

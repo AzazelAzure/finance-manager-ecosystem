@@ -8,10 +8,10 @@ Capture the full admin talking-point slate in the standard huddle format used ac
 
 ## Current state
 
-- Huddle has **not commenced**.
-- All topics are seeded as `pending`.
-- This packet is the starting baseline for the next session.
-- Session note: spouse will sit in on the upcoming huddle.
+- Huddle **commenced** 2026-05-06.
+- Session 1 (Legal & Entity — Cluster A) is `in progress`.
+- Spouse sitting in on huddle sessions.
+- Active topic: **TP11** (Business Expansion Gates).
 
 ## Files
 
@@ -22,6 +22,7 @@ Capture the full admin talking-point slate in the standard huddle format used ac
 - `DEVICE_ELIGIBILITY_POLICY_AND_SMM_MOBILE_VIABILITY.md` — role-based device policy draft with SMM mobile-only viability tiers and gating
 - `S1B_FEATURE_COMPLETION_PROJECTION.md` — scenario-based completion estimate for S1.B feature scope under current automation constraints
 - `PH_HIRING_ROLES_AND_WAGE_BANDS_BUDGET_CONSTRAINED.md` — affordability-first PH hiring bands and staged role options for TP24
+- `sessions/` — multi-session notes, per-topic deep-dives, and decision artifacts (see `sessions/SESSION_INDEX.md`)
 
 ## Session usage notes
 

@@ -99,7 +99,7 @@ Five plan-type categories, each with distinct scope and lifecycle:
 | Type | Scope | Lifecycle | Location |
 |---|---|---|---|
 | **Strategic Plan** | Multi-year. Phases S1–S6, locked decisions, success criteria, kill gates. ONE per project. | Permanent; updated at Phase transitions. | `strategy/strategic-roadmap-reframe-53be/` |
-| **Execution Plan** | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates. | Lives `draft → ready → in_progress → completed → archived`. | `plans/<Phase>/<Stage>/<sub-plan>/` (hierarchical, per Topic 11 lock + 2026-05-04 path lift from `plans/cursor/s1b/`), optional transient `plans/cursor/<branch>/` (legacy standalone only — **not** the Strategic Plan), or closed trees under `plans/archived/` (including `archived/cursor-layout-era/`, `archived/feat/`, `archived/fix/`, `archived/volatile*`) |
+| **Execution Plan** | One Sprint or one cohesive batch of work. Has YAML metadata, tasks, validation gates. | Lives `draft → ready → in_progress → completed → archived`. | `plans/<Phase>/<Stage>/<sub-plan>/` (hierarchical, per Topic 11 lock + 2026-05-04 path lift from `plans/agy/s1b/`), optional transient `plans/agy/<branch>/` (legacy standalone only — **not** the Strategic Plan), or closed trees under `plans/archived/` (including `archived/cursor-layout-era/`, `archived/feat/`, `archived/fix/`, `archived/volatile*`) |
 | **Feature Roadmap** | Per-surface backlog (e.g. "Dashboard feature roadmap"). Lists features, priorities, target Phase. NOT execution-ready. | Permanent; updated as features ship or get queued. | `design_docs/<surface>_docs/feature_roadmap.md` |
 | **Implementation Guide** | Agent-facing how-to for repeatable work patterns. | Permanent; revised when patterns change. | `design_docs/40_System_Design/implementation_guides/` |
 | **Branching Guideline** | Specific to deploy/branch strategy. Extends `deployment_protocol.md`. | Permanent; revised when deploy strategy changes. | `branching_guidelines.md` |
@@ -231,7 +231,7 @@ See `plan_template.md` §1a "Verification tiers" for full enforcement rules.
 | Role | Definition | Model tier |
 |------|-----------|-----------|
 | **Orchestrator** | Plans work, decomposes tasks/slices, assigns V-tiers. Does not write production code. | Strong (Gemini Pro / Opus) |
-| **Executor** | Writes code, runs V0/V1 checks, commits to slice/feature branch. Cannot self-certify V2+. | Efficient (Cursor auto / Gemini Flash) |
+| **Executor** | Writes code, runs V0/V1 checks, commits to slice/feature branch. Cannot self-certify V2+. | Efficient (Antigravity Grunt / Flash) |
 | **Reviewer** | Reviews code, runs V2 deploy verification, approves or rejects slices. Does not write new feature code. | Strong (Gemini Pro / Opus) |
 | **HitM Gate** | Human. V3 browser verify, production flip authority, merge authority. | Human |
 
@@ -263,7 +263,6 @@ Normative checklist for **when a governed feature plan may claim complete** rela
 | **PWA scope class** | Each feature declares **A** (PWA-safe + shipped compatibly) or **B** (PWA-safe, **online-only** — documented in plan scope + user-facing copy). |
 | **SEO** | Rollout close includes SEO gate per **[`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md)**; new public surfaces should include **P0** matrix items **during** the sprint when they touch those files. |
 | **Beta comms (F-011)** | Wedge / pipeline transparency for testers rolls up under **F-011** (landing + subpages). |
-| **`#sprint-queue` (`sprint-queue-v1`)** | Slack posts for Cursor PA → cursor-agent routing use the normative shape in **[`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)** (`@CursorPA` line 1 — no space; `Task Id:` line 2; fixed sections; `BRANCH:` suffix). |
 
 Sprint **ordering** across F-* plans is set by HitM-led huddle output: **[`strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md`](../strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md)**.
 

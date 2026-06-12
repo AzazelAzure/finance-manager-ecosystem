@@ -1,6 +1,6 @@
 # Orchestration manager (governance mirror)
 
-**Cursor source:** `.cursor/skills/orchestration-manager/SKILL.md`  
+**Antigravity source:** `orchestration-manager`
 **This file:** same workflow for agents reading `governance/` only. Keep in sync when orchestration rules change.
 
 ---
@@ -14,11 +14,11 @@ Coordinate execution against active plans by delegating to workflow-specific ski
 - **Default:** `plans/<Phase>/<Stage>/<sub-plan>/` (see `governance/branching_guidelines.md`, `plans/README.md`). Read the sub-plan `README.md`, task files, or `execution_manifest.md` inside that folder unless the session overrides the path.
 - Treat that directory as the canonical plan root for batching and delegation.
 
-## Agent wiring (Cursor)
+## Agent wiring (IDE)
 
 - Launch as a general-purpose subagent with a clear description (for example: plan orchestration manager).
-- Use `.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md` as the launch prompt base when driving from Cursor.
-- First step: read the Cursor skill file above **or** this governance mirror before delegating.
+- Use the Antigravity skill or prompt template.
+- First step: read the Antigravity skill file **or** this governance mirror before delegating.
 
 ## Primary routing map
 
@@ -79,7 +79,7 @@ Do not declare a plan complete until:
 
 - Preserve repository boundaries; avoid cross-repo commit mixing in one commit.  
 - Prefer deterministic verification over broad reruns.  
-- Use `shared-subagent-handoff` (Cursor skill) for delegated results when available.  
+- Use `shared-subagent-handoff` for delegated results when available.  
 - For runtime-dependent tasks, follow single-owner protocol and testing breakpoints in `.cursor/rules/container-testing-orchestration.mdc`.  
-- **PR workflow:** Open PRs from feature branches; send the **PR link in the Cursor chat** (repo, branch, full URL); reconcile **GitHub** mergeability and required checks before merge. Follow `governance/execution_protocols.md` for HitM Slack gates where the plan requires them.  
+- **PR workflow:** Open PRs from feature branches; send the **PR link in the IDE Chat** (repo, branch, full URL); reconcile **GitHub** mergeability and required checks before merge. Follow `governance/execution_protocols.md` for HitM manual gates where the plan requires them.  
 - If automation or chat says approved but GitHub reports conflicting or dirty merge state, treat as blocked until resolved.  

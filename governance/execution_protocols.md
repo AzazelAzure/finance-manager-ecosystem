@@ -2,11 +2,11 @@
 
 All HitM-facing output uses these exact templates. Variables in `{curly_braces}` are substituted; everything else is verbatim.
 
-## 1) Slack gate templates
+## 1) Manual gate templates
 
 ### 1.1 `pre_execution` gate
 
-Channel: `#cli-interface` (in plan task thread, or new thread if none).
+Interface: IDE Chat or Terminal
 
 ```text
 [GATE: pre_execution]
@@ -33,7 +33,7 @@ Wait condition: agent blocks until reply OR 24h timeout.
 
 ### 1.2 `pre_merge` gate
 
-Channel: `#pull-requests` (new top-level message).
+Interface: IDE Chat or Terminal
 
 ```text
 [PR] {plan_id}
@@ -44,13 +44,13 @@ Strategic phase: {strategic_phase}
 Validation: {one_line_validation_summary}
 ```
 
-Wait condition: agent reads `#pull-requests` for automation final state. Agent reads GitHub state via `gh pr view {pr_number}`. Both must align before merge per workspace rule.
+Wait condition: agent reads IDE state for automation final state. Agent reads GitHub state via `gh pr view {pr_number}`. Both must align before merge per workspace rule.
 
 If GitHub state is `CONFLICTING` or `DIRTY`: do not merge. Set plan status: `blocked`. Notify HitM via plan thread reply.
 
 ### 1.3 `pre_close` gate
 
-Channel: `#cli-interface` (in plan task thread).
+Interface: IDE Chat or Terminal
 
 ```text
 [GATE: pre_close]
@@ -78,7 +78,7 @@ Wait condition: agent blocks until reply OR 24h timeout.
 
 ### 2.1 `in_plan` handoff (mid-plan, between agents on same plan)
 
-Channel: plan task thread.
+Interface: IDE Chat or Terminal
 
 ```text
 [HANDOFF: in_plan]
@@ -101,7 +101,7 @@ Status: in_progress
 
 ### 2.2 `cross_plan` handoff (one plan reveals work belonging to another)
 
-Channel: source plan task thread.
+Interface: IDE Chat or Terminal
 
 ```text
 [HANDOFF: cross_plan]
@@ -121,7 +121,7 @@ If `target_plan_id == new`: the agent (or HitM) opens a Birth flow per `plan_lif
 
 ### 2.3 `failure` handoff (agent cannot resolve)
 
-Channel: plan task thread.
+Interface: IDE Chat or Terminal
 
 ```text
 [HANDOFF: failure]
@@ -145,7 +145,7 @@ Status: in_progress → blocked
 
 ### 2.4 `close_summary` (informational, after `pre_close` approved)
 
-Channel: plan task thread + cross-post to `#cli-interface` if plan is P0.
+Interface: IDE Chat or Terminal
 
 ```text
 [CLOSE: {plan_id}]
@@ -203,29 +203,13 @@ Example: `👍 but skip the API changelog this round`.
 
 Action: log the constraint in plan body §10 Risks/notes. Comply during execution.
 
-## 4) Channel routing
+## 4) Interface routing
 
+All messages are logged to the IDE Chat or Terminal. There is no longer a need to split messages across different Slack channels.
 
-| Message type                | Channel                                       | Thread?                                         |
-| --------------------------- | --------------------------------------------- | ----------------------------------------------- |
-| `pre_execution` gate        | `#cli-interface`                              | new thread or existing plan thread              |
-| `pre_merge` PR announcement | `#pull-requests`                              | new top-level                                   |
-| `pre_merge` reconciliation  | `#pull-requests`                              | thread reply on PR announcement                 |
-| `pre_close` gate            | `#cli-interface`                              | plan task thread                                |
-| `in_plan` handoff           | `#cli-interface`                              | plan task thread                                |
-| `cross_plan` handoff        | `#cli-interface`                              | source plan task thread                         |
-| `failure` handoff           | `#cli-interface`                              | plan task thread                                |
-| `close_summary`             | `#cli-interface` (+ thread); cross-post if P0 | plan task thread + new top-level for cross-post |
+## 5) Message length
 
-
-## 5) Slack message length
-
-Max chunk: 2400 chars (per bridge default). If template exceeds, split:
-
-- Chunk 1: header + scope + strategic check.
-- Chunk 2: dependencies + reply line.
-
-HitM replies on chunk 1 (the message starting with `[GATE: ...]` or `[PR]` or `[HANDOFF: ...]`).
+No chunking necessary for IDE Chat. HitM replies on the message starting with `[GATE: ...]` or `[PR]` or `[HANDOFF: ...]`.
 
 ## 6) Wait + timeout policy
 
@@ -306,10 +290,10 @@ Per workspace rule `container-testing-orchestration.mdc`:
   - work in code paths not requiring runtime.
 ```
 
-## 11) Slack unavailable fallback
+## 11) IDE unavailable fallback
 
 ```
-If Slack down or HitM unreachable:
+If IDE down or HitM unreachable:
   pre_execution required → do not proceed; status stays ready or paused
   pre_close required     → do not close; status stays in_progress
   pre_merge required     → workspace rule absolute; do not merge
@@ -317,7 +301,7 @@ If Slack down or HitM unreachable:
 Hotfix override:
   HitM may post desktop authorization (commit message in feature branch,
   gh pr review --approve, or in-person verbal).
-  Hotfix is the only category permitted to bypass Slack pre_merge gate.
+  Hotfix is the only category permitted to bypass manual pre_merge gate.
 ```
 
 ## 12) Reply latency expectations
@@ -330,4 +314,4 @@ pre_merge:     every 120s indefinitely (workspace rule allows long waits)
 pre_close:     every 60s for first 10min, every 10min thereafter
 ```
 
-Bridge agent (`scripts/cursor_headless_slack_agent.py`) provides polling; do not implement custom poll loops.
+Orchestrator provides polling; do not implement custom poll loops.

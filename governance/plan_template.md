@@ -65,7 +65,6 @@ to:
 
 Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
 
-When queuing executor work via **`#sprint-queue`**, follow **[`sprint_queue_message_spec_v1.md`](./sprint_queue_message_spec_v1.md)** (`sprint-queue-v1`); keep plan-local Slack files to **examples + slice order** only.
 
 ## 2) Metadata header (YAML, mandatory)
 
@@ -81,7 +80,7 @@ updated: <YYYY-MM-DD>
 owner: pproctor
 
 plan_root: plans/<Phase>/<Stage>/<sub-plan>/
-intended_branch: cursor/<branch>
+intended_branch: agy/<branch>
 target_repos:
   - <repo-path>
 
@@ -93,7 +92,7 @@ blocks: []
 parallel_safe_with: []
 conflicts_with: []
 
-slack_gates:
+manual_gates:
   pre_execution: required
   pre_merge: required
   pre_close: optional
@@ -120,7 +119,7 @@ All enum values are defined in `README.md` §"Canonical enums". Use only those e
 | ----------------------------- | ------------- | -------------------------- | --------------------------------------- | --------------------------------------------------------------------------------- |
 | `plan_id`                     | string        | —                          | yes                                     | Format `PLAN_<DOMAIN>_<TOPIC>_<YYYY-MM-DD>`, DOMAIN from §"Domain prefixes"       |
 | `status`                      | enum          | `status`                   | yes                                     | Start as `draft` (or `in_progress` for hotfix only)                               |
-| `priority`                    | enum          | `priority`                 | yes                                     | Sets default `slack_gates` (see §6)                                               |
+| `priority`                    | enum          | `priority`                 | yes                                     | Sets default `manual_gates` (see §6)                                               |
 | `created`                     | date          | —                          | yes                                     | ISO `YYYY-MM-DD`                                                                  |
 | `updated`                     | date          | —                          | yes                                     | Update on every status change                                                     |
 | `owner`                       | string        | —                          | yes                                     | `pproctor` or specific agent id                                                   |
@@ -133,9 +132,9 @@ All enum values are defined in `README.md` §"Canonical enums". Use only those e
 | `blocks`                      | list[plan_id] | —                          | yes                                     | May be `[]`                                                                       |
 | `parallel_safe_with`          | list[plan_id] | —                          | yes                                     | May be `[]`                                                                       |
 | `conflicts_with`              | list[plan_id] | —                          | yes                                     | May be `[]`                                                                       |
-| `slack_gates.pre_execution`   | enum          | `slack_gates.*`            | yes                                     | Default per priority (see §6)                                                     |
-| `slack_gates.pre_merge`       | enum          | `slack_gates.*`            | yes                                     | Always `required` per workspace rule                                              |
-| `slack_gates.pre_close`       | enum          | `slack_gates.*`            | yes                                     | `required` if plan may meet a strategic exit trigger                              |
+| `manual_gates.pre_execution`  | enum          | `manual_gates.*`           | yes                                     | Default per priority (see §6)                                                     |
+| `manual_gates.pre_merge`      | enum          | `manual_gates.*`           | yes                                     | Always `required` per workspace rule                                              |
+| `manual_gates.pre_close`      | enum          | `manual_gates.*`           | yes                                     | `required` if plan may meet a strategic exit trigger                              |
 | `deployment.required`         | bool          | —                          | yes                                     | `true` if plan ships code to VPS; `false` for docs/governance/local-only changes  |
 | `deployment.target_services`  | list          | `[api, reflex, js, infra]` | required if `deployment.required: true` | Which services this plan deploys                                                  |
 | `deployment.bundle_required`  | bool          | —                          | required if `deployment.required: true` | `true` if runtime bundle must rebuild; `false` for proxy-only/config-only changes |
@@ -200,12 +199,12 @@ When closing this plan, executor must:
 - [ ] Update strategic-roadmap/kill_commit_gates.md if <specific gate> evaluated
 - [ ] Update plan_registry.md status to completed
 - [ ] Run design-docs-sync per section 7
-- [ ] Post completion summary to Slack #cli-interface
+- [ ] Post completion summary to IDE Chat
 
 ## 9) Completion Criteria
 
 - All exit criteria in §6 met.
-- All required Slack gates authorized.
+- All required manual gates authorized.
 - PR merged or stamped docs-only.
 - §8 actions complete.
 
@@ -216,7 +215,7 @@ When closing this plan, executor must:
 | <risk> | <condition> | <action> | <agent or HitM> |
 ```
 
-## 5) Default `slack_gates` by priority
+## 5) Default `manual_gates` by priority
 
 If author does not override, use:
 
@@ -275,7 +274,7 @@ When evaluating `conflicts_with` and `parallel_safe_with`:
 | Disjoint Django apps with no shared models                | `parallel_safe_with`                        |
 
 
-If unsure: ask HitM via Slack before transitioning to `ready`.
+If unsure: ask HitM via IDE Chat before transitioning to `ready`.
 
 ## 8) Authoring checklist (`draft → ready` gate)
 
@@ -284,9 +283,9 @@ Run §6 validator. Then:
 ```
 [ ] Strategic Inheritance section is concrete (cites specific lines, not vague)
 [ ] Conflict heuristics from §7 applied
-[ ] slack_gates match defaults from §5 OR override is justified in body §1
+[ ] manual_gates match defaults from §5 OR override is justified in body §1
 [ ] plan_registry.md row is added
-[ ] If priority=P0 and pre_execution=required: ready to post Slack gate at execution time
+[ ] If priority=P0 and pre_execution=required: ready to post manual gate at execution time
 ```
 
 When all checks pass: set `status: ready`, update `updated:` field, move registry row to "Ready for Execution".
@@ -300,9 +299,9 @@ plan_id: PLAN_HOTFIX_<TOPIC>_<YYYY-MM-DD>
 status: in_progress           ← starts here, skips draft and ready
 priority: P0
 strategic_phase: hotfix
-slack_gates.pre_execution: none
-slack_gates.pre_merge: required   ← still required
-slack_gates.pre_close: none
+manual_gates.pre_execution: none
+manual_gates.pre_merge: required   ← still required
+manual_gates.pre_close: none
 ```
 
 Body sections may be filled retroactively within 24h of resolution. Validator §6 is deferred until retroactive fill.
