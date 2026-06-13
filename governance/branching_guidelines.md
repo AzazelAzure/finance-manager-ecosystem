@@ -68,7 +68,7 @@ For each task within the feature:
 1. Branch from feature branch: `git checkout -b cursor/<phase-stage>/feat/<feature-name>/t<NN>-<slug>`.
 2. Implement task.
 3. Run task-level verification (tests, lint, manual smoke).
-4. Open PR from task branch → feature branch (NOT to main).
+4. Open PR from task branch → feature branch (NOT to main). **AI agents must explicitly create the PR using the GitHub CLI (`gh pr create`), providing a descriptive title and body with their notes.**
 5. PR review: same severity as standard but limited scope (one task).
 6. Merge PR into feature branch.
 7. Delete task branch (or let it auto-prune after merge).
@@ -92,7 +92,7 @@ When all tasks for the feature are merged into the feature branch:
   - All tests pass on the feature branch.
   - Inactive color smoke per `deployment_protocol.md` §6.
   - Feature behaves end-to-end (manual review on inactive color).
-2. Open PR: feature branch → `main`.
+2. Open PR: feature branch → `main`. **AI agents must explicitly create the PR using the GitHub CLI (`gh pr create`), summarizing the completed tasks in the body.**
 3. Apply `pre_deploy` manual gate (HitM authorization to deploy).
 4. On approval: merge PR.
 5. Trigger color flip (deploy via `scripts/fm_server_beta.sh switch --to <inactive-color>`).
