@@ -1,0 +1,5 @@
+=== sprint_verify.sh DRY-RUN 20260505T075022Z ===
+SSH=dev@159.198.75.194 REMOTE_ROOT=/home/dev/finance_manager COLOR=blue BRANCH=cursor/s1b/feat/f007-walkthrough-polish REPOS=web
+[dry-run] git fetch/checkout in: finance_manager_web
+[dry-run] /home/dev/finance_manager/scripts/fm_server_beta.sh rebuild-color blue
+Dry run complete.

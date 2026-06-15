@@ -40,7 +40,8 @@ BUG 1 (no `isTourCompleted` guard), BUG 4 (help-mode outline cosmetics), and par
 
 ### T00.SL2 — Tooling dry-run
 
-- [ ] [V1] From parent repo, run `./scripts/sprint_verify.sh --dry-run --color blue --branch cursor/s1b/feat/f007-walkthrough-polish --repos web --evidence plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/` and save stdout to `evidence/T00.SL2_sprint_verify_dryrun.log` (path in table below).
+- [x] [V1] From parent repo, run `./scripts/sprint_verify.sh --dry-run --color blue --branch cursor/s1b/feat/f007-walkthrough-polish --repos web --evidence plans/S1/S1.B/feat-f007-walkthrough-polish/evidence/` and save stdout to `evidence/T00.SL2_sprint_verify_dryrun.log` (path in table below).
+- 2026-05-05 UTC dry-run captured in `evidence/T00.SL2_sprint_verify_dryrun.log`; output includes `BRANCH=cursor/s1b/feat/f007-walkthrough-polish` and `--evidence .../feat-f007-walkthrough-polish/evidence/`.
 
 ## Evidence
 
