@@ -1,13 +1,13 @@
 ---
 plan_id: PLAN_CROSS_SUPPORT_INTAKE_2026-05-21
-status: draft
+status: completed
 priority: P2
 created: 2026-05-21
-updated: 2026-05-04
-owner: pproctor
+updated: 2026-06-16
+owner: teamwork_preview_worker_f012
 
 plan_root: plans/S1/S1.B/feat-infra-support-intake/
-intended_branch: cursor/s1b/feat/infra-support-intake
+intended_branch: agy/s1b/feat/infra-support-intake
 parent_plan: plans/S1/S1.B/
 
 target_repos:
@@ -78,11 +78,14 @@ Ship **first-class in-app intake** for **bugs** (all targeted beta users) and **
 
 ## 4) Phase Plan or Task List
 
-T01 delivery mechanism + threat model → T02 API + migrations → T03 web UI → T04 operator runbook + smoke.
+- `T01`: Support ticket Django model, migrations, API POST view, and validation.
+- `T02`: Celery weekly feature request digest task & SMTP config.
+- `T03`: Frontend Support navigation & Page implementation.
+- `T04`: Docker deployment configurations (Celery services & shared volumes).
 
 ## 5) Execution Order
 
-T01 before schema to avoid rework on wrong integration.
+T01 & T02 (Backend features and migrations) and T03 (Frontend UI) can be developed in parallel, but T04 (Docker deployment configurations) must be executed after both backend and frontend are ready.
 
 ## 6) Verification Gates
 

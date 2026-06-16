@@ -39,11 +39,57 @@ services:
       - redis
     expose:
       - "8000"
+    volumes:
+      - logs:/app/logs
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
       interval: 30s
       timeout: 5s
       retries: 5
+
+  celery-worker-blue:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    command: uv run celery -A finance_api worker -l info
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - logs:/app/logs
+
+  celery-beat-blue:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    command: uv run celery -A finance_api beat -l info
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - logs:/app/logs
 
   api-green:
     build:
@@ -65,11 +111,57 @@ services:
       - redis
     expose:
       - "8000"
+    volumes:
+      - logs:/app/logs
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
       interval: 30s
       timeout: 5s
       retries: 5
+
+  celery-worker-green:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    command: uv run celery -A finance_api worker -l info
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - logs:/app/logs
+
+  celery-beat-green:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    command: uv run celery -A finance_api beat -l info
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - logs:/app/logs
 
   # React (Vite) static bundle — same color map as API for cutover
   web-blue:
@@ -129,3 +221,4 @@ volumes:
     name: finance_manager_postgres_data
     external: true
   redis_data:
+  logs:

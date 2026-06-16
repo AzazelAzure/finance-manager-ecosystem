@@ -1,13 +1,13 @@
 ---
 plan_id: PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21
-status: draft
+status: ready
 priority: P2
 created: 2026-05-21
-updated: 2026-05-04
+updated: 2026-06-16
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-infra-user-activity-logs/
-intended_branch: cursor/s1b/feat/infra-user-activity-logs
+intended_branch: agy/s1b/feat/infra-user-activity-logs
 parent_plan: plans/S1/S1.B/
 
 target_repos:
@@ -87,11 +87,12 @@ Configure **Loguru** so that, for **authenticated** API traffic, warnings/errors
 
 ## 4) Phase Plan or Task List
 
-T01 layout + threat model (what must never appear in diagnostic files) → T02 Loguru sinks + middleware contract → T03 retention/prune + deploy volume mount if needed → T04 runbook + **F-012** cross-field (`diagnostic_log_key`).
+- `T01`: Loguru dynamic user files configuration & directory fix.
+- `T02`: 10-minute log window extraction & incident report dump.
 
 ## 5) Execution Order
 
-Threat model and redaction rules before enabling new sinks in production.
+T01 must be completed first to establish the per-user dynamic diagnostic logging files. T02 depends on T01 to extract the preceding 10-minute log window for incident logs.
 
 ## 6) Verification Gates
 
