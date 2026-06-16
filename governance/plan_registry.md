@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-16 (transitioned PLAN_CROSS_SUPPORT_INTAKE_2026-05-21 to in_progress)
+**Last updated:** 2026-06-16 (transitioned PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21 to in_progress)
 
 ## Update protocol
 
@@ -25,13 +25,13 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| _(empty)_ | | | | | | | | | |
+| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | P2 | S1.B | `agy/s1b/feat/infra-user-activity-logs` | `teamwork_preview_worker_f013` | - | - | `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | 2026-06-16 | **F-013** per-user Loguru diagnostic files: `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`. |
 
 ## Ready for Execution
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | P2 | S1.B | `agy/s1b/feat/infra-user-activity-logs` | - | - | `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | - | **F-013** per-user Loguru diagnostic files: `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`. |
+| _(empty)_ | | | | | | | | |
 
 ## Draft / Planning
 

@@ -1,6 +1,6 @@
 ---
 plan_id: PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21
-status: ready
+status: in_progress
 priority: P2
 created: 2026-05-21
 updated: 2026-06-16
