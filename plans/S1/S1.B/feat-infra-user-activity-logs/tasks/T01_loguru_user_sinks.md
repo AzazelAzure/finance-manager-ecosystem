@@ -1,10 +1,10 @@
 ---
 task_id: T01
-status: pending
+status: completed
 owner: pproctor
 phase: S1.B
 intended_branch: agy/s1b/feat/infra-user-activity-logs
-last_verification: null
+last_verification: 2026-06-16
 ---
 
 # T01 — Loguru Dynamic User Sinks
