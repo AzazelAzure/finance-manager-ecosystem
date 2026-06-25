@@ -4,7 +4,19 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
-- **Sprint pipeline queue:** shared next-slice Slack bodies live under [`plans/pipeline_queue/README.md`](plans/pipeline_queue/README.md); set **`SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`** there (replaces per-plan `…/feat-f007-walkthrough-polish/evidence/pipeline_queue/`). [`plans/README.md`](plans/README.md) index updated; [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md) runbook + [`scripts/sprint_slack_pipeline_bridge.py`](scripts/sprint_slack_pipeline_bridge.py) example env aligned.
+### 2026-06-26 — Admin governance overhaul (three-tool model)
+
+- **`AGENTS.md`:** Restructured §0–§6 — three-tool model (`cur/` / `cla/` / `agy/`), universal rules inline, branch conventions, per-agent reading order, CPPR/CPPRD discipline, retired daily-status PR pattern.
+- **`CLAUDE.md`:** New Claude Code–specific admin rules.
+- **`governance/README.md`:** Trimmed to router table + enums; reading sequences moved to `AGENTS.md`.
+- **`governance/branching_guidelines.md`:** Branch prefix table updated to `cur/` / `cla/` / `agy/` (new branches only).
+- **Archived:** `governance/archived/` — `orchestration.md`, skill mirrors, `agent_context_delivery.md`; index README added.
+- **Cursor rule:** `.cursor/rules/sprint-task-specification.mdc` (from former `governance/sprint_task_specification.md`).
+- **Scripts archived:** Slack bridges + `orchestrator.py` → `scripts/archived/` (see `scripts/archived/README.md`).
+- **Strategy:** Admin-only header on `strategy/current_status.md`; superseded note on `cursor_vs_claude_max_cba.md`.
+- **Cross-links:** `plans/README.md`, `agent_workspace_isolation.md`, orchestration-manager skill paths updated.
+
+- **Sprint pipeline queue:** shared next-slice Slack bodies live under [`plans/pipeline_queue/README.md`](plans/pipeline_queue/README.md); set **`SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`** there (replaces per-plan `…/feat-f007-walkthrough-polish/evidence/pipeline_queue/`). [`plans/README.md`](plans/README.md) index updated; [`governance/sprint_queue_message_spec_v1.md`](governance/archived/sprint_queue_message_spec_v1.md) runbook + archived [`scripts/sprint_slack_pipeline_bridge.py`](scripts/archived/sprint_slack_pipeline_bridge.py) example env aligned.
 
 ### 2026-05-22 — Definition of done, F-011 beta subpages, rollout-order huddle
 
