@@ -1,65 +1,146 @@
-## Learned User Preferences
+# AGENTS.md — Workspace rules for all agents
 
-- **CPPRD** (commit, push, pull request, **document** change): merged work should have a durable summary in repo docs (subrepo `CHANGELOG`, `deploy/`, or `design_docs` as appropriate) for accountability. **CPPR** = commit, push, pull request only. **CPPR+D** (commit, push, pull request, **deploy**) = the full deploy cycle including blue-green color flip per `governance/deployment_protocol.md`. See `deploy/CPPR_AND_CPPRD.md` for the documentation discipline; see `governance/branching_guidelines.md` for the per-feature color-cycle workflow.
-- For rollout work: when coordination bottlenecks hit, prefer continuing execution locally in this workspace over delegating to a separate cloud agent; prefer agent-owned PR creation and implementation, then user-owned validation/merge, then VPS pull/rebuild for verification. **Manual merge is a verification gate, not bureaucracy** (per Lesson 6.7 in strategic context). When advancing named breakpoints in an active rollout plan, update that plan's runtime handoff note with progress so later sessions stay aligned.
-- **PWA/offline product bar:** Core ledger surfaces (transactions, calendar, flows, source balances) should stay coherent when offline for extended periods (days to weeks), with local-first behavior and API sync when back online; offline FX scope can be limited to currencies already present on the user’s sources when that keeps the offline window practical. Aim for online-equivalent behavior while offline except password change and account deletion (those stay online-only expectations).
-- Unless specified otherwise, automatically SSH to the dev VPS (`dev@dev@<VPS_HOST>`, user `dev`) to run investigation and operational commands there (compose status, logs, rebuilds, layout under `~/finance_manager`) instead of assuming work stays on the local machine only. Auto-login configured; no `--identity` flag needed. When tunneling or documenting HTTPS reachability for dev hostnames, spell out the private origin explicitly (today the live stack is unified on host **:8443** via the blue/green proxy, not legacy Vite-only ports).
+Canonical bootstrap for Cursor, Claude Code, and Antigravity. Detail runbooks stay in `governance/` and are pulled only when needed.
+
+---
+
+## §0 Three-tool model
+
+| Agent | Prefix | Owns | Does NOT own |
+|---|---|---|---|
+| **Cursor Pro+** | `cur/` | Sprint execution, code changes, tests, feature branches, deployments; PR-facing automation (review assignment, merge-readiness, CI triage, branch hygiene) | Governance docs, daily status, planning artifacts |
+| **Claude Code** | `cla/` | Governance ops, PR admin, planning artifact edits, research synthesis | Code implementation, feature branches, daily status updates |
+| **Antigravity Pro** | `agy/` | Daily status updates; admin automations configured natively in the Antigravity IDE (prompts + schedules there, not in this repo) | Code, governance overrides, strategic decisions |
+
+**Coordination:** Task handoffs use the filesystem (`runtime_handoff.md`, `DECISION_LOG.md`). Do not route execution state through Slack or Discord. Legacy Slack bridges and `scripts/orchestrator.py` are **archived** — use native Cursor multitask/subagents for local execution; Antigravity-native workflows for admin automation.
+
+Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc`.
+
+---
+
+## §1 Universal rules
+
+### CPPR / CPPRD / CPPR+D
+
+- **CPPR** — commit, push, pull request.
+- **CPPRD** — CPPR + **document** change (subrepo `CHANGELOG`, `deploy/`, or `design_docs` as appropriate). See `deploy/CPPR_AND_CPPRD.md`.
+- **CPPR+D** — full deploy cycle including blue-green color flip per `governance/deployment_protocol.md`.
+
+**CPPRD applies to:** feature merges (subrepo CHANGELOG + relevant design doc); governance doc changes (parent `CHANGELOG.md`).
+
+**CPPR applies to:** submodule pointer bumps; chore/infra with no user-facing change.
+
+**Retired:** daily-status-report PRs. Antigravity maintains `strategy/current_status.md` directly — no PR for daily status.
+
+### Deployment and PR discipline
+
 - **One feature at a time on inactive color** (locked 2026-04-30). See `governance/branching_guidelines.md` §1.
-- Prefer direct, candid pushback on product and business decisions over reassurance-only agreement.
-- Prefer plan and orchestration artifacts structured primarily for consistent AI ingestion and handoffs; when goals conflict, optimize for agent execution over human-oriented narrative polish. External or parallel-assistant research may be marked in-file (for example with a visible "by Gemini" tag) so it can be normalized to repo structure and governance before CPPRD. Treat **localization (i18n)** as part of done for user-facing work; if coverage is intentionally deferred, record it as a tracked follow-up slice instead of silent debt.
-- When opening a pull request, **the AI must explicitly create the PR using the GitHub CLI** (e.g., `gh pr create --fill` or with a descriptive title and body). Do not simply push the branch and provide a link for the user to create the PR. The AI must create the PR so the user can read the AI's PR notes and review the changes directly on GitHub before merging. Send the generated PR link in this Cursor chat; do not use Slack for PR notification.
-- Prefer **one** production API with a published compatibility window and a forced client refresh past end-of-support; avoid parallel API stacks for version routing and avoid using Redis (or similar) as an HTTP API version router.
-- Paying-user **gate headcounts** in `validation_gates.md` are **re-indexed** when Pro list is locked lower for affordability (gate anchor and formula live there; tie-break math in `strategy/strategic-roadmap-reframe-53be/01_unit_economics_and_costs.md` §2 and §4.1).
-- **Orchestration Standard:** The primary pipeline uses the **Antigravity** three-tier model (Executive IDE → Supervisor → Grunt) via `scripts/orchestrator.py` (which wraps `agy` CLI) or directly via IDE subagents. Do NOT use legacy Slack bridges or headless Cursor implementations.
-- **Task Dispatch:** Automated task handoffs use the file system (`runtime_handoff.md` and `DECISION_LOG.md`) to deliver context to subagents. Do not route execution state through Slack or Discord.
+- When opening a pull request, **create it via GitHub CLI** (`gh pr create`). Post the PR URL in Cursor chat — not Slack.
+- Before merge, confirm **GitHub** mergeability and required checks; `CONFLICTING` / failing checks block merge.
+- Prefer **one** production API with a compatibility window and forced client refresh past end-of-support; no parallel API stacks; no Redis as HTTP version router.
 
-## Learned Workspace Facts
+### Plans and execution
 
-- **Strategic plan + governance:** Canonical roadmap is `strategy/strategic-roadmap-reframe-53be/` (historical `design_docs/20_Roadmap/Phase_`* is reference only). Read `governance/glossary.md` first each session. **Hierarchical implementation plans (locked 2026-04-30; path update 2026-05-04):** `plans/<Phase>/<Stage>/<sub-plan>/` (active Stage S1.B: `plans/S1/S1.B/`). Pre-governance **cursor-era** closed umbrellas live under `plans/archived/cursor-layout-era/`. Closed rows stay in `plan_registry.md`. Legacy top-level `plans/feat/`, `plans/fix/`, and `plans/volatile/` trees were consolidated under `plans/archived/` on 2026-05-01; do not add new execution plans there. **Task decomposition:** plans use **tasks** `T##` and **slices** `T##.SL#` per `governance/plan_template.md` §1a (**`SL`** = slice, distinct from Phase/Stage **S** like `S1`); delegate one slice per agent turn when possible; **ask clarifying questions** instead of guessing underspecified product scope; when a plan is silent, bias slice boundaries to **one web route/surface (page) or one API model/domain** per pass rather than whole-site or whole-product single passes, because oversized scopes drive regressions. **F-012/F-013:** Bug and feature intake (**F-012**) targets a **durable API queue** with `AppProfile.user_id` on each row for correlation; **F-013** (`feat-infra-user-activity-logs`) is **Loguru per-UUID diagnostic files on the VPS** (ops grep/tail), not an in-app user Activity timeline—the folder name is historical; **feature requests** in that intake are **beta-only** (gated).
-- **Sub-repos active:**
-  - `finance_manager_api` — Django REST API (`api:Tight Beta`)
-  - `finance_manager_web` — React+Vite SPA, **flagship product** (`web:Tight Beta`)
-  - `finance_manager_cli` — CLI client (`cli:Alpha`)
-  - `finance_manager_android` — Android scaffold (`android:Scaffold`; pull-forward begins S1.B)
-  - `finance_manager_rust_middleware` — Rust ZK middleware stub (`middleware:Scaffold`; full work S5)
-  - `finance_manager_rust_tools` — Rust numerics library (tag allocation F-002, projections F-003); `rust_tools:Tight Beta` scaffold, CPPRD via `CHANGELOG.md`
-- **Sub-repos archived:**
-  - `finance_manager_reflex` — `reflex:Archived` 2026-04-30. Repo retained as historical evidence only; removed from production architecture.
-- **Future product streams (Concept):**
-  - `desktop:Concept` — desktop standalone (was Track E); future-only.
-- `finance_manager_web` is its own git repository (submodule from the ecosystem parent). Deployed and tunneled flows use **blue-green Docker** with the **proxy** exposing **HTTPS on host :8443** to the active color's static web and API—**not** split across Vite dev ports `5173`/`4173` for real stack verification (see `finance_manager_web/README.md`). Optional local "Lane A" (SQLite + Vite) may exist for light edits; **authoritative** behavior is still the **VPS blue-green stack on :8443**. Packaged web/PWA brand icons and sizes live under `resources/hfm_icon_web/` (trimmed and transparent variants alongside master assets).
-- Dev VPS for live deploy: `dev@dev@<VPS_HOST>` (hostname `server1.thehivemanager.com`), application root `~/finance_manager` with `docker-compose.bluegreen*.yml`, subrepos `finance_manager_api`, `finance_manager_web`, plus `deploy/` and `proxy/`. Compare with the local workspace clone when reconciling orchestration with what is actually running.
-- Multi-agent **orchestration** uses repo-root **`governance/`** (protocols: registry, lifecycle, deploy, branching), **`plans/<Phase>/<Stage>/`** (tactical markdown), **`plans/pipeline_queue/`** (cross-feature pipeline queue artifacts—not under a single feature plan folder), and **`strategy/`** (canonical roadmap); the VPS does not mirror those trees. SSH there for runtime truth; read `governance/`, `plans/`, and `strategy/` here for coordinated work definition. If another local agent tool mirrors or overlaps this tree, add its paths to **.antigravityignore** so Antigravity does not double-index conflicting copies. Status and triage for this repo use the Antigravity agent manager as the supported intermediary.
-- Runtime ownership tracking (active session): `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
-- **HitM calendar + tasks (khal / todoman):** workflow and paths in `governance/HITM_SCHEDULE_AND_TASKS.md`. Regenerate local agent snapshot with `./scripts/schedule_agent_sync.sh` → `governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored, personal).
-- **Active market: PH only; HitM is the sole human operator.** US users are grandfathered as Honorary Founders. New US acquisition deferred behind P-6 (`strategy/strategic-roadmap-reframe-53be/PARKING_LOT.md`). Commercial intent is subscription-based; monetizing user data is not planned. Multi-actor language in plans means one human plus AI agents unless stated otherwise.
-- **PH vs US commercial shell:** PH-market operating company is spouse-led as primary; US LLC (HitM) is the contractor within Anti-Dummy substance rules; when gates clear, split repos or systems by jurisdiction so country-specific payment providers and related integrations stay region-scoped. Entity formation and PSP choice gate **payment integration**; the **PWA implementation** sprint is not treated as blocked on full entity legal closure unless a task explicitly depends on it.
-- **PWA install / offline / API version-windowing research** stays under `plans/S1/S1.B/pwa-install-offline-sync-research/` until decisions lock; ship-ready `design_docs` and `finance_manager_web` docs should **link** there rather than parking long-lived research drafts under `finance_manager_web/docs/`. **Target tier: Advanced** (offline writes, outbox resync, forced upgrade when out of support window); **sequence a dedicated sprint before stacking net-new user features** — see that folder §1.1 (locked 2026-05-01). **D0 browser matrix (locked 2026-05-01): Option B** — exit smoke / certified support = **Google Chrome (desktop) + Google Chrome (Android)** only; Edge + Samsung Internet secondary QA; Safari/Firefox best-effort; iPhone full PWA parity not required v1 (native iOS app path later). **D2 API/outbox (locked 2026-05-01):** idempotency storage + mutating allowlist (transactions + upcoming expenses), optional `Idempotency-Key` for backward compatibility, `X-Client-Build` + 409 force-upgrade on writes — see `plans/S1/S1.B/pwa-install-offline-sync-research/D2_API_OUTBOX_CONTRACT.md`. **D3 auth/offline (locked 2026-05-01):** queue with refresh or access; refresh-first replay on main thread; logout confirm if outbox non-empty — see `plans/S1/S1.B/pwa-install-offline-sync-research/D3_AUTH_OFFLINE_SESSION.md`. **D4 smoke/ADR (research locked 2026-05-01):** checklist + ADR stub in `plans/S1/S1.B/pwa-install-offline-sync-research/D4_SMOKE_CHECKLIST_AND_ADR.md`; **D4-exec** (run checks on VPS :8443) is required at PWA implementation exit, not for other research threads. **§1.7 + seeding:** ~3mo install seed, offline history disclaimers, bidirectional atomicity — `plans/S1/S1.B/pwa-install-offline-sync-research/SEEDING_OFFLINE_WINDOW_AND_ATOMICITY.md`. **When the web PWA sprint activates:** read `plans/S1/S1.B/README.md` section *Sprint activation index — PWA* (HTML anchor `#pwa-sprint-activation-index`) plus `strategy/strategic-roadmap-reframe-53be/validation_gates.md` S1.B PWA exit bullet. **PWA implementation sprint tasks** (T00+, README, `runtime_handoff.md`) live under `plans/S1/S1.B/pwa-implementation-branch/` — not the stale path `plans/cursor/pwa-implementation-branch/`.
+- **Plan status values:** `draft`, `ready`, `in_progress`, `paused`, `blocked`, `completed`, `abandoned`, `archived`.
+- **HitM gate types:** `required` (block), `optional` (proceed after post/timeout), `none`.
+- **Tasks and slices:** `T##` for tasks; `T##.SL#` for slices (**`SL`** = slice, not Phase/Stage **`S`** like `S1.B`).
+- **READ FIRST:** every plan README lists **≤7 files** to read before work starts.
+- **`DECISION_LOG.md`** is append-only; check before any design choice.
+- **`runtime_handoff.md`** hard limit: **200 lines**.
+- **i18n** is part of done; deferred coverage must be tracked as a follow-up slice.
+- Governed scope: one slice per agent turn when possible; **ask clarifying questions** instead of guessing underspecified product scope. Bias slices to **one web route/page or one API model/domain** per pass.
 
-## Operating Constraints (HitM-specific)
+### Product and ops defaults
 
-- $100/mo runtime cost cap. New infrastructure proposals must fit this or be blocked.
-- Cursor monthly cap as forcing function — no overage purchases. Stop work; resume on cycle reset.
-- Daily 10hr / weekly 55hr work ceiling during Sprints; 6hr/day, 30hr/week during Decompression. Local time-clock agent enforces (when implemented).
-- Baby due 2026-06-15. Pre-baby velocity full through ~mid-June; 30–50% velocity reduction expected June onward.
-- Family/health quarterly self-review per `strategy/strategic-roadmap-reframe-53be/kill_commit_gates.md` §6. First execution 2026-06-30.
+- **PWA/offline bar:** Core ledger surfaces stay coherent offline (days–weeks); local-first + API sync when online. Password change and account deletion stay online-only.
+- **VPS investigations:** SSH to `dev@dev@<VPS_HOST>` (user `dev`) for compose status, logs, rebuilds under `~/finance_manager`. Authoritative stack: HTTPS **:8443** via blue-green proxy.
+- **Rollout:** Prefer local execution over cloud agents when coordination bottlenecks; agent-owned PR + implementation, user-owned merge, VPS pull/rebuild for verification. Update active plan `runtime_handoff.md` at rollout breakpoints.
+- **Pushback:** Prefer direct, candid product/business pushback over reassurance-only agreement.
+- **Plans for agents:** Optimize artifacts for AI ingestion and handoffs over narrative polish.
 
-## Active Strategic State (snapshot 2026-04-30)
+---
 
-- **Active Phase:** S1.
-- **Active Stage:** S1.B (entering after S1.A complete).
-- **Flagship product:** `web`.
-- **Next major gate:** S1.B exit → S1.C entry (~Aug 2026).
-- **Current focus:** drift cleanup, S1.B research workstreams, "worth paying for" feature work, founding member program backend, Android pull-forward.
+## §2 Branch conventions
 
-## Reading Order for New Agents
+**New branches only** (historical `cursor/s1b/*` and `agy/s1b/*` names remain on merged PRs):
 
-1. `AGENTS.md` (this file) — operating constraints + learned facts.
-2. `governance/glossary.md` — canonical vocabulary.
-3. `governance/README.md` — governance overview.
-4. `governance/orchestration.md` — strategy / plans / Cursor / runtime map and skill mirrors (`skill_roadmap_rollout_planning.md`, `skill_orchestration_manager.md`); use for coordinated multi-step execution.
-5. `strategy/strategic-roadmap-reframe-53be/README.md` — strategic phase map.
-6. `strategy/strategic-roadmap-reframe-53be/00_strategic_context.md` — locked decisions.
-7. `governance/plan_registry.md` — active plans + status.
-8. Active Stage README at `plans/<Phase>/<Stage>/README.md` (example: `plans/S1/S1.B/README.md`).
-9. Specific sub-plan README before executing.
+```
+cur/s1b/feat/<slug>           ← Cursor feature
+cur/s1b/fix/<slug>            ← Cursor bug fix
+cur/s1b/chore/<slug>          ← Cursor chore
+cur/s1b/hotfix/<slug>         ← Cursor hotfix
+cla/s1b/admin/<slug>          ← Claude admin / governance
+agy/s1b/chore/<slug>          ← Antigravity automation
+```
+
+Feature/task hierarchy and color-cycle workflow: `governance/branching_guidelines.md`.
+
+Plans live under `plans/<Phase>/<Stage>/<sub-plan>/` (active S1.B: `plans/S1/S1.B/`).
+
+---
+
+## §3 Workspace facts
+
+- **Strategic roadmap:** `strategy/strategic-roadmap-reframe-53be/` (historical `design_docs/20_Roadmap/Phase_*` is reference only).
+- **Governance + plans:** `governance/` (protocols), `plans/` (tactical execution), `strategy/` (roadmap). VPS does not mirror `governance/` or `plans/`.
+- **Active Phase/Stage:** S1 / S1.B. Flagship: `web`. Next gate: S1.B exit → S1.C.
+- **Market:** PH-primary; US Honorary Founders passive. Multi-actor language = one human + AI agents unless stated otherwise.
+- **Entity/commercial:** PH spouse-led MoR + US LLC vendor pipeline gates PSP KYB and payment integration (see entity-formation research plans).
+- **PWA research locks:** Advanced tier, D0–D4 under `plans/S1/S1.B/pwa-install-offline-sync-research/`; implementation under `plans/S1/S1.B/pwa-implementation-branch/`.
+- **F-012/F-013:** Support intake (durable API queue); F-013 = Loguru per-UUID diagnostic files on VPS (ops grep/tail), not in-app Activity UI.
+- **Runtime ownership:** `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
+- **Paying-user gate headcounts:** re-indexed per `strategy/strategic-roadmap-reframe-53be/validation_gates.md` and unit-economics doc §2 / §4.1.
+
+---
+
+## §4 Operating constraints (HitM)
+
+- ₱100/mo runtime cost cap; Cursor cap as forcing function (no overages).
+- Sprint: 10 hr/day, 55 hr/week max; Decompression: 6 hr/day, 30 hr/week.
+- Baby born ~2026-06-15; decompression cadence is baseline.
+- Quarterly self-review: `strategy/strategic-roadmap-reframe-53be/kill_commit_gates.md` §6 (first due 2026-06-30).
+
+---
+
+## §5 Sub-repo map
+
+| Sub-repo | Tag | Role |
+|---|---|---|
+| `finance_manager_web` | `web:Tight Beta` | React+Vite SPA — **flagship** |
+| `finance_manager_api` | `api:Tight Beta` | Django REST API |
+| `finance_manager_cli` | `cli:Alpha` | CLI client |
+| `finance_manager_android` | `android:Scaffold` | Pull-forward in S1.B |
+| `finance_manager_rust_tools` | `rust_tools:Tight Beta` | Numerics (F-002, F-003) |
+| `finance_manager_rust_middleware` | `middleware:Scaffold` | ZK middleware — S5 |
+| `finance_manager_reflex` | `reflex:Archived` | Historical only |
+| `design_docs` | submodule | Design vault |
+
+Deploy: blue-green Docker/Podman; proxy on host **:8443**. Web is its own git submodule.
+
+---
+
+## §6 Reading order (by agent)
+
+### Cursor (code execution)
+
+1. `AGENTS.md`
+2. `governance/plan_registry.md`
+3. `plans/S1/S1.B/<target-sub-plan>/README.md`
+4. READ FIRST files listed in that README (`DECISION_LOG.md`, `runtime_handoff.md`, subrepo `CHANGELOG`)
+
+Pull `governance/glossary.md`, `deployment_protocol.md`, `definition_of_done.md` only when the task requires them.
+
+### Claude Code (admin)
+
+1. `AGENTS.md` + `CLAUDE.md`
+2. `strategy/current_status.md` (admin snapshot — not required for Cursor executors)
+3. `governance/plan_registry.md`
+
+### Antigravity (automation / first session)
+
+1. `AGENTS.md`
+2. `governance/glossary.md`
+3. `governance/plan_registry.md`
+4. `governance/README.md`
+
+Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md` → `00_strategic_context.md` → active stage README → sub-plan README.

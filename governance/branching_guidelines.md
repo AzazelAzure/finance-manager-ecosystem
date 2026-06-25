@@ -16,29 +16,36 @@ This is more disciplined than parallel feature flow but matches the solo-HitM op
 
 ## 2) Branch hierarchy
 
+**Agent prefix** encodes owning tool (new branches only — see `AGENTS.md` §2):
+
+| Prefix | Agent | Typical use |
+|---|---|---|
+| `cur/` | Cursor Pro+ | Features, fixes, chores, hotfixes, deploys |
+| `cla/` | Claude Code | Admin, governance docs |
+| `agy/` | Antigravity Pro | Automation chores |
+
 ```
 main (production HEAD; matches active color)
-  └── cursor/<phase-stage>/feat/<feature-name>      ← FEATURE BRANCH (inactive color staging)
-        ├── cursor/<phase-stage>/feat/<feature-name>/t01-<slug>   ← TASK BRANCH
-        ├── cursor/<phase-stage>/feat/<feature-name>/t02-<slug>
-        ├── cursor/<phase-stage>/feat/<feature-name>/t03-<slug>
+  └── cur/<phase-stage>/feat/<feature-name>      ← FEATURE BRANCH (inactive color staging)
+        ├── cur/<phase-stage>/feat/<feature-name>/t01-<slug>   ← TASK BRANCH
+        ├── cur/<phase-stage>/feat/<feature-name>/t02-<slug>
         └── ...
 ```
 
 Examples:
 
 ```
-cursor/s1b/feat/email-uniqueness-fix
-cursor/s1b/feat/email-uniqueness-fix/t01-add-unique-constraint
-cursor/s1b/feat/email-uniqueness-fix/t02-add-validation
-cursor/s1b/feat/email-uniqueness-fix/t03-update-tests
+cur/s1b/feat/email-uniqueness-fix
+cur/s1b/feat/email-uniqueness-fix/t01-add-unique-constraint
+cur/s1b/feat/email-uniqueness-fix/t02-add-validation
+cla/s1b/admin/governance-overhaul
+agy/s1b/chore/test-gen-sweep
 ```
 
 ```
-cursor/s1b/feat/quick-pay-bill
-cursor/s1b/feat/quick-pay-bill/t01-define-form-spec
-cursor/s1b/feat/quick-pay-bill/t02-implement-form
-cursor/s1b/feat/quick-pay-bill/t03-wire-transaction-seed
+cur/s1b/feat/quick-pay-bill
+cur/s1b/feat/quick-pay-bill/t01-define-form-spec
+cur/s1b/feat/quick-pay-bill/t02-implement-form
 ```
 
 ### 2.1 Task slices (`T##.SL#`) — documentation vs branches
@@ -57,7 +64,7 @@ Per `governance/plan_template.md` §1a, plans decompose work into **tasks** (`T#
 
 1. Identify next feature from active Execution Plan.
 2. Confirm inactive color is clean (no stale commits, no parallel feature in flight).
-3. Create feature branch from `main`: `git checkout -b cursor/<phase-stage>/feat/<feature-name>`.
+3. Create feature branch from `main`: `git checkout -b cur/<phase-stage>/feat/<feature-name>`.
 4. Push branch (no PR yet).
 5. Update `plan_registry.md` with the feature branch as `in_progress`.
 
@@ -65,7 +72,7 @@ Per `governance/plan_template.md` §1a, plans decompose work into **tasks** (`T#
 
 For each task within the feature:
 
-1. Branch from feature branch: `git checkout -b cursor/<phase-stage>/feat/<feature-name>/t<NN>-<slug>`.
+1. Branch from feature branch: `git checkout -b cur/<phase-stage>/feat/<feature-name>/t<NN>-<slug>`.
 2. Implement task.
 3. Run task-level verification (tests, lint, manual smoke).
 4. Open PR from task branch → feature branch (NOT to main). **AI agents must explicitly create the PR using the GitHub CLI (`gh pr create`), providing a descriptive title and body with their notes.**
@@ -122,18 +129,18 @@ Bug severity determines the path.
 **Bundle into the next color flip with the active feature.**
 
 - Add the fix as a task within the currently-active feature branch.
-- Branch: `cursor/<phase-stage>/feat/<feature-name>/t<NN>-fix-<slug>`
+- Branch: `cur/<phase-stage>/feat/<feature-name>/t<NN>-fix-<slug>`
 - Merges into the feature branch alongside other tasks.
 - Ships as part of the feature's color flip.
 
-If no feature is currently active: open a "maintenance feature branch" (`cursor/<phase-stage>/feat/maintenance-batch-<date>`) to accumulate small fixes; ship when batch reaches a reasonable size.
+If no feature is currently active: open a "maintenance feature branch" (`cur/<phase-stage>/feat/maintenance-batch-<date>`) to accumulate small fixes; ship when batch reaches a reasonable size.
 
 ### 4.2 Major bugs (S0 / S1, blocking or UX-destroying)
 
 **Hotfix path with re-roll into next batch.**
 
 1. **Pause active feature** if one is in flight.
-2. Create hotfix branch from `main`: `git checkout -b cursor/<phase-stage>/hotfix/<slug>`.
+2. Create hotfix branch from `main`: `git checkout -b cur/<phase-stage>/hotfix/<slug>`.
 3. Implement minimum viable fix (no scope creep).
 4. PR hotfix branch → `main` directly (skip feature branch).
 5. Apply hotfix-specific manual gates (`pre_deploy` required; `pre_cutover` required; per `deployment_protocol.md`).
@@ -216,7 +223,7 @@ DB migrations are special — they're not easily rollback-able by color flip alo
 
 If a feature requires changes in both `finance_manager_api` and `finance_manager_web`:
 
-- Branch in BOTH repos using the same feature name: `cursor/s1b/feat/<feature-name>`.
+- Branch in BOTH repos using the same feature name: `cur/s1b/feat/<feature-name>`.
 - Coordinate task merges so the API contract is finalized before web consumes it.
 - API ships first (deploy + color flip); web ships second (deploy + color flip).
 - Treat as two sequential feature flips, not one.

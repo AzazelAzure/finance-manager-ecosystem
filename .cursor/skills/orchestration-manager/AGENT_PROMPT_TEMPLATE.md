@@ -17,7 +17,7 @@ First, read and follow:
 - `.cursor/skills/orchestration-manager/SKILL.md`
 
 Execution context:
-- Active plan root: `plans/<Phase>/<Stage>/<sub-plan>/` (primary plan file or manifest inside that folder, e.g. `README.md` or `execution_manifest.md`; see `governance/orchestration.md`)
+- Active plan root: `plans/<Phase>/<Stage>/<sub-plan>/` (primary plan file or manifest inside that folder, e.g. `README.md` or `execution_manifest.md`; see `AGENTS.md` §6)
 - Current tasks/todos: <list>
 - Scope boundaries: <repos/paths>
 - Branch/PR targets: <repo -> feature branch -> target branch>

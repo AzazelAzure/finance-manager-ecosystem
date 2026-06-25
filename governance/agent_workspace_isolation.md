@@ -14,9 +14,8 @@
   git identity: Proctor-Antigravity-Agents <antigravity-agent@hivemanager.com>
   GitHub account: Proctor-Antigravity-Agents (collaborator, push)
   role: EXECUTOR — writes production code on feature branches
-  branch policy: feature branches only (agy/s1b/feat/...)
-  Visibility: Dispatched via `scripts/orchestrator.py` (CLI wrapper) and logged to `logs/dispatch/`
-  agent binary: `agy` CLI or IDE subagents
+  branch policy: feature branches only (`agy/s1b/feat/...` or `cur/s1b/feat/...` per agent)
+  Visibility: Antigravity IDE subagents or Cursor native multitask — not `scripts/orchestrator.py` (archived)
 ```
 
 ## Isolation Rules

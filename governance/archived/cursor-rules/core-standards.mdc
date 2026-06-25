@@ -1,0 +1,54 @@
+---
+description: Core engineering standards and decision priorities
+alwaysApply: true
+---
+
+# Core Standards
+
+Use these defaults for all work unless a more specific scoped rule applies.
+
+## Priority Order
+
+1. Correctness and safety
+2. Clear architecture boundaries
+3. Readability and maintainability
+4. Performance and efficiency
+
+## Engineering Defaults
+
+- Resolve root causes instead of patching symptoms.
+- Keep functions focused on one responsibility; split mixed concerns.
+- Prefer reusable helpers for repeated logic instead of copy-paste.
+- Use clear names and straightforward control flow.
+- Add brief comments only where intent is non-obvious.
+- Keep files reasonably lean; split when a file grows hard to navigate.
+
+## Collaboration and Traceability
+
+- **CPPR / CPPRD:** code changes that ship via PR should follow **CPPR** (commit, push, pull request). For accountability in this workspace, follow **CPPRD** (add **D**ocumentation): a durable summary in subrepo `CHANGELOG`, `deploy/`, or `design_docs/` as appropriate — see `deploy/CPPR_AND_CPPRD.md`.
+- Check the relevant local docs and design notes before major changes.
+- Update the relevant changelog or tracking docs when behavior changes.
+- Follow sub-repo git boundaries and commit within the repo you changed.
+- Default to feature-branch + pull-request workflow (avoid direct feature work on `main`/`master`).
+- Ensure required checks and signoffs pass before merge actions.
+- When you open a pull request, **send the PR link(s) to the user in this chat** (repo, branch, full URL) so they can review and merge. Do not rely on Slack for PR notification.
+- Before merge, use **GitHub** mergeability and required checks; `CONFLICTING` or `DIRTY` state remains a blocker until fixed.
+- Governed execution: scope to the assigned **slice** `T##.SL#` when the plan defines one (`governance/plan_template.md` §1a). When specs are silent, **ask clarifying questions** instead of inferring intent.
+- Flag better dependency/tool options when they materially improve quality.
+- Validate significant changes in Docker-oriented workflows to catch runtime-only issues early.
+
+## Runtime Workflow Defaults
+
+- On Linux in this workspace, prefer Podman-compatible container commands over Docker-specific assumptions.
+- Prefer project-provided automation under `scripts/` for image setup, cleanup, build, and rebuild workflows before ad-hoc container commands.
+- During multi-agent work, enforce single runtime ownership and script-based lifecycle checkpoints before and after testing batches.
+
+## Scope Control
+
+- Keep each task scoped to one subproject unless explicitly asked to span multiple.
+- If work in one subproject requires changes in another, document a concrete handoff note or follow-up plan item instead of expanding scope mid-task.
+
+## Source of Truth
+
+- Live project files are authoritative over stale summaries.
+- When instructions conflict, follow repository rules and current code state.
