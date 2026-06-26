@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-26 — Blue/green: Celery workers in rebuild + active orphan teardown
+
+- **`scripts/fm_server_beta.sh`:** `rebuild-color` now builds and recreates the shared `celery-worker` + `celery-beat` alongside `api/web` (F-014 background workers no longer drift behind API code or get orphaned on rebuilds). New `prune-orphans` command + `prune_orphan_containers` helper actively remove stale containers whose service is no longer in the compose file, scoped strictly to the project. `deploy` and `switch` keep the workers running and prune orphans. `status` filter now includes celery. **Note:** intentionally does **not** use `podman-compose up --remove-orphans` on a partial service list — that recreates the whole project (full-stack bounce incl. active color); the scoped prune is used instead so blue/green rebuilds leave the active color untouched.
+- **`docker-compose.bluegreen.yml`:** Fixed a broken duplicate `api-green:` key (a null stub was overriding the real definition) and replaced the non-functional `command:`-based celery services (the API image `ENTRYPOINT` ignores `command`, so they ran `runserver` instead of celery) with a single working `celery-worker` + `celery-beat` using `entrypoint:` overrides. `api-green` env aligned with `api-blue` (email/notify vars).
+- **`.gitignore`:** Ignore `*.secret` / `smtp.secret` so ad-hoc secret-handoff files are never committed.
+- **Validation:** `bash -n`, dry-run, and a live VPS `rebuild-color blue` on the inactive color — green (active) container IDs unchanged (not recreated), blue + celery rebuilt, prune removed 0 orphans, active `api/web` returned `200` throughout.
+
 ### 2026-06-26 — Admin governance overhaul (three-tool model)
 
 - **`AGENTS.md`:** Restructured §0–§6 — three-tool model (`cur/` / `cla/` / `agy/`), universal rules inline, branch conventions, per-agent reading order, CPPR/CPPRD discipline, retired daily-status PR pattern.

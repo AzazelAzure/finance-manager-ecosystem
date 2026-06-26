@@ -34,6 +34,10 @@ PUBLIC_APP_HOST="${FM_PUBLIC_APP_HOST:-financemanager.local}"
 PUBLIC_API_HOST="${FM_PUBLIC_API_HOST:-api.financemanager.local}"
 PUBLIC_BASE_URL="${FM_PUBLIC_BASE_URL:-https://localhost:8443}"
 
+# Color-agnostic background workers (F-014). Rebuilt/recreated alongside api/web so
+# they always run the freshly built image, and kept running across switches.
+CELERY_SERVICES=(celery-worker celery-beat)
+
 usage() {
   cat <<'EOF'
 Usage: fm_server_beta.sh <command> [args] [--dry-run] [--project <name>]
@@ -44,12 +48,15 @@ Commands:
   check                           Validate compose and nginx blue/green configuration.
   deploy [--dry-run] <color>      Start inactive color services (or explicit color).
   rebuild-color [--no-build] [--no-cache] <blue|green>
-                                  Build api/web for one color, then safely recreate those
-                                  containers (and proxy). Use this after image changes on
-                                  Podman: plain "up --force-recreate" often fails because
-                                  proxy lists depends_on on all app containers (--requires).
-                                  Use --no-cache to force a clean build (recommended after
-                                  code changes to prevent stale cached layers).
+                                  Build api/web for one color plus the shared celery
+                                  worker/beat, then safely recreate those containers (and
+                                  proxy), pruning orphaned containers first. Use this after
+                                  image changes on Podman: plain "up --force-recreate" often
+                                  fails because proxy lists depends_on on all app containers
+                                  (--requires). Use --no-cache to force a clean build
+                                  (recommended after code changes to prevent stale layers).
+  prune-orphans                   Remove stale containers in this project whose service is
+                                  no longer defined in the compose file (scoped to project).
   smoke --color <active|inactive|blue|green>
                                   Run API and web (React) smoke checks for selected color.
   switch --to <blue|green>        Promote color by updating proxy active color and reloading proxy.
@@ -85,6 +92,45 @@ remove_compose_service_container() {
     # shellcheck disable=SC2086
     "$RUNTIME_BIN" rm -f $ids || true
   fi
+}
+
+# Service names defined in the active compose file (filters podman-compose banner noise).
+compose_services() {
+  compose_cmd config --services 2>/dev/null | grep -E '^[A-Za-z0-9._-]+$' || true
+}
+
+# Actively tear down stale containers in this project whose service is no longer
+# defined in the compose file. Repeated blue/green rebuilds + renamed/removed
+# services (e.g. an old celery-beat-green) otherwise leave orphans that confuse
+# later "up"/switch steps. Scoped strictly to PROJECT_NAME so unrelated stacks
+# are never touched.
+prune_orphan_containers() {
+  local services
+  services="$(compose_services)"
+  if [[ -z "${services//[$' \t\n']/}" ]]; then
+    log "prune: could not resolve compose services; skipping orphan prune."
+    return 0
+  fi
+
+  declare -A keep=()
+  local svc
+  while IFS= read -r svc; do
+    [[ -n "$svc" ]] && keep["$svc"]=1
+  done <<< "$services"
+
+  local ids id csvc cname removed=0
+  ids=$("$RUNTIME_BIN" ps -aq \
+    --filter "label=com.docker.compose.project=${PROJECT_NAME}" 2>/dev/null || true)
+  for id in $ids; do
+    csvc=$("$RUNTIME_BIN" inspect -f '{{ index .Config.Labels "com.docker.compose.service" }}' "$id" 2>/dev/null || true)
+    if [[ -z "$csvc" || -z "${keep[$csvc]:-}" ]]; then
+      cname=$("$RUNTIME_BIN" inspect -f '{{ .Name }}' "$id" 2>/dev/null || echo "$id")
+      log "prune: removing orphan container ${cname#/} (service='${csvc:-<none>}')"
+      "$RUNTIME_BIN" rm -f "$id" >/dev/null 2>&1 || true
+      removed=$((removed + 1))
+    fi
+  done
+  log "prune: removed ${removed} orphan container(s) for project ${PROJECT_NAME}."
 }
 
 # After (re)creating an API container, Django may need a few seconds before :8000 listens.
@@ -193,7 +239,7 @@ status_cmd() {
   log "Active color: $active"
   log "Inactive color: $inactive"
   log "Runtime containers (filtered):"
-  local filter='fm-beta|api-blue|api-green|web-blue|web-green|proxy|db|redis'
+  local filter='fm-beta|api-blue|api-green|web-blue|web-green|celery-worker|celery-beat|proxy|db|redis'
   if [[ "$RUNTIME_BIN" == "podman" ]]; then
     if have_cmd rg; then
       podman ps -a --format '{{.Names}}\t{{.Status}}\t{{.Ports}}' | rg "$filter" || true
@@ -232,7 +278,8 @@ deploy_cmd() {
   if using_parallel_compose; then
     command=(up -d redis "$api_service" "$web_service")
   else
-    command=(up -d db "$api_service" "$web_service" proxy)
+    # No --remove-orphans: it makes podman-compose recreate the whole project.
+    command=(up -d db "$api_service" "$web_service" "${CELERY_SERVICES[@]}" proxy)
   fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
@@ -291,27 +338,37 @@ rebuild_color_cmd() {
   fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
-    log "dry-run: would stop proxy + $api_service + $web_service, rm those containers, build (if enabled), up db/redis/$api_service/$web_service/proxy"
+    log "dry-run: would stop proxy + $api_service + $web_service + ${CELERY_SERVICES[*]}, rm those containers, prune orphans, build (if enabled), up db/redis/$api_service/$web_service/${CELERY_SERVICES[*]}/proxy"
     return 0
   fi
 
   if [[ "$do_build" -eq 1 ]]; then
     local build_args=(build)
     [[ "$no_cache" -eq 1 ]] && build_args+=(--no-cache)
-    build_args+=("$api_service" "$web_service")
-    log "Building $api_service and $web_service${no_cache:+ (--no-cache)}..."
+    build_args+=("$api_service" "$web_service" "${CELERY_SERVICES[@]}")
+    log "Building $api_service, $web_service, and ${CELERY_SERVICES[*]}${no_cache:+ (--no-cache)}..."
     compose_cmd "${build_args[@]}"
   fi
 
-  log "Recreating $api_service and $web_service with fresh containers."
+  log "Recreating $api_service, $web_service, and ${CELERY_SERVICES[*]} with fresh containers."
   log "Note: proxy shares :8443/:8080 for both colors — it will restart briefly (typically a few seconds)."
-  compose_cmd stop proxy "$api_service" "$web_service" || true
+  compose_cmd stop proxy "$api_service" "$web_service" "${CELERY_SERVICES[@]}" || true
   remove_compose_service_container "proxy"
   remove_compose_service_container "$api_service"
   remove_compose_service_container "$web_service"
+  local svc
+  for svc in "${CELERY_SERVICES[@]}"; do
+    remove_compose_service_container "$svc"
+  done
 
-  log "Starting db, redis, $api_service, $web_service, proxy..."
-  compose_cmd up -d db redis "$api_service" "$web_service" proxy
+  # Clear any leftover containers from removed/renamed services before bringing the stack back up.
+  prune_orphan_containers
+
+  # NOTE: do NOT pass --remove-orphans here. With podman-compose, --remove-orphans on a
+  # partial "up" recreates the whole project (including the active color), causing a
+  # full-stack bounce. prune_orphan_containers (above) already cleared true orphans safely.
+  log "Starting db, redis, $api_service, $web_service, ${CELERY_SERVICES[*]}, proxy..."
+  compose_cmd up -d db redis "$api_service" "$web_service" "${CELERY_SERVICES[@]}" proxy
   wait_api_service_ready "$api_service"
   log "Rebuild complete for $color. Run: $0 smoke --color $color"
 }
@@ -379,6 +436,15 @@ switch_cmd() {
 
   write_active_color "$to_color"
   reload_proxy
+
+  if ! using_parallel_compose; then
+    # Keep background workers running on the promoted stack and clear any stale
+    # containers left from the rebuild that preceded this switch.
+    log "Ensuring ${CELERY_SERVICES[*]} are running and pruning orphans..."
+    compose_cmd up -d "${CELERY_SERVICES[@]}" >/dev/null 2>&1 || true
+    prune_orphan_containers
+  fi
+
   log "Switched active color: $from_color -> $to_color"
 }
 
@@ -472,6 +538,9 @@ main() {
       ;;
     rebuild-color)
       rebuild_color_cmd "$@"
+      ;;
+    prune-orphans)
+      prune_orphan_containers
       ;;
     smoke)
       [[ "${1:-}" == "--color" && -n "${2:-}" ]] || die "usage: smoke --color <active|inactive|blue|green>"
