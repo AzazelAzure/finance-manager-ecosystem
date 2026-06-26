@@ -2,7 +2,7 @@
 
 **Generated:** 2026-06-26  
 **Scope:** Pre-VPS-sync gate. Governance overhaul explicitly deferred.  
-**Detail reports:** [`open_prs_assessment.md`](./open_prs_assessment.md) · [`uncommitted_work_status.md`](./uncommitted_work_status.md) · [`../active_vs_research_comparison.md`](../active_vs_research_comparison.md)
+**Detail reports:** [`open_prs_assessment.md`](./open_prs_assessment.md) (canonical stale-PR report) · [`uncommitted_work_status.md`](./uncommitted_work_status.md) · [`../active_vs_research_comparison.md`](../active_vs_research_comparison.md)
 
 ---
 
@@ -23,9 +23,9 @@ VPS green stack remains on **stale SHAs** (web `3e2b370`, api `1833e74`) — wee
 
 | Step | Action | Source |
 |------|--------|--------|
-| 1 | **Close PR #58** (conflicting, stale API pin) and **PR #60** (F-012 superseded by `main`) | [Open PRs](14ea0aae-276f-409e-aab1-178bd5493ec5) |
-| 2 | **Merge PR #61** — only net-new parent work (F-013 diagnostic logs + F-012 polish commits) | [Open PRs](14ea0aae-276f-409e-aab1-178bd5493ec5) |
-| 3 | **Close #57/#59** — daily-status relics (HitM: discard) | Standby audit |
+| 1 | Resolve stale PR queue: API #33/#34 and Web #60/#61 are 7+ day stale; report shows no direct merge conflicts but flags duplicate/order risks | [Stale PR report](./open_prs_assessment.md) |
+| 2 | Decide API merge vehicle: #34 contains #33 plus F-013, so #33 is redundant if #34 proceeds | [Stale PR report](./open_prs_assessment.md) |
+| 3 | Decide Web offline/support ordering: #60 and #61 both carry the `profileOutboxOverlay.ts` appprofile regex change | [Stale PR report](./open_prs_assessment.md) |
 | 4 | **API security WIP** — wire `validate_password` on change endpoints, `migrate axes`, proxy IP config, feature branch, tests | [Uncommitted work](a230ee90-aa96-4caa-9520-626d2c145616) |
 | 5 | **Web WIP** — fix dead guide button; resolve CSP dev/prod matrix; committed `main` web **fails build** (9 TS errors); WIP uncommitted changes fix build but F-007 T02 sandbox not started | [Uncommitted work](a230ee90-aa96-4caa-9520-626d2c145616) |
 | 6 | **Optional:** commit strategy/standby docs (exclude `cache/`) | [Uncommitted work](a230ee90-aa96-4caa-9520-626d2c145616) |
@@ -35,7 +35,7 @@ VPS green stack remains on **stale SHAs** (web `3e2b370`, api `1833e74`) — wee
 
 ## Cross-cutting conclusions
 
-**PRs:** F-012 is on `main`; do not merge #60. F-013 is only in #61. VPS pull without #61 = F-012 live, no diagnostic logs.
+**PRs:** Current stale set is API #33/#34 and Web #60/#61. GitHub and local merge-tree checks show no direct conflicts against current `origin/main`; the risk is duplicate/order handling.
 
 **Local code:** Neither API security nor web tour/CSP is commit-ready. Web submodule on `main` is broken for build until TS fixes land (partially in uncommitted WIP).
 
@@ -47,4 +47,4 @@ VPS green stack remains on **stale SHAs** (web `3e2b370`, api `1833e74`) — wee
 
 ## VPS sync gate: **NOT CLEAR**
 
-Clear when: #58/#60 closed, #61 merged (if F-013 wanted on VPS), API security + web build blockers resolved or explicitly reverted/deferred.
+Clear when: stale API/Web PR decisions are made, API security + web build blockers are resolved or explicitly reverted/deferred, and deploy target SHAs are confirmed.

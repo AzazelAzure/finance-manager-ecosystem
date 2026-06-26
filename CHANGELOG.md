@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-26 — Stale PR report refresh
+
+- **Strategy:** [`strategy/standby/open_prs_assessment.md`](strategy/standby/open_prs_assessment.md) rewritten as the single stale-PR report across ecosystem, android, API, CLI, design docs, rust middleware, rust tools, and web repos; flags API #33/#34 and Web #60/#61 as 7+ day stale with merge/conflict evidence and duplication/order risks. [`strategy/standby/README.md`](strategy/standby/README.md) pointer/action summary aligned to the refreshed report.
+
 ### 2026-06-26 — Admin governance overhaul (three-tool model)
 
 - **`AGENTS.md`:** Restructured §0–§6 — three-tool model (`cur/` / `cla/` / `agy/`), universal rules inline, branch conventions, per-agent reading order, CPPR/CPPRD discipline, retired daily-status PR pattern.
