@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-16 (transitioned PLAN_CROSS_SUPPORT_INTAKE_2026-05-21 to in_progress)
+**Last updated:** 2026-06-16 (completed PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21 and updated plan registry)
 
 ## Update protocol
 
@@ -25,13 +25,13 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| _(empty)_ | | | | | | | | | |
+| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | P1 | S1.B | `agy/s1b/feat/infra-support-intake` | `teamwork_preview_worker_f012` | - | `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | - | 2026-06-16 | **F-012** bug reports + feature requests: `plans/S1/S1.B/feat-infra-support-intake/README.md`. |
 
 ## Ready for Execution
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | P2 | S1.B | `agy/s1b/feat/infra-user-activity-logs` | - | - | `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | - | **F-013** per-user Loguru diagnostic files: `plans/S1/S1.B/feat-infra-user-activity-logs/README.md`. |
+| _(empty)_ | | | | | | | | |
 
 ## Draft / Planning
 
@@ -69,7 +69,6 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 
 | plan_id | phase | completed_date | strategic_impact | pr_url(s) |
 |---|---|---|---|---|
-| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | 2026-06-16 | F-012 Support ticket intake: gated API, weekly digest task, and frontend Support page | [API PR #33](https://github.com/AzazelAzure/finance-manager-api/pull/33), [Web PR #61](https://github.com/AzazelAzure/finance-manager-web/pull/61) |
 | `PLAN_API_REFLEX_BETA_READINESS_2026-04-28` | S1.A | 2026-04-30 (close) | API hardening shipped; Reflex archived; web is flagship | (multiple — see API repo PRs #16-18) |
 | `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | S1.A | 2026-04-30 (close) | Blue-green runtime deployed; CPPR+D pipeline live | (parent repo PRs) |
 | `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28` | S1.A | 2026-04-30 (close) | VPS go-live successful; bug-report intake operational | (parent repo PRs) |
@@ -77,6 +76,7 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 | `PLAN_FEAT_DASHBOARD_I18N_CALENDAR_2026-04-28` | S1.A | 2026-04-30 (close) | Reflex i18n + calendar (now archived with Reflex) | (multiple) |
 | `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29` | S1.A | 2026-04-30 (close) | Reflex blue-green recovery completed; subsequently archived per Topic 2 | (parent repo PRs) |
 | `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29` | S1.A | 2026-04-30 (close) | JS web rollout shipped; web is now flagship; BP1-BP7 complete | (web repo PRs #2-11+) |
+| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | 2026-06-16 | F-013 server-side user-keyed logs & incident window extractor | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/61 |
 
 ## Abandoned
 
