@@ -193,6 +193,42 @@ compose_cmd() {
   ${COMPOSE_CMD[@]} -p "$PROJECT_NAME" -f "$COMPOSE_FILE" "${COMPOSE_ENV_FILE_ARGS[@]}" "$@"
 }
 
+redact_compose_output() {
+  python3 - "$1" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+text = path.read_text(errors="replace")
+patterns = [
+    r"((?:EMAIL_HOST_PASSWORD|SECRET_KEY|DB_PASSWORD|POSTGRES_PASSWORD|[A-Z0-9_]*PASSWORD)[:=])([^ \t\r\n]+)",
+    r"(-e\s+(?:EMAIL_HOST_PASSWORD|SECRET_KEY|DB_PASSWORD|POSTGRES_PASSWORD|[A-Z0-9_]*PASSWORD)=)([^ \t\r\n]+)",
+]
+for pattern in patterns:
+    text = re.sub(pattern, r"\1<redacted>", text)
+sys.stdout.write(text)
+PY
+}
+
+# podman-compose prints fully interpolated `podman run -e KEY=value ...` lines
+# during `up`, including values from .secrets/server.env. Keep successful `up`
+# output quiet; if it fails, print a redacted copy and then remove the temp log.
+compose_cmd_quiet_up() {
+  local tmp rc
+  tmp="$(mktemp)"
+  chmod 600 "$tmp"
+  if compose_cmd up "$@" >"$tmp" 2>&1; then
+    rm -f "$tmp"
+    return 0
+  fi
+  rc=$?
+  log "compose up failed (output redacted):"
+  redact_compose_output "$tmp"
+  rm -f "$tmp"
+  return "$rc"
+}
+
 require_paths() {
   [[ -d "$BASE_DIR" ]] || die "Base directory missing: $BASE_DIR"
   [[ -f "$COMPOSE_FILE" ]] || die "Compose file missing: $COMPOSE_FILE"
@@ -287,7 +323,7 @@ deploy_cmd() {
     return 0
   fi
 
-  compose_cmd "${command[@]}"
+  compose_cmd_quiet_up "${command[@]:1}"
   log "Deployed candidate color: $color"
   log "Note: DB migrations should be run via repo migration workflow before switch if required."
 }
@@ -331,7 +367,7 @@ rebuild_color_cmd() {
       compose_cmd "${build_args[@]}"
     fi
     log "Recreating $api_service and $web_service (parallel compose; no proxy in this file)."
-    compose_cmd up -d --force-recreate "$api_service" "$web_service"
+    compose_cmd_quiet_up -d --force-recreate "$api_service" "$web_service"
     wait_api_service_ready "$api_service"
     log "Rebuild complete for $color."
     return 0
@@ -368,7 +404,7 @@ rebuild_color_cmd() {
   # partial "up" recreates the whole project (including the active color), causing a
   # full-stack bounce. prune_orphan_containers (above) already cleared true orphans safely.
   log "Starting db, redis, $api_service, $web_service, ${CELERY_SERVICES[*]}, proxy..."
-  compose_cmd up -d db redis "$api_service" "$web_service" "${CELERY_SERVICES[@]}" proxy
+  compose_cmd_quiet_up -d db redis "$api_service" "$web_service" "${CELERY_SERVICES[@]}" proxy
   wait_api_service_ready "$api_service"
   log "Rebuild complete for $color. Run: $0 smoke --color $color"
 }
@@ -441,7 +477,7 @@ switch_cmd() {
     # Keep background workers running on the promoted stack and clear any stale
     # containers left from the rebuild that preceded this switch.
     log "Ensuring ${CELERY_SERVICES[*]} are running and pruning orphans..."
-    compose_cmd up -d "${CELERY_SERVICES[@]}" >/dev/null 2>&1 || true
+    compose_cmd_quiet_up -d "${CELERY_SERVICES[@]}" >/dev/null 2>&1 || true
     prune_orphan_containers
   fi
 
