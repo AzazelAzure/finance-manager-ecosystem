@@ -2,7 +2,7 @@
 
 > **ADMIN USE ONLY.** Updated daily by Antigravity. Not a required read for executor agents (see `AGENTS.md` §6).
 
-**Generated:** 2026-06-26 (reconciled against `origin/main`, VPS SSH, standby audit)  
+**Generated:** 2026-06-26 (post-standby execution; reconciled against `origin/main`, VPS SSH)  
 **Sources:** Git history, submodule SHAs, VPS Podman state, open PR assessment, uncommitted-work audit, active-vs-research comparison, plan registry, strategic roadmap.  
 **Scope:** Finance Manager Ecosystem (parent + all active sub-repos).  
 **This file is a living summary. It is not the source of truth** — authoritative docs remain in `governance/`, `plans/`, and `strategy/strategic-roadmap-reframe-53be/`.  
@@ -14,14 +14,14 @@
 
 | Signal | State |
 |---|---|
-| **`origin/main` HEAD** | `dc04179` — 2026-06-16 (F-012 landed; API `277228a`, Web `9b2ecbe`) |
-| **Local parent checkout** | `90d2358` — **1 commit behind** `origin/main`; run `git pull` |
-| **VPS live stack** | Green active; containers up ~12 days; **not synced to `main`** |
-| **VPS web branch** | `agy/s1b/feat/landing-page-ux-seo` @ `3e2b370` (2026-06-13) — missing F-007, PWA, F-012, F-011 final |
-| **VPS api branch** | `main` @ `1833e74` (2026-05-04) — ~6 weeks behind; missing F-007, PWA middleware, F-012, F-013 |
-| **Local uncommitted work** | API security WIP (partial); web CSP + tour WIP (partial; fixes TS build on pinned web) |
-| **Open PRs** | 3 open — **close #58/#60**, **merge #61** (F-013); #57/#59 closed as daily-status relics |
-| **VPS sync gate** | **NOT CLEAR** — resolve PR cleanup + local code blockers first |
+| **`origin/main` HEAD** | `86f7063` — F-013 + governance overhaul merged (API `7b6f564`, Web `e66c2bb`) |
+| **Local parent checkout** | Behind `origin/main` — run `git pull origin main` before pointer-bump work |
+| **VPS live stack** | Green active; smoke **PASS** 2026-06-26; **not synced to `main`** |
+| **VPS web branch** | `agy/s1b/feat/landing-page-ux-seo` @ `3e2b370` (2026-06-13) |
+| **VPS api branch** | `main` @ `1833e74` (2026-05-04) |
+| **Submodule PRs ready** | API [#35](https://github.com/AzazelAzure/finance-manager-api/pull/35) security; Web [#62](https://github.com/AzazelAzure/finance-manager-web/pull/62) build/CSP |
+| **Open parent PRs** | None blocking standby ( #58/#60 closed; #61/#62 merged ) |
+| **VPS sync gate** | **NOT CLEAR** — merge submodule PRs + fix API migration graph + parent pointer bump |
 | **Quarterly self-review** | **Due 2026-06-30** (4 days) |
 | **Operator cadence** | Decompression mode — 6 hr/day, 30 hr/week (post-baby baseline) |
 | **Governance overhaul** | **In progress** — admin overhaul on branch `cur/s1b/admin/governance-overhaul` (2026-06-26) |
@@ -239,9 +239,10 @@ Full detail: [`strategy/standby/open_prs_assessment.md`](./standby/open_prs_asse
 
 | PR | Branch | Recommendation | Rationale |
 |---|---|---|---|
-| **#61** | `agy/s1b/feat/infra-user-activity-logs` | **MERGE** | F-013 diagnostic logs + F-012 polish; only net-new infra PR; MERGEABLE (CLEAN) |
-| **#60** | `agy/s1b/feat/infra-support-intake` | **CLOSE** | F-012 already on `origin/main` @ `dc04179` |
-| **#58** | `agy/s1b/chore/sync-api-submodule` | **CLOSE** | CONFLICTING (DIRTY); stale API pin would regress F-012 |
+| **#61** | `agy/s1b/feat/infra-user-activity-logs` | **MERGED** | F-013 → parent `86f7063` |
+| **#60** | `agy/s1b/feat/infra-support-intake` | **CLOSED** | Superseded by F-012 on `main` |
+| **#58** | `agy/s1b/chore/sync-api-submodule` | **CLOSED** | Stale conflicting API pin |
+| **#62** | `cur/s1b/admin/governance-overhaul` | **MERGED** | Three-tool governance model |
 | **#59** | daily status 2026-06-16 | **CLOSE** | Relic — superseded by this file; HitM decision to discard |
 | **#57** | daily status 2026-06-15 | **CLOSE** | Relic — superseded; HitM decision to discard |
 
