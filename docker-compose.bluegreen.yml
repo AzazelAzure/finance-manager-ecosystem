@@ -34,6 +34,16 @@ services:
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
       - DEBUG=${DEBUG:-False}
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - BUG_REPORT_TO_EMAIL=${BUG_REPORT_TO_EMAIL:-}
+      - SUPPORT_DIGEST_TO_EMAIL=${SUPPORT_DIGEST_TO_EMAIL:-}
+      - OPERATOR_NOTIFY_EMAIL=${OPERATOR_NOTIFY_EMAIL:-}
+      - BETA_FEATURE_REQUESTS_ENABLED=${BETA_FEATURE_REQUESTS_ENABLED:-False}
+      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      - EMAIL_HOST=${EMAIL_HOST:-}
+      - EMAIL_PORT=${EMAIL_PORT:-587}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
     depends_on:
       - db
       - redis
@@ -69,7 +79,7 @@ services:
     volumes:
       - logs:/app/logs
 
-  celery-beat-blue:
+  celery-beat:
     build:
       context: ./finance_manager_api
       dockerfile: Dockerfile
@@ -85,6 +95,16 @@ services:
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
       - DEBUG=${DEBUG:-False}
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - BUG_REPORT_TO_EMAIL=${BUG_REPORT_TO_EMAIL:-}
+      - SUPPORT_DIGEST_TO_EMAIL=${SUPPORT_DIGEST_TO_EMAIL:-}
+      - OPERATOR_NOTIFY_EMAIL=${OPERATOR_NOTIFY_EMAIL:-}
+      - BETA_FEATURE_REQUESTS_ENABLED=${BETA_FEATURE_REQUESTS_ENABLED:-False}
+      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      - EMAIL_HOST=${EMAIL_HOST:-}
+      - EMAIL_PORT=${EMAIL_PORT:-587}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
     depends_on:
       - db
       - redis
@@ -141,29 +161,7 @@ services:
     volumes:
       - logs:/app/logs
 
-  celery-beat-green:
-    build:
-      context: ./finance_manager_api
-      dockerfile: Dockerfile
-    command: uv run celery -A finance_api beat -l info
-    environment:
-      - DB_ENGINE=django.db.backends.postgresql
-      - DB_NAME=${DB_NAME:-finance_db}
-      - DB_USER=${DB_USER:-finance_user}
-      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
-      - DB_HOST=db
-      - DB_PORT=5432
-      - SECRET_KEY=${SECRET_KEY}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
-      - DEBUG=${DEBUG:-False}
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
-    depends_on:
-      - db
-      - redis
-    volumes:
-      - logs:/app/logs
-
-  # React (Vite) static bundle — same color map as API for cutover
+  api-green:
   web-blue:
     build:
       context: ./finance_manager_web
