@@ -13,4 +13,4 @@ This directory holds **governed execution plans** and **archives**. It does **no
 
 **Do not** recreate top-level **`plans/feat/`**, **`plans/fix/`**, or **`plans/volatile/`** — new work belongs under **`plans/<Phase>/<Stage>/<sub-plan>/`** per **`governance/plan_template.md`**. Execution decomposition uses **tasks** `T##` and **slices** `T##.SL#` (§1a; **`SL`** distinct from Phase **S** notation).
 
-See also: [`../strategy/README.md`](../strategy/README.md), [`../governance/README.md`](../governance/README.md), [`../governance/orchestration.md`](../governance/orchestration.md) (strategy / plans / Cursor / runtime map).
+See also: [`../strategy/README.md`](../strategy/README.md), [`../governance/README.md`](../governance/README.md), [`../AGENTS.md`](../AGENTS.md) (three-tool model and reading order).
