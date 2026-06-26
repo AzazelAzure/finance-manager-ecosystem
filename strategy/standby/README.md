@@ -10,13 +10,12 @@
 
 | Field | Value |
 |-------|-------|
-| Parent HEAD | `8ef64dc` — standby closeout on `origin/main` |
-| Active pointer-bump branch | `cur/s1b/chore/sync-standby-submodules` |
+| Parent HEAD | `1716b4b` — #64 merged; parent pins standby submodules |
 | Target API pin | `789b266` (F-013 + security hardening + migration merge) |
 | Target Web pin | `4ad032a` (F-012 lineage + build/CSP/header cleanup) |
 | Submodule PRs | API #35 and Web #62 merged |
 
-VPS green stack remains on **stale SHAs** (web `3e2b370` @ `agy/s1b/feat/landing-page-ux-seo`, api `1833e74` @ `main`).
+VPS **green** remains active. VPS **blue** has been rebuilt and smoked with the target SHAs.
 
 ---
 
@@ -29,6 +28,7 @@ VPS green stack remains on **stale SHAs** (web `3e2b370` @ `agy/s1b/feat/landing
 | **#61** | MERGE | ✅ Merged → parent `86f7063` |
 | **#57, #59** | CLOSE | Already closed (daily-status relics) |
 | **#62** | MERGE | ✅ Governance overhaul merged into `main` |
+| **#64** | MERGE | ✅ Parent pointer bump merged → `1716b4b` |
 
 ---
 
@@ -43,16 +43,16 @@ F-007 sandbox overlay (T01/T02) **deferred** — not started; no dead-button reg
 
 ---
 
-## VPS sync gate: **PARTIAL CLEAR** (inactive-color test required)
+## VPS sync gate: **BLUE READY** (cutover requires HitM)
 
-Clear when:
+Completed:
 
-1. Merge parent submodule-pointer PR from `cur/s1b/chore/sync-standby-submodules`.
-2. Rebuild inactive blue with API `789b266` and Web `4ad032a`.
-3. Run finance migrations through `0009_merge_20260626` plus `migrate axes` on inactive API.
-4. Run `python manage.py migrate axes` on inactive color after API security deploy.
+1. Parent submodule-pointer PR #64 merged.
+2. Inactive blue rebuilt with API `789b266` and Web `4ad032a`.
+3. Finance migrations through `0009_merge_20260626` and axes migrations verified/applied.
+4. Smoke passed for both blue and green.
 
-Green stack smoke **passed** 2026-06-26 — do not rebuild green until HitM approves.
+Green remains active. Do not switch to blue until HitM approves cutover.
 
 ---
 
@@ -60,34 +60,22 @@ Green stack smoke **passed** 2026-06-26 — do not rebuild green until HitM appr
 
 | Repo | SHA | Notes |
 |------|-----|-------|
-| Parent | pointer bump branch → `8ef64dc` base | Compose/redis/celery from F-012 |
+| Parent | `1716b4b` | Pins API/Web standby SHAs |
 | API | `789b266` | Security PR adds axes + Argon2; includes merge migration |
 | Web | `4ad032a` | CSP + header cleanup; build passes |
 
 ---
 
-## VPS inactive-color next commands (HitM)
+## VPS cutover command (HitM only)
 
 ```bash
 ssh dev@159.198.75.194
 
-# API — checkout target SHA on inactive deploy path only
-cd ~/finance_manager/finance_manager_api
-git fetch origin
-git checkout 789b266
-
-# Web — leave green on current branch until blue validated
-cd ~/finance_manager/finance_manager_web
-git fetch origin
-git checkout 4ad032a
-
-# Rebuild INACTIVE color only (blue while green is active)
 cd ~/finance_manager
 scripts/fm_server_beta.sh status
-scripts/fm_server_beta.sh rebuild-color --no-cache blue
 scripts/fm_server_beta.sh smoke --color blue
-
-# After smoke: HitM may scripts/fm_server_beta.sh switch --to blue
+scripts/fm_server_beta.sh switch --to blue
+scripts/fm_server_beta.sh smoke --color blue
 # Do NOT switch without explicit approval
 ```
 
