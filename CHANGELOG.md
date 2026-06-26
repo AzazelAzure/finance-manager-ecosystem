@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-26 — Redact compose `up` secret output
+
+- **`scripts/fm_server_beta.sh`:** Added a quiet `compose up` wrapper for deploy/rebuild/switch paths. `podman-compose up` can print fully interpolated `podman run -e KEY=value ...` lines, including values sourced from `.secrets/server.env`; successful `up` output is now discarded, and failed `up` output is printed only after redacting password/secret-style environment values.
+
 ### 2026-06-26 — Blue/green: Celery workers in rebuild + active orphan teardown
 
 - **`scripts/fm_server_beta.sh`:** `rebuild-color` now builds and recreates the shared `celery-worker` + `celery-beat` alongside `api/web` (F-014 background workers no longer drift behind API code or get orphaned on rebuilds). New `prune-orphans` command + `prune_orphan_containers` helper actively remove stale containers whose service is no longer in the compose file, scoped strictly to the project. `deploy` and `switch` keep the workers running and prune orphans. `status` filter now includes celery. **Note:** intentionally does **not** use `podman-compose up --remove-orphans` on a partial service list — that recreates the whole project (full-stack bounce incl. active color); the scoped prune is used instead so blue/green rebuilds leave the active color untouched.
