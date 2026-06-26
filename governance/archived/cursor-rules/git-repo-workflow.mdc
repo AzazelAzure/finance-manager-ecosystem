@@ -1,0 +1,73 @@
+---
+description: Multi-repo git and changelog workflow requirements
+alwaysApply: true
+---
+
+# Git Workflow Across Sub-Repos
+
+This workspace contains multiple independent git repositories. Treat each repo as its own source of truth for commits, history, and changelog updates.
+
+## Branch + PR Policy (Default)
+
+- Do not implement feature work directly on `main`/`master`.
+- Create or reuse a feature branch per repo before code changes.
+- Push the feature branch to remote before requesting review.
+- Open a pull request for every feature/fix/docs change that should land in shared history.
+- Merge only after required checks and review/signoff pass.
+
+## Repository Boundaries
+
+- Confirm the active repo before running git commands or creating commits.
+- Do not stage or commit across repo boundaries in a single workflow step.
+- Keep branch and commit operations scoped to the sub-repo being changed.
+- Avoid broad multi-repo analysis by default; focus on the active subproject context.
+
+## Cross-Project Dependencies
+
+- When a fix in one subproject depends on another (for example **web** needing an API contract change), record a clear handoff note for the host agent.
+- Convert cross-project dependency notes into explicit follow-up plans before starting work in the second repo.
+- Keep the current task deliverable bounded to the active subproject unless the task explicitly authorizes multi-repo execution.
+
+## Current Repo Map
+
+- API repo: `finance_manager_api/`
+- Web repo (flagship): `finance_manager_web/`
+- CLI repo: `finance_manager_cli/`
+- Design vault (submodule): `design_docs/`
+- Reflex repo: `finance_manager_reflex/` (**archived** — historical only; not in production architecture)
+- Rust tools library: `finance_manager_rust_tools/` (PFM numerics; committed `Cargo.lock`; CI `fmt` / `clippy` / `test --locked`)
+
+## Changelog Discipline
+
+- For API changes, update `finance_manager_api/CHANGELOG.md` in the same workstream.
+- For Web changes, update `finance_manager_web/CHANGELOG.md` in the same workstream.
+- For CLI changes, create and maintain `finance_manager_cli/CHANGELOG.md` once CLI feature work begins.
+- For Rust tools changes, update `finance_manager_rust_tools/CHANGELOG.md` in the same workstream (prefer `[Unreleased]` until a versioned release).
+- For legacy Reflex-only archaeology, update `finance_manager_reflex/CHANGELOG.md` only if you intentionally change that archived tree.
+
+## Commit Quality
+
+- Use descriptive commit messages aligned with the local repo's existing history style.
+- Keep commits focused, with each commit representing one coherent intent.
+- Verify status and diff within the same sub-repo before finishing work.
+- Before opening a PR, run repo-local validation for touched scope (tests/lint/type checks as applicable).
+
+## Pull Request Hygiene
+
+- PR title should state intent and target repo (API/Web/CLI/design_docs/parent).
+- PR body must include: summary, why, validation run, and risks/known follow-ups.
+- Keep PR scope reviewable; split large changes into multiple PRs when practical.
+- Link related cross-repo PRs when a contract change requires downstream updates.
+- Resolve review comments with follow-up commits (avoid force-push workflows unless explicitly required).
+- On PR creation, **send the PR link to the user in the Cursor chat** (repo, branch, full URL). Do not use Slack for PR notification.
+- Before merge, confirm **GitHub** mergeability and required checks; do not merge when the PR is `CONFLICTING` or in a `DIRTY` / failing-check state.
+
+## Agent Signoff and Merge Gate
+
+- If agent review/signoff is available, require it before merge.
+- Treat failing required checks or unresolved high-severity review findings as merge blockers.
+- Final merge actor confirms:
+  1. Branch is up to date with target branch policy.
+  2. Required checks are green.
+  3. Required approvals/signoffs are present.
+  4. PR changelog/docs obligations are satisfied for touched repo.

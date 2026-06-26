@@ -9,7 +9,7 @@ description: Coordinate execution against active plans by delegating tasks to wo
 
 Act as the execution manager over active plans:
 
-- **Plan root:** execution-ready plans from `roadmap-rollout-planning` live under `plans/<Phase>/<Stage>/<sub-plan>/` (see that skill and `governance/orchestration.md`). Treat that directory as the canonical plan root unless explicitly overridden.
+- **Plan root:** execution-ready plans from `roadmap-rollout-planning` live under `plans/<Phase>/<Stage>/<sub-plan>/` (see that skill and `AGENTS.md` §6). Treat that directory as the canonical plan root unless explicitly overridden.
 - read current plan scope and todo state
 - assign work to the correct skill/subagent pathway
 - enforce testing and handoff gates

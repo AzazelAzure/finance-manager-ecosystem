@@ -1,0 +1,294 @@
+---
+description: Sprint task spec format — end-state driven tasks, scope locks, anti-patterns
+alwaysApply: false
+---
+
+# P2: Sprint Task Specification Standard
+
+**Status:** `normative` (governance). **Locked:** 2026-05-21 — Admin Huddle Session 5 deliverable.  
+**Related:** [`agent_context_delivery.md`](../governance/archived/agent_context_delivery.md) (P1), [`plan_template.md`](../governance/plan_template.md), [`definition_of_done.md`](../governance/definition_of_done.md)
+
+---
+
+## Problem
+
+Tasks specified as "implement feature X" produce wildly varying results. Agents make architectural choices that contradict HitM's intent, choose wrong libraries, write too much or too little, and require 3–5 correction cycles. The cost is HitM's time — the most constrained resource.
+
+## Solution
+
+Sprint tasks must be **end-state driven**: describe exactly what the finished product looks like, not just what category of work to do. HitM (or a planning AI) writes the spec; the executor AI implements it literally.
+
+---
+
+## 1) Task Spec Format (for `tasks/T##_<slug>.md`)
+
+Every task file must contain these sections in order:
+
+```markdown
+# T## — <Task Title>
+
+## End State
+
+<Describe exactly what exists when this task is complete. Be specific about:
+- What the user sees (UI text, layout, behavior)
+- What the developer sees (file structure, API shape, test output)
+- What does NOT change (explicit preservation list)>
+
+## Acceptance Criteria
+
+<Numbered list. Each criterion is binary pass/fail. No subjective language.
+Each criterion has a verification tier [V0/V1/V2/V3].>
+
+1. [V1] `npm run build` passes with zero errors and zero warnings
+2. [V2] Deployed to inactive color; `/api/health/` returns 200
+3. [V3] Browser: navigate to /transactions, guided tour starts on first visit
+4. [V3] Browser: complete all 5 tour steps without JS errors in console
+
+## Scope Lock
+
+### Files to create
+- `src/components/GuidedTour/TransactionTour.tsx`
+- `src/components/GuidedTour/TransactionTour.test.tsx`
+
+### Files to modify
+- `src/pages/Transactions/TransactionsPage.tsx` (add tour trigger)
+- `src/App.tsx` (add tour context provider)
+
+### Files NOT to touch
+- `src/offline/*` (PWA layer — separate plan)
+- `src/api/*` (no API changes in this task)
+- `package.json` (no new dependencies without D-log entry)
+
+## Technical Decisions (pre-locked)
+
+<Reference DECISION_LOG.md entries that apply, or inline new decisions here>
+
+- Per D01: Use `react-joyride` v2.8+ (not Shepherd.js)
+- Per D03: Anchor tours with `data-tour="step-name"` attributes
+- NEW D04: Tour state persisted in localStorage key `hfm_tour_<page>_completed`
+
+## Slice Decomposition
+
+| Slice | Title | V-Tier | Description |
+|-------|-------|--------|-------------|
+| T01.SL1 | Tour component scaffold | V1 | Create component, types, and test file. Build passes. |
+| T01.SL2 | Transaction page integration | V2 | Wire tour to TransactionsPage. Deploy to staging. |
+| T01.SL3 | Browser verification | V3 | Full tour walkthrough in browser. Screenshot evidence. |
+
+## Anti-Patterns (do NOT do these)
+
+- Do NOT create a global tour manager that handles all pages — one component per page
+- Do NOT use CSS class selectors for anchoring — they break with CSS modules
+- Do NOT import the tour library dynamically — static import is fine for bundle size at current scale
+- Do NOT add analytics/tracking to tours — that's a separate future task
+
+## Context Links
+
+- Plan README: `plans/S1/S1.B/<sub-plan>/README.md`
+- Decision Log: `plans/S1/S1.B/<sub-plan>/DECISION_LOG.md`
+- Design reference: `design_docs/...` (if applicable)
+- Related past work: `<link to CHANGELOG entry or prior PR>`
+```
+
+---
+
+## 2) What Makes a Good End State
+
+### Bad (vague)
+
+> "Implement guided walkthroughs for the transactions page"
+
+### Good (specific)
+
+> When a user navigates to `/transactions` for the first time (no `hfm_tour_transactions_completed` key in localStorage), a 5-step guided tour automatically begins:
+>
+> 1. **Step 1** highlights the "Quick Add" button (`data-tour="quick-add-btn"`). Tooltip text: "Start here — tap to add a transaction quickly."
+> 2. **Step 2** highlights the transaction list (`data-tour="transaction-list"`). Tooltip: "Your recent transactions appear here, newest first."
+> 3. **Step 3** highlights the source filter (`data-tour="source-filter"`). Tooltip: "Filter by GCash, Maya, or Cash to see transactions from one source."
+> 4. **Step 4** highlights the date range picker (`data-tour="date-range"`). Tooltip: "Change the date range to see older transactions."
+> 5. **Step 5** highlights the balance summary (`data-tour="balance-summary"`). Tooltip: "This shows your total balance across all sources. The 'Safe to Spend' number is what's left after upcoming bills."
+>
+> On completion (user clicks "Done" on step 5), `hfm_tour_transactions_completed = true` is set in localStorage. Tour does not show again unless the user manually triggers it from the help menu.
+>
+> Tour must work both online and offline (no API calls in tour logic). Tour styling uses existing app theme variables — no hardcoded colors.
+
+### The difference
+
+The good version is **implementable without questions**. The executor knows exactly what text to write, what DOM anchors to use, what storage key to set, and what edge cases to handle. Zero ambiguity = zero correction cycles.
+
+---
+
+## 3) Scope Lock Rules
+
+### Why scope locks exist
+
+Without explicit file scope, agents wander. They "improve" unrelated code, refactor things they shouldn't touch, and create merge conflicts with parallel work.
+
+### Rules
+
+| Rule | Description |
+|------|-------------|
+| **Files to create** | Exhaustive list. Agent may not create files not listed here unless the task explicitly says "create additional files as needed for <specific purpose>." |
+| **Files to modify** | Exhaustive list with parenthetical note on what changes. Agent modifies ONLY the listed aspect. |
+| **Files NOT to touch** | Explicit exclusion list. Any modification to these files is an automatic review failure. |
+| **New dependencies** | Locked by default. Adding a package requires a Decision Log entry with rationale. `package.json` / `requirements.txt` changes require explicit authorization in the task. |
+| **Database migrations** | Locked by default. Any migration requires explicit authorization in the task AND a Decision Log entry. |
+
+### When scope changes mid-task
+
+If the executor discovers that the scope lock is insufficient (needs to modify a file not listed), they must:
+
+1. **STOP** implementation
+2. **Document** the scope gap in the runtime handoff `known_issues:`
+3. **Report** to orchestrator/reviewer: "Scope expansion needed: <file> requires <change> because <reason>"
+4. **Wait** for updated scope lock before proceeding
+
+---
+
+## 4) Anti-Pattern Section (mandatory for complex tasks)
+
+Every task that involves UI, architecture decisions, or library usage must include an Anti-Patterns section. This prevents the #1 cause of correction cycles: the agent making a "reasonable" choice that contradicts HitM's intent.
+
+### How to write anti-patterns
+
+Think about what a competent but context-free developer would do wrong:
+
+| Category | Example anti-pattern |
+|----------|---------------------|
+| **Architecture** | "Do NOT create a centralized state manager for this — use component-local state" |
+| **Library choice** | "Do NOT use Redux for this form — React Hook Form + local useState is sufficient" |
+| **Scope creep** | "Do NOT refactor the existing transaction list component — only add the tour overlay" |
+| **Over-engineering** | "Do NOT add lazy loading for the tour component — static import is fine" |
+| **Style** | "Do NOT introduce new CSS variables — use existing theme tokens from `src/styles/theme.ts`" |
+| **Testing** | "Do NOT write E2E tests for this task — unit tests for component logic only" |
+
+---
+
+## 5) Dual-Track Sprint Model
+
+### Track A: Execution (current sprint)
+
+AI agents execute the current sprint's tasks per the specs above. The orchestrator manages the executor→reviewer loop. HitM verifies V3 items only.
+
+### Track B: Planning (next sprint)
+
+While Track A executes, HitM (or a planning AI like Antigravity) writes detailed task specs for the **next** sprint. This means:
+
+```
+Sprint N executing (Track A)          Sprint N+1 planning (Track B)
+┌─────────────────────────────┐      ┌──────────────────────────────┐
+│ Executor AI: code per spec  │      │ HitM + Antigravity:          │
+│ Reviewer AI: verify per V   │      │   - Write end-state specs    │
+│ Orchestrator: manage loop   │      │   - Pre-lock decisions       │
+│ HitM: V3 verification only  │      │   - Define scope locks       │
+│                             │      │   - Author anti-patterns     │
+│                             │      │   - Create slice breakdown   │
+└─────────────────────────────┘      └──────────────────────────────┘
+         ↓ Sprint N complete                    ↓ Specs ready
+         ════════════════════════════════════════
+                    Sprint N+1 begins immediately
+                    (no planning delay between sprints)
+```
+
+### Track B deliverables (ready before Sprint N completes)
+
+For each task in the next sprint:
+- [ ] `tasks/T##_<slug>.md` — full spec per §1 format
+- [ ] `DECISION_LOG.md` — pre-populated with architectural decisions
+- [ ] `runtime_handoff.md` — initialized with branch state and slice catalog
+- [ ] Orchestration handoffs drafted in `plans/pipeline_queue/`
+- [ ] READ FIRST paths verified (all files exist)
+
+---
+
+## 6) Periodic QA Sweeps (Biweekly)
+
+Every other week during active development, run dedicated QA passes:
+
+### Security Sweep
+
+```markdown
+# Security Sweep — <Date>
+
+## Scope
+- All files changed since last sweep (git diff --name-only <last-sweep-sha>..HEAD)
+
+## Checklist
+- [ ] No hardcoded secrets, tokens, or API keys
+- [ ] All user input is validated/sanitized before use
+- [ ] All API endpoints check authentication and authorization
+- [ ] No SQL injection vectors (raw queries, string interpolation)
+- [ ] No XSS vectors (dangerouslySetInnerHTML, unescaped user content)
+- [ ] CORS configuration is restrictive (not wildcard)
+- [ ] Sensitive data not logged (passwords, tokens, PII)
+- [ ] Dependencies checked for known vulnerabilities (npm audit / safety)
+- [ ] File upload handling (if any) validates type and size
+
+## Findings
+| ID | Severity | File | Issue | Fix |
+|----|----------|------|-------|-----|
+```
+
+### Optimization Sweep
+
+```markdown
+# Optimization Sweep — <Date>
+
+## Scope
+- All files changed since last sweep
+
+## Checklist
+- [ ] No N+1 query patterns in API views
+- [ ] select_related/prefetch_related used where appropriate
+- [ ] No unnecessary re-renders in React components
+- [ ] Bundle size check: no unexpectedly large imports
+- [ ] API response times: no endpoint >500ms under normal load
+- [ ] Database indexes exist for frequently queried fields
+- [ ] No blocking I/O in request handlers
+
+## Findings
+| ID | Category | File | Issue | Impact | Fix |
+|----|----------|------|-------|--------|-----|
+```
+
+### Code Quality Sweep
+
+```markdown
+# Code Quality Sweep — <Date>
+
+## Scope
+- All files changed since last sweep
+
+## Checklist
+- [ ] No file exceeds 500 lines (soft ceiling per GEMINI.md golden rule 3)
+- [ ] Separation of concerns: no view files containing business logic
+- [ ] Consistent naming conventions across new code
+- [ ] No dead code or commented-out blocks left from debugging
+- [ ] Test coverage exists for new business logic
+- [ ] CHANGELOG.md updated for all behavior changes
+- [ ] No TODO/FIXME without linked issue or plan ID
+
+## Findings
+| ID | Category | File | Issue | Fix |
+|----|----------|------|-------|-----|
+```
+
+### Sweep cadence and ownership
+
+| Week | Activity | Owner |
+|------|----------|-------|
+| Sprint week 1 | Feature execution | Executor AI + Reviewer AI |
+| Sprint week 2 | Feature execution continues | Executor AI + Reviewer AI |
+| Sweep week | Security + Optimization + Quality sweeps | Dedicated QA AI agent (or HitM) |
+| Sprint week 3 | Feature execution resumes | Executor AI + Reviewer AI |
+
+Sweep results are filed in `plans/S1/S1.B/qa-sweeps/<date>/` and any findings become tasks in the current or next sprint.
+
+---
+
+## Adoption
+
+- **Immediate:** All new task specs must follow §1 format.
+- **Existing plans:** Retrofit task files to include End State, Scope Lock, and Anti-Patterns before next execution.
+- **Sprint planning:** HitM or planning AI writes specs per §2 quality bar — "implementable without questions."
+- **QA sweeps:** Begin biweekly cadence when full development resumes (~July 2026).
