@@ -38,12 +38,13 @@ services:
       - SUPPORT_DIGEST_TO_EMAIL=${SUPPORT_DIGEST_TO_EMAIL:-}
       - OPERATOR_NOTIFY_EMAIL=${OPERATOR_NOTIFY_EMAIL:-}
       - BETA_FEATURE_REQUESTS_ENABLED=${BETA_FEATURE_REQUESTS_ENABLED:-False}
-      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
       - EMAIL_HOST=${EMAIL_HOST:-}
       - EMAIL_PORT=${EMAIL_PORT:-587}
       - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-noreply@thehivemanager.com}
     depends_on:
       - db
       - redis
@@ -57,33 +58,10 @@ services:
       timeout: 5s
       retries: 5
 
-  celery-worker-blue:
+  api-green:
     build:
       context: ./finance_manager_api
       dockerfile: Dockerfile
-    command: uv run celery -A finance_api worker -l info
-    environment:
-      - DB_ENGINE=django.db.backends.postgresql
-      - DB_NAME=${DB_NAME:-finance_db}
-      - DB_USER=${DB_USER:-finance_user}
-      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
-      - DB_HOST=db
-      - DB_PORT=5432
-      - SECRET_KEY=${SECRET_KEY}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
-      - DEBUG=${DEBUG:-False}
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
-    depends_on:
-      - db
-      - redis
-    volumes:
-      - logs:/app/logs
-
-  celery-beat:
-    build:
-      context: ./finance_manager_api
-      dockerfile: Dockerfile
-    command: uv run celery -A finance_api beat -l info
     environment:
       - DB_ENGINE=django.db.backends.postgresql
       - DB_NAME=${DB_NAME:-finance_db}
@@ -99,33 +77,13 @@ services:
       - SUPPORT_DIGEST_TO_EMAIL=${SUPPORT_DIGEST_TO_EMAIL:-}
       - OPERATOR_NOTIFY_EMAIL=${OPERATOR_NOTIFY_EMAIL:-}
       - BETA_FEATURE_REQUESTS_ENABLED=${BETA_FEATURE_REQUESTS_ENABLED:-False}
-      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.smtp.EmailBackend}
+      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
       - EMAIL_HOST=${EMAIL_HOST:-}
       - EMAIL_PORT=${EMAIL_PORT:-587}
       - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
       - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
       - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
-    depends_on:
-      - db
-      - redis
-    volumes:
-      - logs:/app/logs
-
-  api-green:
-    build:
-      context: ./finance_manager_api
-      dockerfile: Dockerfile
-    environment:
-      - DB_ENGINE=django.db.backends.postgresql
-      - DB_NAME=${DB_NAME:-finance_db}
-      - DB_USER=${DB_USER:-finance_user}
-      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
-      - DB_HOST=db
-      - DB_PORT=5432
-      - SECRET_KEY=${SECRET_KEY}
-      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
-      - DEBUG=${DEBUG:-False}
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-noreply@thehivemanager.com}
     depends_on:
       - db
       - redis
@@ -139,11 +97,14 @@ services:
       timeout: 5s
       retries: 5
 
-  celery-worker-green:
+  # F-014 background workers. Single worker + single beat (color-agnostic): they
+  # share the one DB + Redis broker, so running per-color workers would double-consume
+  # the queue. entrypoint overrides the api image's migrate/runserver entrypoint.
+  celery-worker:
     build:
       context: ./finance_manager_api
       dockerfile: Dockerfile
-    command: uv run celery -A finance_api worker -l info
+    entrypoint: ["uv", "run", "celery", "-A", "finance_api", "worker", "-l", "info", "--concurrency=2"]
     environment:
       - DB_ENGINE=django.db.backends.postgresql
       - DB_NAME=${DB_NAME:-finance_db}
@@ -155,13 +116,58 @@ services:
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
       - DEBUG=${DEBUG:-False}
       - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - BUG_REPORT_TO_EMAIL=${BUG_REPORT_TO_EMAIL:-}
+      - SUPPORT_DIGEST_TO_EMAIL=${SUPPORT_DIGEST_TO_EMAIL:-}
+      - OPERATOR_NOTIFY_EMAIL=${OPERATOR_NOTIFY_EMAIL:-}
+      - BETA_FEATURE_REQUESTS_ENABLED=${BETA_FEATURE_REQUESTS_ENABLED:-False}
+      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
+      - EMAIL_HOST=${EMAIL_HOST:-}
+      - EMAIL_PORT=${EMAIL_PORT:-587}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-noreply@thehivemanager.com}
+      - DAU_ALERT_THRESHOLDS=${DAU_ALERT_THRESHOLDS:-10,50,100}
     depends_on:
       - db
       - redis
     volumes:
       - logs:/app/logs
 
-  api-green:
+  celery-beat:
+    build:
+      context: ./finance_manager_api
+      dockerfile: Dockerfile
+    entrypoint: ["uv", "run", "celery", "-A", "finance_api", "beat", "-l", "info", "--schedule=/tmp/celerybeat-schedule"]
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql
+      - DB_NAME=${DB_NAME:-finance_db}
+      - DB_USER=${DB_USER:-finance_user}
+      - DB_PASSWORD=${DB_PASSWORD:-finance_password}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-api.financemanager.local,api-blue,api-green,api.thehivemanager.com,localhost,127.0.0.1}
+      - DEBUG=${DEBUG:-False}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379/0}
+      - BUG_REPORT_TO_EMAIL=${BUG_REPORT_TO_EMAIL:-}
+      - SUPPORT_DIGEST_TO_EMAIL=${SUPPORT_DIGEST_TO_EMAIL:-}
+      - OPERATOR_NOTIFY_EMAIL=${OPERATOR_NOTIFY_EMAIL:-}
+      - BETA_FEATURE_REQUESTS_ENABLED=${BETA_FEATURE_REQUESTS_ENABLED:-False}
+      - EMAIL_BACKEND=${EMAIL_BACKEND:-django.core.mail.backends.console.EmailBackend}
+      - EMAIL_HOST=${EMAIL_HOST:-}
+      - EMAIL_PORT=${EMAIL_PORT:-587}
+      - EMAIL_USE_TLS=${EMAIL_USE_TLS:-True}
+      - EMAIL_HOST_USER=${EMAIL_HOST_USER:-}
+      - EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD:-}
+      - DEFAULT_FROM_EMAIL=${DEFAULT_FROM_EMAIL:-noreply@thehivemanager.com}
+      - DAU_ALERT_THRESHOLDS=${DAU_ALERT_THRESHOLDS:-10,50,100}
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - logs:/app/logs
+
   web-blue:
     build:
       context: ./finance_manager_web

@@ -8,6 +8,9 @@ governance/HITM_SCHEDULE_SNAPSHOT.md
 .secrets/
 deploy/server.env
 deploy/*.env
+# Ad-hoc secret handoff files (e.g. SMTP token drops)
+*.secret
+smtp.secret
 
 # Editor / tool-only ignore files (machine-local, not shared)
 .cursorignore
