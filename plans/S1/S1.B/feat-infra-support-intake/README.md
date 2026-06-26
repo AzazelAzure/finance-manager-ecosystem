@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_SUPPORT_INTAKE_2026-05-21
 status: completed
 priority: P2
 created: 2026-05-21
-updated: 2026-06-16
+updated: 2026-06-26
 owner: teamwork_preview_worker_f012
 
 plan_root: plans/S1/S1.B/feat-infra-support-intake/
@@ -71,6 +71,14 @@ Ship **first-class in-app intake** for **bugs** (all targeted beta users) and **
 ### Out of scope
 
 - Public roadmap voting; full Zendesk-style helpdesk; anonymous submissions without abuse controls.
+
+**PWA class:** **B** — online-only (support forms require authenticated API POST).
+
+## Verification (2026-06-26)
+
+- Local: 20 API tests pass (`test_support*`, `test_f013_verification`, `test_notify`, `test_usage_rollup`).
+- VPS gap: Celery worker/beat not running on production VPS at verification time — see `evidence/PHASE1_VERIFICATION_2026-06-26.md`.
+- F-014 replaces synchronous bug email with async `[FM-NOTIFY]` dispatcher (UUID-only).
 
 ## 3) Source Evidence
 

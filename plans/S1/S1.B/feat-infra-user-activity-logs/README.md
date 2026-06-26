@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21
 status: completed
 priority: P2
 created: 2026-05-21
-updated: 2026-06-16
+updated: 2026-06-26
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-infra-user-activity-logs/
@@ -77,6 +77,14 @@ Configure **Loguru** so that, for **authenticated** API traffic, warnings/errors
 
 - **User-visible** “Activity” / security timeline UI in the shell (that was a prior draft interpretation — defer to a separate feature if product still wants it; not part of F-013).
 - Full SIEM, cross-user admin search UI, or shipping raw request bodies to disk.
+
+**PWA class:** **N/A** (API-only ops surface).
+
+## Verification (2026-06-26)
+
+- Operator runbook updated: `design_docs/40_System_Design/06_Logging_and_Support.md`.
+- Added verification tests: anonymous/forged uid filtering, feature tickets skip incident dump.
+- VPS: no traffic-generated log files yet (see `evidence/PHASE1_VERIFICATION_2026-06-26.md`).
 
 ## 3) Source Evidence
 
