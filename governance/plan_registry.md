@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-16 (completed PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21 and updated plan registry)
+**Last updated:** 2026-06-26 (F-012/F-013 verification + remediation; F-014 implementation on `cur/s1b/feat/f014-usage-monitoring-notify`)
 
 ## Update protocol
 
@@ -25,7 +25,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | P1 | S1.B | `agy/s1b/feat/infra-support-intake` | `teamwork_preview_worker_f012` | - | `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | - | 2026-06-16 | **F-012** bug reports + feature requests: `plans/S1/S1.B/feat-infra-support-intake/README.md`. |
+| `PLAN_CROSS_UI_UX_DESIGN_SYSTEM_2026-06-26` | P2 | S1.B | `cur/s1b/feat/ui-ux-design-system` | pproctor | - | - | - | 2026-06-26 | Merged to web `main` and promoted to active blue (2026-06-26). Registry row pending close-out. |
 
 ## Ready for Execution
 
@@ -37,6 +37,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
+| `PLAN_CROSS_API_SECURITY_HARDENING_2026-06-26` | S1.B | pproctor | 2026-06-26 | **API security hardening** — ship uncommitted WIP: django-axes lockout, Argon2, ComplexPasswordValidator, proxy config, migrations, tests: `plans/S1/S1.B/feat-api-security-hardening/README.md`; branch `cur/s1b/feat/api-security-hardening`. Parallel-safe with F-007 sandbox (different repo). |
 | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/S1/S1.B/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `strategy/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
 | `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `agy/s1b/feat/f001-balance-history`. |
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
@@ -77,6 +78,8 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 | `PLAN_VPS_REFLEX_BLUEGREEN_RECOVERY_2026-04-29` | S1.A | 2026-04-30 (close) | Reflex blue-green recovery completed; subsequently archived per Topic 2 | (parent repo PRs) |
 | `PLAN_FINANCE_MANAGER_WEB_BETA_ROLLOUT_2026-04-29` | S1.A | 2026-04-30 (close) | JS web rollout shipped; web is now flagship; BP1-BP7 complete | (web repo PRs #2-11+) |
 | `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | 2026-06-16 | F-013 server-side user-keyed logs & incident window extractor | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/61 |
+| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | 2026-06-26 | F-012 support intake verified + remediated (redaction, digest window, compose beat fix) | API branch `cur/s1b/feat/f014-usage-monitoring-notify` (pending PR) |
+| `PLAN_CROSS_USAGE_MONITORING_NOTIFY_2026-06-26` | S1.B | 2026-06-26 | F-014 notify dispatcher + usage rollup models | API branch `cur/s1b/feat/f014-usage-monitoring-notify` (pending PR) |
 
 ## Abandoned
 
