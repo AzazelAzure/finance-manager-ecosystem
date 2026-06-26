@@ -10,10 +10,11 @@
 
 | Field | Value |
 |-------|-------|
-| Parent HEAD | `86f7063` — F-013 landed (#61 merged) + governance overhaul (#62 merged) |
-| API pin | `7b6f564` (F-012 + F-013 diagnostic logs) |
-| Web pin | `e66c2bb` (F-012 support intake + F-007 lineage) |
-| Pending submodule PRs | API [#35](https://github.com/AzazelAzure/finance-manager-api/pull/35) (`a97116b`), Web [#62](https://github.com/AzazelAzure/finance-manager-web/pull/62) (`fb9f4c9`) |
+| Parent HEAD | `8ef64dc` — standby closeout on `origin/main` |
+| Active pointer-bump branch | `cur/s1b/chore/sync-standby-submodules` |
+| Target API pin | `789b266` (F-013 + security hardening + migration merge) |
+| Target Web pin | `4ad032a` (F-012 lineage + build/CSP/header cleanup) |
+| Submodule PRs | API #35 and Web #62 merged |
 
 VPS green stack remains on **stale SHAs** (web `3e2b370` @ `agy/s1b/feat/landing-page-ux-seo`, api `1833e74` @ `main`).
 
@@ -42,13 +43,13 @@ F-007 sandbox overlay (T01/T02) **deferred** — not started; no dead-button reg
 
 ---
 
-## VPS sync gate: **NOT CLEAR** (remaining blockers)
+## VPS sync gate: **PARTIAL CLEAR** (inactive-color test required)
 
 Clear when:
 
-1. Merge API #35 and Web #62 (or accept `7b6f564` / `e66c2bb` without security/CSP slices).
-2. Open parent submodule-pointer PR bumping to post-merge SHAs.
-3. Resolve API finance migration graph conflict (`0004` vs `0008` leaves) before `migrate` on VPS.
+1. Merge parent submodule-pointer PR from `cur/s1b/chore/sync-standby-submodules`.
+2. Rebuild inactive blue with API `789b266` and Web `4ad032a`.
+3. Run finance migrations through `0009_merge_20260626` plus `migrate axes` on inactive API.
 4. Run `python manage.py migrate axes` on inactive color after API security deploy.
 
 Green stack smoke **passed** 2026-06-26 — do not rebuild green until HitM approves.
@@ -59,9 +60,9 @@ Green stack smoke **passed** 2026-06-26 — do not rebuild green until HitM appr
 
 | Repo | SHA | Notes |
 |------|-----|-------|
-| Parent | `86f7063` + pointer bump PR | Compose/redis/celery from F-012 |
-| API | `a97116b` (preferred) or `7b6f564` (F-013 only) | Security PR adds axes + Argon2 |
-| Web | `fb9f4c9` (preferred) or `e66c2bb` (F-012 only) | CSP + header cleanup |
+| Parent | pointer bump branch → `8ef64dc` base | Compose/redis/celery from F-012 |
+| API | `789b266` | Security PR adds axes + Argon2; includes merge migration |
+| Web | `4ad032a` | CSP + header cleanup; build passes |
 
 ---
 
@@ -73,12 +74,12 @@ ssh dev@159.198.75.194
 # API — checkout target SHA on inactive deploy path only
 cd ~/finance_manager/finance_manager_api
 git fetch origin
-git checkout a97116b   # or 7b6f564 if security PR deferred
+git checkout 789b266
 
 # Web — leave green on current branch until blue validated
 cd ~/finance_manager/finance_manager_web
 git fetch origin
-git checkout fb9f4c9   # or e66c2bb if web PR deferred
+git checkout 4ad032a
 
 # Rebuild INACTIVE color only (blue while green is active)
 cd ~/finance_manager

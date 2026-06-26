@@ -14,14 +14,14 @@
 
 | Signal | State |
 |---|---|
-| **`origin/main` HEAD** | `86f7063` — F-013 + governance overhaul merged (API `7b6f564`, Web `e66c2bb`) |
-| **Local parent checkout** | Behind `origin/main` — run `git pull origin main` before pointer-bump work |
+| **`origin/main` HEAD** | `8ef64dc` — standby closeout; parent still pins API `7b6f564`, Web `e66c2bb` |
+| **Active parent work** | `cur/s1b/chore/sync-standby-submodules` — bumps API `789b266`, Web `4ad032a` |
 | **VPS live stack** | Green active; smoke **PASS** 2026-06-26; **not synced to `main`** |
 | **VPS web branch** | `agy/s1b/feat/landing-page-ux-seo` @ `3e2b370` (2026-06-13) |
 | **VPS api branch** | `main` @ `1833e74` (2026-05-04) |
-| **Submodule PRs ready** | API [#35](https://github.com/AzazelAzure/finance-manager-api/pull/35) security; Web [#62](https://github.com/AzazelAzure/finance-manager-web/pull/62) build/CSP |
-| **Open parent PRs** | None blocking standby ( #58/#60 closed; #61/#62 merged ) |
-| **VPS sync gate** | **NOT CLEAR** — merge submodule PRs + fix API migration graph + parent pointer bump |
+| **Submodule PRs** | API #35 and Web #62 merged; API `789b266`, Web `4ad032a` |
+| **Open parent PRs** | Pointer bump PR pending from `cur/s1b/chore/sync-standby-submodules` |
+| **VPS sync gate** | **PARTIAL CLEAR** — target SHAs ready; inactive blue rebuild/smoke still required before cutover |
 | **Quarterly self-review** | **Due 2026-06-30** (4 days) |
 | **Operator cadence** | Decompression mode — 6 hr/day, 30 hr/week (post-baby baseline) |
 | **Governance overhaul** | **In progress** — admin overhaul on branch `cur/s1b/admin/governance-overhaul` (2026-06-26) |
@@ -135,7 +135,7 @@ Prior work (F-007 walkthrough persistence, PWA middleware, offline FX) in histor
 
 - **F-012 Support Intake (backend):** Durable intake queue, auth, rate limiting, Celery digest alignment; compose/logging config updates in parent `dc04179`.
 
-**Not on `main` yet:** F-013 per-user Loguru diagnostic log files (API `7b6f564` — only in PR #61).
+**Post-standby target:** API `789b266` includes F-013 + security hardening + migration merge; Web `4ad032a` includes F-012 build/CSP/header cleanup.
 
 ---
 
@@ -300,11 +300,10 @@ Per [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](./strategic-
 
 | Issue | Severity | Status |
 |---|---|---|
-| **VPS sync gate** | 🔴 Critical | **NOT CLEAR** — PR cleanup + local code blockers must finish first |
-| VPS deployment gap | 🔴 Critical | Green stack weeks behind `origin/main`; F-007, PWA, F-012, F-011 not live |
-| Web build broken on `main` | 🔴 Critical | `9b2ecbe` fails `npm run build` (9 TS errors); blocks clean deploy |
-| Local uncommitted security changes | 🔴 High | Axes/Argon2/HSTS partial — not wired, not migrated, not deployed |
-| Local web tour/CSP WIP | 🟡 High | Partial; dead button; CSP Lane A gap; F-007 T02 not started |
+| **VPS sync gate** | 🟡 High | Target SHAs ready; inactive blue rebuild, migrations, and smoke still required |
+| VPS deployment gap | 🔴 Critical | Green stack weeks behind; F-007, PWA, F-012/F-013, F-011 not live |
+| API migrations on blue | 🟡 High | Run finance migrations through `0009_merge_20260626` and `migrate axes` on inactive API before smoke |
+| Web build | ✅ Cleared | Web `4ad032a` includes build/CSP/header cleanup from Web #62 |
 | Entity formation (PH + US LLC) | **S1.B exit gate** | Research in draft; counsel engagement pending |
 | PSP KYB | **Blocked on entity** | PayMongo/Xendit locked; KYB needs PH entity vehicle |
 | Quarterly self-review | **Due 2026-06-30** | First kill/commit gates §6 execution due in 4 days |
