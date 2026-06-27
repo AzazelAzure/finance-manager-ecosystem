@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05
-status: draft
+status: completed
 priority: P2
 created: 2026-05-05
-updated: 2026-05-22
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f011-wedge-landing-hero/
