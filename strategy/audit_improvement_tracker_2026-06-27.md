@@ -70,16 +70,11 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 
 ---
 
-### 🔲 2B. Backup Automation Verification
+### ✅ 2B. Backup Automation — Decided
 **Audit finding:** `backup_db.sh` exists but no evidence of automated schedule, verification, or offsite storage.
-**Questions to answer:**
-- Is `backup_db.sh` running on a systemd timer or cron on the VPS?
-- When was the last backup actually taken?
-- Where are backups stored? Local VPS only?
-**Action:** SSH to VPS → check `crontab -l` and `systemctl list-timers` for backup_db schedule. If not scheduled, add a systemd timer or cron entry.
-**Effort:** 30–60 minutes
-**Owner:** HitM (VPS access required)
-**Status:** Needs VPS verification
+**Resolution (2026-06-27):** VPS backup manager service is out of budget. Approach: local cron on HitM's dev machine pulls compressed `pg_dump` over SSH daily. Script to be created at `scripts/server/pull_backup.sh`. Cron job setup script also queued.
+**Tomorrow:** Script generation + cron setup added to meeting agenda.
+**Status:** Decision made. Script creation queued for tomorrow's session.
 
 ---
 
