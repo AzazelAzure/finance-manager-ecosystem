@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_USAGE_MONITORING_NOTIFY_2026-06-26
-status: completed
+status: in_progress
 priority: P1
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f014-usage-monitoring-notify/
