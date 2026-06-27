@@ -56,7 +56,15 @@ real CI runs exposed two environment gaps + stale tests. API CI is now green.
     asserts `emailed=True` for BUG tickets (view sets it after operator dispatch,
     F-012/F-014; `emailed` is read-only on the serializer so anti-spoof is intact).
 
-Result: API CI `test` job = **success**. Web CI `ci` job = **success**.
+- **Test suite flakiness** (HitM-approved fix-now): the transaction test base
+  builds data with unseeded random currencies/sources/amounts, so a couple of
+  currency-sensitive assertions flaked. Added `conftest.py` seeding
+  `random`/`factory.random`/`Faker` per test (`FM_TEST_SEED` override) + made the
+  calendar month-boundary and safe-to-spend snapshot tests currency/source-stable.
+  Verified green across **5 seeds** (285 passed/0 failed each).
+
+Result: API CI `test` job = **success** on both push and pull_request runs
+(deterministic, no longer flaky). Web CI `ci` job = **success**.
 
 Minor follow-up: `actions/checkout@v4` + `astral-sh/setup-uv@v6` emit a Node 20
 deprecation warning (auto-run on Node 24); non-blocking, bump when convenient.
