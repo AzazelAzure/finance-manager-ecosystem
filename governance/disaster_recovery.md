@@ -205,11 +205,11 @@ For S4/S5 (multi-hour outages) during beta:
 |---|---|
 | Where does `backup_db.sh` store backups? | *Verify on VPS: check the script header or `crontab -l`* |
 | Is `backup_db.sh` running on a schedule? | *Check `systemctl list-timers` and `crontab -l` on VPS* |
-| Are backups stored offsite (not just local VPS disk)? | *Unknown — if VPS dies, local-only backups are gone* |
+| Are backups stored offsite (not just local VPS disk)? | **Decided 2026-06-27:** Local cron on HitM's dev machine pulls compressed pg_dump over SSH daily. Script lives at `scripts/server/pull_backup.sh`. VPS backup manager service not used (out of budget). |
 | What is the Namecheap DNS TTL for the main domain A record? | *Check Namecheap DNS panel* |
 | Where is the local `.secrets/` backup kept? | *Should be in `.secrets/` on HitM's machine — verify before needed* |
 
-> **Note on offsite backups:** If backups only live on the VPS disk (S4 scenario), they die with the VPS. Even a simple `rsync` to a second location (another machine, Backblaze B2 free tier) makes S4 recovery possible. This is the single biggest gap in the current DR posture.
+> **Backup approach (decided 2026-06-27):** Daily cron on HitM's local machine: `ssh dev@VPS_IP "pg_dump ... | gzip" > ~/fm_backups/fm_db_DATE.sql.gz`. Offsite relative to VPS — survives S4. Gap: backup only as current as last run while dev machine was on. Acceptable for beta. Script generation queued for next session.
 
 ---
 
