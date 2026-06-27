@@ -5,8 +5,9 @@ Hard limit: 200 lines. Keep current.
 ## Status snapshot (2026-06-28)
 
 Plan: `in_progress`. Workflow files for all four tasks authored, pushed, and PR'd.
-Branch protection (T04.SL3) and live health-check verification (T03.SL2) are the
-remaining HitM/manual steps — both intentionally gated on a first green CI run.
+**API CI and Web CI are confirmed GREEN on their branches.** Branch protection
+(T04.SL3) and live health-check verification (T03.SL2) are the remaining
+HitM/manual steps — both intentionally gated on a first green run on `main`.
 
 ## PRs opened (executor: Cursor; merge: HitM)
 
@@ -37,15 +38,28 @@ remaining HitM/manual steps — both intentionally gated on a first green CI run
 4. Web uses `tsc -b` (solution-style `tsconfig.json`; `--noEmit` checks nothing).
 5. API Dependabot ecosystem is `uv` (tracks `uv.lock`), not `pip`.
 
-## Stale tests fixed (API PR #43) — surfaced by first CI run
+## CI-only failures fixed (API PR #43) — surfaced by the first runs
 
-Suite had 26 failures under CI conditions: 24 environmental (no Redis), 3 genuinely
-stale on `main`. After Redis service + fixes: **285 passed, 4 skipped, 0 failed**.
-- `test_permission_defaults.py` (x2): now send `tos_version`/`tos_accepted_at`
-  (required since ToS clickwrap PR #42).
-- `test_support_adversarial.py::test_parameter_injection_spoofing_uid`: now asserts
-  `emailed=True` for BUG tickets (view sets it after operator dispatch, F-012/F-014;
-  `emailed` is read-only on the serializer so the anti-spoof guarantee is intact).
+Local runs alone were misleading (the dev machine already had cached data). The
+real CI runs exposed two environment gaps + stale tests. API CI is now green.
+- **Redis** (24 failures): `ObservabilityMiddleware` + DRF throttling use the
+  Redis-backed cache → added a `redis:7` service container + `REDIS_URL`.
+- **Exchange-rate data** (222 failures): `finance/data/` is gitignored, so
+  `exchange_rates.zip` is absent on a fresh checkout → currency converter loads
+  zero currencies → `IndexError: Cannot choose from an empty sequence` in test
+  setup. Added a pre-test `manage.py update_conversion_file` step (downloads the
+  ECB dataset) with a `test -f` guard.
+- **3 stale tests** aligned to shipped behavior:
+  - `test_permission_defaults.py` (x2): now send `tos_version`/`tos_accepted_at`
+    (required since ToS clickwrap PR #42).
+  - `test_support_adversarial.py::test_parameter_injection_spoofing_uid`: now
+    asserts `emailed=True` for BUG tickets (view sets it after operator dispatch,
+    F-012/F-014; `emailed` is read-only on the serializer so anti-spoof is intact).
+
+Result: API CI `test` job = **success**. Web CI `ci` job = **success**.
+
+Minor follow-up: `actions/checkout@v4` + `astral-sh/setup-uv@v6` emit a Node 20
+deprecation warning (auto-run on Node 24); non-blocking, bump when convenient.
 
 ## Remaining steps (HitM / manual — gated on first green run)
 
