@@ -107,8 +107,16 @@ deployment:
 
 standalone: true
 standalone_notes: ""
+
+legal_impact:
+  tos: false                   # true if plan changes behavior covered by Terms of Service
+  privacy_policy: false        # true if plan changes data collection, retention, or processing
+  cookie_policy: false         # true if plan changes storage items (cookies, localStorage, IndexedDB)
+  notes: none                  # brief note on what changed, or "none"
 ---
 ```
+
+> **Legal impact rule (added 2026-06-27):** If any field above is `true`, the executor must register a pending update in `strategy/legal/legal_workflow_coordination.md` before the plan closes. Link back from the coordination doc to this plan. If the policy text in `strategy/legal/drafts/` needs updating, note the specific section(s) affected. The loop closes when the policy text is updated and the pending entry is removed.
 
 ## 3) Field reference
 

@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-27 (F-014 audit: plan status corrected to in_progress; celery-observability T01 FROM routing started)
+**Last updated:** 2026-06-27 (four new plans created: legal-pages, signup-clickwrap, email-comms, ui-ux-test-seed; plan_template.md updated with legal_impact field)
 
 ## Update protocol
 
@@ -39,6 +39,10 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
+| `PLAN_CROSS_LEGAL_PAGES_2026-06-27` | S1.B | pproctor | 2026-06-27 | **Legal pages** — Web: `/privacy`, `/terms`, `/cookies` public routes; react-markdown renderer; landing footer; cookie banner update. Blocks PLAN_CROSS_SIGNUP_CLICKWRAP. `plans/S1/S1.B/feat-legal-pages/`. legal_impact: all three policies. |
+| `PLAN_CROSS_SIGNUP_CLICKWRAP_2026-06-27` | S1.B | pproctor | 2026-06-27 | **Signup clickwrap (N2)** — Web+API: ToS checkbox + timestamp/version stored on AppProfile; login page footnote. Deploy AFTER legal-pages. Conflicts with security hardening (sequence after). `plans/S1/S1.B/feat-signup-clickwrap/`. legal_impact: tos, privacy. |
+| `PLAN_CROSS_EMAIL_COMMS_2026-06-27` | S1.B | pproctor | 2026-06-27 | **Email confirmations** — API: user-facing bug/feature confirmation emails; 5-min cooldown; server-stored email. Parallel safe with all except security hardening. `plans/S1/S1.B/feat-email-comms/`. legal_impact: privacy. |
+| `PLAN_CROSS_UI_UX_TEST_SEED_2026-06-27` | S1.B | pproctor | 2026-06-27 | **UI/UX test seeder** — API: `create_ux_testuser` management command; single realistic PH-peso test user; 12-month rolling data. Parallel safe with all. `plans/S1/S1.B/feat-ui-ux-test-seed/`. legal_impact: none. |
 | `PLAN_CROSS_API_SECURITY_HARDENING_2026-06-26` | S1.B | pproctor | 2026-06-26 | **API security hardening** — merged via API PR #35/#36 (axes, Argon2, complexity validator, proxy config, tests). Follow-ups T05/T06 (JWT cookie, Dexie) remain out of scope: `plans/S1/S1.B/feat-api-security-hardening/README.md`. |
 | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | pproctor | 2026-05-01 | PWA install + offline/resync research; **decisions + rationale:** `plans/S1/S1.B/pwa-install-offline-sync-research/README.md` §1.1–§1.7, §6; **sprint handoff:** `plans/S1/S1.B/README.md` → anchor `#pwa-sprint-activation-index`; **gates:** `strategy/strategic-roadmap-reframe-53be/validation_gates.md` (S1.B PWA bullet). |
 | `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `agy/s1b/feat/f001-balance-history`. |
