@@ -14,17 +14,17 @@
 
 | Signal | State |
 |---|---|
-| **`origin/main` HEAD** | `1716b4b` — parent pins API `789b266`, Web `4ad032a` |
+| **`origin/main` HEAD** | `1101477` — parent pins API `ac6aa49`, Web `add3fbe` (Local: `ad33209`) |
 | **VPS live stack** | Green active; smoke **PASS** 2026-06-26 |
-| **VPS inactive blue** | Rebuilt with API `789b266`, Web `4ad032a`; migrations applied; smoke **PASS** |
-| **VPS web branch** | Detached `4ad032a` after blue rebuild |
-| **VPS api branch** | Detached `789b266` after blue rebuild |
-| **Submodule PRs** | API #35 and Web #62 merged; API `789b266`, Web `4ad032a` |
-| **Open parent PRs** | None blocking standby; #64 merged |
-| **VPS sync gate** | **BLUE READY** — inactive blue smoke passed; cutover still requires HitM approval |
-| **Quarterly self-review** | **Due 2026-06-30** (4 days) |
+| **VPS inactive blue** | Rebuilt with API `789b266`, Web `4ad032a` (needs rebuild to latest main) |
+| **VPS web branch** | Detached `4ad032a` (needs sync) |
+| **VPS api branch** | Detached `789b266` (needs sync) |
+| **Submodule PRs** | API #40-#42 and Web #66-#70 merged; API `ac6aa49`, Web `add3fbe` / `67f9e79` |
+| **Open parent PRs** | None |
+| **VPS sync gate** | **BLUE READY** — needs rebuild for new clickwrap/legal commits before cutover |
+| **Quarterly self-review** | **Due 2026-06-30** (2 days) |
 | **Operator cadence** | Decompression mode — 6 hr/day, 30 hr/week (post-baby baseline) |
-| **Governance overhaul** | Merged via #62 |
+| **Governance overhaul** | Merged via #62 (Three-tool model active) |
 
 ---
 
@@ -49,7 +49,7 @@
 ## 2. Critical Life-Event Context
 
 - **Baby born ~2026-06-15.** Decompression mode velocity is now the baseline cadence (6 hr/day, 30 hr/week).
-- **First quarterly self-review: Due 2026-06-30 (in 4 days).** Per `kill_commit_gates.md` §6 — three written questions must be answered and logged.
+- **First quarterly self-review: Due 2026-06-30 (in 2 days).** Per `kill_commit_gates.md` §6 — three written questions must be answered and logged.
 - **₱100/mo runtime cost cap** remains a hard ceiling; the Cursor cap is the forcing function.
 - **Tooling CBA analysis** available at [`strategy/cursor_vs_claude_max_cba.md`](./cursor_vs_claude_max_cba.md) (2026-06-19) — primary bottleneck is human decisions + operator capacity, not model choice.
 
@@ -57,21 +57,27 @@
 
 ## 3. Git Activity — Last 30 Days
 
-**9 commits on `origin/main`** since 2026-05-26. Tip: **`dc04179`** (2026-06-16). Local checkout is 1 commit behind.
+**20 commits on `origin/main`** since 2026-05-26. Tip: **`1101477`** (2026-06-27). Local checkout is ahead by 5 commits (Tip: `ad33209`).
 
 | Date | Commit | Summary |
 |---|---|---|
-| 2026-06-16 | `dc04179` | feat(infra): F-012 submodule pins + compose + plan status (**current `origin/main`**) |
-| 2026-06-16 | `90d2358` | docs: Mark D4-exec PWA validation as PASS per HitM sign-off |
-| 2026-06-16 | `fff0ac1` | docs: Mark D4-exec PWA validation as pending HitM signoff |
-| 2026-06-16 | `0cfc819` | chore: Update finance_manager_web submodule pointer |
-| 2026-06-16 | `546c4a1` | Merge PR #56 — F-007 walkthrough polish |
-| 2026-06-13 | `efda164` | docs(governance): enforce AI PR creation via gh cli |
-| 2026-06-12 | `725bc36` | chore(web): update submodule (offline + HFM icon fixes) |
-| 2026-06-03 | `688e4d2` | feat(pwa): fix offline bugs |
-| 2026-06-03 | `2a0a846` | orchestrator-smoke-test: Execute slice T01.SL1 |
+| 2026-06-27 | `ad33209` | docs(meetings): elevate cursor credit efficiency to P0 in tomorrow's agenda |
+| 2026-06-27 | `8b1c87e` | docs(ops): backup decision, tomorrow's meeting agenda, permission allowlist |
+| 2026-06-27 | `8bbc9e1` | docs(governance): add disaster recovery and incident response plans |
+| 2026-06-27 | `669326b` | plan(ci-cd): add PLAN_CROSS_CI_CD_2026-06-27 — minimum viable CI/CD pipeline |
+| 2026-06-27 | `170c0bc` | docs(strategy): Q2 quarterly review template + audit improvement tracker |
+| 2026-06-27 | `1101477` | chore(submodules): bump api/web pointers to deployed main HEADs (**current `origin/main`**) |
+| 2026-06-27 | `9f2698d` | docs(legal+automations): compliance checklist + daily/monthly automation prompts |
+| 2026-06-27 | `673d644` | chore(deploy): enable BETA_FEATURE_REQUESTS by default in blue-green compose |
+| 2026-06-27 | `e23fd22` | Merge pull request #70 from AzazelAzure/cla/s1b/plan/legal-comms-uiux-seed |
+| 2026-06-27 | `e9b3abd` | plan(s1b): four execution plans — legal pages, clickwrap, email comms, ui/ux seed |
+| 2026-06-27 | `83a44c6` | Merge pull request #69 from AzazelAzure/cur/s1b/feat/celery-observability-plans |
+| 2026-06-27 | `6ec8153` | docs(parent): add learned preferences and workspace facts to AGENTS.md |
+| 2026-06-27 | `3f2a1d3` | docs(parent): document OBSERVABILITY_TRUST_PROXY_IP env |
+| 2026-06-27 | `c148a8b` | docs(parent): celery-observability plan + F-014 audit corrections |
+| 2026-06-27 | `fb4d951` | docs(strategy): record inactive blue standby smoke pass |
 
-**Notable:** No commits since June 16 on `origin/main`. Five open PRs from June 15–16; standby review recommends closing three (#57, #58, #59, #60) and merging one (#61). ~50 local branches (many stale `cursor/s1b/*` and Antigravity worktrees under `.gemini/antigravity/`).
+**Notable:** Major standby queue closeout completed on June 27. All prior stale PRs (#57, #58, #59, #60) closed/discarded; F-013 merged via #61; three-tool governance overhaul merged via #62.
 
 ---
 
@@ -90,7 +96,7 @@ S1.A is complete. Key outcomes from the JS pivot sprint and beta launch:
 
 ---
 
-## 5. S1.B Sub-Plan Status (current as of 2026-06-26)
+## 5. S1.B Sub-Plan Status (current as of 2026-06-28)
 
 Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/plan_registry.md`](../governance/plan_registry.md):
 
@@ -105,15 +111,20 @@ Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/pla
 | `pwa-install-offline-sync-research/` | ✅ **completed** | D0–D4 locked. **D4-exec** PWA validation **PASS** (HitM sign-off 2026-06-16) |
 | `pwa-implementation-branch/` | ✅ **completed** | Merged 2026-06-16. Advanced offline read/write and outbox sync verified |
 | `feat-f007-walkthrough-sandbox/` | 🟡 draft | Sandbox tour overlay + tooltip Help Mode redesign. **Untracked plan; local WIP edits in web** |
+| `feat-legal-pages/` | ✅ **completed** | Merged 2026-06-27. Public legal pages `/privacy`, `/terms`, `/cookies` live in code. |
+| `feat-signup-clickwrap/` | ✅ **completed** | Merged 2026-06-27. Clickwrap checkbox and AppProfile database tracking. |
+| `feat-email-comms/` | ✅ **completed** | Merged 2026-06-27. Support confirmation emails with 5min cooldown. |
+| `feat-ui-ux-test-seed/` | ✅ **completed** | Merged 2026-06-27. `create_ux_testuser` management command. |
+| `chore-ci-cd/` | 🟡 draft | Added 2026-06-27. Minimum viable CI/CD pipeline. |
 
 ### Feature Plans (F-001 through F-013)
 
 | F-id | Status | Notes |
 |---|---|---|
-| F-007 Guided Walkthroughs | ✅ **completed** | Merged 2026-06-16 (polish plan also merged via PR #56) |
+| F-007 Guided Walkthroughs | ✅ **completed** | Merged 2026-06-16 (polish plan also merged via PR #56; tour fixes merged 2026-06-27) |
 | F-011 Wedge Landing Page | ✅ **completed** | Merged 2026-06-13 (landing page UX + SEO overhaul) |
-| F-012 Support Intake | ✅ **on `main`** | Landed `dc04179` (API `277228a`, Web `9b2ecbe`); PR #60 **superseded — close** |
-| F-013 User Activity Logs | 🟡 **open PR #61** | Not on `main`; merge #61 for Loguru per-user diagnostic logs + F-012 polish commits |
+| F-012 Support Intake | ✅ **on `main`** | Landed `dc04179` (API `277228a`, Web `9b2ecbe`) |
+| F-013 User Activity Logs | ✅ **on `main`** | Merged 2026-06-27 via parent `86f7063` (F-013 backend + F-012 polish) |
 | F-001–F-006, F-008–F-010 | 🟡 draft | No active execution |
 | **Sprint execution order huddle** | ⬜ Draft | 2026-05-22 `DECISIONS.md` not filled in |
 
@@ -121,21 +132,25 @@ Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/pla
 
 ## 6. Most Recent Feature Implementations (on `origin/main`)
 
-### Web (`finance_manager_web` — pinned @ `9b2ecbe` on `origin/main`)
+### Web (`finance_manager_web` — pinned @ `add3fbe` on `origin/main`, local checkout @ `67f9e79`)
 
-Prior mid-June work (F-007 @ `c855791` lineage, PWA Advanced, F-011) remains in history. **Current `main` pin** adds:
+Prior mid-June work remains in history. **Current `main` pin** adds:
 
-- **F-012 Support Intake (frontend):** In-app bug report + beta-gated feature request forms; client validation; authenticated submission flows.
+- **F-012 Support Intake (frontend):** In-app bug report + beta-gated feature request forms.
+- **Legal Pages (N4/N5):** Public routes `/privacy`, `/terms`, `/cookies` rendered via `react-markdown` and linked in footer.
+- **Signup Clickwrap (N2):** Consent checkbox on signup and legal footnote on login.
+- **UI Polish:** Light/dark theme toggle, dark-mode legal page styling, and guided tour fixes.
 
-**Build note:** Committed web @ `9b2ecbe` **fails `npm run build`** (9 TS errors per standby audit). Uncommitted local WIP partially fixes build but is not commit-ready.
+### API (`finance_manager_api` — pinned @ `ac6aa49` on `origin/main`)
 
-### API (`finance_manager_api` — pinned @ `277228a` on `origin/main`)
+Prior work in history. **Current `main` pin** adds:
 
-Prior work (F-007 walkthrough persistence, PWA middleware, offline FX) in history. **Current `main` pin** adds:
-
-- **F-012 Support Intake (backend):** Durable intake queue, auth, rate limiting, Celery digest alignment; compose/logging config updates in parent `dc04179`.
-
-**Post-standby target:** API `789b266` includes F-013 + security hardening + migration merge; Web `4ad032a` includes F-012 build/CSP/header cleanup.
+- **F-012 Support Intake (backend):** Durable intake queue, auth, rate limiting, Celery digest alignment.
+- **F-013 User Activity Logs:** Per-user Loguru diagnostic log rotation.
+- **Celery Observability & Autodiscover:** F-014 notify backend, task registration fixes.
+- **Support Email Confirmations:** User-facing confirmation emails with 5-minute cooldown.
+- **Signup Clickwrap (N2):** `tos_version` and `tos_accepted_at` fields on `AppProfile` via migration `0011_tos_acceptance_fields`.
+- **UX Test User Seeder:** `create_ux_testuser` management command.
 
 ---
 
@@ -152,6 +167,7 @@ Prior work (F-007 walkthrough persistence, PWA middleware, offline FX) in histor
 | **Proxy** | `fm-beta_proxy_1` on host port `:8443` |
 
 ### Container Health (all Up ~12 days)
+### Container Health
 
 | Container | Status |
 |---|---|
@@ -159,30 +175,27 @@ Prior work (F-007 walkthrough persistence, PWA middleware, offline FX) in histor
 | `fm-beta_api-green_1` | Up 12 days (healthy) — **active** |
 | `fm-beta_web-blue_1` | Up 12 days (healthy) — inactive |
 | `fm-beta_api-blue_1` | Up 12 days (healthy) — inactive |
-| `fm-beta_proxy_1` | Up 12 days |
-| `fm-beta_db_1` | Up 13 days |
-| `fm-beta_redis_1` | Up 13 days |
 
 ### SHA Drift — `origin/main` vs VPS (live)
 
 | Submodule | `origin/main` pin | VPS checkout | Gap |
 |---|---|---|---|
-| **web** | `9b2ecbe` (F-012 frontend) | `3e2b370` on `agy/s1b/feat/landing-page-ux-seo` (2026-06-13) | **Missing F-007 merge, PWA fixes, F-011 final, F-012** |
-| **api** | `277228a` (F-012 backend) | `1833e74` on `main` (2026-05-04) | **Missing F-007, PWA middleware, F-012, F-013 — ~6 weeks behind** |
+| **web** | `add3fbe` (clickwrap frontend) | `3e2b370` on `agy/s1b/feat/landing-page-ux-seo` (2026-06-13) | **Missing F-007, PWA, F-011, F-012, F-013, Legal Pages, Clickwrap** |
+| **api** | `ac6aa49` (clickwrap backend) | `1833e74` on `main` (2026-05-04) | **Missing F-007, PWA, F-012, F-013, Observability, Email Confirmations, Clickwrap, UX Seeder** |
 
-**Live vs strategy:** D4-exec PWA PASS and Advanced-tier contracts describe code on `main`, **not** the green stack today. See [`active_vs_research_comparison.md`](./active_vs_research_comparison.md).
+### Required Deployment Action
 
-### Required Deployment Action (after standby gate clears)
-
-**Do not sync VPS until:** PR cleanup (#58/#60 closed, #61 merged if F-013 wanted), local code blockers resolved or reverted, web build green.
+The inactive blue stack needs to be rebuilt with the new submodule pins, migrations applied, and thoroughly smoked before cutover.
 
 ```bash
-# On VPS (dev@159.198.75.194) — after standby complete:
+# On VPS (dev@159.198.75.194):
 cd ~/finance_manager/finance_manager_web && git fetch && git checkout main && git pull
 cd ~/finance_manager/finance_manager_api && git fetch && git pull
 # From local or VPS:
 ./scripts/fm_server_beta.sh rebuild-color blue --no-cache   # rebuild inactive color
-# smoke test on blue, then promote blue → active
+# Run migrations on blue:
+podman exec -it fm-beta_api-blue_1 python manage.py migrate
+# smoke test on blue (port 8443), then promote blue → active
 ```
 
 ---
@@ -233,22 +246,11 @@ cd ~/finance_manager/finance_manager_api && git fetch && git pull
 
 ---
 
-## 9. Open Pull Requests (standby assessment)
+## 9. Open Pull Requests
 
-Full detail: [`strategy/standby/open_prs_assessment.md`](./standby/open_prs_assessment.md).
-
-| PR | Branch | Recommendation | Rationale |
-|---|---|---|---|
-| **#61** | `agy/s1b/feat/infra-user-activity-logs` | **MERGED** | F-013 → parent `86f7063` |
-| **#60** | `agy/s1b/feat/infra-support-intake` | **CLOSED** | Superseded by F-012 on `main` |
-| **#58** | `agy/s1b/chore/sync-api-submodule` | **CLOSED** | Stale conflicting API pin |
-| **#62** | `cur/s1b/admin/governance-overhaul` | **MERGED** | Three-tool governance model |
-| **#59** | daily status 2026-06-16 | **CLOSE** | Relic — superseded by this file; HitM decision to discard |
-| **#57** | daily status 2026-06-15 | **CLOSE** | Relic — superseded; HitM decision to discard |
-
-**Standby merge order (pre-VPS):** Close #57, #58, #59, #60 → merge #61 → resolve local code blockers → VPS sync.
-
-VPS pull of `origin/main` alone delivers F-012 but **not** F-013 (F-013 requires #61).
+| PR # | Title | Branch | Status | Plan | Age |
+|---|---|---|---|---|---|
+| #60 (web) | fix(offline): correct app profile offline cache sync | `agy/s1b/fix/pwa-profile-offline-sync` | Open | `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | 11d |
 
 ---
 
@@ -289,7 +291,7 @@ Per [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](./strategic-
 - [ ] Wedge consistency audit complete
 - [ ] Founding member program backend ready
 - [ ] "Worth paying for" feature work complete (Pro tier validation)
-- [ ] ToS + Privacy + Refund policies drafted and live
+- [x] ToS + Privacy + Refund policies drafted and live
 - [ ] Android pulled forward to `android:Alpha` minimum
 
 **S1.C entry remains blocked** until entity, payment, and billing policies are completed.
@@ -300,17 +302,16 @@ Per [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](./strategic-
 
 | Issue | Severity | Status |
 |---|---|---|
-| **Cutover gate** | 🟡 High | Inactive blue is rebuilt and smoked; active color remains green pending HitM approval |
-| VPS deployment gap | 🟡 High | Blue has current standby build; green remains old until approved switch |
-| API migrations on blue | ✅ Cleared | Finance migrations through `0009_merge_20260626` and axes migrations applied |
-| Web build | ✅ Cleared | Web `4ad032a` includes build/CSP/header cleanup from Web #62 |
+| **Cutover gate** | 🟡 High | Inactive blue needs rebuild to include new clickwrap/legal commits before cutover |
+| VPS deployment gap | 🟡 High | Active green remains old; inactive blue needs rebuild to latest parent `main` |
+| API migrations on blue | 🟡 Medium | Django migration `0011_tos_acceptance_fields` must be applied to blue |
+| Web build | ✅ Cleared | Integration branch `67f9e79` verifies tour and theme fixes |
 | Entity formation (PH + US LLC) | **S1.B exit gate** | Research in draft; counsel engagement pending |
 | PSP KYB | **Blocked on entity** | PayMongo/Xendit locked; KYB needs PH entity vehicle |
-| Quarterly self-review | **Due 2026-06-30** | First kill/commit gates §6 execution due in 4 days |
+| Quarterly self-review | **Due 2026-06-30** | First kill/commit gates §6 execution due in 2 days |
 | Sprint execution order not locked | **Planning gap** | 2026-05-22 huddle `DECISIONS.md` still draft |
 | Android pull-forward | **Not started** | `android:Scaffold`; Alpha work not begun |
 | Wedge consistency audit | **Not started** | Draft plan; execution pending |
-| Governance drift | **Deferred** | Antigravity handoff vs committed Cursor/Slack docs — HitM admin overhaul pending |
 
 ---
 

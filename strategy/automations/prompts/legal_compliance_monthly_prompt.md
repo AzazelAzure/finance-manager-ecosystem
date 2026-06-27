@@ -1,6 +1,6 @@
 # Automation Prompt — Monthly Legal Compliance Audit
 
-> **Agent:** Antigravity (agy)
+> **Agent:** Cursor (cur)
 > **Schedule:** First day of each month (or within first 3 days)
 > **Run from:** `/home/pproctor/Documents/python/finance_manager/`
 > **Output:** `strategy/legal/compliance_reports/YYYY-MM.md`
