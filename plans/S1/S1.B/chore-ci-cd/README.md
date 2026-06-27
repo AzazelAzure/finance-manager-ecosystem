@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_CI_CD_2026-06-27
-status: draft
+status: in_progress
 priority: P1
 created: 2026-06-27
-updated: 2026-06-27
+updated: 2026-06-28
 owner: pproctor
 phase: S1.B
 plan_root: plans/S1/S1.B/chore-ci-cd/

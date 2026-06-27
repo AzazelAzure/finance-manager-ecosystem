@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-28 — Minimum viable CI/CD pipeline (PLAN_CROSS_CI_CD)
+
+- **`.github/workflows/health-check.yml`:** Self-hosted VPS uptime monitor in the parent repo — cron `*/10` + `workflow_dispatch`, curls the production web root and `/api/health/`; a non-2xx/3xx response fails the run so GitHub emails the owner. (PR #71 → finance-manager-ecosystem.)
+- **Plan execution:** `PLAN_CROSS_CI_CD_2026-06-27` moved Draft → In Progress. T01–T04 workflow files authored and PR'd across three repos: API CI (`uv` + `pytest` + `makemigrations --check` + Redis service, green: 285 pass/0 fail; finance-manager-api PR #43), Web CI (`tsc -b` + `vitest`, Node 22; finance-manager-web PR #71), Dependabot configs in API + Web. Branch protection (T04.SL3) and live health-check verification (T03.SL2) remain as manual steps gated on the first green run. See `plans/S1/S1.B/chore-ci-cd/runtime_handoff.md`.
+
 ### 2026-06-26 — Redact compose `up` secret output
 
 - **`scripts/fm_server_beta.sh`:** Added a quiet `compose up` wrapper for deploy/rebuild/switch paths. `podman-compose up` can print fully interpolated `podman run -e KEY=value ...` lines, including values sourced from `.secrets/server.env`; successful `up` output is now discarded, and failed `up` output is printed only after redacting password/secret-style environment values.
