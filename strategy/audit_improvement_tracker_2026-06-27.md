@@ -93,28 +93,18 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 
 ## Tier 3 — Important This Quarter
 
-### 🔲 3A. Disaster Recovery Plan
+### ✅ 3A. Disaster Recovery Plan
 **Audit finding:** No documented answer to "VPS dies → what happens?"
-**Scope (1-2 pages, governance artifact):**
-- Recovery steps if VPS is unrecoverable: provision new VPS, restore from backup, DNS update
-- Blue/green failover procedure if one color dies
-- Database recovery from backup
-- Communication plan (beta testers notified how?)
-**Owner:** Claude creates doc
-**Status:** Queued — will write in a future admin session
+**Resolution:** `governance/disaster_recovery.md` created 2026-06-27. Covers S1–S5 severity levels, container restart, color switch, full VPS rebuild, DB restore from backup, DNS failover, SSL re-issue, beta tester communication template, open questions on backup storage.
+**Status:** Done. Open item flagged: offsite backup storage gap — if backups only live on VPS disk, they die with the VPS in an S4 scenario.
 
 ---
 
-### 🔲 3B. Incident Response Plan
+### ✅ 3B. Incident Response Plan
 **Audit finding:** No documented answer to "data breach → who gets notified, in what order?"
 **Why it matters:** PH Data Privacy Act (RA 10173) requires breach notification. Not optional once real user data is in the system.
-**Scope (1-2 pages):**
-- Detection: how does HitM know a breach happened?
-- Containment: what to turn off immediately
-- Notification: NPC (National Privacy Commission) 72-hour requirement, user communication template
-- Remediation: credential rotation, session invalidation, audit log review
-**Owner:** Claude creates doc (needs legal review before treating as authoritative)
-**Status:** Queued
+**Resolution:** `governance/incident_response.md` created 2026-06-27. Covers P0–P3 severity classification, containment steps, full credential rotation checklist, NPC 72-hour notification requirement and template, user notification email template, post-mortem requirement.
+**Status:** Done. Attorney review flagged before treating NPC section as authoritative.
 
 ---
 
