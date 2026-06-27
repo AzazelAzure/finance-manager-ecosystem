@@ -29,7 +29,7 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 
 ---
 
-### 🔲 1B. CI/CD — Minimum Viable Pipeline
+### 🔄 1B. CI/CD — Minimum Viable Pipeline
 **Audit finding:** Zero GitHub Actions workflows. Tests exist but never run automatically. PR template references CI that doesn't exist (creates false process compliance).
 **Why this matters:** Any PR can merge regardless of test status. Regressions caught manually, if at all.
 **Plan needed:** Yes — Cursor implementation territory.
@@ -37,17 +37,21 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 - API: pytest + basic migration check on push/PR
 - Web: vitest + tsc type check on push/PR
 - Branch protection on `main` in both repos: require passing CI before merge
+- Health check cron (T03) — GitHub Actions every 10 min, emails on failure (self-hosted uptime monitor)
+- Dependabot (T04) — automated dependency CVE scanning
 **Effort:** ~3-4 hours Cursor execution
 **Owner:** Claude creates plan artifact → Cursor executes
-**Status:** Plan created — `plans/S1/S1.B/chore-ci-cd/` — `PLAN_CROSS_CI_CD_2026-06-27` (draft). Health check cron folded into T03.
+**Status:** **EXECUTING** — `PLAN_CROSS_CI_CD_2026-06-27` handed to Cursor 2026-06-28. T01–T04 task files written. Cursor actively building workflows. T04 (branch protection) must be last.
 
 ---
 
-### 🔲 1C. Quarterly Self-Review
-**Due:** 2026-06-30 (3 days)
-**Document:** `strategy/quarterly_reviews/2026-Q2.md` ✅ created
-**Action:** HitM fills in Part 1 (family/health §6 gate answers) + Part 4 Q3 commitments. Copy gate outcomes log entry to `kill_commit_gates.md`.
-**Owner:** HitM (30-minute time budget)
+### ✅ 1C. Quarterly Self-Review — COMPLETED
+**Due:** 2026-06-30
+**Document:** `strategy/quarterly_reviews/2026-Q2.md`
+**Completed:** 2026-06-28 (2 days early)
+**Gate outcome:** 0/3 yes — continue, no mode change. Sleep regression attributed to newborn + Fajr prayer, not work.
+**S1.B status:** 7/14 criteria done (updated). Q3 commits: #10 wedge audit, #12 feature work, #9 distribution research, #13 (done).
+**Remaining action:** Copy gate log entry to `kill_commit_gates.md` (HitM).
 **Status:** Template ready. Awaiting HitM written answers.
 
 ---
@@ -70,11 +74,14 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 
 ---
 
-### ✅ 2B. Backup Automation — Decided
+### ✅ 2B. Backup Automation — DONE
 **Audit finding:** `backup_db.sh` exists but no evidence of automated schedule, verification, or offsite storage.
-**Resolution (2026-06-27):** VPS backup manager service is out of budget. Approach: local cron on HitM's dev machine pulls compressed `pg_dump` over SSH daily. Script to be created at `scripts/server/pull_backup.sh`. Cron job setup script also queued.
-**Tomorrow:** Script generation + cron setup added to meeting agenda.
-**Status:** Decision made. Script creation queued for tomorrow's session.
+**Resolution (2026-06-28):**
+- `scripts/server/pull_backup.sh` — SSH to VPS, `pg_dump | gzip`, stream to `~/fm_backups/fm_db_DATE.sql.gz`. Includes `gzip -t` integrity check. 30-day local retention with auto-prune.
+- `scripts/local/setup_backup_cron.sh` — prints crontab entries; does not auto-edit crontab.
+- `governance/disaster_recovery.md` §9 updated with confirmed paths.
+- gh auth token stored at `~/.config/fm_gh_token` for cron use.
+**Remaining action:** HitM adds crontab entry (`crontab -e`) — line printed by `setup_backup_cron.sh`.
 
 ---
 
@@ -103,12 +110,11 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 
 ---
 
-### 🔲 3C. Dependabot Configuration
+### 🔄 3C. Dependabot Configuration
 **Audit finding:** No automated dependency scanning. CVEs discovered manually, if at all.
 **Scope:** Add `.github/dependabot.yml` to API repo and Web repo.
-**Effort:** 30 minutes. No code review needed — it's a config file that opens PRs, doesn't merge anything.
-**Owner:** HitM or Cursor (trivial config)
-**Status:** Queued — easy win when a Cursor agent has spare capacity
+**Owner:** Cursor
+**Status:** Folded into CI/CD plan T04. Will be created as part of current Cursor execution. pip + npm + github-actions, weekly Monday schedule.
 
 ---
 
@@ -173,6 +179,51 @@ The audit scored Automation at 6/10 with "unknown reliability." The screenshots 
 | Are automations reliably running? | Yes — 88.1% success rate, confirmed by screenshots |
 | Is .env in git history? | No — confirmed clean |
 | Is smtp.secret committed? | No — gitignored, never committed |
-| Are Cloudflare/VPS metrics redundant with Uptime Robot? | Partially overlapping, not fully redundant — see 2A above |
-| Is backup_db.sh automated? | Unknown — needs VPS verification |
+| Are Cloudflare/VPS metrics redundant with Uptime Robot? | Partially overlapping, not fully redundant — GitHub Actions health check (T03) covers the gap |
+| Is backup_db.sh automated? | **Resolved 2026-06-28** — pull_backup.sh created; cron entry ready |
 | What's pacing investigator disabled for? | Unknown — HitM to check |
+
+---
+
+## Session 2026-06-28 — Remediation Progress
+
+### What was executed this session (beyond 2026-06-27 plan)
+
+| Item | Audit category | What was done |
+|---|---|---|
+| VPS state verified via SSH | §3 Deployment, §11 Risk | cagent confirmed: blue active, Celery running, SHAs current. Stale current_status.md was doc drift, not real drift. |
+| PR review automation disabled | §7 Automation / credit efficiency | Antigravity PR review auto-comments turned off — high token cost, zero signal for solo operator |
+| Daily doc sweep automation | §7 Automation, §8 Documentation | `strategy/automations/prompts/daily_doc_sweep_prompt.md` created. Handles plan reconciliation + stale ref fixes daily. |
+| `gather_doc_context.sh` cron script | §7 Automation | Bash data-gather script runs at 4:45 AM before Antigravity sweep. Zero LLM cost for fact collection. |
+| `scripts/dev/` utility scripts (4x) | §7 Automation / credit efficiency | `open_prs.sh`, `plan_status.sh`, `submodule_status.sh`, `vps_freshness.sh` — replace agent prompts with zero-cost shell calls |
+| Plan registry catch-up | §12 Operational Execution | 9 plans reconciled from Draft → Recently Completed via cagent sweep. Duplicate removed. |
+| `pull_backup.sh` | §11 Risk Management | SSH pull of pg_dump with gzip integrity check + 30-day retention. Cron entry ready. |
+| `setup_backup_cron.sh` | §11 Risk Management | Helper that prints both cron entries (backup + doc context) for manual review. |
+| Quarterly review completed | §12 Operational Execution | 2026-Q2.md completed 2 days early. Gate: 0/3 yes. Q3 commitments locked. |
+| Doc sync protocol updated | §8 Documentation | `02_Documentation_Sync_Protocol.md` — removed Reflex/CLI trigger conditions; updated example to current-era feature. |
+| Runtime Signup Sheet wired to daily summary | §7 Automation, §8 Documentation | Antigravity daily summary prompt updated to read Runtime_Signup_Sheet.md for VPS state (not validation_gates.md). |
+
+### Estimated score movement
+
+| Category | Original | Estimated now | Driver |
+|---|---|---|---|
+| CI/CD | 1/10 | 4/10 | Plan executing; workflows being created |
+| Risk Management | 3/10 | 6/10 | DR plan, incident response plan, backup script, uptime monitoring (T03) |
+| Legal/Compliance | 4/10 | 7/10 | ToS/Privacy/Cookie live; clickwrap live; monthly audit automation running |
+| Automation | 6/10 | 8/10 | Doc sweep added; bash scripts replace LLM calls; context gatherer |
+| Documentation | 8/10 | 8/10 | Doc sweep helps freshness; plan registry reconciled |
+| Operational Execution | 3/10 | 5/10 | 9 plans closed; quarterly review done; VPS confirmed current |
+| **Overall** | **5.2/10** | **~6.5/10** | |
+
+### Remaining open items (not yet executed)
+
+| Item | Priority | Owner | Blocker |
+|---|---|---|---|
+| Copy gate log to `kill_commit_gates.md` | High | HitM | Manual step |
+| Add crontab entries (backup + doc context) | High | HitM | Needs `crontab -e` |
+| CI/CD T01–T04 complete | High | Cursor | In execution |
+| Uptime monitoring (T03 health check) | High | Cursor | In CI/CD plan |
+| Email delivery E2E test | Medium | HitM | Submit test bug report via app |
+| Entity formation | Deferred | HitM | Marriage processing Jun–Dec 2026 |
+| Repo hygiene (scratch.py etc.) | Low | Cursor | Next cleanup pass |
+| business_notes.txt restructure | Low | — | Parked |
