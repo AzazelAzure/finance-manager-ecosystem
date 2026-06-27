@@ -18,6 +18,18 @@ Today's session closed the main audit action items:
 
 ## Discussion Points
 
+### 0. ⚠️ Cursor credit efficiency — HIGH PRIORITY
+**Context:** 30% of monthly Cursor credits consumed as of 2026-06-27. At this burn rate, the cap could be hit before month-end. This is a `§7 Cost Discipline Auto-Trigger` watch item.
+**Discussion questions:**
+- What is the current monthly reset date? How many days remain in the cycle?
+- Which agent tasks are burning the most credits? (Large context loads, repeated re-reads, long code generation passes?)
+- Can any recurring agent tasks be replaced with bash scripts in `scripts/`?
+- Should we reduce active parallel Cursor agents until the reset?
+- Is there a "low-credit mode" — lighter tasks only, no large refactors — that preserves runway for must-ship work?
+**Goal:** Exit this discussion with a concrete credit rationing plan for the rest of the billing cycle.
+
+---
+
 ### 1. Backup script + cron setup
 **Context:** Decided to use local dev machine cron (daily `pg_dump` over SSH to local disk). Script not yet written.
 **Today's action:**
