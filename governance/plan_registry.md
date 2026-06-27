@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-28 (doc sweep catch-up: closed 9 shipped plans; removed duplicate API security hardening from Draft; closed UI/UX design system from In Progress)
+**Last updated:** 2026-06-28 (PLAN_CROSS_CI_CD moved Draft → In Progress; T01–T04 workflows shipped + PR'd)
 
 ## Update protocol
 
@@ -27,6 +27,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 |---|---|---|---|---|---|---|---|---|---|
 | `PLAN_CROSS_USAGE_MONITORING_NOTIFY_2026-06-26` | P1 | S1.B | `cur/s1b/feat/celery-observability` | pproctor | F-012/F-013 | - | UI-UX, API security | 2026-06-27 | **Audit 2026-06-27:** code largely landed (PR #37 + autodiscover fix); plan prematurely marked completed — T01 live SMTP/redis evidence missing; T03 FEATURE_REQUEST notify added this session; end-to-end Proton inbox smoke still required before close. |
 | `PLAN_CROSS_CELERY_OBSERVABILITY_2026-06-26` | P1 | S1.B | `cur/s1b/feat/celery-observability` | pproctor | F-014 | privacy policy | UI-UX, API security | 2026-06-27 | T01–T04 implemented in code via API PR #39 (FROM routing, observability middleware, analytics rollups, security alerts); pending live Proton/Redis VPS smoke before close. |
+| `PLAN_CROSS_CI_CD_2026-06-27` | P1 | S1.B | api:`cur/s1b/chore/api-ci` web:`cur/s1b/chore/web-ci` parent:`cur/s1b/chore/health-check` | pproctor | - | - | all feature plans | 2026-06-28 | **CI/CD + Uptime.** T01–T04 workflow files shipped + PR'd: API CI (PR #43, green: 285 pass/0 fail — added Redis service, fixed 3 stale tests), Web CI (PR #71, green: tsc -b + 19 vitest), parent health-check cron (PR #71). Remaining: branch protection (T04.SL3) + live health-check `workflow_dispatch` verify (T03.SL2), both gated on first green run on main. |
 
 ## Ready for Execution
 
@@ -38,7 +39,6 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
-| `PLAN_CROSS_CI_CD_2026-06-27` | S1.B | pproctor | 2026-06-27 | **CI/CD + Uptime** — API CI (pytest + migration check), Web CI (tsc + vitest), health-check cron in parent repo (self-hosted uptime monitor), Dependabot, branch protection on main. Parallel safe with all feature plans. `plans/S1/S1.B/chore-ci-cd/`. legal_impact: none. |
 | `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `agy/s1b/feat/f001-balance-history`. |
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
 | `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
