@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-27 (four new plans created: legal-pages, signup-clickwrap, email-comms, ui-ux-test-seed; plan_template.md updated with legal_impact field)
+**Last updated:** 2026-06-27 (CI/CD plan added; four plans from earlier session: legal-pages, signup-clickwrap, email-comms, ui-ux-test-seed; plan_template.md updated with legal_impact field)
 
 ## Update protocol
 
@@ -39,6 +39,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
+| `PLAN_CROSS_CI_CD_2026-06-27` | S1.B | pproctor | 2026-06-27 | **CI/CD + Uptime** — API CI (pytest + migration check), Web CI (tsc + vitest), health-check cron in parent repo (self-hosted uptime monitor), Dependabot, branch protection on main. Parallel safe with all feature plans. `plans/S1/S1.B/chore-ci-cd/`. legal_impact: none. |
 | `PLAN_CROSS_LEGAL_PAGES_2026-06-27` | S1.B | pproctor | 2026-06-27 | **Legal pages** — Web: `/privacy`, `/terms`, `/cookies` public routes; react-markdown renderer; landing footer; cookie banner update. Blocks PLAN_CROSS_SIGNUP_CLICKWRAP. `plans/S1/S1.B/feat-legal-pages/`. legal_impact: all three policies. |
 | `PLAN_CROSS_SIGNUP_CLICKWRAP_2026-06-27` | S1.B | pproctor | 2026-06-27 | **Signup clickwrap (N2)** — Web+API: ToS checkbox + timestamp/version stored on AppProfile; login page footnote. Deploy AFTER legal-pages. Conflicts with security hardening (sequence after). `plans/S1/S1.B/feat-signup-clickwrap/`. legal_impact: tos, privacy. |
 | `PLAN_CROSS_EMAIL_COMMS_2026-06-27` | S1.B | pproctor | 2026-06-27 | **Email confirmations** — API: user-facing bug/feature confirmation emails; 5-min cooldown; server-stored email. Parallel safe with all except security hardening. `plans/S1/S1.B/feat-email-comms/`. legal_impact: privacy. |

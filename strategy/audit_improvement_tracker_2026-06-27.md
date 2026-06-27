@@ -39,7 +39,7 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 - Branch protection on `main` in both repos: require passing CI before merge
 **Effort:** ~3-4 hours Cursor execution
 **Owner:** Claude creates plan artifact → Cursor executes
-**Status:** Plan creation queued (next admin session)
+**Status:** Plan created — `plans/S1/S1.B/chore-ci-cd/` — `PLAN_CROSS_CI_CD_2026-06-27` (draft). Health check cron folded into T03.
 
 ---
 
