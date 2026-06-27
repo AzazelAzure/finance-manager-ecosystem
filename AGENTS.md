@@ -144,3 +144,16 @@ Pull `governance/glossary.md`, `deployment_protocol.md`, `definition_of_done.md`
 4. `governance/README.md`
 
 Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md` → `00_strategic_context.md` → active stage README → sub-plan README.
+
+---
+
+## Learned User Preferences
+
+- Admin huddle artifacts belong under `strategy/huddles/`, not `plans/`.
+- Resolve standby-queue PRs and partial code before VPS inactive-color deploy/test.
+- Re-validate features already marked "completed" against definition of done; confirm claimed implementation actually exists before trusting completion status.
+
+## Learned Workspace Facts
+
+- VPS production blue-green ops use `scripts/fm_server_beta.sh` (`status`, `rebuild-color`, `smoke`, `switch`); local dev container lifecycle uses `scripts/fm_docker.sh` and `scripts/fm_services.sh`.
+- Blue-green rebuild scripts must include Celery workers and actively tear down orphaned/outdated containers (recurring orphaned-container problem during color switches).
