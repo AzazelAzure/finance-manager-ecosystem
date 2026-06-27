@@ -14,17 +14,17 @@
 
 | Signal | State |
 |---|---|
-| **`origin/main` HEAD** | `8ef64dc` — standby closeout; parent still pins API `7b6f564`, Web `e66c2bb` |
-| **Active parent work** | `cur/s1b/chore/sync-standby-submodules` — bumps API `789b266`, Web `4ad032a` |
-| **VPS live stack** | Green active; smoke **PASS** 2026-06-26; **not synced to `main`** |
-| **VPS web branch** | `agy/s1b/feat/landing-page-ux-seo` @ `3e2b370` (2026-06-13) |
-| **VPS api branch** | `main` @ `1833e74` (2026-05-04) |
+| **`origin/main` HEAD** | `1716b4b` — parent pins API `789b266`, Web `4ad032a` |
+| **VPS live stack** | Green active; smoke **PASS** 2026-06-26 |
+| **VPS inactive blue** | Rebuilt with API `789b266`, Web `4ad032a`; migrations applied; smoke **PASS** |
+| **VPS web branch** | Detached `4ad032a` after blue rebuild |
+| **VPS api branch** | Detached `789b266` after blue rebuild |
 | **Submodule PRs** | API #35 and Web #62 merged; API `789b266`, Web `4ad032a` |
-| **Open parent PRs** | Pointer bump PR pending from `cur/s1b/chore/sync-standby-submodules` |
-| **VPS sync gate** | **PARTIAL CLEAR** — target SHAs ready; inactive blue rebuild/smoke still required before cutover |
+| **Open parent PRs** | None blocking standby; #64 merged |
+| **VPS sync gate** | **BLUE READY** — inactive blue smoke passed; cutover still requires HitM approval |
 | **Quarterly self-review** | **Due 2026-06-30** (4 days) |
 | **Operator cadence** | Decompression mode — 6 hr/day, 30 hr/week (post-baby baseline) |
-| **Governance overhaul** | **In progress** — admin overhaul on branch `cur/s1b/admin/governance-overhaul` (2026-06-26) |
+| **Governance overhaul** | Merged via #62 |
 
 ---
 
@@ -300,9 +300,9 @@ Per [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](./strategic-
 
 | Issue | Severity | Status |
 |---|---|---|
-| **VPS sync gate** | 🟡 High | Target SHAs ready; inactive blue rebuild, migrations, and smoke still required |
-| VPS deployment gap | 🔴 Critical | Green stack weeks behind; F-007, PWA, F-012/F-013, F-011 not live |
-| API migrations on blue | 🟡 High | Run finance migrations through `0009_merge_20260626` and `migrate axes` on inactive API before smoke |
+| **Cutover gate** | 🟡 High | Inactive blue is rebuilt and smoked; active color remains green pending HitM approval |
+| VPS deployment gap | 🟡 High | Blue has current standby build; green remains old until approved switch |
+| API migrations on blue | ✅ Cleared | Finance migrations through `0009_merge_20260626` and axes migrations applied |
 | Web build | ✅ Cleared | Web `4ad032a` includes build/CSP/header cleanup from Web #62 |
 | Entity formation (PH + US LLC) | **S1.B exit gate** | Research in draft; counsel engagement pending |
 | PSP KYB | **Blocked on entity** | PayMongo/Xendit locked; KYB needs PH entity vehicle |
