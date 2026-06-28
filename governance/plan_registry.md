@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-29 (daily doc sweep: no status changes; draft plans F-002, F-003, F-006, F-008, F-009 flagged for HitM review)
+**Last updated:** 2026-06-29 (D6 doc-structure consolidation resolved: design-docs restructure chore plan authored; strategy/ homes created; AGENTS.md trust-but-verify + doc-maintenance tenets added; plus bill recurrence + security audit suite ready, two anomalies dispatched)
 
 ## Update protocol
 
@@ -31,7 +31,9 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| _(empty)_ | | | | | | | | |
+| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | - | - | - | - | Local security audit suite (bandit, pip-audit, npm audit, gitleaks, semgrep); replaces cloud auto-scans; T01–T04 authored; `plans/S1/S1.B/local-security-audit-suite/README.md` |
+| `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` | P1 | S1.B | `cur/s1b/feat/bill-recurrence-engine` | - | F-009 | - | F-009 | Standalone bill recurrence engine — first-class `cadence` field on UpcomingExpense; replaces start/due-delta inference in `bill_recurrence.py`; T01–T04 authored; must ship before F-009; `plans/S1/S1.B/feat-bill-recurrence-engine/README.md` |
+| `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` | P2 | S1.B | `cur/s1b/chore/design-docs-restructure` | - | - | - | - | D6 execution (submodule side): archive reflex/alpha docs, retire roadmap/versioning overlap (keep Runtime_Signup_Sheet), fix Dashboard + Sync Protocol; docs-only CPPR; T01–T03 authored; `plans/S1/S1.B/chore-design-docs-restructure/README.md` |
 
 ## Draft / Planning
 

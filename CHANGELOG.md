@@ -4,6 +4,14 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-29 — Admin session: planning batch + governance/doc-structure consolidation (D1–D8)
+
+- **Plans authored (ready for Cursor):** `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` (T01–T04), `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (T01–T04; first-class `cadence` field; blocks F-009), `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` (T01–T03; submodule docs-only).
+- **D5 spec:** `strategy/automations/specs/vps_state_and_doc_context_spec_2026-06-29.md` (live `vps_state.sh` + `gather_doc_context.sh` refactor; root cause of stale-state false alarms).
+- **D6 doc-structure consolidation (resolved + executed, parent side):** new `strategy/` homes `projections/`, `parking_lot/`, `audits/`, `risk_register.md`; `strategy/README.md` rebuilt as living-state index; `git mv` of success_projection + quarterly_reviews → `projections/`, operational_audit_report + improvement_tracker → `audits/`, with all inbound references (audit automations, legal docs) repointed.
+- **Governance:** `governance/meeting_artifact_protocol.md` added; plan registry updated; two anomalies dispatched (bill-interval → recurrence plan, nginx-check → Cursor chore).
+- **AGENTS.md:** §1 trust-but-verify + documentation-maintenance tenets added; stale bill-recurrence fact refreshed to point at the new plan.
+
 ### 2026-06-28 — F-011 landing reflect-shipped + forward roadmap (T03+T04)
 
 - **Plan execution:** `PLAN_CROSS_WEDGE_MARKETING_F011` T03+T04 completed. Web PR #90 merged; landing page updated for June production batch (F-001, F-004, F-005, F-010) and honest forward roadmap; HitM V3 approved; promoted **active green**.
