@@ -1,6 +1,6 @@
 # Audit Improvement Tracker — 2026-06-27
 
-**Source:** Antigravity operational audit (`strategy/operational_audit_report.md`)
+**Source:** Antigravity operational audit (`strategy/audits/operational_audit_report.md`)
 **Session:** Admin meeting 2026-06-27
 **Purpose:** Persistent reference so context isn't lost as each item is executed. Check items off as they close.
 
@@ -47,7 +47,7 @@ Before diving into action items, record what was snapshot-stale so we don't chas
 
 ### ✅ 1C. Quarterly Self-Review — COMPLETED
 **Due:** 2026-06-30
-**Document:** `strategy/quarterly_reviews/2026-Q2.md`
+**Document:** `strategy/projections/quarterly_reviews/2026-Q2.md`
 **Completed:** 2026-06-28 (2 days early)
 **Gate outcome:** 0/3 yes — continue, no mode change. Sleep regression attributed to newborn + Fajr prayer, not work.
 **S1.B status:** 7/14 criteria done (updated). Q3 commits: #10 wedge audit, #12 feature work, #9 distribution research, #13 (done).

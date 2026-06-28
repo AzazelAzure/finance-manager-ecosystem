@@ -2,9 +2,17 @@
 logged: 2026-06-28
 agent: cursor
 plan_context: PLAN_CROSS_CI_CD_2026-06-27 / fm_server_beta.sh secret-redaction fix (PR #72)
-status: unreviewed
+status: dispatched
+dispatched_to: Cursor chore — fm_server_beta.sh nginx check
+dispatched_on: 2026-06-29
 severity_guess: low
 ---
+
+> **2026-06-29 dispatch (D3):** HitM decision — fix it properly (option A): mount
+> `00-resolver.conf` into the throwaway check container, or point `check` at the live proxy via
+> `exec -T proxy nginx -t`. First confirm whether `00-resolver.conf` is committed to the repo or
+> generated at runtime — that determines the fix path. Small Cursor chore; Cursor codes locally
+> (credit exhaustion is cloud-automations only, not local coding).
 
 ## What was found
 

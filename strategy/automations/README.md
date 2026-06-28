@@ -10,7 +10,7 @@ Prompt documents for recurring Antigravity (agy) automation runs.
 | `prompts/daily_summary_prompt.md` | Daily — end of workday | `strategy/daily_summaries/daily_summary_YYYY-MM-DD.md` + updates `strategy/current_status.md` |
 | `prompts/legal_compliance_monthly_prompt.md` | Monthly (1st–3rd of month) | `strategy/legal/compliance_reports/YYYY-MM.md` |
 | `prompts/monthly_ops_pulse_prompt.md` | Monthly (1st–3rd of month, after legal) | `strategy/automations/reports/ops_pulse_YYYY-MM.md` — 12-category GREEN/YELLOW/RED health check |
-| `prompts/quarterly_ops_audit_prompt.md` | Quarterly — alongside §6 self-review | `strategy/operational_audit_report_YYYY-QN.md` — full re-score with delta vs baseline |
+| `prompts/quarterly_ops_audit_prompt.md` | Quarterly — alongside §6 self-review | `strategy/audits/operational_audit_report_YYYY-QN.md` — full re-score with delta vs baseline |
 
 ## Execution order (daily)
 

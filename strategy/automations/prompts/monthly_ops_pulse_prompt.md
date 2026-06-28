@@ -9,7 +9,7 @@
 
 ## Your task
 
-Run a lightweight operational health check across the 12 audit categories from the baseline operational audit (`strategy/operational_audit_report.md`, 2026-06-27). This is not a full re-score — it's a drift detector. Flag what moved (better or worse), flag what's still open, and surface anything that's been flagged two months in a row (escalation trigger for the quarterly full audit).
+Run a lightweight operational health check across the 12 audit categories from the baseline operational audit (`strategy/audits/operational_audit_report.md`, 2026-06-27). This is not a full re-score — it's a drift detector. Flag what moved (better or worse), flag what's still open, and surface anything that's been flagged two months in a row (escalation trigger for the quarterly full audit).
 
 No scoring. No rewrites. One-page output.
 
@@ -20,7 +20,7 @@ No scoring. No rewrites. One-page output.
 Read `strategy/automations/context/daily_context.md` for current git/PR/plan state.
 
 Also read:
-- `strategy/audit_improvement_tracker_2026-06-27.md` — baseline and prior remediation
+- `strategy/audits/audit_improvement_tracker_2026-06-27.md` — baseline and prior remediation
 - `governance/plan_registry.md` — In Progress and Draft counts
 - `design_docs/30_Releases/Runtime_Signup_Sheet.md` — VPS live state
 - Most recent prior pulse report in `strategy/automations/reports/ops_pulse_*.md` — for two-month escalation check
@@ -38,7 +38,7 @@ Check these specifically:
 - Is plan_registry.md Last Updated within the last 7 days?
 
 **2. Strategic Planning & Roadmap**
-- Is the quarterly review current? (check `strategy/quarterly_reviews/` for this quarter)
+- Is the quarterly review current? (check `strategy/projections/quarterly_reviews/` for this quarter)
 - Are validation gate docs reflecting current S1.B status?
 
 **3. Deployment Infrastructure**

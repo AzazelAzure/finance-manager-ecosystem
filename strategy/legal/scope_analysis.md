@@ -3,7 +3,7 @@
 > **Purpose:** Maps the three legal framework documents against actual current app state. Determines what is IN SCOPE now vs what is PLACEHOLDER/deferred. Flags critical gaps and cross-plan issues. Use this as the implementation checklist when writing the actual ToS/Privacy/Cookie documents.
 
 **Analyzed:** 2026-06-26  
-**Against:** `feat-celery-observability` §10, `feat-f014-usage-monitoring-notify`, `strategy/current_status.md`, `strategy/success_projection_2026-06.md`  
+**Against:** `feat-celery-observability` §10, `feat-f014-usage-monitoring-notify`, `strategy/current_status.md`, `strategy/projections/success_projection_2026-06.md`  
 **Source framework:** `compass_artifact_wf-...md` (three documents combined)
 
 ---

@@ -2,9 +2,16 @@
 logged: 2026-06-28
 agent: cursor
 plan_context: PLAN_CROSS_PRODUCTION_UX_FIX_2026-06-28 / T02
-status: unreviewed
+status: dispatched
+dispatched_to: PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29
+dispatched_on: 2026-06-29
 severity_guess: medium
 ---
+
+> **2026-06-29 dispatch:** Standalone plan authored — `plans/S1/S1.B/feat-bill-recurrence-engine/`
+> (PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29, status: ready). It replaces the start/due-delta
+> inference with a first-class `cadence` field on `UpcomingExpense`. Move this anomaly to
+> `resolved` when that plan closes. Blocks F-009.
 
 ## What was found
 

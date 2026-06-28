@@ -49,6 +49,6 @@ JWT tokens — confirm storage location (localStorage vs cookies) before finaliz
 - Refund policy needed for subscription + one-time tiers
 
 ### Relevant existing docs
-- `strategy/success_projection_2026-06.md` — business context
+- `strategy/projections/success_projection_2026-06.md` — business context
 - `plans/S1/S1.B/feat-celery-observability/README.md` §10 — full data disclosure spec
 - `strategy/strategic-roadmap-reframe-53be/validation_gates.md` — S1.B exit gate: "ToS + Privacy + Refund policies drafted and live"

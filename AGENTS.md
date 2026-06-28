@@ -51,6 +51,17 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 - **i18n** is part of done; deferred coverage must be tracked as a follow-up slice.
 - Governed scope: one slice per agent turn when possible; **ask clarifying questions** instead of guessing underspecified product scope. Bias slices to **one web route/page or one API model/domain** per pass.
 
+### Trust but verify
+
+- Any agent or automation with live-access capability (SSH, GitHub API, VPS, repo) **must verify flagged state against ground truth before escalating** — do not present cached or prior-context state as current. Even when a cached doc is available: query live, then report.
+- **Time-stamp point-in-time reads.** VPS/runtime state is point-in-time; mark it with the capture time so staleness is visible, never hidden. (Origin: 2026-06-29 false-alarm HIGH alerts from a stale cached context file — see `strategy/automations/specs/vps_state_and_doc_context_spec_2026-06-29.md`.)
+
+### Documentation maintenance
+
+- Keep the **VPS runtime checkout sheet** (`design_docs/30_Releases/Runtime_Signup_Sheet.md`) current — a known prior drift source. Update it on every deploy/cutover and treat its contents as point-in-time, not authoritative live state (live state comes from an SSH query per trust-but-verify).
+- Doc/governance file lifecycle (what gets saved, updated, or archived — including within meetings) is governed by `governance/meeting_artifact_protocol.md`.
+- Strategy-area navigation: `strategy/README.md` is the index of living-state homes (meetings, anomalies, projections, parking lot, risk register, audits, automations).
+
 ### Product and ops defaults
 
 - **PWA/offline bar:** Core ledger surfaces stay coherent offline (days–weeks); local-first + API sync when online. Password change and account deletion stay online-only.
@@ -174,5 +185,5 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - GitHub Actions workflows should pin third-party actions to full commit SHAs and set least-privilege `permissions` (e.g. `contents: read`).
 - Public hostnames are proxied through Cloudflare; GitHub Actions curls to those URLs can get edge `403` from datacenter IPs — VPS uptime checks should hit origin on `:8443` via `curl --resolve` (and `-k` for internal TLS).
 - `main` branch protection is waived while repos stay private without GitHub Pro (explicit HitM decision).
-- Bills currently support only monthly intervals; supporting differing bill cycles (non-monthly recurrence) requires a larger API revamp, tracked as future work via the anomaly log.
+- Bill recurrence: cadence is currently inferred from `start_date`/`due_date` deltas (`bill_recurrence.py` stopgap). The first-class `cadence` field revamp is planned in `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (`plans/S1/S1.B/feat-bill-recurrence-engine/`) and must ship before F-009.
 - Currently a closed loop with one beta tester; secret rotation is deferred — scrub leaked secrets from logs and clear terminal history instead, with rotation enforced later.

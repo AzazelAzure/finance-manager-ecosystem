@@ -3,13 +3,13 @@
 > **Agent:** Antigravity (agy)
 > **Schedule:** Quarterly — run alongside the §6 quarterly self-review (kill_commit_gates.md)
 > **Run from:** `/home/pproctor/Documents/python/finance_manager/`
-> **Output:** `strategy/operational_audit_report_YYYY-QN.md`
+> **Output:** `strategy/audits/operational_audit_report_YYYY-QN.md`
 
 ---
 
 ## Your task
 
-Re-run the full 12-category operational audit established in `strategy/operational_audit_report.md` (baseline: 2026-06-27, score: 5.2/10). Score each category 0–10 using the same rubric. Produce a delta report showing movement from the prior audit. Be as candid as the baseline audit — no softening, no omissions.
+Re-run the full 12-category operational audit established in `strategy/audits/operational_audit_report.md` (baseline: 2026-06-27, score: 5.2/10). Score each category 0–10 using the same rubric. Produce a delta report showing movement from the prior audit. Be as candid as the baseline audit — no softening, no omissions.
 
 This is a business CI/CD check, not a morale document. The goal is to catch operational drift before it compounds.
 
@@ -19,13 +19,13 @@ This is a business CI/CD check, not a morale document. The goal is to catch oper
 
 Read these before writing anything:
 
-1. `strategy/operational_audit_report.md` — baseline audit (scores, findings, rubric)
-2. `strategy/audit_improvement_tracker_2026-06-27.md` — remediation log and prior score estimates
+1. `strategy/audits/operational_audit_report.md` — baseline audit (scores, findings, rubric)
+2. `strategy/audits/audit_improvement_tracker_2026-06-27.md` — remediation log and prior score estimates
 3. Most recent `strategy/automations/reports/ops_pulse_*.md` files — monthly drift signals
 4. `strategy/automations/context/daily_context.md` — current git/PR/plan state
 5. `governance/plan_registry.md` — plan completion counts
 6. `design_docs/30_Releases/Runtime_Signup_Sheet.md` — VPS live state
-7. `strategy/quarterly_reviews/` — most recent quarterly self-review
+7. `strategy/projections/quarterly_reviews/` — most recent quarterly self-review
 8. `governance/disaster_recovery.md` + `governance/incident_response.md`
 9. `strategy/legal/compliance_reports/` — most recent monthly report
 
@@ -67,7 +67,7 @@ For each category, write:
 
 ## Step 3 — Write the audit report
 
-Write to `strategy/operational_audit_report_YYYY-QN.md` (e.g. `2026-Q3.md`).
+Write to `strategy/audits/operational_audit_report_YYYY-QN.md` (e.g. `2026-Q3.md`).
 
 Use this structure:
 
@@ -76,7 +76,7 @@ Use this structure:
 
 **Date:** YYYY-MM-DD
 **Auditor:** Antigravity
-**Baseline:** strategy/operational_audit_report.md (2026-06-27, 5.2/10)
+**Baseline:** strategy/audits/operational_audit_report.md (2026-06-27, 5.2/10)
 **Prior audit:** [date and score]
 
 ---

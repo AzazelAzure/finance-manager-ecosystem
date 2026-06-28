@@ -1,14 +1,14 @@
 # Admin Meeting — 2026-06-28
 
 **Format:** Daily morning admin — current status, parked items, next priorities
-**Reference:** `strategy/audit_improvement_tracker_2026-06-27.md`, `strategy/quarterly_reviews/2026-Q2.md`
+**Reference:** `strategy/audits/audit_improvement_tracker_2026-06-27.md`, `strategy/projections/quarterly_reviews/2026-Q2.md`
 
 ---
 
 ## Carry-in from 2026-06-27 session
 
 Today's session closed the main audit action items:
-- ✅ Quarterly review template created (`strategy/quarterly_reviews/2026-Q2.md`) — **HitM fills in by June 30**
+- ✅ Quarterly review template created (`strategy/projections/quarterly_reviews/2026-Q2.md`) — **HitM fills in by June 30**
 - ✅ CI/CD plan created (`PLAN_CROSS_CI_CD_2026-06-27`) — ready for Cursor
 - ✅ DR plan created (`governance/disaster_recovery.md`)
 - ✅ Incident response plan created (`governance/incident_response.md`)
@@ -60,7 +60,7 @@ Today's session closed the main audit action items:
 - The health check (T03) goes in the parent repo, not a submodule
 
 ### 4. Quarterly self-review — due June 30
-**Context:** `strategy/quarterly_reviews/2026-Q2.md` is the template. HitM writes the answers.
+**Context:** `strategy/projections/quarterly_reviews/2026-Q2.md` is the template. HitM writes the answers.
 **Reminder:** Part 1 (family/health §6 gate) is mandatory and time-sensitive. The gate outcomes log block needs to be copied to `kill_commit_gates.md` after completion.
 **Time budget:** ≤30 minutes per the gate spec.
 

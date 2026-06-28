@@ -1,300 +1,195 @@
 # Admin Meeting Notes — 2026-06-29
 
-**Generated:** 2026-06-29 morning  
-**Source:** daily_summary_2026-06-29.md + doc_sweep_2026-06-29.md + anomaly queue  
-**Purpose:** Standing sync — orient, surface blockers, decide today's work order
+**Generated:** 2026-06-29 morning · **Rebuilt:** 2026-06-29 (post-discussion consolidation)
+**Source:** daily_summary + doc_sweep + anomaly queue + live cagent verification
+**Discussion archive:** `admin_meeting_notes_2026-06-29_discussion.md` (HitM's full inline D1–D8 responses preserved verbatim there)
+
+> This is the **consolidated** record: decisions locked, work dispatched, open items surfaced.
+> The blow-by-blow proposal/response thread lives in the archive file. Comment on **open items
+> in §4** directly here.
 
 ---
 
-## 1. Overnight Wins (what actually shipped)
+## 1. Overnight Wins — shipped & live
 
-This was a very large execution day. Everything queued is now merged to `main`.
+Large execution day; everything queued merged to `main` and verified live on VPS.
 
 
-| Feature                                       | PRs                      | State          |
-| --------------------------------------------- | ------------------------ | -------------- |
-| F-004 STS Pay Cycles + Bill Realism           | API #52–#55, Web #81–#83 | Merged         |
-| F-001 Balance History + Chart                 | API #56, Web #84         | Merged         |
-| F-010 Export & Sharing                        | API #57–#60, Web #85–#87 | Merged         |
-| F-005 Savings Goals                           | API #61–#62, Web #88–#89 | Merged         |
-| F-011 Landing Page T02 (feature showcase)     | Web #90                  | Merged         |
-| Production UX batch (nav/labels/wizard/legal) | API #51, Web #80         | Merged (prior) |
+| Feature                             | PRs                      | State            |
+| ----------------------------------- | ------------------------ | ---------------- |
+| F-004 STS Pay Cycles + Bill Realism | API #52–#55, Web #81–#83 | ✅ Merged + live  |
+| F-001 Balance History + Chart       | API #56, Web #84         | ✅ Merged + live  |
+| F-010 Export & Sharing              | API #57–#60, Web #85–#87 | ✅ Merged + live  |
+| F-005 Savings Goals                 | API #61–#62, Web #88–#89 | ✅ Merged + live  |
+| F-011 Landing Page T02              | Web #90                  | ✅ Merged + live  |
+| Production UX batch                 | API #51, Web #80         | ✅ Merged (prior) |
+
+
+Registry: all four core features (F-001/F-004/F-005/F-010) confirmed in **Recently Completed**.
+
+---
+
+## 2. Live VPS State — cagent-verified (not cached)
+
+Both "HIGH" alerts in the daily summary were **stale-data false alarms**, disproved by cagent
+against the live VPS. This is the trigger for D5 (documentation accuracy gap).
+
+
+| Item                    | Daily summary said                   | Live truth (cagent)                                                                    |
+| ----------------------- | ------------------------------------ | -------------------------------------------------------------------------------------- |
+| Active API SHA          | old `defd844`, F-005 missing         | `42bfd0e` (latest main), migration `0016` applied, savings-goals endpoint auth-gated ✅ |
+| Celery                  | worker + beat not running            | both up 12h; all 9 `fm-beta_`* containers healthy ✅                                    |
+| Stale legacy containers | 4 exited `finance-manager-*` present | **pruned this session** via cagent ✅                                                   |
+
+
+**Root cause of the false alarms → D5.** The "Current VPS State" the summary read is a static
+markdown file (`Runtime_Signup_Sheet.md`), not a live query. Spec written — see §3.
+
+---
+
+## 3. Decisions Locked (D1–D5, D8) + what shipped this session
+
+
+| #      | Decision (HitM)                                                                                                                                                                                                                                                                                                                | Action taken this session                                                                                                                                                                                                                                    |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **D1** | Cursor **cloud** credits exhausted = no cloud automations (vuln screens, PR reviewer). **Cursor still codes locally.** Constraint is automation coverage, not coding. Work around lost screens with local tooling — **not Antigravity** (hard-refuses all security prompts).                                                   | Local security audit suite authored to replace cloud vuln screens (`PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29`, T01–T04 ready).                                                                                                                             |
+| **D2** | Bill recurrence engine = **standalone plan**, name confirmed, **ships before anything depending on those calculations** (F-009). Rust/WASM port flagged as likely *future* direction as math grows.                                                                                                                            | Plan authored: `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29`, README + T01–T04, status ready. First-class `cadence` field replaces the start/due-delta inference. Rust/WASM explicitly out-of-scope-future. Blocks F-009 in registry.                       |
+| **D3** | nginx check false-negative: **fix it properly** (option A).                                                                                                                                                                                                                                                                    | Anomaly dispatched → Cursor chore. Fix path: mount `00-resolver.conf` into the check container or `exec -T proxy nginx -t`; first confirm whether the conf is committed or runtime-generated.                                                                |
+| **D4** | Stale-container prune: approved.                                                                                                                                                                                                                                                                                               | 4 legacy containers pruned via cagent. Script auto-prune not patched (server renames out of beta eventually — not worth it).                                                                                                                                 |
+| **D5** | Keep tools **separate by concern**; `gather_doc_context.sh` may *call* a separate `vps_state.sh` at runtime and compile. Automations must take a **deeper, verifying pass** ("trust but verify" — Antigravity has SSH too) and write their own findings file with links. Add "trust but verify" to **core tenants** (ref [1]). | Spec written: `strategy/automations/specs/vps_state_and_doc_context_spec_2026-06-29.md`. Confirmed root cause is the static-file read. Cursor implements the scripts; Claude Code updates the two prompt files. Core-tenant doc edit still pending (see §4). |
+| **D8** | Meeting format: agree on templates; the inline-comment file format works well; revisit after D5/D6 formalize.                                                                                                                                                                                                                  | Section structure adopted for this rebuild. Template file deferred to D8 own session (parked).                                                                                                                                                               |
 
 
 ---
 
-## 2. Operational Issues — Requires Discussion
+## 4. Open — needs your comment
 
-### 2A. ~~HIGH — Active stack API/Web mismatch~~ ✅ CONFIRMED RESOLVED (cagent 2026-06-29)
-
-**What the summary said:** Active green API on old SHA (`defd844`), F-005 endpoints missing.
-
-**Actual state:** cagent confirmed active green API is on `42bfd0e` (latest main), migration `0016_savings_goal` applied, `GET /finance/savings-goals/` returns 401 (auth-gated, not 404). Daily summary had a stale SHA captured before the VPS rebuild completed. No action needed.
+Comment inline under each. These are the only items still genuinely undecided.
 
 ---
 
-### 2B. ~~HIGH — Celery not running on VPS~~ ✅ CONFIRMED RESOLVED (cagent 2026-06-29)
+### D6 — Where 10/20/30/40 design docs should live (structural)
 
-**What the summary said:** Celery worker + beat not deployed.
+**Locked already:** design docs **must** be kept accurate to a worst-case "HitM continues
+everything manually" standard — detailed walkthroughs of how each system actually works, for
+later troubleshooting/manual implementation. This is a hard requirement, not cosmetic. A new
+design-doc sweep automation is wanted.
 
-**Actual state:** cagent confirmed both containers running — `fm-beta_celery-worker_1` and `fm-beta_celery-beat_1` both up 12 hours. All 9 containers healthy (db, redis, web-green, api-green, web-blue, api-blue, proxy, worker, beat). No action needed.
+**Still open — the structural question you raised:** the `design_docs/` 10/20/30/40 tiers
+overlap with `plans/` and `strategy/` and "step on each other and cause drift by design." Before
+building the design-doc sweep automation, we need to decide the **boundary**: what canonically
+lives in `design_docs/` vs `plans/` vs `strategy/`, and which 10/20/30/40 sections are
+redundant or deprecated and should be retired.
 
----
+This is parked for its **own planning session** (doc-based, not terminal). I have *not* authored
+the design-doc sweep prompt yet — it depends on this boundary call.
 
-### 2C. MEDIUM — Anomaly: Bill recurrence engine is a stopgap
+> **Q for you:** Do you want to (a) book that consolidation session next, or (b) let me draft a
+> first-pass boundary proposal (a doc you mark up) to seed it?
 
-**File:** `strategy/anomalies/2026-06-28_PRODUCTION-UX-FIX_T02_bill-interval-cycle-revamp.md`
-
-**What:** The overdue bill catch-up in `finance/logic/updaters.py:267-268` still uses `relativedelta(months=1)`. The T02 fix chose interval-based advance (HitM chose option B), but the API has no first-class cadence field on `UpcomingExpense` — it's inferred from `start_date`/`due_date` deltas. Weekly/biweekly/pay-cycle-aligned bills will behave incorrectly.
-
-**Dispatch:** Cursor — follow-up plan or F-009 slice. Not production-critical right now (no users on weekly bills yet), but needs a plan before F-009 ships recurring auto-deduct.
-
-**Decision needed:** Do we track this as a standalone fix plan, or absorb it into F-009 scope? Recommend: absorb into F-009 T01 (schema) since that's when cadence becomes first-class.
-
-
-
-[1] This is something I had it flag personally during operations while a different feature was being created.  This is going to require it's own action item because it will require significant API reworks on how upcoming expenses are handled and calculated, and that will carry forward to the front end for how they're displayed.  
-
----
-
-### 2D. LOW — Anomaly: `fm_server_beta.sh check` nginx validation always fails
-
-**File:** `strategy/anomalies/2026-06-28_CI-CD_fm-server-beta-check-nginx-resolver.md`
-
-**What:** `check_cmd` in `fm_server_beta.sh` spins up a throwaway `nginx:alpine` container that doesn't mount `proxy/00-resolver.conf`, so the test always exits 1 even when the live proxy is healthy.
-
-**Dispatch:** Cursor — small chore on `fm_server_beta.sh`. Likely fix: add the resolver conf to the mount list, or switch to `exec -T proxy nginx -t` on the live container.
-
-**Decision needed:** Is `00-resolver.conf` committed to the repo or generated at runtime? That determines the fix path. Worth a quick check during today's VPS work.
-
-
-
-[2] Full discloser, I actually do not know what any of this does or means personally, as this is outside my scope of knowledge.  I would need to be educated on what it is actually doing and the effects of the different options before I make a decision on this.
+> HitM: Let's hit that neext, since that will affect how plans and cursor documents what it does.  Plus we will need files and structure for not just daily meetings, but long term projection discussions, things that are posttponed, upcoming issues, audit issues, etc.  
 
 ---
 
-### 2E. LOW — Stale containers on VPS
+### D7 — Dependabot + lost Cursor cloud automations
 
-Old `finance-manager-db` and `finance-manager-proxy` containers are exited and unused. Safe to prune during the blue-green rebuild today (`podman container prune` or manual removal).
+**Fact-checked this session (you asked "are these automations or something we built"):**
 
+- **Dependabot is GitHub-native.** `.github/dependabot.yml` is present in **both** submodules
+(API + Web). It keeps opening dependency PRs on GitHub's infra **for free**, regardless of
+Cursor credits. The 14 open PRs cost nothing to exist.
+- **What's actually down** with cloud credits = the Cursor **cloud PR-reviewer + vulnerability
+scanner** (the bugbot-style automations). The **scanner half is already replaced** by the
+local security audit suite (D1). The **PR-review half** is the only real loss.
 
+So your stated path holds: *"work around them, continue production until I hit a local credit
+usage threshold I deem halt-worthy."* Dependabot needs no workaround — only a merge owner.
 
-[3] This *should* have been taken care of already.  I had an agent rework the server script to auto-prune old containers.  If there are still old containers, they need to be pruned, and our vps automation scripts need to be adjusted to check for/prune old containers automatically.  This has been a continued issue that has cause significant build and deploy issues historically.  
+**Remaining choice — who clears the 14 PRs:**
 
----
+- **A)** You merge patch/minor bumps from GitHub UI (~10 min, zero credit); defer eslint `8→9`
+(Web #77, needs a build check).
+- **B)** Cursor reviews + merges locally in one chore pass (uses local credits you're rationing).
+- **C)** Defer all 14 to a weekly batch.
 
-## 3. Doc Sweep Findings (informational)
+Recommend **A** for the trivial bumps now, hold eslint `8→9` for a Cursor build check later.
 
-The automated sweep ran overnight and fixed the following:
-
-- `scripts/fm_docker.sh` → `scripts/fm_server_beta.sh` in 3 design docs
-- Stale Cursor PA / old runner references updated to three-tool model in Inter-Agent doc
-- Old `cursor/s1b/`* branch prefix → `agy/s1b/*` in inter-agent doc
-- "Reflex" references in historical checkpoint/roadmap files left intact (per scope rules)
-
-**Flagged for HitM review:** 5 old draft plans (F-002, F-003, F-006, F-008, F-009) are 55+ days old with no merged PRs. No action needed now — consistent with priority matrix. Just acknowledging the flag.
-
-
-
-[4] We need to adjust this sweep, and ad another sweep that specifically writes the tech docs in design docs.  
-
----
-
-## 4. Dependabot Queue
-
-14 open Dependabot PRs (7 API, 7 Web) opened after CI/CD went live. None are blocking. Discuss: batch-merge strategy? Options:
-
-- A) Let Cursor review + merge in a single chore pass today (uses ~5-10% credits)
-- B) Review manually and merge from GitHub UI (zero credit cost)
-- C) Defer to weekly cadence (set expectation now)
-
-Recommend: B for the straightforward ones (patch bumps); A for anything that needs a test run (eslint major version bump `8→9` on Web #77 — that one needs a build check).
-
-
-
-[5] This may be an API credits issue, depending on how who runs the dependabot.  I am out of cursor API credits (thus the massive usage percentage).  We will need to discuss this for what is actually necessary, along with some other work arounds for no API credits and what it means for production. 
+> HitM: Just B, it doesn't take much for them to do it, and I'm not particularly worried about it right now.  
 
 ---
 
-## 5. Discussion Points — Decisions & Open Questions
+### Tenant doc — "trust but verify" (from D5 ref [1])
 
-*Working section. HitM comments welcome inline below each point.*
+Small, ready to write once you confirm placement: add a **"Trust but verify"** core tenant
+(automations with live-access capability must verify flagged state against ground truth before
+escalating; never trust cached context as current). Where does this belong — `AGENTS.md` core
+tenets section, or a dedicated `governance/core_tenets.md`?
 
----
-
-### D1 — Cursor API Credits Exhausted
-
-**Context:** HitM confirmed Cursor API credits are exhausted (comment [5] on §4). This is the highest-priority operational constraint for today — it gates everything that would normally go to Cursor.
-
-**Impact:**
-- No Cursor for code, tests, or multi-file changes until billing resets
-- Dependabot queue cannot go to Cursor
-- VPS script fixes (nginx check, stale container prune) wait for reset
-- Claude Code fully available: plan authoring, governance, task files, content — zero Cursor cost
-- Antigravity fully available: single-file content changes with exact specs
-- cagent available: read-only VPS verification and shell-only operations
-
-**Decisions needed:**
-- When does Cursor billing reset?
-- Which work streams can run Claude Code + Antigravity + cagent only?
-- Any production-critical code fixes that can't wait for reset?
-
-> HitM:
+> HitM: This should be in Agents.  Along with documentation notes, such as maintaining vps checkout sheet, since I noticed that was a previous issue.  We will need to touch on this later, but that can be handled another day, seated discussion.  
 
 ---
 
-### D2 — Bill Recurrence Engine: Standalone Plan Required
+## 5. Work Order — 2026-06-29
 
-**Context:** HitM confirmed in comment [1] this requires its own plan. The current implementation infers bill cadence from `start_date`/`due_date` deltas in `finance/logic/updaters.py`. When F-009 ships recurring auto-deduct, bills with non-monthly cycles will miscalculate. Needs a first-class `cadence` field on `UpcomingExpense` plus API and frontend ripple.
+**✅ Completed this session**
 
-**What Claude Code can do today:** Author the plan README + task files at zero Cursor cost. Cursor executes when credits reset.
+- [x] Stale legacy containers pruned (cagent)
+- [x] Local security audit suite authored (T01–T04, registry ready)
+- [x] Bill recurrence engine plan authored (README + T01–T04, registry ready, blocks F-009)
+- [x] `vps_state.sh` / `gather_doc_context.sh` refactor **spec** written (D5)
+- [x] Both open anomalies dispatched (bill-interval → recurrence plan; nginx-check → Cursor chore)
+- [x] Registry header + bill-recurrence row updated
+- [x] **D6 resolved + executed (Claude Code side):** `strategy/` homes created (`projections/`, `parking_lot/`, `audits/`, `risk_register.md`); `strategy/README.md` rebuilt as the living-state index; `governance/meeting_artifact_protocol.md` written; AGENTS.md §1 gained trust-but-verify + documentation-maintenance tenets; design-docs restructure chore plan authored for Cursor (`PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29`); proposal marked resolved
 
-**Decisions needed:**
-- Suggested plan ID: `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` — confirm or rename
-- Does recurrence engine need to land *before* F-009 executes, or can F-009 ship and recurrence follow?
-- Priority relative to F-006 / F-009?
+**Claude Code — remaining**
 
-> HitM:
+- [ ] Daily summary + doc sweep prompt hardening per D5 spec Deliverable 3 (can do now)
+- [ ] Design-doc sweep automation prompt (now unblocked — boundary settled; downstream of the restructure)
 
----
+**Cursor — local execution (credits available for coding)**
 
-### D3 — nginx Check False Negative: Plain-Language Explanation + Decision
-
-**Context:** HitM noted in comment [2] this is outside their scope of knowledge.
-
-**Plain-language explanation:** `fm_server_beta.sh check` is a pre-deploy safety test that confirms the nginx proxy config has no syntax errors. It works by spinning up a throwaway nginx container and running `nginx -t` (nginx's own self-check command). The problem: the throwaway container is missing one config file (`00-resolver.conf`) that only exists inside the real running proxy. So the test always fails — not because nginx is broken, but because the test environment is missing a file. The live proxy is healthy; only the *test* is broken.
-
-**Options:**
-- **A) Fix the test** — mount `00-resolver.conf` into the throwaway container, or point the test at the live proxy container instead. Correct long-term. ~30 min Cursor chore when credits reset.
-- **B) Skip the nginx test in `check` for now** — unblocks the script but removes a safety check.
-
-Recommend A. No HitM technical action required — just confirm "fix it properly when credits reset."
-
-> HitM:
-
----
-
-### D4 — Stale Container Auto-Prune: Verify Then Fix
-
-**Context:** HitM noted in comment [3] that an agent already added auto-prune to `fm_server_beta.sh`. If old containers are still present, the logic isn't firing. If they're already gone, the daily summary was simply stale (same SHA issue as 2A/2B). cagent can confirm at zero cost.
-
-**Proposed action:** Send cagent to check `podman ps -a` for any exited containers. If old ones are still present, file a Cursor chore for billing reset. If gone, close this item.
-
-**Decisions needed:**
-- Approve cagent verification check?
-
-> HitM:
-
----
-
-### D5 — Documentation Accuracy Gap (Root Cause Discussion)
-
-**Context:** HitM manually ran doc sweeps after all deploys completed, then Antigravity swept again this morning — yet the daily summary still showed wrong VPS SHAs and wrong Celery state. Both were confirmed as false alarms by cagent. This is a systemic issue.
-
-**Likely root cause:** The automation reads from `daily_context.md` (a cached context file generated at sweep start), not from live VPS state at summary-write time. If that file was generated before the VPS rebuild completed, all downstream output inherits the stale data — even after a manual re-sweep, because the sweep re-reads the same cached file rather than re-querying the VPS.
-
-**What needs to change:**
-- Option A: `gather_doc_context.sh` SSHes the VPS on every run and writes live container + SHA state into context. Correct long-term.
-- Option B: Daily summary template explicitly flags VPS state as point-in-time with timestamp, so stale reads are visible rather than hidden.
-
-Recommend A. Claude Code writes the fix spec; Cursor implements when credits reset.
-
-**Secondary question:** Should `gather_doc_context.sh` be the canonical live-state source, or should a separate `vps_state.sh` snapshot run independently and feed into it?
-
-> HitM:
-
----
-
-### D6 — Design Doc Sweep: New Automation Scope
-
-**Context:** HitM noted in comment [4] a new automation is needed that actively writes/updates `design_docs/`. Current sweep corrects stale references but doesn't proactively generate or update docs to reflect shipped state.
-
-**Proposed scope:**
-- Target: `design_docs/10_Current_State/` first (highest drift risk)
-- Trigger: weekly or after feature plan closes
-- Output: updated runtime checklist, architecture current-state, shipped feature list
-- Separate prompt file from `daily_doc_sweep_prompt.md` to keep concerns isolated
-
-**Decisions needed:**
-- Which `design_docs/` sections have drifted most — confirm `10_Current_State/` as first target?
-- Weekly cadence or tied to plan completion?
-- Should Claude Code draft the prompt file today?
-
-> HitM:
-
----
-
-### D7 — Dependabot Queue (Revised for No-Credits Constraint)
-
-**Context:** 14 open Dependabot PRs (7 API, 7 Web). With Cursor credits out, the original recommendation (Cursor pass) is off the table.
-
-**Revised options:**
-- **A) HitM merges patch bumps manually from GitHub UI** — most are trivial (patch version deps, GitHub Actions bumps). Defer eslint `8→9` (Web #77) until Cursor resets for a proper build check. ~10 min.
-- **B) Defer all 14 until Cursor credits reset** — clean single-agent pass, zero manual effort.
-- **C) cagent checks CI status on each branch** — HitM decides per-PR based on pass/fail. Middle ground.
-
-> HitM:
-
----
-
-### D8 — Morning Meeting Format: Formalize Structure
-
-**Context:** HitM requested formalizing how morning sessions are structured so future sessions are consistent and don't require re-derivation.
-
-**Proposed standard sections:**
-1. Overnight wins (merged/deployed — from git, not cached context)
-2. Operational status (VPS live state — SSH-verified, not cached)
-3. Open anomalies (dispatch or dismiss each)
-4. Doc sweep findings
-5. Discussion points (HitM decisions needed)
-6. Work order (by agent + Cursor cost estimate)
-7. S1.B exit progress (updated only after feature pushes)
-
-**What needs to be built:** A meeting template file + a generation prompt that queries live state. Connects directly to D5 (documentation accuracy gap).
-
-**Decisions needed:**
-- Confirm this section structure, or adjust?
-- Should the morning meeting be generated by Antigravity (automated) or seeded by Claude Code (manual trigger at session start)?
-
-> HitM:
-
----
-
-## 6. Work Order (provisional — pending D1–D8 responses)
-
-**Claude Code (available now, zero Cursor cost):**
-- [ ] Bill recurrence engine plan README + task files (D2 — pending name confirm)
-- [ ] Update plan registry: F-005 + F-010 → Recently Completed
-- [ ] Fix spec for `gather_doc_context.sh` live VPS query (D5)
-- [ ] Design doc sweep prompt draft (D6 — pending scope confirm)
-- [ ] Morning meeting template file (D8)
-
-**cagent (available now, read-only):**
-- [ ] Verify stale containers actually pruned (D4 — pending approve)
-
-**HitM manual (GitHub UI, ~10 min if approved):**
-- [ ] Merge patch-level Dependabot PRs; defer eslint `8→9` (D7)
-
-**Cursor (defer to billing reset):**
+- [ ] `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` T01–T04
+- [ ] `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` T01–T04 (must land before F-009)
+- [ ] `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` T01–T03 (submodule docs-only, CPPR)
+- [ ] `vps_state.sh` + `gather_doc_context.sh` refactor (per D5 spec)
 - [ ] nginx check fix (D3)
-- [ ] `fm_server_beta.sh` prune logic fix if needed (D4)
-- [ ] `gather_doc_context.sh` VPS live-query implementation (D5)
-- [ ] eslint `8→9` Dependabot review (D7)
+- [ ] **Dependabot: review + merge the 14 PRs in one local chore pass (D7 → option B)**
+
+**HitM manual**
+
+- [ ] Weekly security-audit cron entry (Sunday 02:00) after Cursor delivers T01–T02
+
+**Resolved this turn**
+
+- D6 → **resolved and executed** (Claude Code side done; Cursor restructure plan ready) — see proposal Resolution block
+- D7 → **option B** (Cursor merges Dependabot locally)
+- Trust-but-verify tenant → **added to AGENTS.md §1 this session** (with documentation-maintenance note), per your Q5
+
+**Parked (own sessions)**
+
+- Morning-meeting template formalization (D8 — after D5/D6) → tracked at `strategy/parking_lot/morning-meeting-template.md`
+- White-hat AI for live security hardening → `strategy/parking_lot/white-hat-ai-security.md`
+- Versioning system rework → `strategy/parking_lot/versioning-system-rework.md`
+
+> *Dropped per HitM: the `context_handoff` file update — unnecessary, we're continuing in-thread.*
 
 ---
 
-## 7. S1.B Exit Progress Update
+## 6. S1.B Exit Progress
 
-After yesterday's feature push:
+After the 2026-06-28 feature push:
 
-| Gate | Before yesterday | After yesterday |
-|---|---|---|
-| Core ledger (F-001 balance, F-004 STS, F-005 goals, F-010 export) | Partial | **Closed** |
-| Legal + compliance | ✅ Done | — |
-| CI/CD | ✅ Done | — |
-| Security | ✅ Done | — |
-| Onboarding / UX polish | Partial | Wizard live, labels fixed |
-| Distribution | Not started | Research queued Q3 |
-| Android | Not started | Planning Q3 |
+
+| Gate                                        | Status                                                |
+| ------------------------------------------- | ----------------------------------------------------- |
+| Core ledger (F-001, F-004, F-005, F-010)    | ✅ Closed                                              |
+| Legal + compliance                          | ✅ Done                                                |
+| CI/CD                                       | ✅ Done                                                |
+| Security (local audit suite)                | 🔄 Plan ready — Cursor executes                       |
+| Bill recurrence engine (F-009 prerequisite) | 🔄 Plan ready — Cursor executes                       |
+| Onboarding / UX polish                      | Partial — wizard live, labels fixed, tour gaps remain |
+| Distribution                                | Not started — Q3                                      |
+| Android                                     | Not started — Q3                                      |
+
 
 Re-assess S1.B exit timeline end of July after F-009 + F-006 ship and first tester feedback.
