@@ -125,6 +125,42 @@ Replace the Run-Through Example (currently a 2026-04-era calendar/Reflex scenari
 
 ---
 
+## Step 7 — Anomaly queue triage
+
+Read the **Anomaly Queue** section from `strategy/automations/context/daily_context.md`.
+
+For each unreviewed anomaly log:
+
+1. **Quick resolution check:** Look at the git log (from the context file) for recent commits touching the file/path mentioned in the anomaly. If a commit in the last 7 days clearly addresses the described issue, mark the anomaly `resolved` with a one-line note citing the commit SHA.
+
+2. **Duplicate check:** If two anomaly logs describe the same underlying issue in the same file, note the duplicate in the sweep report. Don't merge them — flag for HitM to close the older one.
+
+3. **Owner assignment:** For each anomaly still `unreviewed` after the resolution check, suggest a dispatch target:
+   - `Cursor` — code-level fix, belongs in a sprint task or slice
+   - `Claude Code` — governance or planning doc concern
+   - `HitM` — judgment call, external service, or resource decision
+   - `VPS manual` — requires SSH investigation or container-level change
+   - `Defer` — real but low-stakes; add to next cleanup pass
+
+**Write permissions for this step:**
+- `strategy/anomalies/*.md` — update `status:` field from `unreviewed` to `resolved` only when there is clear commit evidence. Do not mark `wont-fix` — that's HitM's call.
+- Do not delete anomaly files.
+
+**Include in sweep report (Step 6):**
+
+```markdown
+## Anomaly Queue
+
+| File | Severity | Plan context | Status after triage | Dispatch to |
+|---|---|---|---|---|
+| YYYY-MM-DD_slug.md | medium | PLAN_ID / T## | unreviewed → Cursor | Add auth guard |
+| YYYY-MM-DD_slug.md | low | PLAN_ID / T## | resolved (abc1234) | — |
+```
+
+If there are no unreviewed anomalies: write "Anomaly queue: clear."
+
+---
+
 ## Step 6 — Write sweep report
 
 Write to `strategy/automations/reports/doc_sweep_YYYY-MM-DD.md`:

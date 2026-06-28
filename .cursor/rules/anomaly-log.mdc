@@ -1,0 +1,77 @@
+---
+description: Anomaly logging — when and how to log out-of-scope observations during task execution
+alwaysApply: true
+---
+
+# Anomaly Logging
+
+When you notice something outside your current scope that seems wrong, risky, or inconsistent — **don't skip it, don't fix it inline**. Log it.
+
+## Threshold: what qualifies
+
+**Log it:**
+- Broken behavior in code you're passing through (endpoint errors, bad imports, failed config)
+- Security concern — missing auth guard, exposed credential pattern, unvalidated input reaching a privileged path
+- Data integrity risk — incomplete migration, field constraint mismatch, FK reference to a table that seems gone
+- Configuration inconsistency — env var referenced in code but absent from `.env.example`; duplicate setting with conflicting values
+- A test that passes but obviously shouldn't based on what you observe in the surrounding code
+
+**Don't log:**
+- Code style, formatting, TODO comments, debug prints
+- Things already documented in `DECISION_LOG.md` or an existing plan task
+- Anything you have scope and confidence to fix yourself — fix it, note it in your task output
+- Subjective "I'd have done this differently" architectural opinions
+
+## How to log
+
+1. Create a file in `strategy/anomalies/` named: `YYYY-MM-DD_<plan-slug>_<short-desc>.md`
+2. Copy the template from `strategy/anomalies/anomaly_template.md`
+3. Fill in all fields — especially **Where** (file:line) and **What agent was doing**
+4. Set `status: unreviewed`
+5. Set `severity_guess` — be honest, not dramatic:
+   - `low` — inconsistency or smell, unlikely to cause immediate breakage
+   - `medium` — functional risk, wrong behavior possible in specific flows
+   - `high` — security, data loss, or production stability concern
+
+**Do not** change the anomalous code. Do not reference it in your PR description as something you fixed. The anomaly log is the only output.
+
+## Example
+
+```
+strategy/anomalies/2026-06-28_CI-CD-T01_orphaned-container-after-rebuild.md
+```
+
+```markdown
+---
+logged: 2026-06-28
+agent: cursor
+plan_context: PLAN_CROSS_CI_CD_2026-06-27 / T01
+status: unreviewed
+severity_guess: medium
+---
+
+## What was found
+
+The rebuild script tears down `fm-beta_celery-worker_1` but does not verify the old
+container is fully removed before starting the new one. On fast rebuilds, the old
+container is still terminating when the new one starts, causing a brief port conflict
+that silently swallows the first few tasks in the Celery queue.
+
+## Where
+
+`scripts/fm_server_beta.sh:87` — the `rebuild-color` function
+
+## What agent was doing
+
+Adding healthcheck workflow for T03; reviewed fm_server_beta.sh to understand what
+"healthy" means for the compose stack.
+
+## Why outside scope
+
+T01 scope is locked to GitHub Actions workflow files. fm_server_beta.sh is VPS deploy
+tooling, owned by a separate plan.
+
+## Possible owner
+
+Cursor / VPS deploy plan (or next blue-green maintenance pass)
+```

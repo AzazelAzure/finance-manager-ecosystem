@@ -113,6 +113,18 @@ If none of the above: omit this section entirely.]
 
 ---
 
+## Anomaly Queue
+
+[ONLY include this section if today's doc sweep report contains unresolved anomalies.
+Read `strategy/automations/reports/doc_sweep_YYYY-MM-DD.md` (today's) for the triage table.
+If the queue is clear, omit this section entirely.]
+
+| Date logged | Severity | Plan context | Summary | Dispatch to |
+|---|---|---|---|---|
+| YYYY-MM-DD | medium | PLAN_ID / T## | one-line description | Cursor / Claude / HitM |
+
+---
+
 ## Watchlist & Regressions
 
 [Items that need attention but aren't blockers yet. 3-5 items max. Mark severity.]
