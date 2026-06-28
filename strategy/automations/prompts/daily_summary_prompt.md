@@ -26,7 +26,7 @@ Before writing anything, gather state from these sources:
 4. **Recently merged PRs:** `gh pr list --state merged --limit 10` — what closed in the last 24h
 5. **Plan registry:** `governance/plan_registry.md` — what's In Progress, Draft, or Ready
 6. **Yesterday's summary:** most recent file in `strategy/daily_summaries/` — for continuity
-7. **VPS state reference:** `strategy/strategic-roadmap-reframe-53be/validation_gates.md` — current blue/green state if noted there; otherwise note "unknown — HitM to confirm"
+7. **VPS state (live, trust-but-verify):** Read the `## Live VPS State (SSH-verified)` block from `strategy/automations/context/daily_context.md` (populated by `gather_doc_context.sh` → `vps_state.sh`). Use its **capture timestamp**. If that block is missing, marked UNAVAILABLE, or older than this run, report VPS state as **UNKNOWN** — do **NOT** infer it from `Runtime_Signup_Sheet.md`, `validation_gates.md`, prior summaries, or git history. If you have SSH capability, prefer running `scripts/vps_state.sh` live over any cached value.
 
 ---
 
@@ -78,7 +78,11 @@ Omit routine dependency bumps, formatting fixes, or doc typos unless they unbloc
 
 ## VPS State
 
-[Current blue/green deployment state. Read from validation_gates.md or last known state.]
+[From the live `## Live VPS State (SSH-verified)` block only (Step 1 item 7). Always print the
+capture timestamp so staleness is visible. If live state is UNAVAILABLE, set every row to
+**UNKNOWN** and add the note below — never fill these from the Runtime Signup Sheet or prior context.]
+
+**State captured:** [ISO timestamp from the live block, or "UNAVAILABLE — VPS state UNKNOWN this run"]
 
 | Item | State |
 |---|---|
@@ -190,6 +194,7 @@ Before finishing:
 
 - **Concise over comprehensive.** If nothing changed in an area, omit that subsection rather than writing "No changes."
 - **Don't repeat yesterday.** The delta is what matters. Reference yesterday's summary with "per 2026-MM-DD summary" if continuity is needed.
+- **Trust but verify (AGENTS.md §1).** Before escalating any VPS/ops item to HIGH, verify it against live state — if you have SSH, query it; if not, mark UNKNOWN. Do not raise a HIGH alert from a cached or inferred value. (This rule exists because 2026-06-29 fired two false-alarm HIGHs from a stale cached context file.)
 - **Exact file paths in Key Changes** — `finance_manager_api/finance/models.py` not "the models file." Links are welcome if they help navigation.
 - **PR table is mandatory** even if no PRs are open (write "None open"). This is the single source of truth for HitM's PR queue.
 - **Do not** commit the summary file — HitM reviews before committing, or the commit happens separately.

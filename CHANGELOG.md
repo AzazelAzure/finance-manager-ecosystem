@@ -11,6 +11,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **D6 doc-structure consolidation (resolved + executed, parent side):** new `strategy/` homes `projections/`, `parking_lot/`, `audits/`, `risk_register.md`; `strategy/README.md` rebuilt as living-state index; `git mv` of success_projection + quarterly_reviews → `projections/`, operational_audit_report + improvement_tracker → `audits/`, with all inbound references (audit automations, legal docs) repointed.
 - **Governance:** `governance/meeting_artifact_protocol.md` added; plan registry updated; two anomalies dispatched (bill-interval → recurrence plan, nginx-check → Cursor chore).
 - **AGENTS.md:** §1 trust-but-verify + documentation-maintenance tenets added; stale bill-recurrence fact refreshed to point at the new plan.
+- **Prompt hardening (D5):** `daily_summary_prompt.md` + `daily_doc_sweep_prompt.md` now source VPS state live-only (timestamped, UNKNOWN on unavailability, never from the Runtime Signup Sheet/cache) with a trust-but-verify constraint; fixed stale `scripts/dev/gather_doc_context.sh` path. Added `strategy/meetings/cursor_execution_2026-06-29.md` (today's ordered Cursor dispatch list).
 
 ### 2026-06-28 — F-011 landing reflect-shipped + forward roadmap (T03+T04)
 
