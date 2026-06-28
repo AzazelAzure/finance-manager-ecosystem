@@ -4,10 +4,26 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-28 — F-011 landing reflect-shipped + forward roadmap (T03+T04)
+
+- **Plan execution:** `PLAN_CROSS_WEDGE_MARKETING_F011` T03+T04 completed. Web PR #90 merged; landing page updated for June production batch (F-001, F-004, F-005, F-010) and honest forward roadmap; HitM V3 approved; promoted **active green**.
+- **Governance:** Plan registry reconciled (F-004, F-010, production-UX fix moved to Recently Completed); wedge audit rows 1–3 filled; doc sweep report `strategy/automations/reports/doc_sweep_2026-06-28.md`.
+
+### 2026-06-28 — F-005 savings goals closeout
+
+- **Plan execution:** `PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05` completed across API and Web. API/Web task PRs merged to `main`; production VPS rebuilt inactive **blue**, applied migration `0016_savings_goal`, smoked blue, then switched active color **green -> blue**.
+- **Validation:** API/Web task validation and agent-review fixes completed before merge. Post-switch origin smokes: API health `200`, savings-goals route unauthenticated `401`, web `/app/goals` `200`; P2 monitoring completed with 6/6 health checks green and `TOTAL_NON2XX=0`.
+
+### 2026-06-28 — F-010 export and sharing closeout
+
+- **Plan execution:** `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` completed across API and Web. API/Web landing PRs merged to `main`; production VPS rebuilt inactive **green**, applied migration `0015_export_share_token_f010`, smoked green, then switched active color **blue -> green**.
+- **Validation:** API CI and Web CI green on landing PRs; local focused validation passed (`manage.py check`, `finance.tests.test_f010_export`, `npm run build`). Post-switch origin smokes: API health `200`, CSV/full export routes unauthenticated `401`, unknown share token `404`, web `/app/data` `200`.
+
 ### 2026-06-28 — Minimum viable CI/CD pipeline (PLAN_CROSS_CI_CD)
 
 - **`.github/workflows/health-check.yml`:** Self-hosted VPS uptime monitor in the parent repo — cron `*/10` + `workflow_dispatch`, curls the production web root and `/api/health/`; a non-2xx/3xx response fails the run so GitHub emails the owner. (PR #71 → finance-manager-ecosystem.)
 - **Plan execution:** `PLAN_CROSS_CI_CD_2026-06-27` moved Draft → In Progress. T01–T04 workflow files authored and PR'd across three repos: API CI (`uv` + `pytest` + `makemigrations --check` + Redis service, green: 285 pass/0 fail; finance-manager-api PR #43), Web CI (`tsc -b` + `vitest`, Node 22; finance-manager-web PR #71), Dependabot configs in API + Web. Branch protection (T04.SL3) and live health-check verification (T03.SL2) remain as manual steps gated on the first green run. See `plans/S1/S1.B/chore-ci-cd/runtime_handoff.md`.
+- **Closeout:** Health check failed from GitHub-hosted runners because Cloudflare returned `403` before reaching the VPS; PR #73 changed the workflow to check the VPS origin directly with `curl --resolve` + `-k`. Main dispatch `28306647911` passed (web `200`, API `200`). Branch protection is waived for the private API/Web repos because enabling it would require GitHub Pro or public repo visibility, both explicitly declined by HitM. `PLAN_CROSS_CI_CD_2026-06-27` is completed.
 
 ### 2026-06-26 — Redact compose `up` secret output
 

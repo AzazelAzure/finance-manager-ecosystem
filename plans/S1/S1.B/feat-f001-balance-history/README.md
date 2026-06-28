@@ -1,13 +1,13 @@
 ---
 plan_id: PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05
-status: draft
+status: completed
 priority: P2
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f001-balance-history/
-intended_branch: cursor/s1b/feat/f001-balance-history
+intended_branch: cur/s1b/feat/f001-balance-history
 parent_plan: plans/S1/S1.B/
 
 target_repos:
@@ -79,11 +79,20 @@ Persist and expose **per-account day-end closing balances** so users see balance
 
 ## 4) Phase Plan or Task List
 
-Author `tasks/T01_*.md` … when breaking out migrations vs API vs UI (template: `governance/plan_template.md`).
+| Task | File | Repo | Summary |
+| ---- | ---- | ---- | ------- |
+| T01 | [`tasks/T01_balance_snapshot_model.md`](./tasks/T01_balance_snapshot_model.md) | API | `BalanceSnapshot` model + migration |
+| T02 | [`tasks/T02_snapshot_population.md`](./tasks/T02_snapshot_population.md) | API | Nightly Celery job + backfill command |
+| T03 | [`tasks/T03_balance_history_api.md`](./tasks/T03_balance_history_api.md) | API | Read endpoint with date-range presets |
+| T04 | [`tasks/T04_dashboard_balance_chart.md`](./tasks/T04_dashboard_balance_chart.md) | Web | Dashboard line chart + range selector |
 
 ## 5) Execution Order
 
-TBD after task packets exist.
+T01 → T02 → T03 → T04 (API tasks sequential; web T04 after T03 API is on the feature branch).
+
+> **Historical coordination hold (2026-06-28):** F001 was briefly paused and serialized behind F004 (STS pay cycles / bill realism) because two agents shared the `finance_manager_api/` working tree. Ownership transferred cleanly before implementation resumed. See `DECISION_LOG.md` and `runtime_handoff.md`.
+
+> **Closeout (2026-06-28):** F001 shipped via API PR #56 and Web PR #84. VPS rebuilt inactive **blue**, applied migration `0014_balance_snapshot_f001`, backfilled snapshots, passed inactive and active smoke, and promoted **blue** active. See `runtime_handoff.md`.
 
 ## 6) Verification Gates
 

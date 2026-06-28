@@ -1,0 +1,60 @@
+# T01.SL3 — Money float audit
+# Date: 2026-06-26T01:13Z
+# Command: rg -n "toFixed|parseFloat|Math\.(round|floor|ceil)|\* 0\.01|/ 100" src/ (excl. css/svg)
+
+## RAW HITS
+src/offline/transactionOutboxOverlay.ts:40:  const v = parseFloat(t);
+src/offline/transactionOutboxOverlay.ts:45:  return Number(n.toFixed(2));
+src/offline/transactionOutboxOverlay.ts:277:    amount: signed.toFixed(2),
+src/offline/transactionOutboxOverlay.ts:322:  const signedStr = signedAmountFromTxLike(nextAmount, String(nextType)).toFixed(2);
+src/offline/transactionOutboxOverlay.ts:747:    amount: s.amount.toFixed(2),
+src/offline/calendarOffline.ts:9:  return Number(n.toFixed(2));
+src/offline/calendarOffline.ts:13:  const raw = parseFloat(String(amountStr).replace(/,/g, ""));
+src/offline/calendarOffline.ts:106:      heat_intensity: heatMax > 0 ? Math.round((v.heat / heatMax) * 100) : 0,
+src/offline/visualizationOffline.ts:6:  return Number(n.toFixed(2));
+src/offline/visualizationOffline.ts:10:  const raw = parseFloat(String(amountStr).replace(/,/g, ""));
+src/lib/money.ts:10:  return `${n.toFixed(2)} ${currency}`;
+src/components/dashboard/TagPie.tsx:50:   ` (${(payload.percent * 100).toFixed(1)}%)`
+src/components/dashboard/TagPie.tsx:117:  `${((row.value / total) * 100).toFixed(1)}%`
+src/components/dashboard/CategoryPie.tsx:49:  ` (${(payload.percent * 100).toFixed(1)}%)`
+src/components/dashboard/CategoryPie.tsx:116: `${((row.value / total) * 100).toFixed(1)}%`
+src/state/auth.test.ts:52: Math.floor(Date.now() / 1000) + 3600    # JWT exp (time, not money)
+src/pages/upcoming/UpcomingDeepDivePage.tsx:107: Math.round((recurringCount / rows.length) * 100)  # count %
+src/pages/transactions/CalendarPage.tsx:371: Math.round(8 + cell.normalized * 82)  # heatmap intensity %
+
+## CLASSIFICATION
+A) DISPLAY-ONLY formatting (LOW risk — input is an already-rounded API
+   decimal string; no compounding):
+   - src/lib/money.ts:10  formatMoney → `${Number(value).toFixed(2)} ${currency}`
+
+B) REAL MONEY ARITHMETIC on JS floats (GENUINE risk — sum/sign/round of
+   amounts in the offline path; 1-centavo drift possible):
+   - src/offline/transactionOutboxOverlay.ts (parseFloat, round2, signed sums)
+   - src/offline/calendarOffline.ts          (round2 + parseFloat on amounts)
+   - src/offline/visualizationOffline.ts      (round2 + parseFloat on amounts)
+
+C) NON-MONEY numerics (SAFE — percentages, heatmap intensity, JWT time):
+   - TagPie.tsx / CategoryPie.tsx percentage labels (toFixed(1) on %)
+   - UpcomingDeepDivePage.tsx recurring-count %
+   - CalendarPage.tsx heatmap intensity %
+   - auth.test.ts JWT expiry (seconds)
+
+## ACTIONS TAKEN (this slice)
+- Added `.money-value` / `.money` utility (font-variant-numeric: tabular-nums)
+  in src/index.css.
+- Applied tabular figures to the central KPI value node (.ui-kpi h3) in
+  src/components/ui/ui.css — covers all dashboard balance/amount KPIs.
+
+## DEVIATION FROM TASK SPEC (flagged for plan owner)
+T01.SL3 acceptance asks to install currency.js/Dinero.js wherever monetary
+floats are found. NOT done in this slice, deliberately:
+  - The genuine float math lives in the OFFLINE path (outbox/calendar/viz
+    overlays). Migrating that to currency.js is a behavior-bearing change to
+    PWA sync logic, which this plan must NOT regress (PWA class B), and it
+    needs its own test surface.
+  - Bundling that migration into a foundational tokens PR violates
+    "one coherent intent per change set" and risks the offline contract.
+RECOMMENDATION: open a dedicated follow-up slice (e.g. T01.SL3b or a separate
+fix plan) to introduce integer-centavo money handling (currency.js) across
+the three offline overlay modules, with offline-sync regression tests.
+The display path (formatMoney) can adopt the same helper at that time.

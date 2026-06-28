@@ -4,10 +4,25 @@ Hard limit: 200 lines. Keep current.
 
 ## Status snapshot (2026-06-28)
 
-Plan: `in_progress`. Workflow files for all four tasks authored, pushed, and PR'd.
-**API CI and Web CI are confirmed GREEN on their branches.** Branch protection
-(T04.SL3) and live health-check verification (T03.SL2) are the remaining
-HitM/manual steps — both intentionally gated on a first green run on `main`.
+Plan: `completed`. Workflow files for all four tasks authored, pushed, PR'd,
+merged, and deployed to the VPS. **API CI and Web CI are confirmed GREEN on
+`main`.** Dependabot opened the first API/Web dependency PR batches.
+
+Closeout criteria status:
+
+- **T03.SL2 complete:** the first dispatch `28306433192` failed with
+  web `403`. Root cause: `thehivemanager.com` / `api.thehivemanager.com` are
+  behind **Cloudflare**, which blocks GitHub-runner datacenter IPs at the edge
+  before the request reaches the VPS. Fix (PR #73,
+  branch `cur/s1b/fix/health-check-cloudflare-bypass`) pins each host to the VPS
+  origin IP via `curl --resolve` + `-k` (origin uses an internal cert), giving a
+  true origin-up signal. Verified GREEN on the branch: dispatch `28306551715`
+  returned web `200` and `/api/health/` `200`. PR #73 merged 2026-06-28, then
+  main dispatch `28306647911` returned web `200` and `/api/health/` `200`.
+- **T04.SL3 waived by HitM:** API/Web branch protection API returns
+  `403` ("Upgrade to GitHub Pro or make this repository public to enable this
+  feature") for private repos. HitM explicitly declined GitHub Pro and public
+  repo visibility on 2026-06-28; waiver accepted for the closed-loop beta.
 
 ## PRs opened (executor: Cursor; merge: HitM)
 
@@ -25,8 +40,8 @@ HitM/manual steps — both intentionally gated on a first green run on `main`.
 - **Web CI** (`.github/workflows/web-ci.yml`): `npm ci` → `tsc -b` → `vitest run`
   on Node 22. Dependabot: `npm` + actions.
 - **Health check** (parent `.github/workflows/health-check.yml`): cron `*/10` +
-  `workflow_dispatch`; curls web `https://thehivemanager.com:8443` and API
-  `https://api.thehivemanager.com:8443/api/health/`.
+  `workflow_dispatch`; checks web and API origin health directly with
+  `curl --resolve` to bypass Cloudflare runner blocks.
 
 ## Deviations from task templates (all intentional, documented in PRs)
 
@@ -69,21 +84,24 @@ Result: API CI `test` job = **success** on both push and pull_request runs
 Minor follow-up: `actions/checkout@v4` + `astral-sh/setup-uv@v6` emit a Node 20
 deprecation warning (auto-run on Node 24); non-blocking, bump when convenient.
 
-## Remaining steps (HitM / manual — gated on first green run)
+## Remaining steps
 
-- **T03.SL2** — manual `workflow_dispatch` of Health Check against the live VPS.
-  VERIFY on first run: (a) public port is `:8443` (not `:443`); (b) TLS validates
-  from a clean runner — if the cert is internal/self-signed, add `-k` to the curl
-  calls; (c) web returns 200/301/302 and `/api/health/` returns 200. Capture
-  evidence to `evidence/T03.SL2_health_check_pass.png`.
-- **T04.SL3** — after T01/T02 have a green run on `main`, enable branch protection:
-  API required check = job `test`; Web required check = job `ci`. "Require branches
-  up to date." Do NOT include administrators (emergency hotfix path). Then a
-  docs-only test PR should show the required check before merge.
-- **Evidence** — capture Actions-tab screenshots: `evidence/T01.SL3_api_ci_run.png`,
-  `evidence/T02.SL2_web_ci_run.png`.
-- **PR template** (§7 V0) — once checks are live, confirm `pull_request_template.md`
-  "Required Checks" names match `test` / `ci`; edit only if they differ.
+None for this plan. T04.SL3 is waived for private repos without GitHub Pro.
+
+## Historical notes
+
+- **Evidence** — optional but useful: capture Actions-tab screenshots for API
+  run `28305288437`, Web run `28305298483` or `28305751301`, failed Health
+  Check run `28306433192`, and fixed main Health Check run `28306647911`.
+- **PR template** (§7 V0) — checked API/Web on `main`; no repo-local PR template
+  files found, so no template edit is required unless a parent/global template is
+  later introduced.
+
+## Runtime owner (released 2026-06-28)
+
+- VPS ownership **released** in `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
+- VPS left **live** on active **blue** (no teardown). Next agent needing
+  `fm_server_beta.sh` lifecycle must claim ownership in the signup sheet first.
 
 ## Notes
 

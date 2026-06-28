@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05
-status: draft
+status: completed
 priority: P1
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f010-export-sharing/
@@ -78,7 +78,15 @@ Ship **export** (CSV / structured backup minimum) and **sharing** (PDF month sum
 
 ## 4) Phase Plan or Task List
 
-Export MVP → security review → sharing MVP → polish.
+| Task | Slug | Scope | Repos |
+|---|---|---|---|
+| T01 | csv-export-api | `GET /finance/export/transactions/csv/` — scoped CSV download | api |
+| T02 | full-backup-export-api | `GET /finance/export/full/` — full JSON backup | api |
+| T03 | export-ui-datahub | Export section in DataHubPage; offline-aware | web |
+| T04 | share-token-api | ExportShareToken model + create/access/revoke endpoints | api |
+| T05 | share-ui | Share panel in DataHubPage; copy link, revoke | web |
+
+**Execution order:** T01 → T02 → T03 (API must land before web); T04 → T05 (same reason). T01–T03 and T04–T05 are two independent chains; ship in a single branch sequentially.
 
 ## 5) Execution Order
 

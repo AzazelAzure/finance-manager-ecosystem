@@ -25,3 +25,17 @@
 ## End-to-end email proof
 
 Not run on VPS in this session (no SMTP credentials in agent environment). Use `python manage.py sendtestemail` on VPS after env wiring.
+
+## Closeout addendum — 2026-06-28
+
+HitM accepted F-014 as complete for the closed-loop beta after the VPS was
+updated to latest `main`, rebuilt on inactive **green**, smoked, and switched
+active `blue -> green`. Public web and API health endpoints returned `200`, and
+the `fm-beta` stack now includes shared `celery-worker` and `celery-beat`
+containers.
+
+The closeout decision explicitly does not require secret rotation or additional
+Proton inbox screenshots during this one-tester beta window. Pre-fix leaked
+compose output logs were scrubbed, terminal history was cleared, and
+`scripts/fm_server_beta.sh` now redacts compose output across rebuild, smoke,
+switch, and log paths.

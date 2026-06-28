@@ -1,9 +1,10 @@
 ---
 plan_id: PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05
-status: completed
+status: in_progress
 priority: P2
 created: 2026-05-05
 updated: 2026-06-28
+# heartbeat: 2026-06-28 — T03/T04 completed, merged PR #90, promoted active green
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f011-wedge-landing-hero/
@@ -80,6 +81,14 @@ Keep **landing**, **hero**, **value props**, and **feature showcase** aligned wi
 ## 4) Phase Plan or Task List
 
 Rolling: link to child tasks `tasks/Txx_post_f00y_ship.md` as features land (author per release).
+
+| Task | Scope | Status |
+|---|---|---|
+| [`T02`](./tasks/T02_feature-showcase-update.md) | Feature showcase + hero copy refresh (2026-06-28 batch) | superseded → T03 |
+| [`T03`](./tasks/T03_landing-reflect-shipped.md) | Landing reflects shipped reality — VersionHistory / FeatureShowcase / ValueProps / Hero | **completed** 2026-06-28 (PR #90) |
+| [`T04`](./tasks/T04_landing-roadmap-future.md) | Honest forward roadmap — Roadmap section | **completed** 2026-06-28 (PR #90) |
+
+**Release note:** T03 + T04 ship together on one web branch / PR / inactive-color deploy (same landing surface + same `i18n.ts`). They cross-reference `strategy/priority_matrix_2026-06-28.md` (what shipped vs what's next) and `governance/plan_registry.md` (Recently Completed) for honesty.
 
 ## 5) Execution Order
 

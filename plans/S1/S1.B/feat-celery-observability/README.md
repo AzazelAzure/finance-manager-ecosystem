@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_CELERY_OBSERVABILITY_2026-06-26
-status: in_progress
+status: completed
 priority: P1
 created: 2026-06-26
-updated: 2026-06-27
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-celery-observability/
@@ -196,10 +196,18 @@ Alert email event_type: `SECURITY_PROBE_DETECTED`, severity: `high`.
 
 | Task | File | Slices | Surface | Status |
 |------|------|--------|---------|--------|
-| **T01** | `tasks/T01_from_address_routing.md` | T01.SL1 | FROM header per event type; smoke test all three addresses | **code complete** — live Proton SMTP smoke blocked on HitM credentials |
-| **T02** | `tasks/T02_request_middleware.md` | T02.SL1–SL2 | Redis INCR middleware; IP hash; endpoint normalization; UA classification | **code complete** — VPS `redis-cli` verification pending deploy |
-| **T03** | `tasks/T03_analytics_aggregation.md` | T03.SL1–SL2 | Celery hourly rollup → metrics JSONL; daily + weekly summary JSON | **code complete** — `/var/log/fm_api/analytics/` volume + live beat smoke pending deploy |
-| **T04** | `tasks/T04_security_alerts.md` | T04.SL1 | Probe threshold checks every 15 min → notify_operator | **code complete** — manual Redis seed smoke pending deploy |
+| **T01** | `tasks/T01_from_address_routing.md` | T01.SL1 | FROM header per event type; smoke test all three addresses | **completed** — HitM accepted closed-loop beta closeout without extra inbox screenshots |
+| **T02** | `tasks/T02_request_middleware.md` | T02.SL1–SL2 | Redis INCR middleware; IP hash; endpoint normalization; UA classification | **completed** — live VPS deploy verified Redis/Celery services running with API health green |
+| **T03** | `tasks/T03_analytics_aggregation.md` | T03.SL1–SL2 | Celery hourly rollup → metrics JSONL; daily + weekly summary JSON | **completed** — shared `celery-worker` and `celery-beat` deployed in the active `fm-beta` stack |
+| **T04** | `tasks/T04_security_alerts.md` | T04.SL1 | Probe threshold checks every 15 min → notify_operator | **completed** — implementation merged; forced alert seed is a future operator smoke, not a closeout blocker |
+
+### Live closeout (2026-06-28)
+
+- HitM accepted F-014 / Celery observability as complete for the closed-loop beta.
+- Latest `main` was rebuilt onto inactive **green**, smoked, then switched active `blue -> green`.
+- Public endpoints returned `200`: `https://thehivemanager.com:8443` and `https://api.thehivemanager.com:8443/api/health/`.
+- `fm-beta` runtime includes shared `celery-worker` and `celery-beat` containers running with the active deployment.
+- Secret-redaction follow-up completed before closeout; pre-fix leaked compose output logs were scrubbed and no secret rotation was required for this one-tester beta window.
 
 ### T01 live smoke (HitM gate — not done in code session)
 

@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05
-status: draft
+status: completed
 priority: P2
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f005-savings-goals/
@@ -76,7 +76,14 @@ Goals with target amount + date, per-cycle required savings, live recalculation 
 
 ## 4) Phase Plan or Task List
 
-TBD task files: schema → API → web widget → milestone UX.
+| Task | Slug | Scope | Repos |
+|---|---|---|---|
+| T01 | savings-goal-model | `SavingsGoal` model + migration | api |
+| T02 | savings-goal-api | CRUD endpoints + per-cycle recalculation logic + tests | api |
+| T03 | goals-management-page | `/app/goals` page — full CRUD UI, offline-aware | web |
+| T04 | dashboard-goals-widget | `GoalsWidget` on dashboard — top 3 unmet goals, link to goals page | web |
+
+**Execution order:** T01 → T02 (model must exist before API); T03 → T04 (page must exist before widget links to it). Ship as a single branch: api tasks first, then web.
 
 ## 5) Execution Order
 
@@ -103,3 +110,21 @@ Registry completion; optional F-011 marketing bullet when shipped.
 | Risk | Trigger | Rollback | Owner |
 | ---- | ------- | -------- | ----- |
 | User confusion on “new pace” copy | negative framing | Copy pass; flag | web |
+
+## 11) Closeout Evidence
+
+Strategic impact:
+
+- F-005 shipped multi-goal savings CRUD, target-date pacing, per-cycle savings guidance, PWA-aware goals page, and dashboard progress widget across API and Web.
+- API/Web task PRs landed separately per CPPR task discipline: API #61/#62 and Web #88/#89.
+
+Deployment evidence:
+
+- Active color now: **blue**.
+- Cutover timestamp: `2026-06-28T13:16:00+08:00`.
+- Post-cutover smoke: pass.
+- Monitoring window: 15 minutes complete; 6/6 spaced API health checks returned `200`, `api-blue` stayed healthy, `TOTAL_NON2XX=0`.
+- Manifest identity: API `42bfd0e`, Web `8c493b6`.
+- Migration: `0016_savings_goal` applied `[X]` on the shared DB; additive table, green rollback safe.
+- Smoke targets: `/api/health/` -> `200`; `/finance/savings-goals/` unauth -> `401`; web `/app/goals` -> `200`.
+- Rollback fired: no; inactive **green** retained warm.

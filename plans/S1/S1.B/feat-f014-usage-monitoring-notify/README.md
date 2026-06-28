@@ -1,9 +1,9 @@
 ---
 plan_id: PLAN_CROSS_USAGE_MONITORING_NOTIFY_2026-06-26
-status: in_progress
+status: completed
 priority: P1
 created: 2026-06-26
-updated: 2026-06-27
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f014-usage-monitoring-notify/
@@ -163,12 +163,15 @@ T03 and T04 may proceed in parallel after T02 is merged.
 
 ## 8) Strategic Phase Impact
 
-When closing this plan, executor must:
-- [ ] Confirm `python manage.py check --deploy` clean
-- [ ] Confirm at least one real notification received in Proton inbox end-to-end
-- [ ] Confirm `DailyUsageSnapshot` has at least one row from Celery beat rollup
-- [ ] Update `governance/plan_registry.md` status to `completed`
-- [ ] Post completion summary to IDE Chat including: SMTP config path used, Celery service name in docker-compose, sample notify email screenshot
+Closed by HitM decision on 2026-06-28 for the closed-loop beta after live VPS promotion:
+
+- [x] Latest `main` deployed to active **green** through blue/green rebuild and smoke.
+- [x] Public web and API health endpoints returned `200`.
+- [x] Redis, shared `celery-worker`, and `celery-beat` are running in the `fm-beta` stack.
+- [x] `governance/plan_registry.md` status moved to `completed`.
+- [x] Secret-redaction follow-up completed before closeout; pre-fix leaked compose output logs were scrubbed and no secret rotation was required for this one-tester beta window.
+
+Deferred/non-blocking evidence: additional Proton inbox screenshots and forced DAU threshold samples can be captured during the next operator smoke, but are no longer closeout blockers for F-014.
 
 ## 9) Completion Criteria
 

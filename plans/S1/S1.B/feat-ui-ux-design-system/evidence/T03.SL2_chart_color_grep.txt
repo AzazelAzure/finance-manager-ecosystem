@@ -1,0 +1,27 @@
+# T03.SL2 — Chart Color Grep
+# Branch: cur/s1b/feat/ui-ux-design-system
+# Date: 2026-06-26
+# Command:
+#   rg -n '#[0-9a-fA-F]{3,8}|--chart-|stroke="green"|fill="green"|stroke="#[0-9a-fA-F]|fill="#[0-9a-fA-F]' src/components/dashboard
+
+RESULT: PASS
+
+No hardcoded hex chart colors or legacy --chart-* references remain in
+src/components/dashboard.
+
+Changes:
+- FlowChart incoming/outgoing/leaks now use:
+  - var(--color-positive)
+  - var(--color-negative)
+  - var(--color-warning)
+- SpendChart spend/income now use:
+  - var(--color-negative)
+  - var(--color-positive)
+- Pie palette now uses:
+  - var(--color-brand-primary)
+  - var(--color-positive)
+  - var(--color-warning)
+  - var(--color-negative)
+  - var(--color-pending)
+  - var(--color-neutral)
+  - color-mix(...) combinations derived from the same semantic tokens.

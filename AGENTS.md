@@ -47,6 +47,7 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 - **READ FIRST:** every plan README lists **≤7 files** to read before work starts.
 - **`DECISION_LOG.md`** is append-only; check before any design choice.
 - **`runtime_handoff.md`** hard limit: **200 lines**.
+- **Anomaly logging:** If you notice something outside your current scope that seems broken, risky, or inconsistent — don't fix it inline, don't skip it. Log it to `strategy/anomalies/` using `.cursor/rules/anomaly-log.mdc`. Logs are swept nightly and dispatched via the daily summary.
 - **i18n** is part of done; deferred coverage must be tracked as a follow-up slice.
 - Governed scope: one slice per agent turn when possible; **ask clarifying questions** instead of guessing underspecified product scope. Bias slices to **one web route/page or one API model/domain** per pass.
 
@@ -152,8 +153,26 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - Admin huddle artifacts belong under `strategy/huddles/`, not `plans/`.
 - Resolve standby-queue PRs and partial code before VPS inactive-color deploy/test.
 - Re-validate features already marked "completed" against definition of done; confirm claimed implementation actually exists before trusting completion status.
+- Verify UI fixes on `jsdevtesting.thehivemanager.com` (inactive color) before rebuilding/flipping active production.
+- When multiple agents share VPS access, enforce runtime signup-sheet ownership and handoff (`design_docs/30_Releases/Runtime_Signup_Sheet.md`) to avoid cross-contamination.
+- Legacy S1.B plans using the old schema: use branch prefix `cur/s1b/feat/<slug>` per §2 and treat `slack_gates.pre_merge: required` as `manual_gates.pre_merge: required`.
+- One agent per sub-repo at a time: avoid two agents concurrently modifying the same sub-repo (especially API); pause or revert one side to prevent code collisions.
+- CPPR per task: open one PR per plan task and do not batch multiple tasks into a single PR; provide PRs in explicit merge order when several are ready.
+- New feature/task work must include PWA/offline functionality as part of done, not deferred.
+- Login UX: route already-authenticated users straight to the dashboard (no interstitial "already logged in" page); trigger the onboarding wizard only on new-user creation, not for existing users.
+- Treat VPS deploy/cutover (inactive-color rebuild, smoke, color switch) and parent-repo governance closeout (plan registry, parent CHANGELOG, submodule pointers) as separate handoffs unless explicitly combined.
 
 ## Learned Workspace Facts
 
-- VPS production blue-green ops use `scripts/fm_server_beta.sh` (`status`, `rebuild-color`, `smoke`, `switch`); local dev container lifecycle uses `scripts/fm_docker.sh` and `scripts/fm_services.sh`.
+- VPS production blue-green ops use `scripts/fm_server_beta.sh` on the VPS (`status`, `rebuild-color`, `smoke`, `switch`); from the parent repo use `scripts/sprint_verify.sh` to SSH, pull API/Web, rebuild inactive color, and smoke (does not flip active color). Local dev uses `scripts/fm_docker.sh` and `scripts/fm_services.sh`.
+- Django REST routes are mounted under `/finance/` (e.g. `/finance/savings-goals/`), not `/api/finance/` — VPS origin smokes must use the correct prefix with `curl --resolve` on `:8443`.
 - Blue-green rebuild scripts must include Celery workers and actively tear down orphaned/outdated containers (recurring orphaned-container problem during color switches).
+- Production hostnames: web `thehivemanager.com`, API `api.thehivemanager.com`; public HTTPS via blue-green proxy on host `:8443`.
+- VPS `~/finance_manager` deploys from standalone `finance_manager_api/` and `finance_manager_web/` git clones — parent submodule pointers do not drive VPS pulls.
+- VPS `docker-compose.bluegreen.yml` and `scripts/fm_server_beta.sh` are manually maintained on the host (with `.bak` backups), not auto-synced from parent `main`; `podman-compose` can echo interpolated `--env` secrets to stderr on any compose path (smoke/exec/build/config/logs), not only `up` — all compose invocations need stderr redaction.
+- API repo uses `uv` + `pyproject.toml` + `uv.lock` for dependencies (not `requirements.txt`/pip); CI should use `uv sync --frozen`.
+- GitHub Actions workflows should pin third-party actions to full commit SHAs and set least-privilege `permissions` (e.g. `contents: read`).
+- Public hostnames are proxied through Cloudflare; GitHub Actions curls to those URLs can get edge `403` from datacenter IPs — VPS uptime checks should hit origin on `:8443` via `curl --resolve` (and `-k` for internal TLS).
+- `main` branch protection is waived while repos stay private without GitHub Pro (explicit HitM decision).
+- Bills currently support only monthly intervals; supporting differing bill cycles (non-monthly recurrence) requires a larger API revamp, tracked as future work via the anomaly log.
+- Currently a closed loop with one beta tester; secret rotation is deferred — scrub leaked secrets from logs and clear terminal history instead, with rotation enforced later.

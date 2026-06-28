@@ -107,25 +107,31 @@ Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/pla
 | `payment-provider-research/` | 🟡 draft | PayMongo primary, Xendit contingency. Blended wallet MDR (~2.0%) |
 | `ai-economics-deep-dive/` | ⏸ **shelved** | Paused until entity + payment research lands |
 | `distribution-channel-research/` | 🟡 draft | Priority Matrix + SEO priority Matrix drafted |
-| `wedge-consistency-audit/` | 🟡 draft | Audit report template + surface map drafted; execution pending |
-| `pwa-install-offline-sync-research/` | ✅ **completed** | D0–D4 locked. **D4-exec** PWA validation **PASS** (HitM sign-off 2026-06-16) |
+| `wedge-consistency-audit/` | 🔄 **in_progress** | F-011 T03+T04 pass rows 1–3 ✅ (2026-06-28); full audit rows 4–12 pending |
+| `pwa-install-offline-sync-research/` | ✅ **completed** | D0–D4 locked. PWA validation **PASS** (HitM sign-off 2026-06-16) |
 | `pwa-implementation-branch/` | ✅ **completed** | Merged 2026-06-16. Advanced offline read/write and outbox sync verified |
-| `feat-f007-walkthrough-sandbox/` | 🟡 draft | Sandbox tour overlay + tooltip Help Mode redesign. **Untracked plan; local WIP edits in web** |
-| `feat-legal-pages/` | ✅ **completed** | Merged 2026-06-27. Public legal pages `/privacy`, `/terms`, `/cookies` live in code. |
-| `feat-signup-clickwrap/` | ✅ **completed** | Merged 2026-06-27. Clickwrap checkbox and AppProfile database tracking. |
-| `feat-email-comms/` | ✅ **completed** | Merged 2026-06-27. Support confirmation emails with 5min cooldown. |
-| `feat-ui-ux-test-seed/` | ✅ **completed** | Merged 2026-06-27. `create_ux_testuser` management command. |
-| `chore-ci-cd/` | 🟡 draft | Added 2026-06-27. Minimum viable CI/CD pipeline. |
+| `feat-f007-walkthrough-sandbox/` | 🟡 draft | Sandbox tour overlay + tooltip Help Mode redesign |
+| `feat-legal-pages/` | ✅ **completed** | Merged 2026-06-27. Public legal pages live |
+| `feat-signup-clickwrap/` | ✅ **completed** | Merged 2026-06-27. Clickwrap + AppProfile tracking |
+| `feat-email-comms/` | ✅ **completed** | Merged 2026-06-27. Support confirmation emails |
+| `feat-ui-ux-test-seed/` | ✅ **completed** | Merged 2026-06-27. `create_ux_testuser` command |
+| `chore-ci-cd/` | ✅ **completed** | API/Web CI green; health-check cron; branch protection waived (private repo) |
+| `fix-production-ux-2026-06-28/` | ✅ **completed** | PRs #51 (api) + #80 (web); promoted active blue |
+| `feat-f011-wedge-landing-hero/` | 🔄 **living** | T03+T04 merged PR #90; promoted active green 2026-06-28 |
 
 ### Feature Plans (F-001 through F-013)
 
 | F-id | Status | Notes |
 |---|---|---|
-| F-007 Guided Walkthroughs | ✅ **completed** | Merged 2026-06-16 (polish plan also merged via PR #56; tour fixes merged 2026-06-27) |
-| F-011 Wedge Landing Page | ✅ **completed** | Merged 2026-06-13 (landing page UX + SEO overhaul) |
-| F-012 Support Intake | ✅ **on `main`** | Landed `dc04179` (API `277228a`, Web `9b2ecbe`) |
-| F-013 User Activity Logs | ✅ **on `main`** | Merged 2026-06-27 via parent `86f7063` (F-013 backend + F-012 polish) |
-| F-001–F-006, F-008–F-010 | 🟡 draft | No active execution |
+| F-001 Balance History | ✅ **completed** | Merged/deployed 2026-06-28; migration `0014`; dashboard chart |
+| F-004 STS + Bill Realism | ✅ **completed** | Merged/deployed 2026-06-28; migrations `0012`–`0013`; pay-cycle STS |
+| F-005 Savings Goals | ✅ **completed** | Merged/deployed 2026-06-28; migration `0016`; goals page + widget |
+| F-010 Export & Sharing | ✅ **completed** | Merged/deployed 2026-06-28; migration `0015`; Data Hub UI |
+| F-007 Guided Walkthroughs | ✅ **completed** | Merged 2026-06-27 (polish + tour fixes) |
+| F-011 Wedge Landing | 🔄 **living** | T01 (2026-06-13) + T03/T04 pass (2026-06-28, PR #90) on production |
+| F-012 Support Intake | ✅ **completed** | Live on VPS with Celery worker/beat |
+| F-013 User Activity Logs | ✅ **completed** | Live on VPS |
+| F-002, F-003, F-006, F-008, F-009 | 🟡 draft | Tier 1–2 per `strategy/priority_matrix_2026-06-28.md` |
 | **Sprint execution order huddle** | ⬜ Draft | 2026-05-22 `DECISIONS.md` not filled in |
 
 ---

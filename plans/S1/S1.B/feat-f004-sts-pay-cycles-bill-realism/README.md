@@ -1,13 +1,13 @@
 ---
 plan_id: PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05
-status: draft
+status: in_progress
 priority: P1
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-06-28
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f004-sts-pay-cycles-bill-realism/
-intended_branch: cursor/s1b/feat/f004-sts-pay-cycles-bill-realism
+intended_branch: cur/s1b/feat/f004-sts-pay-cycles-bill-realism
 parent_plan: plans/S1/S1.B/
 
 target_repos:
@@ -22,7 +22,7 @@ blocks: []
 parallel_safe_with: []
 conflicts_with: []
 
-slack_gates:
+manual_gates:
   pre_execution: optional
   pre_merge: required
   pre_close: optional
@@ -93,13 +93,32 @@ Add rows here as new companion needs appear; keep **one plan_id** until HitM spl
 - [`../../FEATURE_IDEAS.md`](../../FEATURE_IDEAS.md) §F-004.
 - Current snapshot + upcoming expense handlers in API; dashboard KPI copy in web.
 
-## 4) Phase Plan or Task List
+## 2) Read First
 
-Suggested waves: (A) data model + migrations, (B) API + tests, (C) STS engine integration, (D) web forms + mobile layout, (E) F-003 read contract, (F) polish + feature flag.
+1. `DECISION_LOG.md` — pay-cycle and partial-pay field locks
+2. `runtime_handoff.md` — active task, VPS sublet posture
+3. `design_docs/20_Roadmap/Volatile_Bills_and_Partial_Payment_Rulebook.md`
+4. `finance_manager_api/finance/models.py` — `AppProfile`, `UpcomingExpense`
+5. `finance_manager_api/finance/logic/updaters.py` — STS bill selection (`_bills_unpaid_due_in_profile_current_month`)
+6. `finance_manager_api/finance/logic/fincalc.py` — `calc_sts`
+7. `plans/S1/S1.B/FEATURE_IDEAS.md` §F-004
+
+## 4) Task List
+
+| Task | Slug | Scope | Repos | Depends |
+|------|------|-------|-------|---------|
+| T01 | pay-cycle-profile | Pay-cycle fields on `AppProfile` | api | — |
+| T02 | bill-realism-schema | Volatile/rigid + partial-pay on `UpcomingExpense` | api | T01 |
+| T03 | api-serializers | Profile + expense API contract | api | T01, T02 |
+| T04 | sts-pay-window-engine | STS uses pay window + partial amounts | api | T03 |
+| T05 | web-bill-editor | Bill create/edit UI | web | T03 |
+| T06 | web-sts-upcoming-views | Dashboard + settings pay-period UX | web | T04, T05 |
+
+**Deferred (expansion annex):** F-003 obligations read model, volatile forecast endpoint, migration backfill UX, notifications.
 
 ## 5) Execution Order
 
-Author tasks under `tasks/` with explicit dependency edges (engine after schema).
+T01 → T02 → T03 → T04 → T05 → T06. One CPPR per task. Agent review between tasks.
 
 ## 6) Verification Gates
 

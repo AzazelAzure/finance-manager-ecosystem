@@ -3,7 +3,7 @@ plan_id: PLAN_CROSS_SUPPORT_INTAKE_2026-05-21
 status: completed
 priority: P2
 created: 2026-05-21
-updated: 2026-06-26
+updated: 2026-06-28
 owner: teamwork_preview_worker_f012
 
 plan_root: plans/S1/S1.B/feat-infra-support-intake/
@@ -77,8 +77,14 @@ Ship **first-class in-app intake** for **bugs** (all targeted beta users) and **
 ## Verification (2026-06-26)
 
 - Local: 20 API tests pass (`test_support*`, `test_f013_verification`, `test_notify`, `test_usage_rollup`).
-- VPS gap: Celery worker/beat not running on production VPS at verification time — see `evidence/PHASE1_VERIFICATION_2026-06-26.md`.
 - F-014 replaces synchronous bug email with async `[FM-NOTIFY]` dispatcher (UUID-only).
+
+## Live closeout (2026-06-28)
+
+- HitM accepted F-012 as complete for the closed-loop beta.
+- VPS promoted latest `main` to active **green** after a blue/green rebuild; public web and API health endpoints returned `200`.
+- Shared `celery-worker` and `celery-beat` containers are running in the `fm-beta` stack, resolving the 2026-06-26 VPS gap for support digest / notify execution.
+- Secret-redaction follow-up completed before closeout: pre-fix leaked compose output logs were scrubbed, and `scripts/fm_server_beta.sh` now redacts compose output during rebuild/smoke/switch paths.
 
 ## 3) Source Evidence
 

@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-28 (PLAN_CROSS_CI_CD moved Draft → In Progress; T01–T04 workflows shipped + PR'd)
+**Last updated:** 2026-06-28 (doc sweep: F-004/F-010/production-UX registry closeout; F-011 T03+T04 promoted active green)
 
 ## Update protocol
 
@@ -25,9 +25,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_USAGE_MONITORING_NOTIFY_2026-06-26` | P1 | S1.B | `cur/s1b/feat/celery-observability` | pproctor | F-012/F-013 | - | UI-UX, API security | 2026-06-27 | **Audit 2026-06-27:** code largely landed (PR #37 + autodiscover fix); plan prematurely marked completed — T01 live SMTP/redis evidence missing; T03 FEATURE_REQUEST notify added this session; end-to-end Proton inbox smoke still required before close. |
-| `PLAN_CROSS_CELERY_OBSERVABILITY_2026-06-26` | P1 | S1.B | `cur/s1b/feat/celery-observability` | pproctor | F-014 | privacy policy | UI-UX, API security | 2026-06-27 | T01–T04 implemented in code via API PR #39 (FROM routing, observability middleware, analytics rollups, security alerts); pending live Proton/Redis VPS smoke before close. |
-| `PLAN_CROSS_CI_CD_2026-06-27` | P1 | S1.B | api:`cur/s1b/chore/api-ci` web:`cur/s1b/chore/web-ci` parent:`cur/s1b/chore/health-check` | pproctor | - | - | all feature plans | 2026-06-28 | **CI/CD + Uptime.** T01–T04 workflow files shipped + PR'd. **API CI green** (PR #43: added Redis service + ECB exchange-rate fetch + fixed 3 stale tests). **Web CI green** (PR #71: tsc -b + 19 vitest). Parent health-check cron (eco PR #71). Remaining: branch protection (T04.SL3) + live health-check `workflow_dispatch` verify (T03.SL2), both gated on first green run on main. |
+| _(empty)_ | | | | | | | | | |
 
 ## Ready for Execution
 
@@ -39,21 +37,17 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
-| `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-001** day-end balance history + charts: `plans/S1/S1.B/feat-f001-balance-history/README.md`; branch `agy/s1b/feat/f001-balance-history`. |
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
 | `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
-| `PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-004** STS pay cycles, partial pay, volatile vs rigid bills + expansion annex: `plans/S1/S1.B/feat-f004-sts-pay-cycles-bill-realism/README.md`; **P1**. |
-| `PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-005** savings goals: `plans/S1/S1.B/feat-f005-savings-goals/README.md`. |
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-006** customizable dashboard: `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md`. |
 | `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-009** recurring automation + **source → auto_deduct**: `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md`. |
-| `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-010** export/share + PWA trust; **P1**: `plans/S1/S1.B/feat-f010-export-sharing/README.md`. |
 
 ## Paused
 
 | plan_id | phase | paused_date | paused_reason | resume_trigger |
 |---|---|---|---|---|
-| `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | 2026-05-21 | **Hub:** `plans/S1/S1.B/pwa-implementation-branch/README.md` · **Host branch:** `agy/s1b/pwa-implementation-branch` · Human verification **paused** — online tx network error + offline shell still repro; `runtime_handoff.md` **Open issues (paused)** | HitM re-test after web/API fixes + deploy; clear handoff issues |
+| _(empty)_ | | | | |
 
 ## Blocked
 
@@ -67,18 +61,27 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 
 | plan_id | phase | completed_date | strategic_impact | pr_url(s) |
 |---|---|---|---|---|
+| `PLAN_CROSS_PRODUCTION_UX_FIX_2026-06-28` | S1.B | 2026-06-28 | Production UX batch: nav brand link, login redirect, form labels, legal scrub, bill catch-up, onboarding re-enable; promoted active blue | https://github.com/AzazelAzure/finance-manager-api/pull/51 https://github.com/AzazelAzure/finance-manager-web/pull/80 |
+| `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | 2026-06-28 | CSV export, full JSON backup, Data Hub export UI, share token API + share UI; migration `0015`; promoted active green | (see F-010 runtime_handoff; API/Web on `main`) |
+| `PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05` | S1.B | 2026-06-28 | STS pay cycles, bill realism (volatile/rigid, partial payments), pay-period dashboard/upcoming views; migrations `0012`–`0013`; promoted active green | https://github.com/AzazelAzure/finance-manager-api/pull/52 https://github.com/AzazelAzure/finance-manager-api/pull/53 https://github.com/AzazelAzure/finance-manager-api/pull/54 https://github.com/AzazelAzure/finance-manager-api/pull/55 https://github.com/AzazelAzure/finance-manager-web/pull/81 https://github.com/AzazelAzure/finance-manager-web/pull/83 |
+| `PLAN_CROSS_SAVINGS_GOALS_F005_2026-05-05` | S1.B | 2026-06-28 | Savings goals shipped: API `SavingsGoal` migration `0016`, CRUD + per-cycle recalculation, PWA-aware goals management page, and dashboard goals widget; promoted active blue after inactive-blue rebuild, smoke, and 15-min monitoring | https://github.com/AzazelAzure/finance-manager-api/pull/61 https://github.com/AzazelAzure/finance-manager-api/pull/62 https://github.com/AzazelAzure/finance-manager-web/pull/88 https://github.com/AzazelAzure/finance-manager-web/pull/89 |
+| `PLAN_CROSS_BALANCE_HISTORY_F001_2026-05-05` | S1.B | 2026-06-28 | Day-end balance history shipped: API `BalanceSnapshot` migration `0014`, nightly capture + backfill, read endpoint, dashboard PWA-compatible balance trend chart; promoted active blue after full backfill and smoke | https://github.com/AzazelAzure/finance-manager-api/pull/56 https://github.com/AzazelAzure/finance-manager-web/pull/84 |
 | `PLAN_CROSS_LEGAL_PAGES_2026-06-27` | S1.B | 2026-06-27 | Public `/privacy`, `/terms`, `/cookies` routes; footer links; dark-mode readability fix | https://github.com/AzazelAzure/finance_manager_web/pull/66 https://github.com/AzazelAzure/finance_manager_web/pull/70 |
 | `PLAN_CROSS_SIGNUP_CLICKWRAP_2026-06-27` | S1.B | 2026-06-27 | ToS clickwrap on signup; server-side acceptance on registration; migration `0011_tos_acceptance_fields` | https://github.com/AzazelAzure/finance_manager_web/pull/67 https://github.com/AzazelAzure/finance_manager_api/pull/42 |
 | `PLAN_CROSS_EMAIL_COMMS_2026-06-27` | S1.B | 2026-06-27 | User support confirmation emails + 5-min cooldown (`send_user_support_confirmation`); live inbox E2E smoke still open | https://github.com/AzazelAzure/finance_manager_api/pull/41 |
 | `PLAN_CROSS_UI_UX_TEST_SEED_2026-06-27` | S1.B | 2026-06-27 | `create_ux_testuser` management command for PH-peso UX test data | https://github.com/AzazelAzure/finance_manager_api/pull/40 |
+| `PLAN_CROSS_CI_CD_2026-06-27` | S1.B | 2026-06-28 | Minimum viable CI/CD completed: API CI green on `main` (`28305288437`), Web CI green on `main` (`28305298483`, `28305751301`), Dependabot opened API/Web PRs, parent health check fixed for Cloudflare by origin-direct PR #73 and green on `main` (`28306647911`); branch protection waived by HitM because private repos require GitHub Pro/public visibility | https://github.com/AzazelAzure/finance-manager-api/pull/43 https://github.com/AzazelAzure/finance-manager-web/pull/71 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/71 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/73 |
+| `PLAN_CROSS_USAGE_MONITORING_NOTIFY_2026-06-26` | S1.B | 2026-06-28 | F-014 notify dispatcher + usage rollups closed after active-green VPS deploy: Redis, shared `celery-worker`/`celery-beat`, and public API/web health verified; HitM accepted closed-loop beta closeout without extra rotation/screenshots | https://github.com/AzazelAzure/finance_manager_api/pull/39 |
+| `PLAN_CROSS_CELERY_OBSERVABILITY_2026-06-26` | S1.B | 2026-06-28 | F-014 observability layer (FROM routing, Redis request counters, analytics rollups, security alerts) closed after active-green VPS deploy with Celery worker/beat running; privacy-policy disclosure remains separate | https://github.com/AzazelAzure/finance_manager_api/pull/39 |
 | `PLAN_CROSS_UI_UX_DESIGN_SYSTEM_2026-06-26` | S1.B | 2026-06-26 | Design-system tokens + responsive nav shell (T01–T06); promoted to active blue | https://github.com/AzazelAzure/finance_manager_web/pull/65 |
 | `PLAN_CROSS_GUIDED_TOURS_F007_2026-05-05` | S1.B | 2026-06-27 | F-007 guided walkthroughs shipped; post–react-joyride v3 repair merged | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/52 https://github.com/AzazelAzure/finance_manager_web/pull/54 https://github.com/AzazelAzure/finance_manager_api/pull/31 https://github.com/AzazelAzure/finance_manager_web/pull/68 |
 | `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21` | S1.B | 2026-06-26 | Help-mode flow, form/calendar polish; sprint_verify evidence | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/55 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/56 https://github.com/AzazelAzure/finance_manager_web/pull/63 |
-| `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | 2026-06-13 | Landing page UX + SEO overhaul (living surface — may reopen for new F-* bullets) | https://github.com/AzazelAzure/finance_manager_web/pull/59 |
-| `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | 2026-05-03 | PWA research D0–D4 locked; implementation handoff to paused sprint | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/43 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/49 |
-| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | 2026-06-16 | F-013 server-side user-keyed logs & incident window extractor | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/61 |
+| `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | 2026-06-28 | Living landing plan: T01 UX+SEO (PR #59); T03+T04 landing reflect-shipped + honest forward roadmap (balance history, pay cycles, savings goals, export/sharing now live; recurring/widgets/predictive/family roadmap) merged PR #90 and promoted to production active green | https://github.com/AzazelAzure/finance_manager_web/pull/59 https://github.com/AzazelAzure/finance-manager-web/pull/90 |
+| `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | 2026-05-03 | PWA research D0–D4 locked; implementation complete and live | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/43 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/49 |
+| `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | 2026-06-28 | PWA fully implemented and functional — offline support live on VPS. New features require PWA integration as part of definition of done per AGENTS.md §1. | plans/S1/S1.B/pwa-implementation-branch/ |
+| `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | 2026-06-16 | F-013 server-side user-keyed logs & incident window extractor; live closeout accepted 2026-06-28 after active-green VPS deploy verified API health and support/Celery prerequisites | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/61 |
 | `PLAN_CROSS_API_SECURITY_HARDENING_2026-06-26` | S1.B | 2026-06-27 | Axes lockout, Argon2, password complexity, proxy IP config, auth tests | https://github.com/AzazelAzure/finance_manager_api/pull/35 https://github.com/AzazelAzure/finance_manager_api/pull/36 |
-| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | 2026-06-26 | F-012 support intake verified + remediated (redaction, digest window, compose beat fix) | API PR #37 branch lineage |
+| `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | 2026-06-26 | F-012 support intake verified + remediated (redaction, digest window, compose beat fix); live closeout accepted 2026-06-28 after active-green VPS deploy with shared Celery worker/beat running | API PR #37 branch lineage |
 | `PLAN_API_REFLEX_BETA_READINESS_2026-04-28` | S1.A | 2026-04-30 (close) | API hardening shipped; Reflex archived; web is flagship | (multiple — see API repo PRs #16-18) |
 | `PLAN_SERVER_BETA_INSTALL_BLUEGREEN_2026-04-28` | S1.A | 2026-04-30 (close) | Blue-green runtime deployed; CPPR+D pipeline live | (parent repo PRs) |
 | `PLAN_VPS_BETA_ROLLOUT_OPS_2026-04-28` | S1.A | 2026-04-30 (close) | VPS go-live successful; bug-report intake operational | (parent repo PRs) |

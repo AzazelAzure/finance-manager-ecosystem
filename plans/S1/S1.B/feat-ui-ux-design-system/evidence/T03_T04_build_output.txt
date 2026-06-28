@@ -1,0 +1,42 @@
+# Stage 1 — Build Output
+# Branch: cur/s1b/feat/ui-ux-design-system
+# Date: 2026-06-26
+# Command: npm run build
+
+> finance_manager_web@0.0.0 build
+> tsc -b && vite build
+
+vite v8.0.10 building client environment for production...
+transforming... 2612 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                      4.49 kB │ gzip:   1.58 kB
+dist/assets/index-Cr7Ubcit.css                      42.88 kB │ gzip:   8.42 kB
+dist/assets/queryClient-Dhi48c20.js                  0.07 kB │ gzip:   0.07 kB
+dist/assets/workbox-window.prod.es5-DOTK622G.js      5.74 kB │ gzip:   2.25 kB
+dist/assets/queryClient-fKRr0MYh.js                 24.55 kB │ gzip:   7.26 kB
+dist/assets/index-4EP_6asb.js                    1,250.63 kB │ gzip: 364.61 kB
+
+PWA v1.2.0
+mode      generateSW
+precache  16 entries (1759.77 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-8c29f6e4.js
+
+RESULT: PASS (exit 0).
+
+Notes:
+- JS bundle warning remains pre-existing; this Stage 1 pass does not add a new
+  dependency.
+- PWA SW generation still succeeds.
+- Lint still fails on the known baseline issues in untouched or pre-existing
+  TS/TSX paths.
+
+T04 scope note:
+- `ProtectedShell.tsx` already contains a desktop sidebar and mobile bottom nav.
+- This pass kept `ProtectedShell.tsx` read-only and made CSS-only refinements:
+  sidebar `z-index: 10`, bottom nav `z-index: 20`, and safe-area-aware bottom
+  padding for standalone/mobile PWA mode.
+- Full T04.SL2 Sheet drawer implementation is not complete because it requires
+  modifying `ProtectedShell.tsx` and choosing the 4-5 primary mobile routes.

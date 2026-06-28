@@ -27,4 +27,15 @@
 
 ## Verdict
 
-**Code path verified locally.** Production ops path **not** fully live until Celery + operator email env are deployed.
+**Code path verified locally.** Production ops path was **not** fully live on 2026-06-26 until Celery + operator email env were deployed. Superseded by the 2026-06-28 closeout addendum below.
+
+## Closeout addendum — 2026-06-28
+
+HitM accepted F-012 as complete for the closed-loop beta. The VPS was updated to
+latest `main`, rebuilt on inactive **green**, smoked, and switched active
+`blue -> green`. Public web and API health endpoints returned `200`, and the
+`fm-beta` stack now includes shared `celery-worker` and `celery-beat` containers.
+
+The 2026-06-26 Celery deployment gap is no longer a closeout blocker. Extra
+Proton inbox screenshots and forced digest samples may still be useful operator
+evidence, but are not required for F-012 completion in this beta window.

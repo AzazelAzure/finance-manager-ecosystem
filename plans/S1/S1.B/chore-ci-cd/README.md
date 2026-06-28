@@ -1,6 +1,6 @@
 ---
 plan_id: PLAN_CROSS_CI_CD_2026-06-27
-status: in_progress
+status: completed
 priority: P1
 created: 2026-06-27
 updated: 2026-06-28
@@ -86,9 +86,29 @@ Before implementing, verify:
 
 ## §7 Completion Criteria
 
-- [ ] [V1] API CI workflow: `git push` to any branch triggers workflow; `pytest` runs and result is visible in GitHub Actions tab
-- [ ] [V1] Web CI workflow: `git push` to any branch triggers workflow; `vitest run` + `tsc --noEmit` runs and result is visible
-- [ ] [V1] Health check: workflow is visible in parent repo Actions tab; manual trigger (`workflow_dispatch`) runs and returns pass on a healthy VPS
-- [ ] [V0] `main` branch protection active on both API and Web repos; merge requires passing CI
-- [ ] [V0] Dependabot config present in both repos; first batch of dependency PRs opened (or confirmed no updates pending)
-- [ ] [V0] PR template "Required Checks" section now reflects real check names from GitHub Actions (update `PULL_REQUEST_TEMPLATE.md` if names differ)
+- [x] [V1] API CI workflow: `git push` to any branch triggers workflow; `pytest` runs and result is visible in GitHub Actions tab
+- [x] [V1] Web CI workflow: `git push` to any branch triggers workflow; `vitest run` + `tsc --noEmit` runs and result is visible
+- [x] [V1] Health check: workflow is visible in parent repo Actions tab; manual trigger (`workflow_dispatch`) runs and returns pass on a healthy VPS
+- [x] [V0] `main` branch protection active on both API and Web repos; merge requires passing CI — **waived by HitM 2026-06-28** because private repos require GitHub Pro or public visibility for branch protection; neither is acceptable for this project.
+- [x] [V0] Dependabot config present in both repos; first batch of dependency PRs opened (or confirmed no updates pending)
+- [x] [V0] PR template "Required Checks" section now reflects real check names from GitHub Actions (update `PULL_REQUEST_TEMPLATE.md` if names differ)
+
+## §8 Closeout Assessment (2026-06-28)
+
+Plan completed on 2026-06-28.
+
+- API CI is green on `main` (run `28305288437`).
+- Web CI is green on `main` (runs `28305298483`, `28305751301`).
+- Dependabot is active and opened the first API/Web dependency PR batches.
+- VPS is updated to latest `main` and active **green** is healthy.
+- Health Check: the first dispatch `28306433192` failed (`403` on the web step)
+  because the public hosts are behind **Cloudflare**, which blocks GitHub-runner
+  datacenter IPs at the edge. **Fixed** in PR #73
+  (`cur/s1b/fix/health-check-cloudflare-bypass`): the workflow now pins each host
+  to the VPS origin IP (`curl --resolve` + `-k`) for a true origin-up signal.
+  Verified GREEN on the branch (dispatch `28306551715`: web `200`, api `200`)
+  and on `main` after merge (dispatch `28306647911`: web `200`, api `200`).
+- Branch protection is explicitly waived by HitM for this closed/private repo
+  setup. GitHub returns `403` with "Upgrade to GitHub Pro or make this repository
+  public to enable this feature"; HitM will not buy GitHub Pro and will not make
+  the repos public.
