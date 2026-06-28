@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-28 (doc sweep: F-004/F-010/production-UX registry closeout; F-011 T03+T04 promoted active green)
+**Last updated:** 2026-06-29 (daily doc sweep: no status changes; draft plans F-002, F-003, F-006, F-008, F-009 flagged for HitM review)
 
 ## Update protocol
 

@@ -2,7 +2,7 @@
 
 > **ADMIN USE ONLY.** Updated daily by Antigravity. Not a required read for executor agents (see `AGENTS.md` §6).
 
-**Generated:** 2026-06-26 (post-standby execution; reconciled against `origin/main`, VPS SSH)  
+**Generated:** 2026-06-29 (post-sprint execution; reconciled against `origin/main`, VPS SSH)  
 **Sources:** Git history, submodule SHAs, VPS Podman state, open PR assessment, uncommitted-work audit, active-vs-research comparison, plan registry, strategic roadmap.  
 **Scope:** Finance Manager Ecosystem (parent + all active sub-repos).  
 **This file is a living summary. It is not the source of truth** — authoritative docs remain in `governance/`, `plans/`, and `strategy/strategic-roadmap-reframe-53be/`.  
@@ -14,15 +14,15 @@
 
 | Signal | State |
 |---|---|
-| **`origin/main` HEAD** | `1101477` — parent pins API `ac6aa49`, Web `add3fbe` (Local: `ad33209`) |
-| **VPS live stack** | Green active; smoke **PASS** 2026-06-26 |
-| **VPS inactive blue** | Rebuilt with API `789b266`, Web `4ad032a` (needs rebuild to latest main) |
-| **VPS web branch** | Detached `4ad032a` (needs sync) |
-| **VPS api branch** | Detached `789b266` (needs sync) |
-| **Submodule PRs** | API #40-#42 and Web #66-#70 merged; API `ac6aa49`, Web `add3fbe` / `67f9e79` |
+| **`origin/main` HEAD** | `682ed2a` — parent pins API `42bfd0e`, Web `8c117ee` |
+| **VPS live stack** | Green active; F-011 promoted active green 2026-06-28 |
+| **VPS inactive blue** | Rebuilt with API `42bfd0e`, Web `8c493b6` |
+| **VPS web branch** | Active Green: `8c117ee` · Inactive Blue: `8c493b6` |
+| **VPS api branch** | Active Green: `defd844` · Inactive Blue: `42bfd0e` |
+| **Submodule PRs** | API #51–#62 and Web #80–#90 merged |
 | **Open parent PRs** | None |
-| **VPS sync gate** | **BLUE READY** — needs rebuild for new clickwrap/legal commits before cutover |
-| **Quarterly self-review** | **Due 2026-06-30** (2 days) |
+| **VPS sync gate** | **BLUE READY** — needs rebuild with latest parent commits to unify F-005 and F-011 |
+| **Quarterly self-review** | **Completed 2026-06-28** (Passed) |
 | **Operator cadence** | Decompression mode — 6 hr/day, 30 hr/week (post-baby baseline) |
 | **Governance overhaul** | Merged via #62 (Three-tool model active) |
 
@@ -160,7 +160,7 @@ Prior work in history. **Current `main` pin** adds:
 
 ---
 
-## 7. Infrastructure State (VPS verified 2026-06-26)
+## 7. Infrastructure State (VPS verified 2026-06-28)
 
 ### VPS Summary
 
@@ -172,22 +172,28 @@ Prior work in history. **Current `main` pin** adds:
 | **Active color** | **green** (`active_color.conf`: `default green`) |
 | **Proxy** | `fm-beta_proxy_1` on host port `:8443` |
 
-### Container Health (all Up ~12 days)
 ### Container Health
 
 | Container | Status |
 |---|---|
-| `fm-beta_web-green_1` | Up 12 days (healthy) — **active** |
-| `fm-beta_api-green_1` | Up 12 days (healthy) — **active** |
-| `fm-beta_web-blue_1` | Up 12 days (healthy) — inactive |
-| `fm-beta_api-blue_1` | Up 12 days (healthy) — inactive |
+| `fm-beta_web-green_1` | Up (healthy) — **active** |
+| `fm-beta_api-green_1` | Up (healthy) — **active** |
+| `fm-beta_web-blue_1` | Up (healthy) — inactive |
+| `fm-beta_api-blue_1` | Up (healthy) — inactive |
 
-### SHA Drift — `origin/main` vs VPS (live)
+### SHA Drift — `origin/main` vs VPS (Active Green)
 
-| Submodule | `origin/main` pin | VPS checkout | Gap |
+| Submodule | `origin/main` pin | VPS checkout (active green) | Gap |
 |---|---|---|---|
-| **web** | `add3fbe` (clickwrap frontend) | `3e2b370` on `agy/s1b/feat/landing-page-ux-seo` (2026-06-13) | **Missing F-007, PWA, F-011, F-012, F-013, Legal Pages, Clickwrap** |
-| **api** | `ac6aa49` (clickwrap backend) | `1833e74` on `main` (2026-05-04) | **Missing F-007, PWA, F-012, F-013, Observability, Email Confirmations, Clickwrap, UX Seeder** |
+| **web** | `8c117ee` | `8c117ee` | **None** (Fully up to date) |
+| **api** | `42bfd0e` | `defd844` | **Missing F-005 Savings Goals CRUD & math** (API is 2 commits behind) |
+
+### SHA Drift — `origin/main` vs VPS (Inactive Blue)
+
+| Submodule | `origin/main` pin | VPS checkout (inactive blue) | Gap |
+|---|---|---|---|
+| **web** | `8c117ee` | `8c493b6` | **Missing F-011 Landing page update** (Web is 1 commit behind) |
+| **api** | `42bfd0e` | `42bfd0e` | **None** (Fully up to date) |
 
 ### Required Deployment Action
 
@@ -256,7 +262,20 @@ podman exec -it fm-beta_api-blue_1 python manage.py migrate
 
 | PR # | Title | Branch | Status | Plan | Age |
 |---|---|---|---|---|---|
-| #60 (web) | fix(offline): correct app profile offline cache sync | `agy/s1b/fix/pwa-profile-offline-sync` | Open | `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | 11d |
+| API #50 | chore(deps): bump redis from 5.0.6 to 5.0.7 | `dependabot/uv/redis-5.0.7` | Open | — | 1d |
+| API #49 | chore(deps): bump asgiref from 3.8.1 to 3.8.2 | `dependabot/uv/asgiref-3.8.2` | Open | — | 1d |
+| API #48 | chore(deps-dev): bump rpds-py from 0.18.1 to 0.18.2 | `dependabot/uv/rpds-py-0.18.2` | Open | — | 1d |
+| API #47 | chore(deps): bump djangorestframework from 3.15.1 to 3.15.2 | `dependabot/uv/djangorestframework-3.15.2` | Open | — | 1d |
+| API #46 | chore(deps): bump python-dotenv from 1.0.1 to 1.0.2 | `dependabot/uv/python-dotenv-1.0.2` | Open | — | 1d |
+| API #45 | chore(deps): bump actions/cache from 4.0.2 to 4.0.3 | `dependabot/github_actions/actions/cache-4.0.3` | Open | — | 1d |
+| API #44 | chore(deps): bump astral-sh/setup-uv from 3 to 4 | `dependabot/github_actions/astral-sh/setup-uv-4` | Open | — | 1d |
+| Web #78 | chore(deps): bump zod from 3.23.8 to 3.23.9 | `dependabot/npm_and_yarn/zod-3.23.9` | Open | — | 1d |
+| Web #77 | chore(deps-dev): bump eslint from 8.57.0 to 9.6.0 | `dependabot/npm_and_yarn/eslint-9.6.0` | Open | — | 1d |
+| Web #76 | chore(deps): bump axios from 1.7.2 to 1.7.3 | `dependabot/npm_and_yarn/axios-1.7.3` | Open | — | 1d |
+| Web #75 | chore(deps): bump @hookform/resolvers from 3.6.0 to 3.7.0 | `dependabot/npm_and_yarn/hookform/resolvers-3.7.0` | Open | — | 1d |
+| Web #74 | chore(deps-dev): bump vite from 5.3.1 to 5.3.2 | `dependabot/npm_and_yarn/vite-5.3.2` | Open | — | 1d |
+| Web #73 | chore(deps): bump actions/setup-node from 4.0.2 to 4.0.3 | `dependabot/github_actions/actions/setup-node-4.0.3` | Open | — | 1d |
+| Web #72 | chore(deps): bump actions/checkout from 4.1.6 to 4.1.7 | `dependabot/github_actions/actions/checkout-4.1.7` | Open | — | 1d |
 
 ---
 
@@ -308,16 +327,17 @@ Per [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](./strategic-
 
 | Issue | Severity | Status |
 |---|---|---|
-| **Cutover gate** | 🟡 High | Inactive blue needs rebuild to include new clickwrap/legal commits before cutover |
-| VPS deployment gap | 🟡 High | Active green remains old; inactive blue needs rebuild to latest parent `main` |
-| API migrations on blue | 🟡 Medium | Django migration `0011_tos_acceptance_fields` must be applied to blue |
-| Web build | ✅ Cleared | Integration branch `67f9e79` verifies tour and theme fixes |
+| **Active stack mismatch** | 🔴 Critical | Active green has F-011 web but lacks F-005 API backend, creating runtime errors for savings goals |
+| VPS deployment gap | 🟡 High | Inactive blue needs rebuild to latest parent `main` to unify F-005 and F-011 |
+| VPS Celery deployment | 🟡 High | Celery worker and beat containers are not yet running on VPS |
+| API migrations on blue | ✅ Cleared | Migrations up to `0016` successfully applied |
+| Web build | ✅ Cleared | Vitest and build verification passed |
+| Quarterly self-review | ✅ Cleared | Q2 review completed on 2026-06-28 |
 | Entity formation (PH + US LLC) | **S1.B exit gate** | Research in draft; counsel engagement pending |
 | PSP KYB | **Blocked on entity** | PayMongo/Xendit locked; KYB needs PH entity vehicle |
-| Quarterly self-review | **Due 2026-06-30** | First kill/commit gates §6 execution due in 2 days |
 | Sprint execution order not locked | **Planning gap** | 2026-05-22 huddle `DECISIONS.md` still draft |
 | Android pull-forward | **Not started** | `android:Scaffold`; Alpha work not begun |
-| Wedge consistency audit | **Not started** | Draft plan; execution pending |
+| Wedge consistency audit | 🔄 In Progress | T03/T04 complete; remaining audit rows pending |
 
 ---
 
@@ -371,8 +391,8 @@ An untracked local doc [`admin_huddle_handoff.md`](./huddles/admin-meeting-huddl
 
 | Sub-repo | Tag | `origin/main` pin | Notes |
 |---|---|---|---|
-| `finance_manager_api` | `api:Tight Beta` | `277228a` | F-012 on main; F-013 in PR #61 only; local security WIP uncommitted; VPS ~6 weeks behind |
-| `finance_manager_web` | `web:Tight Beta` | `9b2ecbe` | F-012 on main; **build fails**; local sandbox/CSP WIP; VPS on stale feature branch |
+| `finance_manager_api` | `api:Tight Beta` | `42bfd0e` | F-005 savings goals on main; PWA, F-001, F-004, F-010, F-012, F-013 merged; VPS active green missing F-005 |
+| `finance_manager_web` | `web:Tight Beta` | `8c117ee` | F-011 landing on main; PWA, F-001, F-004, F-005, F-010 merged; VPS active green fully updated |
 | `finance_manager_cli` | `cli:Alpha` | `a9a3a7b` | CLI client; clean |
 | `finance_manager_android` | `android:Scaffold` | `d33efd4` | Alpha work not yet begun |
 | `finance_manager_rust_tools` | `rust_tools:Tight Beta` | `82d4994` | Numerics library; clean |

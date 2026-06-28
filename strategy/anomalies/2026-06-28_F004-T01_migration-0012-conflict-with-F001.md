@@ -2,7 +2,8 @@
 logged: 2026-06-28
 agent: cursor
 plan_context: PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05 / T01
-status: unreviewed
+status: resolved
+resolution: Resolved on 2026-06-28; F-004 merged using migrations 0012-0013, and F-001 merged using migration 0014.
 severity_guess: medium
 ---
 
