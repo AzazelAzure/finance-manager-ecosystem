@@ -124,6 +124,28 @@ DATE=$(date +%Y-%m-%d)
   head -5 "$REPO_ROOT/strategy/current_status.md" 2>/dev/null || echo "(not found)"
   echo ""
 
+  echo "## Anomaly Queue — Unreviewed Logs"
+  ANOMALY_DIR="$REPO_ROOT/strategy/anomalies"
+  UNREVIEWED_COUNT=0
+  if [[ -d "$ANOMALY_DIR" ]]; then
+    while IFS= read -r -d '' afile; do
+      if grep -q "^status: unreviewed" "$afile" 2>/dev/null; then
+        UNREVIEWED_COUNT=$((UNREVIEWED_COUNT + 1))
+        echo "### $(basename "$afile")"
+        grep -E "^(logged|plan_context|severity_guess|status):" "$afile" || true
+        # Extract the "What was found" section (first paragraph after the heading)
+        awk '/^## What was found/{found=1; next} found && /^## /{exit} found && NF{print; count++} count==3{exit}' "$afile" || true
+        echo ""
+      fi
+    done < <(find "$ANOMALY_DIR" -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "anomaly_template.md" -print0 2>/dev/null | sort -z)
+  fi
+  if [[ $UNREVIEWED_COUNT -eq 0 ]]; then
+    echo "(none)"
+  else
+    echo "Total unreviewed: $UNREVIEWED_COUNT"
+  fi
+  echo ""
+
 } > "$OUTPUT"
 
 LINE_COUNT=$(wc -l < "$OUTPUT")
