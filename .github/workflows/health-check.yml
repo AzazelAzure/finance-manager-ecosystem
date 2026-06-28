@@ -1,0 +1,64 @@
+name: Health Check
+
+# Self-hosted uptime monitor. Runs on GitHub's infrastructure (external from
+# the VPS), so it detects VPS-down scenarios independently. On failure the run
+# exits non-zero and GitHub emails the repo owner.
+#
+# IMPORTANT: thehivemanager.com / api.thehivemanager.com sit behind Cloudflare.
+# Cloudflare blocks GitHub-hosted runner IPs (datacenter / bot reputation) with a
+# 403 before the request ever reaches the VPS, so checking the public Cloudflare
+# edge produces false failures. To get a true "is the origin up?" signal we pin
+# the hostname to the VPS origin IP with --resolve and bypass Cloudflare. The
+# origin terminates TLS with an internal cert, so -k (insecure) is expected here:
+# we are verifying reachability/health of the origin, not the public CA chain.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'   # every 10 minutes (GitHub may delay scheduled runs)
+  workflow_dispatch:           # manual trigger for verification
+
+env:
+  VPS_IP: 159.198.75.194
+  WEB_HOST: thehivemanager.com
+  API_HOST: api.thehivemanager.com
+  PORT: '8443'
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check web app (origin, bypass Cloudflare)
+        run: |
+          url="https://${WEB_HOST}:${PORT}"
+          code=""
+          for attempt in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -k --max-time 15 \
+              --resolve "${WEB_HOST}:${PORT}:${VPS_IP}" "$url" || echo "000")
+            echo "Attempt ${attempt}: web origin response ${code}"
+            case "$code" in
+              200|301|302) break ;;
+            esac
+            [ "$attempt" -lt 3 ] && sleep 10
+          done
+          case "$code" in
+            200|301|302) echo "OK: web origin reachable ($code)" ;;
+            *) echo "FAIL: web origin returned $code"; exit 1 ;;
+          esac
+
+      - name: Check API health endpoint (origin, bypass Cloudflare)
+        run: |
+          url="https://${API_HOST}:${PORT}/api/health/"
+          code=""
+          for attempt in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -k --max-time 15 \
+              --resolve "${API_HOST}:${PORT}:${VPS_IP}" "$url" || echo "000")
+            echo "Attempt ${attempt}: api health response ${code}"
+            [ "$code" = "200" ] && break
+            [ "$attempt" -lt 3 ] && sleep 10
+          done
+          if [ "$code" = "200" ]; then
+            echo "OK: API health reachable (200)"
+          else
+            echo "FAIL: API health returned $code"
+            exit 1
+          fi

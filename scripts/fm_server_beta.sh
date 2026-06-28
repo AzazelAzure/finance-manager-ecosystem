@@ -193,27 +193,67 @@ compose_cmd() {
   ${COMPOSE_CMD[@]} -p "$PROJECT_NAME" -f "$COMPOSE_FILE" "${COMPOSE_ENV_FILE_ARGS[@]}" "$@"
 }
 
+# Mask secret values in compose output. podman-compose echoes the fully
+# interpolated `podman ... --env KEY=value` invocation (values sourced from
+# .secrets/server.env) on most subcommands, and `config` prints the resolved
+# YAML with secrets inline. This filter masks any value whose env-var NAME looks
+# sensitive (PASSWORD/SECRET/TOKEN/KEY/CREDENTIAL/AUTH...), in KEY=value, KEY:
+# value, and --env/-e KEY=value forms, plus inline URL credentials.
+#
+# Reads from a file path argument when given (back-compat); otherwise streams
+# stdin line-by-line so it can be used as a pipe filter, including for `logs -f`.
+# The program is passed via `-c` (not `python3 -`) and the optional file path via
+# an env var, so stdin stays free for piped data.
 redact_compose_output() {
-  python3 - "$1" <<'PY'
+  FM_REDACT_FILE="${1:-}" python3 -c '
+import os
 import re
 import sys
 from pathlib import Path
 
-path = Path(sys.argv[1])
-text = path.read_text(errors="replace")
-patterns = [
-    r"((?:EMAIL_HOST_PASSWORD|SECRET_KEY|DB_PASSWORD|POSTGRES_PASSWORD|[A-Z0-9_]*PASSWORD)[:=])([^ \t\r\n]+)",
-    r"(-e\s+(?:EMAIL_HOST_PASSWORD|SECRET_KEY|DB_PASSWORD|POSTGRES_PASSWORD|[A-Z0-9_]*PASSWORD)=)([^ \t\r\n]+)",
-]
-for pattern in patterns:
-    text = re.sub(pattern, r"\1<redacted>", text)
-sys.stdout.write(text)
-PY
+# Mask the value of any env var whose NAME looks sensitive, plus inline URL creds.
+_SENSITIVE = r"[A-Za-z0-9_]*(?:PASSWORD|PASSWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|PRIVATE_KEY|CREDENTIAL|CREDENTIALS|AUTH|_KEY)"
+_P1 = re.compile(r"(?i)(\b" + _SENSITIVE + r"\b\s*[:=]\s*)(\S+)")
+_P2 = re.compile(r"(://[^:/?#@\s]+:)([^@/?#\s]+)(@)")
+
+
+def _redact(line):
+    line = _P1.sub(lambda m: m.group(1) + "<redacted>", line)
+    line = _P2.sub(lambda m: m.group(1) + "<redacted>" + m.group(3), line)
+    return line
+
+
+arg = os.environ.get("FM_REDACT_FILE", "")
+if arg:
+    text = Path(arg).read_text(errors="replace")
+    sys.stdout.write("".join(_redact(l) for l in text.splitlines(keepends=True)))
+else:
+    for line in sys.stdin:
+        sys.stdout.write(_redact(line))
+        sys.stdout.flush()
+'
 }
 
-# podman-compose prints fully interpolated `podman run -e KEY=value ...` lines
-# during `up`, including values from .secrets/server.env. Keep successful `up`
-# output quiet; if it fails, print a redacted copy and then remove the temp log.
+# Run any compose subcommand with combined stdout+stderr streamed through the
+# secret redactor, preserving the compose exit code (not the redactor's). Every
+# code path that lets compose output reach the terminal MUST go through this so
+# interpolated `--env KEY=value` lines can never leak. Parsing-only callers that
+# need clean stdout (e.g. `config --services`) use the raw `compose_cmd`.
+compose_cmd_safe() {
+  # `set -o pipefail` is active globally, so the pipeline's exit status reflects
+  # compose's failure (the redactor is effectively pass-through). Using `if`
+  # captures that status without toggling the caller's errexit state.
+  local rc=0
+  if compose_cmd "$@" 2>&1 | redact_compose_output; then
+    rc=0
+  else
+    rc=$?
+  fi
+  return "$rc"
+}
+
+# Keep successful `up` output quiet; on failure, print a redacted copy. (Even on
+# success the temp log is discarded, so secrets never reach the terminal.)
 compose_cmd_quiet_up() {
   local tmp rc
   tmp="$(mktemp)"
@@ -293,7 +333,9 @@ status_cmd() {
 
 check_cmd() {
   log "Checking compose configuration..."
-  compose_cmd config >/dev/null
+  # `config` prints the resolved compose YAML (with interpolated secrets) to
+  # stdout; route through the redactor and discard so nothing leaks even on error.
+  compose_cmd_safe config >/dev/null
   log "Compose config: ok"
 
   log "Checking nginx blue/green config syntax..."
@@ -364,7 +406,7 @@ rebuild_color_cmd() {
       [[ "$no_cache" -eq 1 ]] && build_args+=(--no-cache)
       build_args+=("$api_service" "$web_service")
       log "Building $api_service and $web_service${no_cache:+ (--no-cache)}..."
-      compose_cmd "${build_args[@]}"
+      compose_cmd_safe "${build_args[@]}"
     fi
     log "Recreating $api_service and $web_service (parallel compose; no proxy in this file)."
     compose_cmd_quiet_up -d --force-recreate "$api_service" "$web_service"
@@ -383,12 +425,12 @@ rebuild_color_cmd() {
     [[ "$no_cache" -eq 1 ]] && build_args+=(--no-cache)
     build_args+=("$api_service" "$web_service" "${CELERY_SERVICES[@]}")
     log "Building $api_service, $web_service, and ${CELERY_SERVICES[*]}${no_cache:+ (--no-cache)}..."
-    compose_cmd "${build_args[@]}"
+    compose_cmd_safe "${build_args[@]}"
   fi
 
   log "Recreating $api_service, $web_service, and ${CELERY_SERVICES[*]} with fresh containers."
   log "Note: proxy shares :8443/:8080 for both colors — it will restart briefly (typically a few seconds)."
-  compose_cmd stop proxy "$api_service" "$web_service" "${CELERY_SERVICES[@]}" || true
+  compose_cmd_safe stop proxy "$api_service" "$web_service" "${CELERY_SERVICES[@]}" || true
   remove_compose_service_container "proxy"
   remove_compose_service_container "$api_service"
   remove_compose_service_container "$web_service"
@@ -425,9 +467,12 @@ smoke_cmd() {
   local web_upstream="web-$color"
   log "Smoke target color: $color"
 
-  compose_cmd exec -T redis redis-cli ping >/dev/null
-  compose_cmd exec -T "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
-  compose_cmd exec -T "$web_upstream" sh -c "wget -qO- http://127.0.0.1/ >/dev/null"
+  # podman-compose prints the interpolated `podman exec --env KEY=value ...`
+  # invocation (api/web services carry the secret env) to stderr, so these MUST
+  # go through compose_cmd_safe; the redacted stream is then discarded.
+  compose_cmd_safe exec -T redis redis-cli ping >/dev/null
+  compose_cmd_safe exec -T "$api_upstream" curl -fsS "http://localhost:8000/api/health/" >/dev/null
+  compose_cmd_safe exec -T "$web_upstream" sh -c "wget -qO- http://127.0.0.1/ >/dev/null"
 
   if using_parallel_compose; then
     log "Parallel stack: public edge still serves legacy single-stack; skipped Host-header curls to $PUBLIC_BASE_URL"
@@ -442,8 +487,8 @@ reload_proxy() {
   if using_parallel_compose; then
     die "reload_proxy: parallel compose has no 'proxy' service. Point edge at blue/green or use full docker-compose.bluegreen.yml for switch."
   fi
-  compose_cmd exec -T proxy nginx -t >/dev/null
-  compose_cmd exec -T proxy nginx -s reload >/dev/null
+  compose_cmd_safe exec -T proxy nginx -t >/dev/null
+  compose_cmd_safe exec -T proxy nginx -s reload >/dev/null
 }
 
 switch_cmd() {
@@ -519,9 +564,9 @@ install_cmd() {
 logs_cmd() {
   local service="${1:-}"
   if [[ -n "$service" ]]; then
-    compose_cmd logs -f --tail=100 "$service"
+    compose_cmd_safe logs -f --tail=100 "$service"
   else
-    compose_cmd logs -f --tail=100
+    compose_cmd_safe logs -f --tail=100
   fi
 }
 
