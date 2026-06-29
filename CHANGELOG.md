@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-29 — F-010 share-link exposure RCA + shutdown coordination (Cursor)
+
+- **RCA:** `strategy/audits/2026-06-29_share-link-exposure_rca.md` — exhaustive trace of F-010 public bearer-URL share feature from plan spec through PRs #59/#86, production flip (2026-06-28 12:32 +08), ~24h exposure window, and 2026-06-29 disable (API #66, Web #92). Root cause: privacy-by-design spec (`AllowAny` full transaction JSON), not cross-user IDOR.
+- **Follow-up stub:** `plans/S1/S1.B/feat-f010-export-sharing/HARDENING_FOLLOWUP_STUB.md` — minimum bar if sharing is ever revived.
+
 ### 2026-06-29 — D6 design-docs restructure submodule pointer (Cursor)
 
 - Bump `design_docs` submodule to `cur/s1b/chore/design-docs-restructure` (design-docs PR #21): archive `reflex_docs` and roadmap/release overlap to `_historical/`; fix Dashboard dead links; retain `Runtime_Signup_Sheet.md` and handoff templates. Docs-only CPPR.
