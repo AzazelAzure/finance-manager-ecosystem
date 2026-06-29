@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-30 — Web #97 green promotion + runtime signup (Cursor)
+
+- Bump `design_docs` submodule: `Runtime_Signup_Sheet.md` logs inactive-green restage on `main` (API `9938614`, Web `9436e3b`) and active color flip **blue → green** after Web PR #97 (Profile tab fix + ErrorBoundary). VPS post-switch smoke passed (captured 2026-06-30T07:24+08).
+
 ### 2026-06-29 — Midday touch-up + RCA standard adopted (Claude Code, admin)
 
 - **RCA promoted to a standard:** `governance/glossary.md` §13 (Incident & RCA vocabulary — RCA required for S0/S1) + new `governance/rca_template.md` (generalized from Cursor's F-010 RCA, cited as the canonical example).
