@@ -94,9 +94,13 @@ NPM_COUNT="${NPM_COUNT:-0}"
   echo ""
 } >> "$REPORT"
 
+is_git_repo() {
+  git -C "$1" rev-parse --git-dir &>/dev/null
+}
+
 # --- gitleaks (secrets in git history) ---
 for SCAN_DIR in "$REPO_ROOT" "$API_DIR" "$WEB_DIR"; do
-  if [[ ! -d "$SCAN_DIR/.git" ]] && [[ "$SCAN_DIR" != "$REPO_ROOT" ]]; then
+  if ! is_git_repo "$SCAN_DIR"; then
     {
       echo "## gitleaks — $(basename "$SCAN_DIR") (skipped — not a git repo)"
       echo ""
