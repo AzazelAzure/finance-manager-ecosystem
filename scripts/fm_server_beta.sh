@@ -331,6 +331,38 @@ status_cmd() {
   fi
 }
 
+# 00-resolver.conf is generated at proxy container start (see
+# proxy/docker-entrypoint.d/20-resolver-from-resolv.sh), not committed in-repo.
+proxy_container_running() {
+  if using_parallel_compose; then
+    return 1
+  fi
+  compose_cmd ps --status running --services proxy 2>/dev/null | grep -qx 'proxy'
+}
+
+check_nginx_config_syntax() {
+  if proxy_container_running; then
+    compose_cmd_safe exec -T proxy nginx -t >/dev/null
+    return 0
+  fi
+
+  local resolver_stub
+  resolver_stub="$(mktemp)"
+  # shellcheck disable=SC2064
+  trap "rm -f '$resolver_stub'" RETURN
+  {
+    echo "resolver 127.0.0.11 valid=10s;"
+    echo "resolver_timeout 5s;"
+  } >"$resolver_stub"
+
+  "$RUNTIME_BIN" run --rm \
+    -v "$BASE_DIR/proxy/nginx.bluegreen.conf:/etc/nginx/nginx.conf:ro,z" \
+    -v "$BASE_DIR/proxy/active_color.conf:/etc/nginx/conf.d/active_color.conf:ro,z" \
+    -v "$resolver_stub:/etc/nginx/conf.d/00-resolver.conf:ro,z" \
+    -v "$BASE_DIR/proxy/certs:/etc/nginx/certs:ro,z" \
+    nginx:alpine nginx -t >/dev/null
+}
+
 check_cmd() {
   log "Checking compose configuration..."
   # `config` prints the resolved compose YAML (with interpolated secrets) to
@@ -339,11 +371,7 @@ check_cmd() {
   log "Compose config: ok"
 
   log "Checking nginx blue/green config syntax..."
-  "$RUNTIME_BIN" run --rm \
-    -v "$BASE_DIR/proxy/nginx.bluegreen.conf:/etc/nginx/nginx.conf:ro,z" \
-    -v "$BASE_DIR/proxy/active_color.conf:/etc/nginx/conf.d/active_color.conf:ro,z" \
-    -v "$BASE_DIR/proxy/certs:/etc/nginx/certs:ro,z" \
-    nginx:alpine nginx -t >/dev/null
+  check_nginx_config_syntax
   log "Nginx config: ok"
 }
 

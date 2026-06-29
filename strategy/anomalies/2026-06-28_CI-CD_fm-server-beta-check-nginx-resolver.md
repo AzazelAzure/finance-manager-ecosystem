@@ -2,7 +2,7 @@
 logged: 2026-06-28
 agent: cursor
 plan_context: PLAN_CROSS_CI_CD_2026-06-27 / fm_server_beta.sh secret-redaction fix (PR #72)
-status: dispatched
+status: resolved
 dispatched_to: Cursor chore — fm_server_beta.sh nginx check
 dispatched_on: 2026-06-29
 severity_guess: low

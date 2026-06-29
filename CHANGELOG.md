@@ -8,6 +8,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 - Bump `design_docs` submodule to `cur/s1b/chore/design-docs-restructure` (design-docs PR #21): archive `reflex_docs` and roadmap/release overlap to `_historical/`; fix Dashboard dead links; retain `Runtime_Signup_Sheet.md` and handoff templates. Docs-only CPPR.
 
+### 2026-06-29 — D3 fix: fm_server_beta.sh nginx check false-negative (Cursor)
+
+- **`scripts/fm_server_beta.sh` (`check_cmd`):** `00-resolver.conf` is generated at proxy container start (`proxy/docker-entrypoint.d/20-resolver-from-resolv.sh`), not committed in-repo. The throwaway `nginx -t` harness was missing that file and always failed even when the live proxy was healthy. `check` now validates via `exec -T proxy nginx -t` when the proxy container is running; otherwise it mounts a stub resolver into the throwaway container. Closes anomaly `2026-06-28_CI-CD_fm-server-beta-check-nginx-resolver.md`.
+
 ### 2026-06-29 — D5 implementation: live VPS state query (Cursor)
 
 - **`scripts/vps_state.sh` (new):** Single-concern script that SSHes the production VPS in one read-only round-trip and prints a timestamped `## Live VPS State (SSH-verified)` markdown block (active color, deployed API/Web SHAs, container count, Celery worker/beat status, last applied `finance` migration, API health, container detail table, drift check). On SSH failure/timeout (hard 20s default) it prints a clearly-marked `UNAVAILABLE` block and exits non-zero so callers surface UNKNOWN instead of falling back to cached state. Reuses the existing `FM_SPRINT_SSH`/`FM_SPRINT_REMOTE_ROOT` config (no new credentials).
