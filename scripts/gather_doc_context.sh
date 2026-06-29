@@ -84,8 +84,27 @@ DATE=$(date +%Y-%m-%d)
     || echo "(not found)"
   echo ""
 
-  echo "## Runtime Signup Sheet — Current VPS State"
-  head -60 "$REPO_ROOT/design_docs/30_Releases/Runtime_Signup_Sheet.md" 2>/dev/null \
+  echo "## Runtime State"
+  echo ""
+  # Live, SSH-verified VPS state is the ONLY source of truth for "current" runtime
+  # facts. vps_state.sh prints a timestamped block (or a clearly-marked UNAVAILABLE
+  # block + non-zero exit on SSH failure). Never fall back to the static signup
+  # sheet as if it were live state — that was the 2026-06-29 false-alarm root cause.
+  if VPS_OUT="$("$SCRIPT_DIR/vps_state.sh" 2>&1)"; then
+    printf '%s\n' "$VPS_OUT"
+  else
+    printf '%s\n' "$VPS_OUT"
+    echo ""
+    echo "> ⚠️ Live VPS state unavailable this run — downstream automations must NOT"
+    echo "> treat the Runtime Signup Sheet as current. Flag VPS state as UNKNOWN."
+  fi
+  echo ""
+
+  echo "## Runtime Signup Sheet (human log — NOT live state)"
+  echo ""
+  echo "_Human-authored intent/changelog. For current runtime facts use the live block above._"
+  echo ""
+  head -40 "$REPO_ROOT/design_docs/30_Releases/Runtime_Signup_Sheet.md" 2>/dev/null \
     || echo "(Runtime_Signup_Sheet.md not found)"
   echo ""
 
