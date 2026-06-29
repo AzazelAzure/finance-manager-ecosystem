@@ -30,14 +30,22 @@ read_pinned_version() {
     echo ""
     return
   fi
-  grep -E "^${package}==" "$TOOL_VERSIONS" | head -1 | cut -d= -f3-
+  grep -E "^${package}==" "$TOOL_VERSIONS" 2>/dev/null | head -1 | cut -d= -f3- || true
 }
 
 version_line() {
   local cmd=$1
   shift
-  # tail -1: semgrep prints an upgrade notice before the version line
-  "$cmd" "$@" 2>&1 | tail -1
+  local out first last
+  out=$("$cmd" "$@" 2>&1)
+  first=$(echo "$out" | head -1)
+  last=$(echo "$out" | tail -1)
+  # bandit/npm: version on first line; semgrep: upgrade notice then version on last line
+  if [[ "$first" =~ [0-9]+\.[0-9]+ ]]; then
+    echo "$first"
+  else
+    echo "$last"
+  fi
 }
 
 ensure_api_venv() {
@@ -46,9 +54,12 @@ ensure_api_venv() {
     echo "        Run: cd finance_manager_api && uv sync --frozen"
     exit 1
   fi
+}
+
+require_uv() {
   if ! command -v uv &>/dev/null; then
     echo "[ERROR] uv is required to install Python audit tools into the API venv"
-    exit 1
+    return 1
   fi
 }
 
@@ -57,6 +68,12 @@ install_pip_tool() {
   local package=$2
 
   ensure_api_venv
+  if ! require_uv; then
+    echo "[MISSING] $display_name — uv required to install $package into API venv"
+    MISSING+=("$display_name")
+    return 1
+  fi
+
   local spec="$package"
   local pinned
   pinned="$(read_pinned_version "$package")"
@@ -65,7 +82,11 @@ install_pip_tool() {
   fi
 
   echo "[INSTALL] $display_name -> $spec (into finance_manager_api/.venv)"
-  (cd "$API_DIR" && uv pip install --python .venv/bin/python -q "$spec")
+  if ! (cd "$API_DIR" && uv pip install --python .venv/bin/python -q "$spec"); then
+    echo "[MISSING] $display_name — failed to install $package into API venv"
+    MISSING+=("$display_name")
+    return 1
+  fi
   AUTO_INSTALLED+=("$display_name")
 }
 
@@ -79,27 +100,25 @@ check_pip_tool() {
   local bin_name=$3
   local version_args=("${@:4}")
 
-  ensure_api_venv
   local bin_path
   bin_path="$(tool_bin "$bin_name")"
-  if [[ ! -x "$bin_path" ]]; then
-    install_pip_tool "$display_name" "$package"
-  fi
 
   if [[ -x "$bin_path" ]] && "$bin_path" "${version_args[@]}" &>/dev/null; then
     echo "[OK] $display_name: $(version_line "$bin_path" "${version_args[@]}")"
     return 0
   fi
 
-  # Binary missing or broken — try install once more
-  install_pip_tool "$display_name" "$package"
+  # Binary missing or broken — try install
+  install_pip_tool "$display_name" "$package" || true
   if [[ -x "$bin_path" ]] && "$bin_path" "${version_args[@]}" &>/dev/null; then
     echo "[OK] $display_name: $(version_line "$bin_path" "${version_args[@]}")"
     return 0
   fi
 
-  echo "[MISSING] $display_name — failed to install $package into API venv"
-  MISSING+=("$display_name")
+  if [[ ! " ${MISSING[*]} " =~ " ${display_name} " ]]; then
+    echo "[MISSING] $display_name — failed to install $package into API venv"
+    MISSING+=("$display_name")
+  fi
   return 1
 }
 
@@ -113,7 +132,7 @@ check_pip_tool "pip-audit" "pip-audit" "pip-audit" --version || true
 check_pip_tool "semgrep" "semgrep" "semgrep" --version || true
 
 # npm (npm audit is built-in)
-if command -v npm &>/dev/null; then
+if command -v npm &>/dev/null && npm --version &>/dev/null; then
   echo "[OK] npm: $(version_line npm --version) (npm audit available)"
 else
   echo "[MISSING] npm — install Node.js (https://nodejs.org/) for Web dependency audits"
