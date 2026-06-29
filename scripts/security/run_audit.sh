@@ -21,6 +21,9 @@ SEMGREP_IGNORE="$SCRIPT_DIR/.semgrepignore"
 BANDIT_BIN="$API_DIR/.venv/bin/bandit"
 PIPAUDIT_BIN="$API_DIR/.venv/bin/pip-audit"
 
+# shellcheck source=lib_anomaly_write.sh
+source "$SCRIPT_DIR/lib_anomaly_write.sh"
+
 # Prereq check (T01)
 "$SCRIPT_DIR/check_tools.sh" || exit 1
 
@@ -58,10 +61,14 @@ BANDIT_COUNT="${BANDIT_COUNT:-0}"
   echo ""
 } >> "$REPORT"
 
+parse_bandit_anomalies "$BANDIT_OUT"
+
 # --- pip-audit (Python dependency CVEs) ---
 PIPAUDIT_OUT=""
+PIPAUDIT_JSON=""
 if [[ -x "$PIPAUDIT_BIN" ]]; then
   PIPAUDIT_OUT=$(cd "$API_DIR" && "$PIPAUDIT_BIN" 2>&1 || true)
+  PIPAUDIT_JSON=$(cd "$API_DIR" && "$PIPAUDIT_BIN" --format json 2>/dev/null || true)
   PIPAUDIT_COUNT=$(echo "$PIPAUDIT_OUT" | grep -cE 'GHSA-|CVE-' 2>/dev/null || true)
 fi
 PIPAUDIT_COUNT="${PIPAUDIT_COUNT:-0}"
@@ -74,11 +81,13 @@ PIPAUDIT_COUNT="${PIPAUDIT_COUNT:-0}"
   echo ""
 } >> "$REPORT"
 
+parse_pipaudit_anomalies "$PIPAUDIT_JSON"
+
 # --- npm audit (Node dependency CVEs) ---
 NPM_JSON=""
 NPM_HUMAN=""
 if [[ -d "$WEB_DIR" ]] && command -v npm &>/dev/null; then
-  NPM_JSON=$(cd "$WEB_DIR" && npm audit --json 2>&1 || true)
+  NPM_JSON=$(cd "$WEB_DIR" && npm audit --json 2>/dev/null || true)
   NPM_COUNT=$(echo "$NPM_JSON" | python3 -c \
     "import sys,json; d=json.load(sys.stdin); print(d.get('metadata',{}).get('vulnerabilities',{}).get('total',0))" \
     2>/dev/null || echo "parse error")
@@ -93,6 +102,8 @@ NPM_COUNT="${NPM_COUNT:-0}"
   echo '```'
   echo ""
 } >> "$REPORT"
+
+parse_npm_anomalies "$NPM_JSON"
 
 is_git_repo() {
   git -C "$1" rev-parse --git-dir &>/dev/null
@@ -128,6 +139,7 @@ for SCAN_DIR in "$REPO_ROOT" "$API_DIR" "$WEB_DIR"; do
     GL_COUNT=$(python3 -c \
       "import json,sys; d=json.load(open(sys.argv[1])); print(len(d.get('runs',[{}])[0].get('results',[])))" \
       "$SARIF_PATH" 2>/dev/null || echo 0)
+    parse_gitleaks_sarif_anomalies "$SARIF_PATH" "$REPO_NAME"
     rm -f "$SARIF_PATH"
   fi
   GITLEAKS_TOTAL=$((GITLEAKS_TOTAL + GL_COUNT))
@@ -143,6 +155,7 @@ done
 
 # --- semgrep (OWASP Top 10) ---
 SEMGREP_OUT=""
+SEMGREP_JSON=""
 SEMGREP_ARGS=(
   scan
   --config=p/owasp-top-ten
@@ -168,6 +181,7 @@ fi
 if [[ -n "$SEMGREP_BIN" ]] && [[ ${#SCAN_PATHS[@]} -gt 0 ]]; then
   SEMGREP_OUT=$("$SEMGREP_BIN" "${SEMGREP_ARGS[@]}" "${SCAN_PATHS[@]}" 2>&1 || true)
   SEMGREP_COUNT=$(echo "$SEMGREP_OUT" | grep -cE 'findings|Finding' 2>/dev/null || true)
+  SEMGREP_JSON=$("$SEMGREP_BIN" "${SEMGREP_ARGS[@]}" --json "${SCAN_PATHS[@]}" 2>/dev/null || true)
 fi
 SEMGREP_COUNT="${SEMGREP_COUNT:-0}"
 
@@ -179,7 +193,10 @@ SEMGREP_COUNT="${SEMGREP_COUNT:-0}"
   echo ""
 } >> "$REPORT"
 
+parse_semgrep_anomalies "$SEMGREP_JSON"
+
 # --- Summary footer ---
+ANOMALY_COUNT="$ANOMALY_WRITTEN"
 {
   echo "---"
   echo ""
@@ -192,8 +209,10 @@ SEMGREP_COUNT="${SEMGREP_COUNT:-0}"
   echo "| npm audit | $NPM_COUNT |"
   echo "| gitleaks (all repos) | $GITLEAKS_TOTAL |"
   echo "| semgrep | $SEMGREP_COUNT |"
+  echo "| Anomalies filed (MEDIUM+) | $ANOMALY_COUNT |"
   echo ""
   echo "**Report written:** \`$REPORT\`"
 } >> "$REPORT"
 
 echo "Audit complete. Report: $REPORT"
+echo "Anomaly files written this run: $ANOMALY_COUNT"
