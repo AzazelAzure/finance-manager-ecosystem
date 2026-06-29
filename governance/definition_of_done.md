@@ -44,18 +44,54 @@ Features that would **break** PWA (SW scope regressions, broken offline core led
 
 ---
 
-## 5) Sprint order — product, beta, infrastructure
+## 5) Privacy & data security gate
+
+**Added 2026-06-30 — F-010 RCA.** Root cause: a public bearer-URL share endpoint shipped through a normal feature PR without any privacy review, because no DoD gate required one.
+
+### 5a. Unauthenticated access + financial data — mandatory HitM risk-acceptance
+
+Any plan that introduces or modifies an endpoint using `AllowAny` (or equivalent unauthenticated permission class) **and** that endpoint returns, accepts, or proxies user financial data **must**:
+
+1. Include an explicit **HitM risk-acceptance note** in the plan's `README.md` §2 Scope or §6 Verification Gates, signed by HitM before executor starts implementation.
+2. Log an **audit entry** in the plan's `DECISION_LOG.md` (or parent audit log) recording the decision, the exposure surface, and the mitigations in place.
+3. Have this audit entry **present at pre-merge gate** — the PR cannot be approved without it.
+
+**What counts as financial data:** account balances, transactions, savings goals, upcoming expenses, STS values, export archives, or any derived aggregate from those fields.
+
+**What this does NOT block:** unauthenticated public routes that return no user data (landing page, legal pages, health checks, static assets).
+
+### 5b. New data collection, storage, or sharing features
+
+Any plan that:
+- Adds a new data collection mechanism (telemetry, analytics, logging expansion)
+- Adds a new storage category (new IndexedDB store, new cookie, new DB table holding PII)
+- Adds or changes any data-sharing or export surface
+
+Must update `strategy/analytics_and_data_sharing_overview.md` §8 Known Gaps **before the plan closes**, and flag `privacy_policy: true` in the plan YAML metadata (which triggers the legal workflow per `plan_template.md` §2 legal impact rule).
+
+### 5c. Checklist additions
+
+These are added to §7 below:
+
+- [ ] If any endpoint uses `AllowAny` and touches user financial data: HitM risk-acceptance note present in plan + audit entry in DECISION_LOG.
+- [ ] If plan adds/changes data collection, storage, or sharing: `analytics_and_data_sharing_overview.md` updated; `privacy_policy: true` set in plan YAML.
+
+---
+
+## 6) Sprint order — product, beta, infrastructure
 
 - **Normative ordering** is **not** inferred from this file alone. HitM runs (or delegates) a **huddle** to lock stack rank: product needs, beta tester needs, infrastructure needs.
 - **Huddle hub:** [`strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md`](../strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md) — capture inputs, proposed order, and `DECISIONS.md` / `ACTIONS.md` when locked.
 
 ---
 
-## 6) Checklist before marking a plan `completed`
+## 7) Checklist before marking a plan `completed`
 
 - [ ] V-tiers and evidence per [`plan_template.md`](./plan_template.md) §1a.
 - [ ] PWA class **A** or **B** documented; no unresolved PWA-breaking regressions.
 - [ ] Localization satisfied **or** shelved with signed follow-up link.
 - [ ] SEO matrix row(s) updated if public surfaces changed; P0 items in-PR where applicable.
 - [ ] F-011 updated if hero/pipeline copy or beta subpages should reflect this release (or explicit waive in huddle).
+- [ ] If any `AllowAny` endpoint touches user financial data: HitM risk-acceptance note + audit entry present (§5a).
+- [ ] If plan adds/changes data collection, storage, or sharing: `analytics_and_data_sharing_overview.md` updated; `privacy_policy: true` set in plan YAML (§5b).
 - [ ] `plan_registry.md` and plan `README` metadata `updated:` field match reality.

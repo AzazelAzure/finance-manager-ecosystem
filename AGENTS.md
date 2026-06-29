@@ -169,9 +169,10 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - Legacy S1.B plans using the old schema: use branch prefix `cur/s1b/feat/<slug>` per §2 and treat `slack_gates.pre_merge: required` as `manual_gates.pre_merge: required`.
 - One agent per sub-repo at a time: avoid two agents concurrently modifying the same sub-repo (especially API); pause or revert one side to prevent code collisions.
 - CPPR per task: open one PR per plan task and do not batch multiple tasks into a single PR; provide PRs in explicit merge order when several are ready.
-- New feature/task work must include PWA/offline functionality as part of done, not deferred.
-- Login UX: route already-authenticated users straight to the dashboard (no interstitial "already logged in" page); trigger the onboarding wizard only on new-user creation, not for existing users.
+- New feature/task work must include PWA/offline functionality AND guided-tour/guide-mode coverage as part of done, not deferred — extend the guided walkthrough and guide mode to every new feature, view, and form (including quick-add forms) site-wide.
+- Product/UX invariants: route already-authenticated users straight to the dashboard (no interstitial "already logged in" page) and trigger the onboarding wizard only on new-user creation, not for existing users; never surface or manipulate the internal-only "Unknown" balance/transaction source (failsafe only — keep it out of balance trends and all user-facing views).
 - Treat VPS deploy/cutover (inactive-color rebuild, smoke, color switch) and parent-repo governance closeout (plan registry, parent CHANGELOG, submodule pointers) as separate handoffs unless explicitly combined.
+- Squash-merging a PR that edits a subrepo `CHANGELOG` recurrently breaks the `[Unreleased]` section on remaining stacked/open PRs (seen across #62/#64/#65/#89); re-sync each open PR's CHANGELOG against `main` before merging them in order.
 
 ## Learned Workspace Facts
 
@@ -185,5 +186,5 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - GitHub Actions workflows should pin third-party actions to full commit SHAs and set least-privilege `permissions` (e.g. `contents: read`).
 - Public hostnames are proxied through Cloudflare; GitHub Actions curls to those URLs can get edge `403` from datacenter IPs — VPS uptime checks should hit origin on `:8443` via `curl --resolve` (and `-k` for internal TLS).
 - `main` branch protection is waived while repos stay private without GitHub Pro (explicit HitM decision).
-- Bill recurrence: cadence is currently inferred from `start_date`/`due_date` deltas (`bill_recurrence.py` stopgap). The first-class `cadence` field revamp is planned in `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (`plans/S1/S1.B/feat-bill-recurrence-engine/`) and must ship before F-009.
+- Bill recurrence: the historical stopgap inferred cadence from `start_date`/`due_date` deltas (`bill_recurrence.py`); the first-class `cadence` field engine is implemented via `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (`plans/S1/S1.B/feat-bill-recurrence-engine/`), landing on the inactive color ahead of F-009.
 - Currently a closed loop with one beta tester; secret rotation is deferred — scrub leaked secrets from logs and clear terminal history instead, with rotation enforced later.
