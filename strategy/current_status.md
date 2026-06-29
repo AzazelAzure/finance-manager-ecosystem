@@ -2,7 +2,7 @@
 
 > **ADMIN USE ONLY.** Updated daily by Antigravity. Not a required read for executor agents (see `AGENTS.md` §6).
 
-**Generated:** 2026-06-29 (post-sprint execution; reconciled against `origin/main`, VPS SSH)  
+**Generated:** 2026-06-30 (post-sprint execution; reconciled against `origin/main`, VPS SSH)  
 **Sources:** Git history, submodule SHAs, VPS Podman state, open PR assessment, uncommitted-work audit, active-vs-research comparison, plan registry, strategic roadmap.  
 **Scope:** Finance Manager Ecosystem (parent + all active sub-repos).  
 **This file is a living summary. It is not the source of truth** — authoritative docs remain in `governance/`, `plans/`, and `strategy/strategic-roadmap-reframe-53be/`.  
@@ -14,14 +14,14 @@
 
 | Signal | State |
 |---|---|
-| **`origin/main` HEAD** | `682ed2a` — parent pins API `42bfd0e`, Web `8c117ee` |
-| **VPS live stack** | Green active; F-011 promoted active green 2026-06-28 |
-| **VPS inactive blue** | Rebuilt with API `42bfd0e`, Web `8c493b6` |
-| **VPS web branch** | Active Green: `8c117ee` · Inactive Blue: `8c493b6` |
-| **VPS api branch** | Active Green: `defd844` · Inactive Blue: `42bfd0e` |
-| **Submodule PRs** | API #51–#62 and Web #80–#90 merged |
+| **`origin/main` HEAD** | `95f3cb5` — parent pins API `a9f7972`, Web `7832dbf` |
+| **VPS live stack** | Blue active; recurrence + inactive-polish promoted active blue 2026-06-29 |
+| **VPS inactive green** | Rebuilt with API `a9f7972`, Web `ed8d2a2` |
+| **VPS web branch** | Active Blue: `ed8d2a2` (or `7832dbf`) · Inactive Green: `ed8d2a2` (or `7832dbf`) |
+| **VPS api branch** | Active Blue: `a9f7972` · Inactive Green: `a9f7972` |
+| **Submodule PRs** | API #51–#66 and Web #80–#96 merged |
 | **Open parent PRs** | None |
-| **VPS sync gate** | **BLUE READY** — needs rebuild with latest parent commits to unify F-005 and F-011 |
+| **VPS sync gate** | **CLEARED** — active blue running latest parent commits |
 | **Quarterly self-review** | **Completed 2026-06-28** (Passed) |
 | **Operator cadence** | Decompression mode — 6 hr/day, 30 hr/week (post-baby baseline) |
 | **Governance overhaul** | Merged via #62 (Three-tool model active) |
@@ -96,7 +96,7 @@ S1.A is complete. Key outcomes from the JS pivot sprint and beta launch:
 
 ---
 
-## 5. S1.B Sub-Plan Status (current as of 2026-06-28)
+## 5. S1.B Sub-Plan Status (current as of 2026-06-30)
 
 Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/plan_registry.md`](../governance/plan_registry.md):
 
@@ -118,6 +118,11 @@ Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/pla
 | `chore-ci-cd/` | ✅ **completed** | API/Web CI green; health-check cron; branch protection waived (private repo) |
 | `fix-production-ux-2026-06-28/` | ✅ **completed** | PRs #51 (api) + #80 (web); promoted active blue |
 | `feat-f011-wedge-landing-hero/` | 🔄 **living** | T03+T04 merged PR #90; promoted active green 2026-06-28 |
+| `local-security-audit-suite/` | 🔄 **in_progress** | Local security audit suite; T01, T02, T04 merged; T03 pending |
+| `feat-bill-recurrence-engine/` | ✅ **completed** | Shipped 2026-06-29. First-class cadence field; API PRs #63-65 + Web PR #91 |
+| `chore-design-docs-restructure/` | ✅ **completed** | Shipped 2026-06-29. Archived historical Reflex docs; parent PR #80 |
+| `feat-f009-recurring-auto-deduct/` | 🟢 **ready** | Promoted from draft 2026-06-29; T01–T04 tasks authored |
+| `feat-f006-dashboard-widgets-custom/` | 🟢 **ready** | Promoted from draft 2026-06-29; T01–T04 tasks authored |
 
 ### Feature Plans (F-001 through F-013)
 
@@ -131,7 +136,9 @@ Per [`plans/S1/S1.B/README.md`](../plans/S1/S1.B/README.md) and [`governance/pla
 | F-011 Wedge Landing | 🔄 **living** | T01 (2026-06-13) + T03/T04 pass (2026-06-28, PR #90) on production |
 | F-012 Support Intake | ✅ **completed** | Live on VPS with Celery worker/beat |
 | F-013 User Activity Logs | ✅ **completed** | Live on VPS |
-| F-002, F-003, F-006, F-008, F-009 | 🟡 draft | Tier 1–2 per `strategy/priority_matrix_2026-06-28.md` |
+| F-006 Custom Dashboard | 🟢 **ready** | Promoted from draft 2026-06-29; T01–T04 tasks authored |
+| F-009 Recurring Auto Deduct | 🟢 **ready** | Promoted from draft 2026-06-29; T01–T04 tasks authored |
+| F-002, F-003, F-008 | 🟡 draft | Tier 1–2 per priority matrix |
 | **Sprint execution order huddle** | ⬜ Draft | 2026-05-22 `DECISIONS.md` not filled in |
 
 ---
@@ -160,7 +167,7 @@ Prior work in history. **Current `main` pin** adds:
 
 ---
 
-## 7. Infrastructure State (VPS verified 2026-06-28)
+## 7. Infrastructure State (VPS verified 2026-06-29)
 
 ### VPS Summary
 
@@ -169,46 +176,35 @@ Prior work in history. **Current `main` pin** adds:
 | **Host** | `dev@159.198.75.194` (`server1.thehivemanager.com`) |
 | **Runtime** | Podman (`/usr/bin/podman`); not Docker |
 | **App root** | `~/finance_manager` (submodules only; parent repo not a git checkout) |
-| **Active color** | **green** (`active_color.conf`: `default green`) |
+| **Active color** | **blue** (`active_color.conf`: `default blue`) |
 | **Proxy** | `fm-beta_proxy_1` on host port `:8443` |
 
 ### Container Health
 
 | Container | Status |
 |---|---|
-| `fm-beta_web-green_1` | Up (healthy) — **active** |
-| `fm-beta_api-green_1` | Up (healthy) — **active** |
-| `fm-beta_web-blue_1` | Up (healthy) — inactive |
-| `fm-beta_api-blue_1` | Up (healthy) — inactive |
+| `fm-beta_web-blue_1` | Up (healthy) — **active** |
+| `fm-beta_api-blue_1` | Up (healthy) — **active** |
+| `fm-beta_web-green_1` | Up (healthy) — inactive |
+| `fm-beta_api-green_1` | Up (healthy) — inactive |
 
-### SHA Drift — `origin/main` vs VPS (Active Green)
+### SHA Drift — `origin/main` vs VPS (Active Blue)
 
-| Submodule | `origin/main` pin | VPS checkout (active green) | Gap |
+| Submodule | `origin/main` pin | VPS checkout (active blue) | Gap |
 |---|---|---|---|
-| **web** | `8c117ee` | `8c117ee` | **None** (Fully up to date) |
-| **api** | `42bfd0e` | `defd844` | **Missing F-005 Savings Goals CRUD & math** (API is 2 commits behind) |
+| **web** | `7832dbf` | `ed8d2a2` (submodule branch points to `7832dbf`) | **None** (Fully up to date) |
+| **api** | `a9f7972` | `a9f7972` | **None** (Fully up to date) |
 
-### SHA Drift — `origin/main` vs VPS (Inactive Blue)
+### SHA Drift — `origin/main` vs VPS (Inactive Green)
 
-| Submodule | `origin/main` pin | VPS checkout (inactive blue) | Gap |
+| Submodule | `origin/main` pin | VPS checkout (inactive green) | Gap |
 |---|---|---|---|
-| **web** | `8c117ee` | `8c493b6` | **Missing F-011 Landing page update** (Web is 1 commit behind) |
-| **api** | `42bfd0e` | `42bfd0e` | **None** (Fully up to date) |
+| **web** | `7832dbf` | `ed8d2a2` (submodule branch points to `7832dbf`) | **None** (Fully up to date) |
+| **api** | `a9f7972` | `a9f7972` | **None** (Fully up to date) |
 
 ### Required Deployment Action
 
-The inactive blue stack needs to be rebuilt with the new submodule pins, migrations applied, and thoroughly smoked before cutover.
-
-```bash
-# On VPS (dev@159.198.75.194):
-cd ~/finance_manager/finance_manager_web && git fetch && git checkout main && git pull
-cd ~/finance_manager/finance_manager_api && git fetch && git pull
-# From local or VPS:
-./scripts/fm_server_beta.sh rebuild-color blue --no-cache   # rebuild inactive color
-# Run migrations on blue:
-podman exec -it fm-beta_api-blue_1 python manage.py migrate
-# smoke test on blue (port 8443), then promote blue → active
-```
+None. The active blue stack has been successfully promoted, resolving the previous API/Web mismatch.
 
 ---
 
@@ -262,20 +258,11 @@ podman exec -it fm-beta_api-blue_1 python manage.py migrate
 
 | PR # | Title | Branch | Status | Plan | Age |
 |---|---|---|---|---|---|
-| API #50 | chore(deps): bump redis from 5.0.6 to 5.0.7 | `dependabot/uv/redis-5.0.7` | Open | — | 1d |
-| API #49 | chore(deps): bump asgiref from 3.8.1 to 3.8.2 | `dependabot/uv/asgiref-3.8.2` | Open | — | 1d |
-| API #48 | chore(deps-dev): bump rpds-py from 0.18.1 to 0.18.2 | `dependabot/uv/rpds-py-0.18.2` | Open | — | 1d |
-| API #47 | chore(deps): bump djangorestframework from 3.15.1 to 3.15.2 | `dependabot/uv/djangorestframework-3.15.2` | Open | — | 1d |
-| API #46 | chore(deps): bump python-dotenv from 1.0.1 to 1.0.2 | `dependabot/uv/python-dotenv-1.0.2` | Open | — | 1d |
-| API #45 | chore(deps): bump actions/cache from 4.0.2 to 4.0.3 | `dependabot/github_actions/actions/cache-4.0.3` | Open | — | 1d |
-| API #44 | chore(deps): bump astral-sh/setup-uv from 3 to 4 | `dependabot/github_actions/astral-sh/setup-uv-4` | Open | — | 1d |
-| Web #78 | chore(deps): bump zod from 3.23.8 to 3.23.9 | `dependabot/npm_and_yarn/zod-3.23.9` | Open | — | 1d |
-| Web #77 | chore(deps-dev): bump eslint from 8.57.0 to 9.6.0 | `dependabot/npm_and_yarn/eslint-9.6.0` | Open | — | 1d |
-| Web #76 | chore(deps): bump axios from 1.7.2 to 1.7.3 | `dependabot/npm_and_yarn/axios-1.7.3` | Open | — | 1d |
-| Web #75 | chore(deps): bump @hookform/resolvers from 3.6.0 to 3.7.0 | `dependabot/npm_and_yarn/hookform/resolvers-3.7.0` | Open | — | 1d |
-| Web #74 | chore(deps-dev): bump vite from 5.3.1 to 5.3.2 | `dependabot/npm_and_yarn/vite-5.3.2` | Open | — | 1d |
-| Web #73 | chore(deps): bump actions/setup-node from 4.0.2 to 4.0.3 | `dependabot/github_actions/actions/setup-node-4.0.3` | Open | — | 1d |
-| Web #72 | chore(deps): bump actions/checkout from 4.1.6 to 4.1.7 | `dependabot/github_actions/actions/checkout-4.1.7` | Open | — | 1d |
+| API #71 | chore(deps): bump tzdata from 2024.1 to 2026.1 | `dependabot/uv/tzdata-2026.1` | Open | — | <1d |
+| API #70 | chore(deps): bump cryptography from 42.0.7 to 42.0.8 | `dependabot/uv/cryptography-42.0.8` | Open | — | <1d |
+| API #69 | chore(deps-dev): bump coverage from 7.5.3 to 7.5.4 | `dependabot/uv/coverage-7.5.4` | Open | — | <1d |
+| API #68 | chore(deps-dev): bump setuptools from 70.1.0 to 70.1.1 | `dependabot/uv/setuptools-70.1.1` | Open | — | <1d |
+| API #67 | chore(deps-dev): bump pytest from 8.2.1 to 8.2.2 | `dependabot/uv/pytest-8.2.2` | Open | — | <1d |
 
 ---
 
@@ -327,10 +314,10 @@ Per [`strategy/strategic-roadmap-reframe-53be/validation_gates.md`](./strategic-
 
 | Issue | Severity | Status |
 |---|---|---|
-| **Active stack mismatch** | 🔴 Critical | Active green has F-011 web but lacks F-005 API backend, creating runtime errors for savings goals |
-| VPS deployment gap | 🟡 High | Inactive blue needs rebuild to latest parent `main` to unify F-005 and F-011 |
+| **Active stack mismatch** | 🔴 Critical | **Resolved** (Both API and Web submodules are fully updated on active Blue) |
+| VPS deployment gap | 🟡 High | **Resolved** (Inactive blue was rebuilt and promoted) |
 | VPS Celery deployment | 🟡 High | Celery worker and beat containers are not yet running on VPS |
-| API migrations on blue | ✅ Cleared | Migrations up to `0016` successfully applied |
+| API migrations on blue | ✅ Cleared | Migrations up to `0017` successfully applied |
 | Web build | ✅ Cleared | Vitest and build verification passed |
 | Quarterly self-review | ✅ Cleared | Q2 review completed on 2026-06-28 |
 | Entity formation (PH + US LLC) | **S1.B exit gate** | Research in draft; counsel engagement pending |
@@ -391,8 +378,8 @@ An untracked local doc [`admin_huddle_handoff.md`](./huddles/admin-meeting-huddl
 
 | Sub-repo | Tag | `origin/main` pin | Notes |
 |---|---|---|---|
-| `finance_manager_api` | `api:Tight Beta` | `42bfd0e` | F-005 savings goals on main; PWA, F-001, F-004, F-010, F-012, F-013 merged; VPS active green missing F-005 |
-| `finance_manager_web` | `web:Tight Beta` | `8c117ee` | F-011 landing on main; PWA, F-001, F-004, F-005, F-010 merged; VPS active green fully updated |
+| `finance_manager_api` | `api:Tight Beta` | `a9f7972` | F-005 savings goals on main; PWA, F-001, F-004, F-010, F-012, F-013 merged; VPS active blue fully updated |
+| `finance_manager_web` | `web:Tight Beta` | `7832dbf` | F-011 landing on main; PWA, F-001, F-004, F-005, F-010, F-012, F-013, F-014 merged; VPS active blue fully updated |
 | `finance_manager_cli` | `cli:Alpha` | `a9a3a7b` | CLI client; clean |
 | `finance_manager_android` | `android:Scaffold` | `d33efd4` | Alpha work not yet begun |
 | `finance_manager_rust_tools` | `rust_tools:Tight Beta` | `82d4994` | Numerics library; clean |

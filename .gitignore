@@ -16,6 +16,10 @@ smtp.secret
 .cursorignore
 .antigravityignore
 
+# Obsidian vault config (machine-local workspace state; not shared)
+# design_docs/.obsidian is tracked inside the design_docs submodule separately
+.obsidian/
+
 # Cursor hooks local runtime state (agent transcript / continual-learning; not shared)
 .cursor/hooks/state/
 

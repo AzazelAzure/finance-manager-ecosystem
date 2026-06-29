@@ -2,16 +2,24 @@
 logged: 2026-06-28
 agent: cursor
 plan_context: PLAN_CROSS_PRODUCTION_UX_FIX_2026-06-28 / T02
-status: dispatched
+status: resolved
 dispatched_to: PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29
 dispatched_on: 2026-06-29
+resolved_on: 2026-06-29
 severity_guess: medium
 ---
 
+> **2026-06-29 resolved:** Bill Recurrence Engine shipped. The start/due-delta inference stopgap
+> is replaced by a first-class `cadence` field on `UpcomingExpense`. Landed via API PRs #63 (T01
+> cadence model + migration `0017_upcomingexpense_bill_cadence`), #64 (T02 cadence-driven engine),
+> #65 (T03 cadence API + validation) and Web PR #91 (T04 cadence UI + i18n) — all merged to `main`.
+> Deployed to inactive **BLUE** on the VPS (~09:11+08:00; api-blue/web-blue healthy, migration 0017
+> applied, manual `fm_server_beta.sh smoke --color blue` passed). Active **GREEN** untouched; HitM
+> verification on jsdevtesting + production color flip still pending (not part of this anomaly).
+>
 > **2026-06-29 dispatch:** Standalone plan authored — `plans/S1/S1.B/feat-bill-recurrence-engine/`
-> (PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29, status: ready). It replaces the start/due-delta
-> inference with a first-class `cadence` field on `UpcomingExpense`. Move this anomaly to
-> `resolved` when that plan closes. Blocks F-009.
+> (PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29). It replaces the start/due-delta inference with a
+> first-class `cadence` field on `UpcomingExpense`. Blocks F-009.
 
 ## What was found
 

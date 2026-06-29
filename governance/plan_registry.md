@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-29 (F-009 + F-006 task files authored, promoted Draft → Ready; bill recurrence engine shipped to inactive blue. Earlier: D6 doc-structure consolidation resolved, strategy/ homes created, AGENTS.md tenets added, security audit suite ready, anomalies dispatched)
+**Last updated:** 2026-06-30 (Reconciled plan registry: moved Bill Recurrence Engine and Design Docs Restructure to Completed, moved Local Security Audit Suite to In Progress; updated design_docs stale references)
 
 ## Update protocol
 
@@ -25,15 +25,12 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| _(empty)_ | | | | | | | | | |
+| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | pproctor | - | - | - | 2026-06-30 | Local security audit suite; T01, T02, T04 merged; T03 (weekly cron + prompt) pending |
 
 ## Ready for Execution
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | - | - | - | - | Local security audit suite (bandit, pip-audit, npm audit, gitleaks, semgrep); replaces cloud auto-scans; T01–T04 authored; `plans/S1/S1.B/local-security-audit-suite/README.md` |
-| `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` | P1 | S1.B | `cur/s1b/feat/bill-recurrence-engine` | - | F-009 | - | F-009 | Standalone bill recurrence engine — first-class `cadence` field on UpcomingExpense; replaces start/due-delta inference in `bill_recurrence.py`; T01–T04 authored; must ship before F-009; `plans/S1/S1.B/feat-bill-recurrence-engine/README.md` |
-| `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` | P2 | S1.B | `cur/s1b/chore/design-docs-restructure` | - | - | - | - | D6 execution (submodule side): archive reflex/alpha docs, retire roadmap/versioning overlap (keep Runtime_Signup_Sheet), fix Dashboard + Sync Protocol; docs-only CPPR; T01–T03 authored; `plans/S1/S1.B/chore-design-docs-restructure/README.md` |
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** opt-in `auto_deduct` on `UpcomingExpense.source`; Celery-beat due-date eval (profile TZ) + idempotent post; T01–T04 authored; `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md` |
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md` |
 
@@ -41,6 +38,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
+| `PLAN_CROSS_INVITE_REFERRAL_LINK_2026-06-30` | S1.B | Claude Code | 2026-06-30 | Invite token generation + public invite landing route; organic beta growth (no referral rewards). `plans/S1/S1.B/feat-invite-referral-link/README.md`. Stub — HitM markup required before `ready`. |
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
 | `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
 | `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
@@ -63,6 +61,8 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 
 | plan_id | phase | completed_date | strategic_impact | pr_url(s) |
 |---|---|---|---|---|
+| `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` | S1.B | 2026-06-29 | Standalone bill recurrence engine — first-class cadence field; API PRs #63, #64, #65 + Web PR #91 merged; deployed to inactive BLUE | https://github.com/AzazelAzure/finance-manager-api/pull/63 https://github.com/AzazelAzure/finance-manager-api/pull/64 https://github.com/AzazelAzure/finance-manager-api/pull/65 https://github.com/AzazelAzure/finance-manager-web/pull/91 |
+| `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` | S1.B | 2026-06-29 | D6 execution (design docs restructure): archived historical Reflex/alpha docs, retired duplicate roadmap/versioning docs, updated sync protocol and dashboard pointers; docs-only sweep; parent PR #80 merged | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/80 |
 | `PLAN_CROSS_PRODUCTION_UX_FIX_2026-06-28` | S1.B | 2026-06-28 | Production UX batch: nav brand link, login redirect, form labels, legal scrub, bill catch-up, onboarding re-enable; promoted active blue | https://github.com/AzazelAzure/finance-manager-api/pull/51 https://github.com/AzazelAzure/finance-manager-web/pull/80 |
 | `PLAN_CROSS_EXPORT_SHARING_F010_2026-05-05` | S1.B | 2026-06-28 | CSV export, full JSON backup, Data Hub export UI, share token API + share UI; migration `0015`; promoted active green | (see F-010 runtime_handoff; API/Web on `main`) |
 | `PLAN_CROSS_STS_BILL_REALISM_F004_2026-05-05` | S1.B | 2026-06-28 | STS pay cycles, bill realism (volatile/rigid, partial payments), pay-period dashboard/upcoming views; migrations `0012`–`0013`; promoted active green | https://github.com/AzazelAzure/finance-manager-api/pull/52 https://github.com/AzazelAzure/finance-manager-api/pull/53 https://github.com/AzazelAzure/finance-manager-api/pull/54 https://github.com/AzazelAzure/finance-manager-api/pull/55 https://github.com/AzazelAzure/finance-manager-web/pull/81 https://github.com/AzazelAzure/finance-manager-web/pull/83 |

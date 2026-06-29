@@ -2,7 +2,17 @@
 
 **Consolidated index (huddle + strategy + this file):** `[PRODUCT_FEATURE_BACKLOG_INDEX.md](./PRODUCT_FEATURE_BACKLOG_INDEX.md)`
 
-Unstructured feature capture. No implementation plans yet. Each entry is a product idea to be slotted into sprint planning later.
+> ⚠️ **RETIRED AS A SPEC SOURCE — 2026-06-30**
+>
+> This file was an unstructured brain dump from 2026-05-03. All F-001–F-013 entries now have formal execution plans in `plans/S1/S1.B/` (see index table below). **Do not use this file as an implementation spec.** Entry descriptions here are rough notes — they are not acceptance criteria, not API contracts, and not design decisions.
+>
+> **Root cause note (F-010 RCA):** The F-010 "sharing" entry in this file described sharing vaguely. That description was used to implement a public bearer-URL export endpoint without a privacy review gate, which was an architectural error. Formal plan files in `plans/S1/S1.B/feat-f010-export-sharing/` are the authoritative record. The `governance/definition_of_done.md` §5 privacy gate was added as a durable control.
+>
+> **Source of truth:** `governance/plan_registry.md` for status. `plans/S1/S1.B/<feature>/README.md` for scope and acceptance criteria.
+>
+> This file is retained as historical context and to preserve rough notes for features not yet in formal plans (F-002, F-003, F-008 are still draft). When those features move to `ready`, their plan READMEs become the spec and this file's entries become irrelevant.
+
+Unstructured feature capture (historical). Formal plans supersede any entry here.
 
 **Format:** ID, title, what it does, why it matters, rough notes.
 

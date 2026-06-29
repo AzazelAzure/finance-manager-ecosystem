@@ -5,14 +5,16 @@ Use **jsdevtesting.thehivemanager.com** (inactive blue) after PR merges and rede
 
 ## Merge order
 
-| Order | Repo | PR | Branch |
-|-------|------|-----|--------|
-| 1 | API | [#66](https://github.com/AzazelAzure/finance-manager-api/pull/66) | `cur/s1b/fix/share-link-disable` |
-| 2 | Web | [#92](https://github.com/AzazelAzure/finance-manager-web/pull/92) | `cur/s1b/fix/share-ui-remove` |
-| 3 | Parent | [#81](https://github.com/AzazelAzure/finance-manager-ecosystem/pull/81) | `cur/s1b/chore/share-link-rca` |
-| 4 | Web | [#93](https://github.com/AzazelAzure/finance-manager-web/pull/93) | `cur/s1b/feat/dashboard-nav-polish` |
-| 5 | Web | [#94](https://github.com/AzazelAzure/finance-manager-web/pull/94) | `cur/s1b/feat/datahub-profile-restructure` (after #92) |
-| 6 | Web | [#95](https://github.com/AzazelAzure/finance-manager-web/pull/95) | `cur/s1b/feat/guide-walkthrough-expansion` (after #94) |
+
+| Order | Repo   | PR                                                                      | Branch                                                 |
+| ----- | ------ | ----------------------------------------------------------------------- | ------------------------------------------------------ |
+| 1     | API    | [#66](https://github.com/AzazelAzure/finance-manager-api/pull/66)       | `cur/s1b/fix/share-link-disable`                       |
+| 2     | Web    | [#92](https://github.com/AzazelAzure/finance-manager-web/pull/92)       | `cur/s1b/fix/share-ui-remove`                          |
+| 3     | Parent | [#81](https://github.com/AzazelAzure/finance-manager-ecosystem/pull/81) | `cur/s1b/chore/share-link-rca`                         |
+| 4     | Web    | [#93](https://github.com/AzazelAzure/finance-manager-web/pull/93)       | `cur/s1b/feat/dashboard-nav-polish`                    |
+| 5     | Web    | [#94](https://github.com/AzazelAzure/finance-manager-web/pull/94)       | `cur/s1b/feat/datahub-profile-restructure` (after #92) |
+| 6     | Web    | [#95](https://github.com/AzazelAzure/finance-manager-web/pull/95)       | `cur/s1b/feat/guide-walkthrough-expansion` (after #94) |
+
 
 Also open from earlier today (if not merged): parent [#79](https://github.com/AzazelAzure/finance-manager-ecosystem/pull/79), [#80](https://github.com/AzazelAzure/finance-manager-ecosystem/pull/80), design_docs [#21](https://github.com/AzazelAzure/finance-manager-design-docs/pull/21).
 
@@ -32,45 +34,45 @@ Confirm migration `0018_revoke_export_share_tokens` applied on blue API.
 
 ## Security (Theme 1)
 
-- [ ] Data Hub has **no** Share Data card
-- [ ] Profile → Data tab has export only (CSV + full backup)
-- [ ] `GET /finance/export/share/{any-uuid}/` returns **404** on origin
-- [ ] RCA readable: `strategy/audits/2026-06-29_share-link-exposure_rca.md`
+- [x] Data Hub has **no** Share Data card
+- [x] Profile → Data tab has export only (CSV + full backup)
+- [x] `GET /finance/export/share/{any-uuid}/` returns **404** on origin
+- [x] RCA readable: `strategy/audits/2026-06-29_share-link-exposure_rca.md`
 
 ## Bill recurrence (prior deploy)
 
-- [ ] Cadence UI: weekly, biweekly, **semimonthly** (1st/15th), monthly, custom
-- [ ] Dashboard `UpcomingBillsWidget` shows cadence labels
-- [ ] Settling a bill advances due date by cadence (not start/due delta)
+- [x] Cadence UI: weekly, biweekly, **semimonthly** (1st/15th), monthly, custom
+- [x] Dashboard `UpcomingBillsWidget` shows cadence labels
+- [x] Settling a bill advances due date by cadence (not start/due delta)
 
 ## Dashboard + nav (Theme 2, PR #93)
 
-- [ ] **Goals** appears in desktop sidebar and mobile More drawer
-- [ ] Mobile More → **Home** returns to landing page (`/`)
-- [ ] Spending-by-tag and Recent transactions have visible gap (not touching)
-- [ ] Balance trends chart: **no** "unknown" / "unknown source" series in legend
+- [x] **Goals** appears in desktop sidebar and mobile More drawer
+- [ ] Mobile More → **Home** returns to landing page (`/`) [cannot verify until live]
+- [x] Spending-by-tag and Recent transactions have visible gap (not touching)
+- [x] Balance trends chart: **no** "unknown" / "unknown source" series in legend
 
 ## Data Hub + Profile (Theme 3, PR #94)
 
-- [ ] Data Hub tabs: Overview, Sources, Categories, Tags — one panel at a time
-- [ ] Overview KPIs moved from Profile (assets, spending, etc.)
-- [ ] Profile tabs: Settings, Security, **Data** (export) — no Overview tab
-- [ ] Row Edit/Delete buttons fit without overflow (compact size)
-- [ ] Export still blocked offline / with pending outbox
+- [x] Data Hub tabs: Overview, Sources, Categories, Tags — one panel at a time
+- [x] Overview KPIs moved from Profile (assets, spending, etc.)
+- [x] Profile tabs: Settings, Security, **Data** (export) — no Overview tab
+- [x] Row Edit/Delete buttons fit without overflow (compact size)
+- [x] Export still blocked offline / with pending outbox
 
 ## Guide mode + tours (Theme 4, PR #95)
 
-- [ ] **Calendar:** Guide mode highlights nav, filters, grid, day detail (not empty)
-- [ ] **Data Hub:** Guide mode covers tabbed sections
-- [ ] **Dashboard:** Guide mode covers new widgets (goals, upcoming bills, balance history, etc.)
-- [ ] Replay tours: Data Hub, Profile, Goals pages
-- [ ] Quick Add / transaction / bill forms: walkthrough steps into fields
-- [ ] Upcoming tour strings localized (tl-PH spot-check)
+- [x] **Calendar:** Guide mode highlights nav, filters, grid, day detail (not empty)
+- [x] **Data Hub:** Guide mode covers tabbed sections
+- [x] **Dashboard:** Guide mode covers new widgets (goals, upcoming bills, balance history, etc.)
+- [x] Replay tours: Data Hub, Profile, Goals pages
+- [ ] Quick Add / transaction / bill forms: walkthrough steps into fields [this is broken.   for now, just disable, and make an anomaly report.  The walkthrough tries to happen in the background, this is likely due to the forms being a foreground object.  A simple guide function like the rest of the site may be better for this instead of a guided tour]
+- [x] Upcoming tour strings localized (tl-PH spot-check)
 
 ## PWA / mobile
 
-- [ ] Offline read still works on Data Hub lists after tab restructure
-- [ ] Goals page reachable from nav on mobile
+- [ ] Offline read still works on Data Hub lists after tab restructure [cannot check until flip]
+- [ ] Goals page reachable from nav on mobile [cannot check until flip]
 
 ## Flip gate
 
