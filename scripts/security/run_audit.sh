@@ -29,9 +29,6 @@ source "$SCRIPT_DIR/lib_anomaly_write.sh"
 
 mkdir -p "$SECURITY_DIR"
 
-ANOMALY_MARKER="$SECURITY_DIR/.anomaly_run_$$"
-touch "$ANOMALY_MARKER"
-
 BANDIT_COUNT=0
 PIPAUDIT_COUNT=0
 NPM_COUNT=0
@@ -90,7 +87,7 @@ parse_pipaudit_anomalies "$PIPAUDIT_JSON"
 NPM_JSON=""
 NPM_HUMAN=""
 if [[ -d "$WEB_DIR" ]] && command -v npm &>/dev/null; then
-  NPM_JSON=$(cd "$WEB_DIR" && npm audit --json 2>&1 || true)
+  NPM_JSON=$(cd "$WEB_DIR" && npm audit --json 2>/dev/null || true)
   NPM_COUNT=$(echo "$NPM_JSON" | python3 -c \
     "import sys,json; d=json.load(sys.stdin); print(d.get('metadata',{}).get('vulnerabilities',{}).get('total',0))" \
     2>/dev/null || echo "parse error")
@@ -199,10 +196,7 @@ SEMGREP_COUNT="${SEMGREP_COUNT:-0}"
 parse_semgrep_anomalies "$SEMGREP_JSON"
 
 # --- Summary footer ---
-ANOMALY_COUNT=$(find "$REPO_ROOT/strategy/anomalies" -name '*security-audit*' \
-  -newer "$ANOMALY_MARKER" 2>/dev/null | wc -l | tr -d ' ')
-rm -f "$ANOMALY_MARKER"
-ANOMALY_COUNT="${ANOMALY_COUNT:-0}"
+ANOMALY_COUNT="$ANOMALY_WRITTEN"
 {
   echo "---"
   echo ""
