@@ -268,7 +268,29 @@ Sprint **ordering** across F-* plans is set by HitM-led huddle output: **[`strat
 
 ---
 
-## 13) Update protocol
+## 13) Incident & RCA vocabulary
+
+*Added 2026-06-29 — midday touch-up (HitM endorsed, after the F-010 share-link exposure RCA).*
+
+| Term | Definition |
+|------|-----------|
+| **RCA (Root-Cause Analysis)** | A structured post-incident artifact that traces *how* an issue reached its state — from origin (spec/concept/design) through code, timeline-with-evidence, why controls missed it, remediation taken, and durable controls to prevent recurrence. Not a status note; a causal trace. |
+| **Incident** | A confirmed problem that reached (or could reach) users or production — e.g. a data exposure, outage, or data-integrity defect. Incidents warrant an RCA. |
+
+### When an RCA is required
+
+- Any **`S0`/`S1` severity** anomaly or confirmed **incident** (data exposure, outage, integrity loss) → the resolution artifact is a **full RCA**, not just an anomaly status flip.
+- Lighter anomalies (`S2`/`S3`) stay as normal anomaly logs unless HitM escalates.
+
+### Where RCAs live + template
+
+- **Template:** [`rca_template.md`](./rca_template.md) — modeled on the canonical first example, `strategy/audits/2026-06-29_share-link-exposure_rca.md` (Cursor).
+- **Storage:** `strategy/audits/YYYY-MM-DD_<slug>_rca.md` (audits home per the 2026-06-29 doc-structure consolidation).
+- **Relationship:** an RCA *resolves* an anomaly/bug report; link the originating anomaly file from the RCA References, and point the anomaly's `status` note at the RCA.
+
+---
+
+## 14) Update protocol
 
 This glossary is locked at the level of the categories above. Adding or modifying terms requires:
 
