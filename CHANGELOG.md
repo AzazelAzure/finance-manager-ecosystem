@@ -4,6 +4,12 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-29 — Midday touch-up + RCA standard adopted (Claude Code, admin)
+
+- **RCA promoted to a standard:** `governance/glossary.md` §13 (Incident & RCA vocabulary — RCA required for S0/S1) + new `governance/rca_template.md` (generalized from Cursor's F-010 RCA, cited as the canonical example).
+- **Midday touch-up doc** (`strategy/meetings/midday_touchup_2026-06-29.md`): F-010 RCA dispositioned (shared-blame analysis; real intent was data-portability, not a public/invite link), Topics 2–6 reorientation (single critical path = redeploy blue → checklist → flip, now done).
+- **Tomorrow seeded:** `strategy/meetings/admin_meeting_seed_2026-06-30.md` carries forward F-009/F-006 dispatch, the rust-tools planning session, and the F-010 §1.5 forward items (DoD privacy gate, FEATURE_IDEAS sweep, data-portability + invite-link features).
+
 ### 2026-06-29 — F-010 share-link exposure RCA + shutdown coordination (Cursor)
 
 - **RCA:** `strategy/audits/2026-06-29_share-link-exposure_rca.md` — exhaustive trace of F-010 public bearer-URL share feature from plan spec through PRs #59/#86, production flip (2026-06-28 12:32 +08), ~24h exposure window, and 2026-06-29 disable (API #66, Web #92). Root cause: privacy-by-design spec (`AllowAny` full transaction JSON), not cross-user IDOR.
