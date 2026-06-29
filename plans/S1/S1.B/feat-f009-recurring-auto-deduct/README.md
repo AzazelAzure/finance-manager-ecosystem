@@ -1,13 +1,13 @@
 ---
 plan_id: PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05
-status: draft
+status: ready
 priority: P2
 created: 2026-05-05
-updated: 2026-05-05
+updated: 2026-06-29
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f009-recurring-auto-deduct/
-intended_branch: cursor/s1b/feat/f009-recurring-auto-deduct
+intended_branch: cur/s1b/feat/f009-recurring-auto-deduct
 parent_plan: plans/S1/S1.B/
 
 target_repos:
@@ -17,7 +17,8 @@ target_repos:
 strategic_phase: S1
 strategic_link: strategy/strategic-roadmap-reframe-53be/phases/S1_public_beta_position.md
 
-depends_on: []
+depends_on:
+  - PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29  # cadence-driven due dates — SHIPPED 2026-06-29 (on inactive blue); dependency satisfied
 blocks: []
 parallel_safe_with: []
 conflicts_with: []
@@ -79,7 +80,15 @@ Use the **existing source field** on upcoming/recurring expenses as the funnel f
 
 ## 4) Phase Plan or Task List
 
-T01 field + API → T02 scheduler/outbox strategy → T03 web → T04 edge cases (timezone, skipped holidays).
+| Task | Slug | Scope | Repo |
+|---|---|---|---|
+| T01 | auto-deduct-field-api | `auto_deduct` flag + source-required validation + idempotency key | API |
+| T02 | due-date-scheduler | Celery beat due-today (profile TZ) evaluation; idempotent post via standard tx contract; cadence-driven settlement | API |
+| T03 | auto-deduct-web | Toggle + source-required UI, next-action preview, auto-posted indicator, i18n | Web |
+| T04 | edge-cases | Timezone boundaries, toggle-off history preservation, concurrency, F-004 partial-pay parity, failure docs | API |
+
+**Execution order:** T01 → T02 → T03 → T04. API contract (T01) before scheduler (T02) to avoid
+double-spend. Cadence-driven due dates come from the bill recurrence engine (shipped 2026-06-29).
 
 ## 5) Execution Order
 

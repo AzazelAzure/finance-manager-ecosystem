@@ -30,6 +30,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **Governance:** `governance/meeting_artifact_protocol.md` added; plan registry updated; two anomalies dispatched (bill-interval → recurrence plan, nginx-check → Cursor chore).
 - **AGENTS.md:** §1 trust-but-verify + documentation-maintenance tenets added; stale bill-recurrence fact refreshed to point at the new plan.
 - **Prompt hardening (D5):** `daily_summary_prompt.md` + `daily_doc_sweep_prompt.md` now source VPS state live-only (timestamped, UNKNOWN on unavailability, never from the Runtime Signup Sheet/cache) with a trust-but-verify constraint; fixed stale `scripts/dev/gather_doc_context.sh` path. Added `strategy/meetings/cursor_execution_2026-06-29.md` (today's ordered Cursor dispatch list).
+- **F-009 + F-006 task files authored (Draft → Ready):** `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009` (T01–T04: `auto_deduct` flag + idempotency, Celery-beat due-date eval, web toggle, edge cases; bill-recurrence dependency now satisfied) and `PLAN_CROSS_DASHBOARD_WIDGETS_F006` (T01–T04: layout persistence, widget catalog/render, DnD reorder/resize, device variants). Branch prefixes corrected `cursor/` → `cur/`. F-002/F-003 deferred pending rust-tools planning.
 
 ### 2026-06-28 — F-011 landing reflect-shipped + forward roadmap (T03+T04)
 

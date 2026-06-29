@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-29 (D6 doc-structure consolidation resolved: design-docs restructure chore plan authored; strategy/ homes created; AGENTS.md trust-but-verify + doc-maintenance tenets added; plus bill recurrence + security audit suite ready, two anomalies dispatched)
+**Last updated:** 2026-06-29 (F-009 + F-006 task files authored, promoted Draft → Ready; bill recurrence engine shipped to inactive blue. Earlier: D6 doc-structure consolidation resolved, strategy/ homes created, AGENTS.md tenets added, security audit suite ready, anomalies dispatched)
 
 ## Update protocol
 
@@ -34,6 +34,8 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 | `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | - | - | - | - | Local security audit suite (bandit, pip-audit, npm audit, gitleaks, semgrep); replaces cloud auto-scans; T01–T04 authored; `plans/S1/S1.B/local-security-audit-suite/README.md` |
 | `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` | P1 | S1.B | `cur/s1b/feat/bill-recurrence-engine` | - | F-009 | - | F-009 | Standalone bill recurrence engine — first-class `cadence` field on UpcomingExpense; replaces start/due-delta inference in `bill_recurrence.py`; T01–T04 authored; must ship before F-009; `plans/S1/S1.B/feat-bill-recurrence-engine/README.md` |
 | `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` | P2 | S1.B | `cur/s1b/chore/design-docs-restructure` | - | - | - | - | D6 execution (submodule side): archive reflex/alpha docs, retire roadmap/versioning overlap (keep Runtime_Signup_Sheet), fix Dashboard + Sync Protocol; docs-only CPPR; T01–T03 authored; `plans/S1/S1.B/chore-design-docs-restructure/README.md` |
+| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** opt-in `auto_deduct` on `UpcomingExpense.source`; Celery-beat due-date eval (profile TZ) + idempotent post; T01–T04 authored; `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md` |
+| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md` |
 
 ## Draft / Planning
 
@@ -41,9 +43,7 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 |---|---|---|---|---|
 | `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
 | `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
-| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-006** customizable dashboard: `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md`. |
 | `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
-| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-009** recurring automation + **source → auto_deduct**: `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md`. |
 
 ## Paused
 

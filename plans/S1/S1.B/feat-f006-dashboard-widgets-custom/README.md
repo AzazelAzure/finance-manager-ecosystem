@@ -1,13 +1,13 @@
 ---
 plan_id: PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05
-status: draft
+status: ready
 priority: P2
 created: 2026-05-05
-updated: 2026-05-21
+updated: 2026-06-29
 owner: pproctor
 
 plan_root: plans/S1/S1.B/feat-f006-dashboard-widgets-custom/
-intended_branch: cursor/s1b/feat/f006-dashboard-widgets-custom
+intended_branch: cur/s1b/feat/f006-dashboard-widgets-custom
 parent_plan: plans/S1/S1.B/
 
 target_repos:
@@ -77,7 +77,20 @@ User-selectable widgets, reorder, resize tiers, persist per user (API), optional
 
 ## 4) Phase Plan or Task List
 
-TBD: catalog → persistence → DnD → mobile variant.
+| Task | Slug | Scope | Repo |
+|---|---|---|---|
+| T01 | layout-persistence-api | `DashboardLayout` model + CRUD + default + reset; PWA cache fallback | API |
+| T02 | widget-catalog-render | Catalog registry of existing widgets; `DashboardPage` renders from saved layout; show/hide + add | Web |
+| T03 | reorder-resize-dnd | Drag-to-reorder, size tiers, debounced persist, a11y drag handles | Web |
+| T04 | mobile-desktop-variants | Optional per-device-class layout variants (migration-safe) | API + Web |
+
+**Execution order:** T01 → T02 → T03 → T04. Persistence (T01) before DnD (T03) so drag results are
+never lost to local-only state. T02 is shippable on its own (selectable + persisted widgets) before
+DnD lands. T04 is optional polish — can follow as a separate pass if descoped.
+
+Catalog source = the existing dashboard components (KPIRow, ProfileOverview, SourceBalances,
+RecentTransactions, UpcomingBillsWidget, GoalsWidget, BalanceHistoryChart, SpendChart, FlowChart,
+CategoryPie, TagPie, QuickActions).
 
 ## 5) Execution Order
 
