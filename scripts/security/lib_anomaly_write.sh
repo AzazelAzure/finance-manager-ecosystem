@@ -51,29 +51,38 @@ write_security_anomaly() {
 
   mkdir -p "$repo_root/strategy/anomalies"
 
-  cat > "$filepath" <<ANOMALY
----
-logged: $date_str
+  _ANOMALY_TOOL="$tool" _ANOMALY_SEVERITY="${severity,,}" _ANOMALY_FINDING="$finding_text" \
+    python3 - "$filepath" "$date_str" <<'PY'
+import os
+import sys
+from pathlib import Path
+
+filepath, date_str = sys.argv[1], sys.argv[2]
+tool = os.environ["_ANOMALY_TOOL"]
+severity = os.environ["_ANOMALY_SEVERITY"]
+finding_text = os.environ["_ANOMALY_FINDING"]
+content = f"""---
+logged: {date_str}
 agent: run_audit.sh
 plan_context: PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29
 status: unreviewed
-severity_guess: ${severity,,}
+severity_guess: {severity}
 ---
 
 ## What was found
 
-\`\`\`
-$finding_text
-\`\`\`
+```
+{finding_text}
+```
 
 ## Where
 
-Detected by \`$tool\` during automated security audit. See full report:
-\`strategy/security/audit_${date_str}.md\`
+Detected by `{tool}` during automated security audit. See full report:
+`strategy/security/audit_{date_str}.md`
 
 ## What agent was doing
 
-Running weekly automated security audit via \`scripts/security/run_audit.sh\`.
+Running weekly automated security audit via `scripts/security/run_audit.sh`.
 
 ## Why outside scope
 
@@ -85,8 +94,10 @@ Cursor — review finding and determine if fix is needed.
 
 ## Notes
 
-Severity reported by $tool: ${severity^^}. Verify before acting — static analysis can produce false positives.
-ANOMALY
+Severity reported by {tool}: {severity.upper()}. Verify before acting — static analysis can produce false positives.
+"""
+Path(filepath).write_text(content)
+PY
 
   ANOMALY_WRITTEN=$((ANOMALY_WRITTEN + 1))
   echo "[anomaly] Filed: $filename"
@@ -96,11 +107,12 @@ parse_bandit_anomalies() {
   local bandit_out="$1"
   [[ -z "$bandit_out" ]] && return 0
   export _AUDIT_PARSE_INPUT="$bandit_out"
-  while IFS=$'\t' read -r severity slug finding; do
+  while IFS=$'\t' read -r severity slug finding_b64; do
     [[ -z "$severity" ]] && continue
+    finding=$(printf '%s' "$finding_b64" | base64 -d 2>/dev/null || true)
     write_security_anomaly "bandit" "$severity" "$slug" "$finding" "$REPO_ROOT"
   done < <(python3 <<'PY'
-import os, re
+import os, re, base64
 text = os.environ.get("_AUDIT_PARSE_INPUT", "")
 blocks = re.split(r"(?=>> Issue:)", text)
 for block in blocks:
@@ -117,7 +129,7 @@ for block in blocks:
     loc_s = loc.group(1) if loc else "unknown"
     title_s = title.group(1).strip() if title else "bandit-finding"
     slug = re.sub(r"[^a-z0-9]+", "-", f"{loc_s}-{title_s}".lower()).strip("-")[:40]
-    finding = block.strip().replace("\t", " ")
+    finding = base64.b64encode(block.strip().encode()).decode()
     print(f"{sev}\t{slug}\t{finding}")
 PY
   )
