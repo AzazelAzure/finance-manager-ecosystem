@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-29 — D5 implementation: live VPS state query (Cursor)
+
+- **`scripts/vps_state.sh` (new):** Single-concern script that SSHes the production VPS in one read-only round-trip and prints a timestamped `## Live VPS State (SSH-verified)` markdown block (active color, deployed API/Web SHAs, container count, Celery worker/beat status, last applied `finance` migration, API health, container detail table, drift check). On SSH failure/timeout (hard 20s default) it prints a clearly-marked `UNAVAILABLE` block and exits non-zero so callers surface UNKNOWN instead of falling back to cached state. Reuses the existing `FM_SPRINT_SSH`/`FM_SPRINT_REMOTE_ROOT` config (no new credentials).
+- **`scripts/gather_doc_context.sh` (refactor):** Replaced the static `head -60 Runtime_Signup_Sheet.md` "Current VPS State" block with a call to `vps_state.sh`. The Runtime Signup Sheet is now printed under a clearly demoted `## Runtime Signup Sheet (human log — NOT live state)` heading so live state is never conflated with the human-authored log — the root-cause fix for the 2026-06-29 stale-state false HIGH alerts. Implements spec `strategy/automations/specs/vps_state_and_doc_context_spec_2026-06-29.md` (Deliverables 1–2; Deliverable 3 prompt hardening owned by Claude Code, already landed).
+
 ### 2026-06-29 — Admin session: planning batch + governance/doc-structure consolidation (D1–D8)
 
 - **Plans authored (ready for Cursor):** `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` (T01–T04), `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (T01–T04; first-class `cadence` field; blocks F-009), `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` (T01–T03; submodule docs-only).
