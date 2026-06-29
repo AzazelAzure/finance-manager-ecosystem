@@ -1,0 +1,4 @@
+# Vendor directories
+finance_manager_api/.vendor/
+finance_manager_api/.venv/
+finance_manager_web/node_modules/
