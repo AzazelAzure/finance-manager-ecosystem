@@ -18,7 +18,7 @@ on:
   workflow_dispatch:           # manual trigger for verification
 
 env:
-  VPS_IP: dev@<VPS_HOST>
+  VPS_IP: ${{ secrets.VPS_ORIGIN_IP }}
   WEB_HOST: thehivemanager.com
   API_HOST: api.thehivemanager.com
   PORT: '8443'
@@ -27,6 +27,19 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Validate VPS origin secret
+        run: |
+          if [ -z "${VPS_IP}" ]; then
+            echo "::error::Missing required repository secret VPS_ORIGIN_IP"
+            exit 1
+          fi
+          case "${VPS_IP}" in
+            *"@"*|*"<"*|*">"*)
+              echo "::error::VPS_ORIGIN_IP must be an IP address only, not an SSH target or placeholder"
+              exit 1
+              ;;
+          esac
+
       - name: Check web app (origin, bypass Cloudflare)
         run: |
           url="https://${WEB_HOST}:${PORT}"

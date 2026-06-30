@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-30 — Healthcheck secretization + local VPS env loading (Cursor)
+
+- **`.github/workflows/health-check.yml`:** Replace scrubbed committed VPS origin value with `secrets.VPS_ORIGIN_IP` and add a clear validation step for missing/placeheld/SSH-target values before curl checks run.
+- **`scripts/vps_state.sh` + `scripts/sprint_verify.sh`:** Load allowlisted VPS ops variables from repo-root `.env` (`VPS_ORIGIN_IP`, `FM_SPRINT_SSH`, remote root/timeouts/project options) without sourcing arbitrary shell code; document local usage in `.env.example`.
+
 ### 2026-06-30 — design_docs cleanup follow-ups + API/Web docs (Cursor)
 
 - **Submodule pointer bumps** (all to merged `main`):
