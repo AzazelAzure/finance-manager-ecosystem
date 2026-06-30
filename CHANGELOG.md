@@ -4,6 +4,13 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-30 — design_docs cleanup follow-ups + API/Web docs (Cursor)
+
+- **Submodule pointer bumps** (all to merged `main`):
+  - `design_docs` → `e3da618`: sub-repo README dead-ref cleanup vault nav (#23), full `api_docs/` rewrite (#24), and new `web_docs/` flagship SPA section (#25).
+  - `finance_manager_api` → `4a29bde` (#73), `finance_manager_cli` → `95a3589` (#2), `finance_manager_reflex` → `e4de43c` (#15), `finance_manager_web` → `07f97ca` (#103): repoint/reword dead `design_docs/30_Releases` + `20_Roadmap` README refs to parent `governance/` after the scope cleanup.
+- **Handoff `strategy/cursor_handoff_design_docs_cleanup.md` complete:** Task 1 (sub-repo README refs), Task 2 (`design_docs` README + `00_Dashboard` rework + `api_docs` `file://` link hygiene), plus comprehensive `api_docs/` and new `web_docs/` documentation aligned to tight-beta implementation.
+
 ### 2026-06-30 — Repo publication + design_docs scope cleanup (Claude, admin)
 
 - **All 9 ecosystem repos made public.** Scrubbed business/strategy artifacts and a VPS IP from parent + `design_docs` history before publication; rewrote parent `README` as a portfolio-facing landing page.
