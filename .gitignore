@@ -62,3 +62,7 @@ dist/
 
 # Local TLS certificates and keys (generate per dev machine; never commit private material)
 proxy/certs/*.pem
+
+# Business strategy and planning docs (private; scrubbed from history)
+strategy/
+plans/

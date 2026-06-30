@@ -3,7 +3,7 @@
 # Database Credential Setup Script
 # Generates a random password and updates root and API .env files
 
-BASE_DIR="/home/pproctor/Documents/python/finance_manager"
+BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 API_ENV="$BASE_DIR/finance_manager_api/.env"
 ROOT_ENV="$BASE_DIR/.env"
 
