@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-30 (Reconciled plan registry: moved Bill Recurrence Engine and Design Docs Restructure to Completed, moved Local Security Audit Suite to In Progress; updated design_docs stale references)
+**Last updated:** 2026-06-30 (Added RUST_CALC_LAYER and RUST_CRYPTO_PROTOTYPE stubs; F-002 + F-003 now blocked_by RUST_CALC_LAYER)
 
 ## Update protocol
 
@@ -39,8 +39,10 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
 | `PLAN_CROSS_INVITE_REFERRAL_LINK_2026-06-30` | S1.B | Claude Code | 2026-06-30 | Invite token generation + public invite landing route; organic beta growth (no referral rewards). `plans/S1/S1.B/feat-invite-referral-link/README.md`. Stub — HitM markup required before `ready`. |
-| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. |
-| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. |
+| `PLAN_CROSS_RUST_CALC_LAYER_2026-06-30` | S1.B | Claude Code | 2026-06-30 | **Prerequisite for F-002 + F-003.** Adds wasm-pack (WASM/PWA) + PyO3/maturin (Python/API) binding targets to `finance_manager_rust_tools`; CI build matrix; money-precision audit; surface audit checklist. `plans/S1/S1.B/rust-calc-layer/README.md`. Stub — HitM markup required before `ready`. |
+| `PLAN_CROSS_RUST_CRYPTO_PROTOTYPE_2026-06-30` | S3 pipeline | Claude Code | 2026-06-30 | **Prototype only — NOT S5 execution.** ZK crypto primitives (Pedersen, range proof, Poseidon) in `finance_manager_rust_middleware`; WASM compat check; benchmark on GAMMA server; ADR for ZK proof system choice. Requires dedicated GAMMA VPS (not blue/green). `plans/pipeline_queue/rust-crypto-prototype-env/README.md`. Pre-execution HitM gate required. |
+| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
+| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
 | `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
 
 ## Paused

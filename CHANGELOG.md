@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-30 — SEO audit and strategic refinement (Antigravity, admin)
+
+- **`plans/S1/S1.B/distribution-channel-research/`:** Created `SEO_PASSTHROUGH_PASSDOWN.md` containing the SEO audit findings, custom React 19 + Vite 8 SSG proposal, font preloading / Core Web Vitals analysis, and Speculation Rules constraint analysis. Updated `SEO_PRIORITY_MATRIX.md` to mark `react-helmet-async` as **DONE**, add the font preloading task under P1, refine the prerendering task to a custom React 19 script, and link the new passthrough document.
+
 ### 2026-06-29 — Midday touch-up + RCA standard adopted (Claude Code, admin)
 
 - **RCA promoted to a standard:** `governance/glossary.md` §13 (Incident & RCA vocabulary — RCA required for S0/S1) + new `governance/rca_template.md` (generalized from Cursor's F-010 RCA, cited as the canonical example).
