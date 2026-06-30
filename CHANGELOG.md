@@ -4,6 +4,15 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-30 — Repo publication + design_docs scope cleanup (Claude, admin)
+
+- **All 9 ecosystem repos made public.** Scrubbed business/strategy artifacts and a VPS IP from parent + `design_docs` history before publication; rewrote parent `README` as a portfolio-facing landing page.
+- **`design_docs` rescoped to active working system design only.** Relocated holdovers from earlier orchestration iterations:
+  - → `governance/`: `Runtime_Signup_Sheet`, Git/Runtime owner handoff templates, `Documentation_Sync_Protocol`, and the server-runtime / inter-agent-relay / beta-incident-triage contracts. All references repointed (AGENTS.md, `governance/*`, `.cursor/` rules+skills, `scripts/gather_doc_context.sh`).
+  - → private `strategy/`: future risks, research backlog, licensing strategy, full `20_Roadmap`, localization strategy, bounty sandbox + security disclosure drafts. Business-sensitive subset history-scrubbed from public `design_docs`.
+  - Deleted: deprecated Slack-bridge doc, hive orchestration protocol, `30_Releases/_historical/*`, archived `reflex_docs`, alpha overview, stale resume checkpoint.
+- **Follow-ups handed to Cursor** (`strategy/cursor_handoff_design_docs_cleanup.md`): repoint dead refs in sub-repo READMEs, author a `design_docs` README, rework `00_Dashboard` links, and fix ~21 absolute-`file://` local-path links in `api_docs/`.
+
 ### 2026-06-30 — Web #97 green promotion + runtime signup (Cursor)
 
 - Bump `design_docs` submodule: `Runtime_Signup_Sheet.md` logs inactive-green restage on `main` (API `9938614`, Web `9436e3b`) and active color flip **blue → green** after Web PR #97 (Profile tab fix + ErrorBoundary). VPS post-switch smoke passed (captured 2026-06-30T07:24+08).
