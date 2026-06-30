@@ -58,7 +58,7 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 
 ### Documentation maintenance
 
-- Keep the **VPS runtime checkout sheet** (`design_docs/30_Releases/Runtime_Signup_Sheet.md`) current — a known prior drift source. Update it on every deploy/cutover and treat its contents as point-in-time, not authoritative live state (live state comes from an SSH query per trust-but-verify).
+- Keep the **VPS runtime checkout sheet** (`governance/Runtime_Signup_Sheet.md`) current — a known prior drift source. Update it on every deploy/cutover and treat its contents as point-in-time, not authoritative live state (live state comes from an SSH query per trust-but-verify).
 - Doc/governance file lifecycle (what gets saved, updated, or archived — including within meetings) is governed by `governance/meeting_artifact_protocol.md`.
 - Strategy-area navigation: `strategy/README.md` is the index of living-state homes (meetings, anomalies, projections, parking lot, risk register, audits, automations).
 
@@ -93,14 +93,14 @@ Plans live under `plans/<Phase>/<Stage>/<status>/<sub-plan>/` where `<status>` i
 
 ## §3 Workspace facts
 
-- **Strategic roadmap:** `strategy/strategic-roadmap-reframe-53be/` (historical `design_docs/20_Roadmap/Phase_*` is reference only).
+- **Strategic roadmap:** `strategy/strategic-roadmap-reframe-53be/` (historical roadmap archived at `strategy/archive/design_docs/20_Roadmap/`, reference only).
 - **Governance + plans:** `governance/` (protocols), `plans/` (tactical execution), `strategy/` (roadmap). VPS does not mirror `governance/` or `plans/`.
 - **Active Phase/Stage:** S1 / S1.B. Flagship: `web`. Next gate: S1.B exit → S1.C.
 - **Market:** PH-primary; US Honorary Founders passive. Multi-actor language = one human + AI agents unless stated otherwise.
 - **Entity/commercial:** PH spouse-led MoR + US LLC vendor pipeline gates PSP KYB and payment integration (see entity-formation research plans).
 - **PWA research locks:** Advanced tier, D0–D4 under `plans/S1/S1.B/complete/pwa-install-offline-sync-research/`; implementation under `plans/S1/S1.B/complete/pwa-implementation-branch/`.
 - **F-012/F-013:** Support intake (durable API queue); F-013 = Loguru per-UUID diagnostic files on VPS (ops grep/tail), not in-app Activity UI.
-- **Runtime ownership:** `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
+- **Runtime ownership:** `governance/Runtime_Signup_Sheet.md`.
 - **Paying-user gate headcounts:** re-indexed per `strategy/strategic-roadmap-reframe-53be/validation_gates.md` and unit-economics doc §2 / §4.1.
 
 ---
@@ -165,7 +165,7 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - Resolve standby-queue PRs and partial code before VPS inactive-color deploy/test.
 - Re-validate features already marked "completed" against definition of done; confirm claimed implementation actually exists before trusting completion status.
 - Verify UI fixes on `jsdevtesting.thehivemanager.com` (inactive color) before rebuilding/flipping active production.
-- When multiple agents share VPS access, enforce runtime signup-sheet ownership and handoff (`design_docs/30_Releases/Runtime_Signup_Sheet.md`) to avoid cross-contamination.
+- When multiple agents share VPS access, enforce runtime signup-sheet ownership and handoff (`governance/Runtime_Signup_Sheet.md`) to avoid cross-contamination.
 - Legacy S1.B plans using the old schema: use branch prefix `cur/s1b/feat/<slug>` per §2 and treat `slack_gates.pre_merge: required` as `manual_gates.pre_merge: required`.
 - One agent per sub-repo at a time: avoid two agents concurrently modifying the same sub-repo (especially API); pause or revert one side to prevent code collisions.
 - CPPR per task: open one PR per plan task and do not batch multiple tasks into a single PR; provide PRs in explicit merge order when several are ready.

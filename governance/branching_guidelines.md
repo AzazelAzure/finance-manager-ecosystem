@@ -154,7 +154,7 @@ If no feature is currently active: open a "maintenance feature branch" (`cur/<ph
 
 ### 4.3 What about S0 production incidents (data corruption, auth breach)?
 
-These follow the incident triage flow per `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md`. Branching follows §4.2 (hotfix path) but with shortened manual gate cadence allowed at HitM discretion.
+These follow the incident triage flow per `governance/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md`. Branching follows §4.2 (hotfix path) but with shortened manual gate cadence allowed at HitM discretion.
 
 ---
 
@@ -261,6 +261,6 @@ If a feature branch has had no commits for >1 week:
 | Plan template metadata                             | `plan_template.md`                                                                              |
 | Status transitions                                 | `plan_lifecycle.md`                                                                             |
 | Vocabulary (Sprint types, etc.)                    | `glossary.md`                                                                                   |
-| Incident triage                                    | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
+| Incident triage                                    | `governance/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
 
 

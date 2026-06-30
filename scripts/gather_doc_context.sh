@@ -104,7 +104,7 @@ DATE=$(date +%Y-%m-%d)
   echo ""
   echo "_Human-authored intent/changelog. For current runtime facts use the live block above._"
   echo ""
-  head -40 "$REPO_ROOT/design_docs/30_Releases/Runtime_Signup_Sheet.md" 2>/dev/null \
+  head -40 "$REPO_ROOT/governance/Runtime_Signup_Sheet.md" 2>/dev/null \
     || echo "(Runtime_Signup_Sheet.md not found)"
   echo ""
 

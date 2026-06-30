@@ -34,13 +34,13 @@ After testing:
 - Only one agent may control container uptime at a time ("runtime owner").
 - Non-owner agents must not start/stop/rebuild containers.
 - Non-owner agents should continue code work in readonly/non-runtime paths and wait for owner handoff.
-- Track active owner, sublet users, and runtime status in `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
+- Track active owner, sublet users, and runtime status in `governance/Runtime_Signup_Sheet.md`.
 - Runtime owner handoff must include:
   - current runtime mode
   - last lifecycle command run
   - current status snapshot
   - known blockers
-- Use `design_docs/30_Releases/Runtime_Owner_Handoff_Template.md` for consistent handoff format.
+- Use `governance/Runtime_Owner_Handoff_Template.md` for consistent handoff format.
 - Prefer shared live runtime sessions over repeated shutdown/startup cycles when multiple agents need testing access.
 
 ## Testing Breakpoints for Larger Plans

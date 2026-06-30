@@ -30,7 +30,7 @@ description: Diagnose and repair container startup, crash loops, and bottlenecks
 
 - Declare a single runtime owner before any container lifecycle command.
 - If not runtime owner, do not run start/stop/rebuild/clean.
-- Record owner/sublet state in `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
+- Record owner/sublet state in `governance/Runtime_Signup_Sheet.md`.
 - During handoff, include:
   - runtime mode
   - last command executed

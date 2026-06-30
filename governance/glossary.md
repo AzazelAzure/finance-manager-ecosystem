@@ -127,7 +127,7 @@ Two distinct scales that look identical. Always include the prefix letter.
 
 | Scale | Range | Domain | Source |
 |---|---|---|---|
-| **Severity** | `S0` / `S1` / `S2` / `S3` | How bad an issue is | `design_docs/40_System_Design/15_Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
+| **Severity** | `S0` / `S1` / `S2` / `S3` | How bad an issue is | `governance/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
 | **Priority** | `P0` / `P1` / `P2` | How urgent a piece of work is | `plan_template.md` |
 
 A bug can be `S0` (data integrity broken) **and** `P0` (must be fixed first). They aren't the same: severity describes the issue, priority describes our scheduling decision.
