@@ -65,7 +65,7 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 ### Product and ops defaults
 
 - **PWA/offline bar:** Core ledger surfaces stay coherent offline (days–weeks); local-first + API sync when online. Password change and account deletion stay online-only.
-- **VPS investigations:** SSH to `dev@dev@<VPS_HOST>` (user `dev`) for compose status, logs, rebuilds under `~/finance_manager`. Authoritative stack: HTTPS **:8443** via blue-green proxy.
+- **VPS investigations:** SSH to the production VPS (user `dev`) for compose status, logs, rebuilds under `~/finance_manager`. Authoritative stack: HTTPS **:8443** via blue-green proxy.
 - **Rollout:** Prefer local execution over cloud agents when coordination bottlenecks; agent-owned PR + implementation, user-owned merge, VPS pull/rebuild for verification. Update active plan `runtime_handoff.md` at rollout breakpoints.
 - **Pushback:** Prefer direct, candid product/business pushback over reassurance-only agreement.
 - **Plans for agents:** Optimize artifacts for AI ingestion and handoffs over narrative polish.
