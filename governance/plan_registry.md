@@ -31,19 +31,19 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** opt-in `auto_deduct` on `UpcomingExpense.source`; Celery-beat due-date eval (profile TZ) + idempotent post; T01–T04 authored; `plans/S1/S1.B/feat-f009-recurring-auto-deduct/README.md` |
-| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/feat-f006-dashboard-widgets-custom/README.md` |
+| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** opt-in `auto_deduct` on `UpcomingExpense.source`; Celery-beat due-date eval (profile TZ) + idempotent post; T01–T04 authored; `plans/S1/S1.B/active/feat-f009-recurring-auto-deduct/README.md` |
+| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/active/feat-f006-dashboard-widgets-custom/README.md` |
 
 ## Draft / Planning
 
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
-| `PLAN_CROSS_INVITE_REFERRAL_LINK_2026-06-30` | S1.B | Claude Code | 2026-06-30 | Invite token generation + public invite landing route; organic beta growth (no referral rewards). `plans/S1/S1.B/feat-invite-referral-link/README.md`. Stub — HitM markup required before `ready`. |
-| `PLAN_CROSS_RUST_CALC_LAYER_2026-06-30` | S1.B | Claude Code | 2026-06-30 | **Prerequisite for F-002 + F-003.** Adds wasm-pack (WASM/PWA) + PyO3/maturin (Python/API) binding targets to `finance_manager_rust_tools`; CI build matrix; money-precision audit; surface audit checklist. `plans/S1/S1.B/rust-calc-layer/README.md`. Stub — HitM markup required before `ready`. |
+| `PLAN_CROSS_INVITE_REFERRAL_LINK_2026-06-30` | S1.B | Claude Code | 2026-06-30 | Invite token generation + public invite landing route; organic beta growth (no referral rewards). `plans/S1/S1.B/proposed/feat-invite-referral-link/README.md`. Stub — HitM markup required before `ready`. |
+| `PLAN_CROSS_RUST_CALC_LAYER_2026-06-30` | S1.B | Claude Code | 2026-06-30 | **Prerequisite for F-002 + F-003.** Adds wasm-pack (WASM/PWA) + PyO3/maturin (Python/API) binding targets to `finance_manager_rust_tools`; CI build matrix; money-precision audit; surface audit checklist. `plans/S1/S1.B/planning/rust-calc-layer/README.md`. Stub — HitM markup required before `ready`. |
 | `PLAN_CROSS_RUST_CRYPTO_PROTOTYPE_2026-06-30` | S3 pipeline | Claude Code | 2026-06-30 | **Prototype only — NOT S5 execution.** ZK crypto primitives (Pedersen, range proof, Poseidon) in `finance_manager_rust_middleware`; WASM compat check; benchmark on GAMMA server; ADR for ZK proof system choice. Requires dedicated GAMMA VPS (not blue/green). `plans/pipeline_queue/rust-crypto-prototype-env/README.md`. Pre-execution HitM gate required. |
-| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/feat-f002-smart-tag-estimation/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
-| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/feat-f003-predictive-budgeting/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
-| `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/feat-f008-family-ledger/README.md`. |
+| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/inactive/feat-f002-smart-tag-estimation/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
+| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/inactive/feat-f003-predictive-budgeting/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
+| `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/proposed/feat-f008-family-ledger/README.md`. |
 
 ## Paused
 
@@ -82,7 +82,7 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 | `PLAN_CROSS_F007_WALKTHROUGH_POLISH_2026-05-21` | S1.B | 2026-06-26 | Help-mode flow, form/calendar polish; sprint_verify evidence | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/55 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/56 https://github.com/AzazelAzure/finance_manager_web/pull/63 |
 | `PLAN_CROSS_WEDGE_MARKETING_F011_2026-05-05` | S1.B | 2026-06-28 | Living landing plan: T01 UX+SEO (PR #59); T03+T04 landing reflect-shipped + honest forward roadmap (balance history, pay cycles, savings goals, export/sharing now live; recurring/widgets/predictive/family roadmap) merged PR #90 and promoted to production active green | https://github.com/AzazelAzure/finance_manager_web/pull/59 https://github.com/AzazelAzure/finance-manager-web/pull/90 |
 | `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` | S1.B | 2026-05-03 | PWA research D0–D4 locked; implementation complete and live | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/43 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/49 |
-| `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | 2026-06-28 | PWA fully implemented and functional — offline support live on VPS. New features require PWA integration as part of definition of done per AGENTS.md §1. | plans/S1/S1.B/pwa-implementation-branch/ |
+| `PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03` | S1.B | 2026-06-28 | PWA fully implemented and functional — offline support live on VPS. New features require PWA integration as part of definition of done per AGENTS.md §1. | plans/S1/S1.B/complete/pwa-implementation-branch/ |
 | `PLAN_CROSS_USER_ACTIVITY_LOGS_2026-05-21` | S1.B | 2026-06-16 | F-013 server-side user-keyed logs & incident window extractor; live closeout accepted 2026-06-28 after active-green VPS deploy verified API health and support/Celery prerequisites | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/61 |
 | `PLAN_CROSS_API_SECURITY_HARDENING_2026-06-26` | S1.B | 2026-06-27 | Axes lockout, Argon2, password complexity, proxy IP config, auth tests | https://github.com/AzazelAzure/finance_manager_api/pull/35 https://github.com/AzazelAzure/finance_manager_api/pull/36 |
 | `PLAN_CROSS_SUPPORT_INTAKE_2026-05-21` | S1.B | 2026-06-26 | F-012 support intake verified + remediated (redaction, digest window, compose beat fix); live closeout accepted 2026-06-28 after active-green VPS deploy with shared Celery worker/beat running | API PR #37 branch lineage |
@@ -108,21 +108,32 @@ Older plans from prior cycles. Not retroactively migrated to this registry. Futu
 |---|---|---|---|
 | `LAYOUT_LEGACY_FEAT_FIX_VOLATILE_2026-05-01` | 2026-05-01 | S1.B | Workspace hygiene: former top-level `plans/feat/`, `plans/fix/`, `plans/volatile/`, `plans/volatile_standby/` moved under `plans/archived/`; cross-links updated. New work must not resurrect removed top-level paths. |
 
-## Hierarchical plan structure (Topic 11 lock)
+## Hierarchical plan structure (Topic 11 lock; status buckets added 2026-06-30)
 
-New plans use the hierarchical pattern per `branching_guidelines.md`:
+New plans use the hierarchical pattern per `branching_guidelines.md`. Plans are organized into **status buckets** under the stage root. The folder a plan lives in IS its status — no need to keep README status fields in sync separately.
 
 ```
 plans/<Phase>/<Stage>/                               ← Stage umbrella (e.g. plans/S1/S1.B/)
-  ├── README.md                                       Stage summary + sub-plan index
-  ├── <sub-plan-name>/                                Sub-plan
-  │   ├── README.md                                   Plan metadata + body
-  │   ├── tasks/
-  │   │   └── T<NN>_<slug>.md
-  │   └── validation_gates.md
-  └── feat/<feature-name>/                            Feature-track sub-plan (optional)
-      ├── README.md
-      └── tasks/
+  ├── README.md                                       Stage dashboard (5-bucket index + sequencing)
+  ├── proposed/                                       ← draft stubs; HitM markup required
+  │   └── <sub-plan-name>/
+  │       └── README.md
+  ├── planning/                                       ← design complete; pre-execution gate or task authoring
+  │   └── <sub-plan-name>/
+  │       ├── README.md
+  │       └── tasks/
+  ├── active/                                         ← ready for dispatch or currently executing
+  │   └── <sub-plan-name>/
+  │       ├── README.md
+  │       ├── tasks/
+  │       │   └── T<NN>_<slug>.md
+  │       └── validation_gates.md
+  ├── inactive/                                       ← blocked, shelved, or deferred
+  │   └── <sub-plan-name>/
+  │       └── README.md
+  └── complete/                                       ← shipped and closed
+      └── <sub-plan-name>/
+          └── README.md
 ```
 
 Branch names follow the hierarchy:

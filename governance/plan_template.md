@@ -7,7 +7,7 @@ For surgical single-file fixes, still use **this** document: copy the **metadata
 ## 1) Required directory layout
 
 ```
-plans/<Phase>/<Stage>/<sub-plan>/   # e.g. plans/S1/S1.B/drift-cleanup/
+plans/<Phase>/<Stage>/<status>/<sub-plan>/   # e.g. plans/S1/S1.B/active/local-security-audit-suite/
 ├── README.md            ← contains metadata header + body sections
 ├── tasks/               ← optional, for multi-task plans
 │   ├── T01_<slug>.md
@@ -63,7 +63,7 @@ to:
 
 ### 1b) Interconnected rollout bars (PWA, i18n, SEO, beta surfaces)
 
-Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
+Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
 
 
 ## 2) Metadata header (YAML, mandatory)
@@ -79,7 +79,7 @@ created: <YYYY-MM-DD>
 updated: <YYYY-MM-DD>
 owner: pproctor
 
-plan_root: plans/<Phase>/<Stage>/<sub-plan>/
+plan_root: plans/<Phase>/<Stage>/<status>/<sub-plan>/
 intended_branch: agy/<branch>
 target_repos:
   - <repo-path>

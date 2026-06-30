@@ -87,7 +87,7 @@ agy/s1b/chore/<slug>          ← Antigravity automation
 
 Feature/task hierarchy and color-cycle workflow: `governance/branching_guidelines.md`.
 
-Plans live under `plans/<Phase>/<Stage>/<sub-plan>/` (active S1.B: `plans/S1/S1.B/`).
+Plans live under `plans/<Phase>/<Stage>/<status>/<sub-plan>/` where `<status>` is one of `proposed/`, `planning/`, `active/`, `inactive/`, `complete/` (active S1.B stage root: `plans/S1/S1.B/`). See `plans/S1/S1.B/README.md` for the stage dashboard.
 
 ---
 
@@ -98,7 +98,7 @@ Plans live under `plans/<Phase>/<Stage>/<sub-plan>/` (active S1.B: `plans/S1/S1.
 - **Active Phase/Stage:** S1 / S1.B. Flagship: `web`. Next gate: S1.B exit → S1.C.
 - **Market:** PH-primary; US Honorary Founders passive. Multi-actor language = one human + AI agents unless stated otherwise.
 - **Entity/commercial:** PH spouse-led MoR + US LLC vendor pipeline gates PSP KYB and payment integration (see entity-formation research plans).
-- **PWA research locks:** Advanced tier, D0–D4 under `plans/S1/S1.B/pwa-install-offline-sync-research/`; implementation under `plans/S1/S1.B/pwa-implementation-branch/`.
+- **PWA research locks:** Advanced tier, D0–D4 under `plans/S1/S1.B/complete/pwa-install-offline-sync-research/`; implementation under `plans/S1/S1.B/complete/pwa-implementation-branch/`.
 - **F-012/F-013:** Support intake (durable API queue); F-013 = Loguru per-UUID diagnostic files on VPS (ops grep/tail), not in-app Activity UI.
 - **Runtime ownership:** `design_docs/30_Releases/Runtime_Signup_Sheet.md`.
 - **Paying-user gate headcounts:** re-indexed per `strategy/strategic-roadmap-reframe-53be/validation_gates.md` and unit-economics doc §2 / §4.1.
@@ -137,7 +137,7 @@ Deploy: blue-green Docker/Podman; proxy on host **:8443**. Web is its own git su
 
 1. `AGENTS.md`
 2. `governance/plan_registry.md`
-3. `plans/S1/S1.B/<target-sub-plan>/README.md`
+3. `plans/S1/S1.B/<status>/<target-sub-plan>/README.md` (see `plans/S1/S1.B/README.md` for status bucket locations)
 4. READ FIRST files listed in that README (`DECISION_LOG.md`, `runtime_handoff.md`, subrepo `CHANGELOG`)
 
 Pull `governance/glossary.md`, `deployment_protocol.md`, `definition_of_done.md` only when the task requires them.
@@ -161,7 +161,7 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 
 ## Learned User Preferences
 
-- Admin huddle artifacts belong under `strategy/huddles/`, not `plans/`.
+- Admin huddle artifacts belong under `strategy/huddles/`, not `plans/`; canonical research lives under `strategy/research/` — avoid diverging duplicate copies under tactical `plans/` trees.
 - Resolve standby-queue PRs and partial code before VPS inactive-color deploy/test.
 - Re-validate features already marked "completed" against definition of done; confirm claimed implementation actually exists before trusting completion status.
 - Verify UI fixes on `jsdevtesting.thehivemanager.com` (inactive color) before rebuilding/flipping active production.
@@ -176,7 +176,7 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 
 ## Learned Workspace Facts
 
-- VPS production blue-green ops use `scripts/fm_server_beta.sh` on the VPS (`status`, `rebuild-color`, `smoke`, `switch`); from the parent repo use `scripts/sprint_verify.sh` to SSH, pull API/Web, rebuild inactive color, and smoke (does not flip active color). Local dev uses `scripts/fm_docker.sh` and `scripts/fm_services.sh`.
+- VPS production blue-green ops use `scripts/fm_server_beta.sh` on the VPS (`status`, `rebuild-color`, `smoke`, `switch`); from the parent repo use `scripts/sprint_verify.sh` to SSH, pull API/Web, and rebuild inactive color (does not flip active color) — then run `fm_server_beta.sh smoke --color <inactive>` manually to verify; `sprint_verify.sh --smoke` may skip the remote smoke step. Local dev uses `scripts/fm_docker.sh` and `scripts/fm_services.sh`.
 - Django REST routes are mounted under `/finance/` (e.g. `/finance/savings-goals/`), not `/api/finance/` — VPS origin smokes must use the correct prefix with `curl --resolve` on `:8443`.
 - Blue-green rebuild scripts must include Celery workers and actively tear down orphaned/outdated containers (recurring orphaned-container problem during color switches).
 - Production hostnames: web `thehivemanager.com`, API `api.thehivemanager.com`; public HTTPS via blue-green proxy on host `:8443`.
@@ -186,5 +186,5 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - GitHub Actions workflows should pin third-party actions to full commit SHAs and set least-privilege `permissions` (e.g. `contents: read`).
 - Public hostnames are proxied through Cloudflare; GitHub Actions curls to those URLs can get edge `403` from datacenter IPs — VPS uptime checks should hit origin on `:8443` via `curl --resolve` (and `-k` for internal TLS).
 - `main` branch protection is waived while repos stay private without GitHub Pro (explicit HitM decision).
-- Bill recurrence: the historical stopgap inferred cadence from `start_date`/`due_date` deltas (`bill_recurrence.py`); the first-class `cadence` field engine is implemented via `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (`plans/S1/S1.B/feat-bill-recurrence-engine/`), landing on the inactive color ahead of F-009.
+- Bill recurrence: the historical stopgap inferred cadence from `start_date`/`due_date` deltas (`bill_recurrence.py`); the first-class `cadence` field engine is implemented via `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (`plans/S1/S1.B/complete/feat-bill-recurrence-engine/`), landing on the inactive color ahead of F-009.
 - Currently a closed loop with one beta tester; secret rotation is deferred — scrub leaked secrets from logs and clear terminal history instead, with rotation enforced later.
