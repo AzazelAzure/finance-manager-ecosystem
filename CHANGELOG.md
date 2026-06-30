@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-06-30 — Web #97 green promotion + runtime signup (Cursor)
+
+- Bump `design_docs` submodule: `Runtime_Signup_Sheet.md` logs inactive-green restage on `main` (API `9938614`, Web `9436e3b`) and active color flip **blue → green** after Web PR #97 (Profile tab fix + ErrorBoundary). VPS post-switch smoke passed (captured 2026-06-30T07:24+08).
+
 ### 2026-06-30 — SEO audit and strategic refinement (Antigravity, admin)
 
 - **`plans/S1/S1.B/distribution-channel-research/`:** Created `SEO_PASSTHROUGH_PASSDOWN.md` containing the SEO audit findings, custom React 19 + Vite 8 SSG proposal, font preloading / Core Web Vitals analysis, and Speculation Rules constraint analysis. Updated `SEO_PRIORITY_MATRIX.md` to mark `react-helmet-async` as **DONE**, add the font preloading task under P1, refine the prerendering task to a custom React 19 script, and link the new passthrough document.
