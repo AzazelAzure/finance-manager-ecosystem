@@ -22,17 +22,47 @@
 # fm_server_beta.sh ecosystem) via the same env vars — no new credentials.
 #
 # Environment:
-#   FM_SPRINT_SSH          SSH target (default: dev@dev@<VPS_HOST>)
+#   FM_SPRINT_SSH          SSH target (for example: dev@203.0.113.10)
+#   VPS_ORIGIN_IP          VPS IP only; used as dev@$VPS_ORIGIN_IP when FM_SPRINT_SSH is unset
 #   FM_SPRINT_REMOTE_ROOT  Absolute ecosystem root on the VPS (default: /home/dev/finance_manager)
 #   VPS_STATE_SSH_TIMEOUT  Hard timeout in seconds for the SSH bundle (default: 20)
 #   VPS_STATE_EXPECTED     Expected running container count for drift check (default: 7)
+#
+# The variables above may also be placed in the repo-root `.env`. Only this
+# allowlist is read; the file is not sourced as shell code.
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-SSH_TARGET="${FM_SPRINT_SSH:-dev@dev@<VPS_HOST>}"
+load_local_env() {
+  local env_file="$REPO_ROOT/.env"
+  [[ -f "$env_file" ]] || return 0
+
+  local key value
+  while IFS='=' read -r key value || [[ -n "$key" ]]; do
+    key="${key#"${key%%[![:space:]]*}"}"
+    key="${key%"${key##*[![:space:]]}"}"
+    [[ -z "$key" || "$key" == \#* ]] && continue
+
+    case "$key" in
+      FM_SPRINT_SSH|VPS_ORIGIN_IP|FM_SPRINT_REMOTE_ROOT|VPS_STATE_SSH_TIMEOUT|VPS_STATE_EXPECTED)
+        [[ -n "${!key+x}" ]] && continue
+        value="${value#"${value%%[![:space:]]*}"}"
+        value="${value%"${value##*[![:space:]]}"}"
+        value="${value%\"}"; value="${value#\"}"
+        value="${value%\'}"; value="${value#\'}"
+        export "$key=$value"
+        ;;
+    esac
+  done < "$env_file"
+}
+
+load_local_env
+
+FM_SPRINT_SSH="${FM_SPRINT_SSH:-${VPS_ORIGIN_IP:+dev@$VPS_ORIGIN_IP}}"
+SSH_TARGET="${FM_SPRINT_SSH:-dev@<VPS_HOST_OR_IP>}"
 REMOTE_ROOT="${FM_SPRINT_REMOTE_ROOT:-/home/dev/finance_manager}"
 SSH_TIMEOUT="${VPS_STATE_SSH_TIMEOUT:-20}"
 EXPECTED_CONTAINERS="${VPS_STATE_EXPECTED:-7}"
