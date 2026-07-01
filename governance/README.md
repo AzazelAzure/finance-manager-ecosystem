@@ -17,7 +17,8 @@ Repo location: **`governance/`** (sibling to `plans/` and `strategy/`). Tactical
 | `branching_guidelines.md` | Per-feature color-cycle workflow |
 | `glossary.md` | Canonical vocabulary |
 | `runtime_handoff_template.md` | YAML template for plan `runtime_handoff.md` |
-| `agent_workspace_isolation.md` | Multi-agent git identity and workspace layout |
+| `workspace_protocol.md` | Multi-workspace checkout, FIFO dispatch/review pipeline, VPS authority (current) |
+| `agent_workspace_isolation.md` | Multi-agent git identity and workspace layout (superseded by `workspace_protocol.md`; kept for history) |
 | `security_protocols.md` | Security posture targets |
 | `HITM_SCHEDULE_AND_TASKS.md` | Personal ops (khal / todoman) |
 | `examples/` | Worked examples (reference only) |
