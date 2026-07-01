@@ -4,6 +4,19 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-07-01 — Workspace-migration governance closeout + AGPL rollout completion (Claude Code, admin)
+
+- **`tp-workspace-setup` filesystem move + sync closed:** filesystem centralization to `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}` confirmed complete; all 7 design decisions (D1–D7) resolved per `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/decisions.md`. **Governance doc authoring (`governance/workspace_protocol.md`) and the F-006/F-009 queue pilot remain open** — TP not fully closed, see updated TP README sequence.
+- **`governance/glossary.md` §14 added:** internal project vocabulary — HFM (Hive Financial Manager), HitM, three-tool model, Workspace, Sign-out sheet, VPS authority.
+- **New `scripts/workspace/` tooling:** `ws_claim.sh`/`ws_release.sh`/`ws_status.sh`/`ws_dispatch.sh`/`ws_review.sh` (workspace sign-out + dispatch) and `queue_push.sh`/`queue_pop.sh`/`queue_status.sh`/`queue_done.sh`/`vps_claim.sh`/`vps_release.sh` (FIFO work queue + VPS authority lock), per D3 (simple lockfile) and D4 (advisory claim, hard-block on VPS) resolutions.
+- **`scripts/local/migrate_hfm_layout.sh`:** three-phase migration script (agent workspaces → primary repo → crontab/conf) used to execute the filesystem move; retained for reference.
+- **`scripts/sync_agent_files_to_workspaces.sh`:** mirrors gitignored governance/strategy bundle (`strategy/`, `plans/`, `.cursor/`, `.claude/`, agent doc files) from primary `HFM` workspace to `WS1`/`WS2`/`WS3`, since those paths are scrubbed from GitHub history. Live sync run against all three workspaces as part of this closeout; spot-checked WS1.
+- **`.gitignore`:** added `.fm_workspace.conf` (per-workspace primary-path pointer, machine-local).
+- **`AGENTS.md` Learned Workspace Facts:** expanded API architecture note (service-oriented, flat routes, no routers) and VPS health-check secret sourcing note.
+- **AGPL-3.0-or-later rollout completed:** added `LICENSE` + README pointer to the three remaining repos — `finance_manager_android` (`6491acc`), `finance_manager_rust_middleware` (`6d8846e`), `finance_manager_web` (`03e09c4`, also `package.json` `license` field). All 8 ecosystem repos now carry `AGPL-3.0-or-later`.
+- **`docs/SPDX_COMPLIANCE.md` + parent `README.md`:** updated to list all repos (ecosystem root, api, cli, web, android, rust_tools, rust_middleware, reflex) under the single license policy with a per-repo `LICENSE` path table.
+- **Submodule pointer bumps:** `finance_manager_android` → `6491acc`, `finance_manager_rust_middleware` → `6d8846e`, `finance_manager_web` → `03e09c4`. `design_docs` left untouched (unrelated in-flight terminology cleanup, not part of this closeout).
+
 ### 2026-06-30 — Healthcheck secretization + local VPS env loading (Cursor)
 
 - **`.github/workflows/health-check.yml`:** Replace scrubbed committed VPS origin value with `secrets.VPS_ORIGIN_IP` and add a clear validation step for missing/placeheld/SSH-target values before curl checks run.

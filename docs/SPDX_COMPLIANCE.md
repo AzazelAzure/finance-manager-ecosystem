@@ -1,11 +1,17 @@
 # SPDX and License Compliance Guide
 
-This workspace currently uses **AGPL-3.0-or-later** for:
+This workspace uses **AGPL-3.0-or-later** for all product repositories:
 
+- **Ecosystem** (monorepo root: scripts, governance, strategy)
 - `finance_manager_api`
 - `finance_manager_cli`
 - `finance_manager_web` (flagship SPA; follow web repo policy for JS/TS header style)
+- `finance_manager_android`
+- `finance_manager_rust_tools`
+- `finance_manager_rust_middleware`
 - `finance_manager_reflex` (**archived**; SPDX still applies if you touch legacy paths)
+
+Each repo must have a root `LICENSE` file containing the full AGPL text. Per-file SPDX headers are required for source code; design and strategy markdown may backfill headers over time (repo-level `LICENSE` still applies to those files).
 
 ## Why SPDX headers
 

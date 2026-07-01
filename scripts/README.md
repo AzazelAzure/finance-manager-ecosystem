@@ -10,6 +10,8 @@ By default, the file includes:
 - `finance_manager_cli`
 - `finance_manager_web`
 - `finance_manager_android`
+- `finance_manager_rust_tools`
+- `finance_manager_rust_middleware`
 - `finance_manager_reflex` (archived; optional if present)
 
 To add a new repo (for example more Rust tooling), add one directory name per line in `scripts/repos.txt`.

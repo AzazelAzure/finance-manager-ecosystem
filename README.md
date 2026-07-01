@@ -103,5 +103,17 @@ The API will be available at `http://localhost:8000` and the web frontend at
 
 ## License
 
-The API is licensed under [AGPL-3.0-or-later](https://github.com/AzazelAzure/finance-manager-api/blob/main/LICENSE).
-See individual submodule repositories for their respective licenses.
+All Hive Financial Manager repositories are licensed under **GNU Affero General Public License v3.0 or later** (`AGPL-3.0-or-later`).
+
+| Repository | Path |
+|------------|------|
+| Ecosystem (this repo) | `LICENSE` |
+| API | `finance_manager_api/LICENSE` |
+| CLI | `finance_manager_cli/LICENSE` |
+| Web | `finance_manager_web/LICENSE` |
+| Android | `finance_manager_android/LICENSE` |
+| Rust tools | `finance_manager_rust_tools/LICENSE` |
+| Rust middleware | `finance_manager_rust_middleware/LICENSE` |
+| Reflex (archived) | `finance_manager_reflex/LICENSE` |
+
+SPDX header policy and compliance checklist: `docs/SPDX_COMPLIANCE.md`.

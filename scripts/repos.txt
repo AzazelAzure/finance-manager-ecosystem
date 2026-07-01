@@ -5,6 +5,8 @@ finance_manager_api
 finance_manager_cli
 finance_manager_web
 finance_manager_android
+finance_manager_rust_tools
+finance_manager_rust_middleware
 # Archived — retained for history only; omit from multi-repo scripts if directory absent:
 finance_manager_reflex
 

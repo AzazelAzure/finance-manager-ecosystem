@@ -66,3 +66,4 @@ proxy/certs/*.pem
 # Business strategy and planning docs (private; scrubbed from history)
 strategy/
 plans/
+.fm_workspace.conf
