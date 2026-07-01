@@ -4,6 +4,15 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-07-01 — Scripts taxonomy reorg + Tier 1 dev tooling (Cursor)
+
+- **`scripts/` taxonomy:** new buckets `ops/` (VPS + absorbed `server/`), `local-stack/` (`fm_docker`, `fm_services`), `db/`, `lib/` (`lib_repos.sh`, `vps_env.sh`); archived `hive_worker.py`, `sprint_pipeline_emit_ready.py`, `migrate_hfm_layout.sh`, deprecated systemd unit.
+- **Fixes:** `scripts/ops/pull_backup.sh` and `scripts/dev/vps_freshness.sh` use `scripts/lib/vps_env.sh` (`.env` allowlist) instead of scrubbed SSH placeholders.
+- **New dev scripts:** `pr_readiness.sh`, `workspace_brief.sh`, `local_stack_health.sh`, `anomaly_new.sh`, `new_tp.sh`, `new_plan.sh`, `changelog_entry.sh`, `test_api.sh`, `test_web.sh`, `submodule_sync.sh`, `ci_status.sh`.
+- **`scripts/workspace/ws_dispatch.sh`:** injects live `AGENTS.md` governance excerpt into per-repo worker task briefs.
+- **Docs/rules:** `scripts/SCRIPTS.md`, `.cursor/rules/scripts-orientation.mdc`; path updates across `governance/`, `deploy/`, `AGENTS.md`, container rules.
+- **Local MCP server:** `scripts/mcp/` (FastMCP, `uv sync`), 20 typed tools wrapping dev/workspace/ops scripts; `.cursor/mcp.json` for Cursor; setup in `scripts/mcp/README.md`.
+
 ### 2026-07-01 — Gate F-006/F-009 pilot + MCP spec on tp-scripts-organization (Claude Code, admin)
 
 - **`governance/workspace_protocol.md` §10:** HitM reversed the original build order — the local MCP server (tool-wrap for `scripts/workspace/*.sh`) now must be built *before* the full live F-006/F-009 pilot, not after. Both steps are gated on `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/` completing (script taxonomy + inventory, then the MCP wrap). Rationale: the live pilot should exercise the interface agents will actually use (typed MCP calls) rather than validate a raw-shell interface that gets replaced immediately after.
@@ -34,7 +43,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-06-30 — Healthcheck secretization + local VPS env loading (Cursor)
 
 - **`.github/workflows/health-check.yml`:** Replace scrubbed committed VPS origin value with `secrets.VPS_ORIGIN_IP` and add a clear validation step for missing/placeheld/SSH-target values before curl checks run.
-- **`scripts/vps_state.sh` + `scripts/sprint_verify.sh`:** Load allowlisted VPS ops variables from repo-root `.env` (`VPS_ORIGIN_IP`, `FM_SPRINT_SSH`, remote root/timeouts/project options) without sourcing arbitrary shell code; document local usage in `.env.example`.
+- **`scripts/ops/vps_state.sh` + `scripts/ops/sprint_verify.sh`:** Load allowlisted VPS ops variables from repo-root `.env` (`VPS_ORIGIN_IP`, `FM_SPRINT_SSH`, remote root/timeouts/project options) without sourcing arbitrary shell code; document local usage in `.env.example`.
 
 ### 2026-06-30 — design_docs cleanup follow-ups + API/Web docs (Cursor)
 
@@ -77,11 +86,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-06-29 — D3 fix: fm_server_beta.sh nginx check false-negative (Cursor)
 
-- **`scripts/fm_server_beta.sh` (`check_cmd`):** `00-resolver.conf` is generated at proxy container start (`proxy/docker-entrypoint.d/20-resolver-from-resolv.sh`), not committed in-repo. The throwaway `nginx -t` harness was missing that file and always failed even when the live proxy was healthy. `check` now validates via `exec -T proxy nginx -t` when the proxy container is running; otherwise it mounts a stub resolver into the throwaway container. Closes anomaly `2026-06-28_CI-CD_fm-server-beta-check-nginx-resolver.md`.
+- **`scripts/ops/fm_server_beta.sh` (`check_cmd`):** `00-resolver.conf` is generated at proxy container start (`proxy/docker-entrypoint.d/20-resolver-from-resolv.sh`), not committed in-repo. The throwaway `nginx -t` harness was missing that file and always failed even when the live proxy was healthy. `check` now validates via `exec -T proxy nginx -t` when the proxy container is running; otherwise it mounts a stub resolver into the throwaway container. Closes anomaly `2026-06-28_CI-CD_fm-server-beta-check-nginx-resolver.md`.
 
 ### 2026-06-29 — D5 implementation: live VPS state query (Cursor)
 
-- **`scripts/vps_state.sh` (new):** Single-concern script that SSHes the production VPS in one read-only round-trip and prints a timestamped `## Live VPS State (SSH-verified)` markdown block (active color, deployed API/Web SHAs, container count, Celery worker/beat status, last applied `finance` migration, API health, container detail table, drift check). On SSH failure/timeout (hard 20s default) it prints a clearly-marked `UNAVAILABLE` block and exits non-zero so callers surface UNKNOWN instead of falling back to cached state. Reuses the existing `FM_SPRINT_SSH`/`FM_SPRINT_REMOTE_ROOT` config (no new credentials).
+- **`scripts/ops/vps_state.sh` (new):** Single-concern script that SSHes the production VPS in one read-only round-trip and prints a timestamped `## Live VPS State (SSH-verified)` markdown block (active color, deployed API/Web SHAs, container count, Celery worker/beat status, last applied `finance` migration, API health, container detail table, drift check). On SSH failure/timeout (hard 20s default) it prints a clearly-marked `UNAVAILABLE` block and exits non-zero so callers surface UNKNOWN instead of falling back to cached state. Reuses the existing `FM_SPRINT_SSH`/`FM_SPRINT_REMOTE_ROOT` config (no new credentials).
 - **`scripts/gather_doc_context.sh` (refactor):** Replaced the static `head -60 Runtime_Signup_Sheet.md` "Current VPS State" block with a call to `vps_state.sh`. The Runtime Signup Sheet is now printed under a clearly demoted `## Runtime Signup Sheet (human log — NOT live state)` heading so live state is never conflated with the human-authored log — the root-cause fix for the 2026-06-29 stale-state false HIGH alerts. Implements spec `strategy/automations/specs/vps_state_and_doc_context_spec_2026-06-29.md` (Deliverables 1–2; Deliverable 3 prompt hardening owned by Claude Code, already landed).
 
 ### 2026-06-29 — Admin session: planning batch + governance/doc-structure consolidation (D1–D8)
@@ -117,11 +126,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-06-26 — Redact compose `up` secret output
 
-- **`scripts/fm_server_beta.sh`:** Added a quiet `compose up` wrapper for deploy/rebuild/switch paths. `podman-compose up` can print fully interpolated `podman run -e KEY=value ...` lines, including values sourced from `.secrets/server.env`; successful `up` output is now discarded, and failed `up` output is printed only after redacting password/secret-style environment values.
+- **`scripts/ops/fm_server_beta.sh`:** Added a quiet `compose up` wrapper for deploy/rebuild/switch paths. `podman-compose up` can print fully interpolated `podman run -e KEY=value ...` lines, including values sourced from `.secrets/server.env`; successful `up` output is now discarded, and failed `up` output is printed only after redacting password/secret-style environment values.
 
 ### 2026-06-26 — Blue/green: Celery workers in rebuild + active orphan teardown
 
-- **`scripts/fm_server_beta.sh`:** `rebuild-color` now builds and recreates the shared `celery-worker` + `celery-beat` alongside `api/web` (F-014 background workers no longer drift behind API code or get orphaned on rebuilds). New `prune-orphans` command + `prune_orphan_containers` helper actively remove stale containers whose service is no longer in the compose file, scoped strictly to the project. `deploy` and `switch` keep the workers running and prune orphans. `status` filter now includes celery. **Note:** intentionally does **not** use `podman-compose up --remove-orphans` on a partial service list — that recreates the whole project (full-stack bounce incl. active color); the scoped prune is used instead so blue/green rebuilds leave the active color untouched.
+- **`scripts/ops/fm_server_beta.sh`:** `rebuild-color` now builds and recreates the shared `celery-worker` + `celery-beat` alongside `api/web` (F-014 background workers no longer drift behind API code or get orphaned on rebuilds). New `prune-orphans` command + `prune_orphan_containers` helper actively remove stale containers whose service is no longer in the compose file, scoped strictly to the project. `deploy` and `switch` keep the workers running and prune orphans. `status` filter now includes celery. **Note:** intentionally does **not** use `podman-compose up --remove-orphans` on a partial service list — that recreates the whole project (full-stack bounce incl. active color); the scoped prune is used instead so blue/green rebuilds leave the active color untouched.
 - **`docker-compose.bluegreen.yml`:** Fixed a broken duplicate `api-green:` key (a null stub was overriding the real definition) and replaced the non-functional `command:`-based celery services (the API image `ENTRYPOINT` ignores `command`, so they ran `runserver` instead of celery) with a single working `celery-worker` + `celery-beat` using `entrypoint:` overrides. `api-green` env aligned with `api-blue` (email/notify vars).
 - **`.gitignore`:** Ignore `*.secret` / `smtp.secret` so ad-hoc secret-handoff files are never committed.
 - **Validation:** `bash -n`, dry-run, and a live VPS `rebuild-color blue` on the inactive color — green (active) container IDs unchanged (not recreated), blue + celery rebuilt, prune removed 0 orphans, active `api/web` returned `200` throughout.
@@ -159,7 +168,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-05-05 — Orchestration huddle execution: sprint verify + Cursor PA Slack docs
 
-- **Scripts:** [`scripts/sprint_verify.sh`](scripts/sprint_verify.sh) — SSH to VPS, git update selected subrepos, `fm_server_beta.sh rebuild-color` + optional `smoke`; evidence logs under `--evidence`. [`scripts/jsdevtesting_stack_check.sh`](scripts/jsdevtesting_stack_check.sh) — HTTPS probes for `jsdevtesting` + `api-jsdevtesting`.
+- **Scripts:** [`scripts/ops/sprint_verify.sh`](scripts/ops/sprint_verify.sh) — SSH to VPS, git update selected subrepos, `fm_server_beta.sh rebuild-color` + optional `smoke`; evidence logs under `--evidence`. [`scripts/jsdevtesting_stack_check.sh`](scripts/jsdevtesting_stack_check.sh) — HTTPS probes for `jsdevtesting` + `api-jsdevtesting`.
 - **Governance:** [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md); [`governance/agent_workspace_isolation.md`](governance/agent_workspace_isolation.md) and [`governance/README.md`](governance/README.md) / [`governance/orchestration.md`](governance/orchestration.md) updated for Cursor PA + JSONL outbox vs IDE MCP; Antigravity runner marked legacy in [`scripts/antigravity_slack_runner.py`](scripts/antigravity_slack_runner.py); note in [`scripts/cursor_headless_slack_agent.py`](scripts/cursor_headless_slack_agent.py).
 - **Huddle:** [`strategy/huddles/2026-05-04-orchestration-overhaul/VERIFICATION_DELTA.md`](strategy/huddles/2026-05-04-orchestration-overhaul/VERIFICATION_DELTA.md); [`implementation_plan.md`](strategy/huddles/2026-05-04-orchestration-overhaul/implementation_plan.md) exit table synced to canonical [`ACTIONS.md`](strategy/huddles/2026-05-04-orchestration-overhaul/ACTIONS.md); [`README.md`](strategy/huddles/2026-05-04-orchestration-overhaul/README.md) pointers.
 - **F-007:** [`plans/S1/S1.B/feat-f007-guided-walkthroughs/evidence/V2_ORCHESTRATION_2026-05-05.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/evidence/V2_ORCHESTRATION_2026-05-05.md) + `runtime_handoff.md` ACTIONS #7 line.
@@ -198,7 +207,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-04 — Strategic roadmap: `strategy/strategic-roadmap-reframe-53be/`
 
 - **`plans/cursor/strategic-roadmap-reframe-53be/` → `strategy/strategic-roadmap-reframe-53be/`:** Canonical multi-year roadmap tree moved to repo-root **`strategy/`** (sibling to `plans/`). Added [`strategy/README.md`](strategy/README.md) as the entry router.
-- **Pointers:** `AGENTS.md`, `governance/*`, `README.md`, `.cursor/` skills/rules, `plans/S1/S1.B/**`, `design_docs/**`, `scripts/schedule_agent_sync.sh`, archives, and plan YAML `strategic_link` fields updated; relative markdown links recomputed per file depth.
+- **Pointers:** `AGENTS.md`, `governance/*`, `README.md`, `.cursor/` skills/rules, `plans/S1/S1.B/**`, `design_docs/**`, `scripts/local/schedule_agent_sync.sh`, archives, and plan YAML `strategic_link` fields updated; relative markdown links recomputed per file depth.
 
 ### 2026-05-04 — Active S1.B plans: `plans/S1/S1.B/` + `cursor-layout-era` archive
 
@@ -209,7 +218,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-04 — Governance protocols moved to repo-root `governance/`
 
 - **`plans/_governance/` → `governance/`:** Plan ops manuals (registry, lifecycle, deploy, branching, glossary, HitM schedule docs) now live at the workspace root, sibling to `plans/`. Tactical execution plans use hierarchical `plans/<Phase>/<Stage>/<sub-plan>/` (see later 2026-05-04 S1.B lift in this changelog).
-- **Pointers:** `AGENTS.md`, parent `README.md`, `.gitignore` (schedule snapshot path), `scripts/schedule_agent_sync.sh`, `.cursor/` skills/rules, `design_docs/` vault links, and plan/strategic markdown cross-references updated to the new layout.
+- **Pointers:** `AGENTS.md`, parent `README.md`, `.gitignore` (schedule snapshot path), `scripts/local/schedule_agent_sync.sh`, `.cursor/` skills/rules, `design_docs/` vault links, and plan/strategic markdown cross-references updated to the new layout.
 
 ### 2026-05-21 — Parent CPPRD: submodule pins, PWA pause registry, plans + brand pack
 
@@ -222,7 +231,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-05-06 — `fm_server_beta.sh rebuild-color` (Podman blue/green)
 
-- **`scripts/fm_server_beta.sh`:** New **`rebuild-color [--no-build] <blue|green>`** command: builds `api-*`/`web-*` for one color, stops **proxy** plus that color’s app containers, removes those containers via compose **labels** (no `podman-compose rm`, which does not exist), then `up -d` db/redis/api/web/proxy. Avoids Podman **`--requires`** / `depends_on` failures when replacing inactive backends. Parallel compose file keeps `up -d --force-recreate` only (no proxy). **`wait_api_service_ready`** polls `/api/health/` so immediate `smoke` after `rebuild-color` does not race Django startup.
+- **`scripts/ops/fm_server_beta.sh`:** New **`rebuild-color [--no-build] <blue|green>`** command: builds `api-*`/`web-*` for one color, stops **proxy** plus that color’s app containers, removes those containers via compose **labels** (no `podman-compose rm`, which does not exist), then `up -d` db/redis/api/web/proxy. Avoids Podman **`--requires`** / `depends_on` failures when replacing inactive backends. Parallel compose file keeps `up -d --force-recreate` only (no proxy). **`wait_api_service_ready`** polls `/api/health/` so immediate `smoke` after `rebuild-color` does not race Django startup.
 - **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`governance/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
 
 ### 2026-05-05 — KNOWN_ISSUES: P0 #8 source balance after transaction delete

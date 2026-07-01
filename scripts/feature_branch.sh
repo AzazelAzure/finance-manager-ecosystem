@@ -9,8 +9,8 @@ fi
 branch_name="$1"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# shellcheck source=./lib_repos.sh
-source "$SCRIPT_DIR/lib_repos.sh"
+# shellcheck source=./lib/lib_repos.sh
+source "$SCRIPT_DIR/lib/lib_repos.sh"
 
 if ! read_repos; then
   exit 1

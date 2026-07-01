@@ -57,7 +57,7 @@
 ## 4) Runtime and verification
 
 - **Authoritative product check:** VPS blue-green **HTTPS on host :8443** (see `AGENTS.md`, `finance_manager_web/README.md`). Not Vite-only ports for full-stack truth.
-- **Containers:** `scripts/fm_docker.sh`, `scripts/fm_services.sh`.
+- **Containers:** `scripts/local-stack/fm_docker.sh`, `scripts/local-stack/fm_services.sh`.
 - **Runtime ownership:** `design_docs/30_Releases/Runtime_Signup_Sheet.md` (when `design_docs` submodule is present).
 
 ---

@@ -13,8 +13,8 @@ description: Diagnose and repair container startup, crash loops, and bottlenecks
 
 ## Script-First Entry Points
 
-- `scripts/fm_docker.sh` for compose up/down/build/rebuild/status.
-- `scripts/fm_services.sh` for non-container service start/stop/status checks.
+- `scripts/local-stack/fm_docker.sh` for compose up/down/build/rebuild/status.
+- `scripts/local-stack/fm_services.sh` for non-container service start/stop/status checks.
 - `scripts/check_repos.sh` and related git scripts for multi-repo execution context.
 
 ## Triage Routine

@@ -1,6 +1,6 @@
 # Server beta install (package layout)
 
-This document describes install scaffolding under `scripts/server/` plus blue/green runtime operations under `scripts/fm_server_beta.sh`.
+This document describes install scaffolding under `scripts/ops/` plus blue/green runtime operations under `scripts/ops/fm_server_beta.sh`.
 
 **Change protocol:** **CPPR** = commit, push, pull request. For durable accountability in this repo, use **CPPRD** = add **D**ocumentation (subrepo `CHANGELOG`, `deploy/`, or `design_docs` as fit). See [`CPPR_AND_CPPRD.md`](./CPPR_AND_CPPRD.md).
 
@@ -8,14 +8,14 @@ This document describes install scaffolding under `scripts/server/` plus blue/gr
 
 | Path | Purpose |
 |------|---------|
-| `scripts/server/install_prereqs.sh` | Check host prerequisites (compose, Podman/Docker, `curl`). Does **not** install OS packages. |
-| `scripts/server/create_runtime_bundle.sh` | Build a lean runtime tarball for VPS migration (service-only payload; excludes docs/dev bloat). |
-| `scripts/server/push_runtime_bundle.sh` | Build/upload/extract runtime tarball to VPS over SSH (`scp` + `tar`), no git checkout needed on server. |
-| `scripts/server/verify_release_manifest.sh` | Validate `RELEASE_MANIFEST.txt` and print release identity (bundle, branch, commit) for deploy logs. |
-| `scripts/server/bootstrap_env.sh` | Copy env template (`--from-example`) or validate secrets presence (`--validate-only`). |
-| `scripts/server/render_env_template.sh` | Render `deploy/server.env.example` to `deploy/generated/server.env` (uses `envsubst` when installed). |
-| `scripts/server/verify_install.sh` | Verify checkout layout (`docker-compose.yml`, subtree dirs). Optional HTTP health probe. |
-| `scripts/fm_server_beta.sh` | Blue/green runtime operations (`status`, `check`, `deploy`, `smoke`, `switch`, `rollback`). |
+| `scripts/ops/install_prereqs.sh` | Check host prerequisites (compose, Podman/Docker, `curl`). Does **not** install OS packages. |
+| `scripts/ops/create_runtime_bundle.sh` | Build a lean runtime tarball for VPS migration (service-only payload; excludes docs/dev bloat). |
+| `scripts/ops/push_runtime_bundle.sh` | Build/upload/extract runtime tarball to VPS over SSH (`scp` + `tar`), no git checkout needed on server. |
+| `scripts/ops/verify_release_manifest.sh` | Validate `RELEASE_MANIFEST.txt` and print release identity (bundle, branch, commit) for deploy logs. |
+| `scripts/ops/bootstrap_env.sh` | Copy env template (`--from-example`) or validate secrets presence (`--validate-only`). |
+| `scripts/ops/render_env_template.sh` | Render `deploy/server.env.example` to `deploy/generated/server.env` (uses `envsubst` when installed). |
+| `scripts/ops/verify_install.sh` | Verify checkout layout (`docker-compose.yml`, subtree dirs). Optional HTTP health probe. |
+| `scripts/ops/fm_server_beta.sh` | Blue/green runtime operations (`status`, `check`, `deploy`, `smoke`, `switch`, `rollback`). |
 | `deploy/server.env.example` | Documented variables; **no real secrets**. |
 | `deploy/generated/` | Local render output directory (tracked empty except `.gitignore`). |
 | `docker-compose.bluegreen.yml` | Blue/green stack (`api-blue`, `api-green`, `web-blue`, `web-green`) plus shared `db`, `redis`, and `proxy`. |
@@ -42,12 +42,12 @@ The ecosystem supports both; prerequisite checks pass if at least one runtime an
 ## First install (conceptual flow)
 
 1. Clone the repo and checkout the intended branch.
-2. `./scripts/server/install_prereqs.sh`
-3. Copy env template: `./scripts/server/bootstrap_env.sh --from-example`  
+2. `./scripts/ops/install_prereqs.sh`
+3. Copy env template: `./scripts/ops/bootstrap_env.sh --from-example`  
    Edit `.secrets/server.env` (or override `FM_SERVER_ENV_FILE`).
-4. `./scripts/server/bootstrap_env.sh --validate-only`
-5. Optional: `./scripts/server/render_env_template.sh` if you substitute template variables outside manual editing.
-6. `./scripts/server/verify_install.sh`  
+4. `./scripts/ops/bootstrap_env.sh --validate-only`
+5. Optional: `./scripts/ops/render_env_template.sh` if you substitute template variables outside manual editing.
+6. `./scripts/ops/verify_install.sh`  
    Optionally `FM_VERIFY_HTTP=1` when the stack is up locally or on server.
 
 Dry-run variants: append `--dry-run` where documented on each script.
@@ -57,20 +57,20 @@ Dry-run variants: append `--dry-run` where documented on each script.
 When moving from local VM to hosted VPS, package only runtime assets:
 
 1. Build runtime bundle from your dev machine:
-   - `./scripts/server/create_runtime_bundle.sh`
+   - `./scripts/ops/create_runtime_bundle.sh`
 2. Copy the resulting tarball from `dist/runtime/` to the VPS.
 3. Extract on VPS into the service workspace (for example `/opt/finance_manager`).
 4. Populate secrets (`.secrets/server.env`) and run:
-   - `./scripts/server/install_prereqs.sh`
-   - `./scripts/server/bootstrap_env.sh --validate-only`
-   - `./scripts/fm_docker.sh start`
+   - `./scripts/ops/install_prereqs.sh`
+   - `./scripts/ops/bootstrap_env.sh --validate-only`
+   - `./scripts/local-stack/fm_docker.sh start`
 
 The bundle intentionally excludes design docs, workspace metadata, and local development artifacts to keep deploy payloads smaller and production-focused.
 Each bundle includes `RELEASE_MANIFEST.txt` with build timestamp, branch, commit SHA, dirty/clean flag, and submodule status for deploy traceability and rollback confidence.
 
 To automate steps 1-3 in one command:
 
-- `./scripts/server/push_runtime_bundle.sh --host <vps-ip-or-domain> --user <ssh-user> --remote-dir /opt/finance_manager`
+- `./scripts/ops/push_runtime_bundle.sh --host <vps-ip-or-domain> --user <ssh-user> --remote-dir /opt/finance_manager`
 - This command also runs remote manifest verification and prints release identity after extraction.
 
 ## Blue/green deploy flow
@@ -81,23 +81,23 @@ To automate steps 1-3 in one command:
 Use script-first operations from repo root:
 
 1. Validate runtime and proxy configuration:
-   - `./scripts/fm_server_beta.sh check`
+   - `./scripts/ops/fm_server_beta.sh check`
 2. Inspect active/inactive color and runtime status:
-   - `./scripts/fm_server_beta.sh status`
+   - `./scripts/ops/fm_server_beta.sh status`
 3. Deploy candidate color (typically inactive first):
-   - `./scripts/fm_server_beta.sh deploy green --dry-run`
-   - `./scripts/fm_server_beta.sh deploy green`
+   - `./scripts/ops/fm_server_beta.sh deploy green --dry-run`
+   - `./scripts/ops/fm_server_beta.sh deploy green`
 3b. **After Dockerfile / app code changes on the host** (rebuild images for one color — especially **Podman**):  
-   - `./scripts/fm_server_beta.sh rebuild-color green`  
+   - `./scripts/ops/fm_server_beta.sh rebuild-color green`  
    Recreates `api-green`, `web-green`, and the shared `proxy` so Podman’s `depends_on` / `--requires` graph does not block container replacement. Omit image build with `rebuild-color --no-build green` if you already ran `podman-compose … build` separately.
 4. Smoke-test candidate before cutover:
-   - `./scripts/fm_server_beta.sh smoke --color green`
+   - `./scripts/ops/fm_server_beta.sh smoke --color green`
 5. Promote by proxy-only switch:
-   - `./scripts/fm_server_beta.sh switch --to green`
+   - `./scripts/ops/fm_server_beta.sh switch --to green`
 6. Re-check active route:
-   - `./scripts/fm_server_beta.sh smoke --color active`
+   - `./scripts/ops/fm_server_beta.sh smoke --color active`
 7. Roll back quickly if required:
-   - `./scripts/fm_server_beta.sh rollback`
+   - `./scripts/ops/fm_server_beta.sh rollback`
 
 Switch/rollback rewrites `proxy/active_color.conf` and reloads Nginx in the proxy container.
 `switch` performs a pre-cutover smoke check on the target color and aborts on failure.

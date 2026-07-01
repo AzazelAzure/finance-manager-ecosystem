@@ -25,7 +25,7 @@ Initialize submodules after clone:
 git submodule update --init --recursive
 ```
 
-**Authoritative stack checks** for web + API use the **blue/green Docker** layout and **HTTPS on host `:8443`** via `**proxy/**` (not “Vite-only” ports as the source of truth for production parity). Local `docker-compose.yml` + `**scripts/fm_docker.sh**` / `**scripts/fm_services.sh**` follow the same project conventions as VPS (`deploy/`, `~/finance_manager` on the dev host).
+**Authoritative stack checks** for web + API use the **blue/green Docker** layout and **HTTPS on host `:8443`** via `**proxy/**` (not “Vite-only” ports as the source of truth for production parity). Local `docker-compose.yml` + `**scripts/local-stack/fm_docker.sh**` / `**scripts/local-stack/fm_services.sh**` follow the same project conventions as VPS (`deploy/`, `~/finance_manager` on the dev host).
 
 ---
 

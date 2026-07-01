@@ -102,7 +102,7 @@ When all tasks for the feature are merged into the feature branch:
 2. Open PR: feature branch → `main`. **AI agents must explicitly create the PR using the GitHub CLI (`gh pr create`), summarizing the completed tasks in the body.**
 3. Apply `pre_deploy` manual gate (HitM authorization to deploy).
 4. On approval: merge PR.
-5. Trigger color flip (deploy via `scripts/fm_server_beta.sh switch --to <inactive-color>`).
+5. Trigger color flip (deploy via `scripts/ops/fm_server_beta.sh switch --to <inactive-color>`).
 6. Apply `pre_cutover` manual gate (HitM authorization for the flip itself).
 7. Post-cutover smoke per `deployment_protocol.md` §6.
 8. Update `plan_registry.md`: feature as `completed`.
@@ -198,7 +198,7 @@ Per `deployment_protocol.md` §3 and §5; this section reinforces that the caden
 
 If a feature flip causes regression:
 
-1. Run `scripts/fm_server_beta.sh rollback` (proxy switches back to previous active color).
+1. Run `scripts/ops/fm_server_beta.sh rollback` (proxy switches back to previous active color).
 2. Previous color is still warm (containers running) — fast rollback within seconds.
 3. Status: feature plan transitions `in_progress → blocked` with documented failure category.
 4. Investigate; fix on the feature branch (or new branch if needed); re-deploy when fixed.

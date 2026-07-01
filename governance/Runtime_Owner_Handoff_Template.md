@@ -15,8 +15,8 @@ Use this template whenever container/runtime control is transferred between agen
 - Active mode: containerized | local-services
 - Last lifecycle command:
 - Current status command output summary:
-  - `scripts/fm_server_beta.sh status`: (updated 2026-06-29)
-  - `scripts/fm_services.sh status`:
+  - `scripts/ops/fm_server_beta.sh status`: (updated 2026-06-29)
+  - `scripts/local-stack/fm_services.sh status`:
 
 ### Active Testing Breakpoint
 - Breakpoint: A (baseline) | B (batch validation) | C (regression sanity)

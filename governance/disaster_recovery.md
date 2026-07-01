@@ -205,11 +205,11 @@ For S4/S5 (multi-hour outages) during beta:
 |---|---|
 | Where does `pull_backup.sh` store backups? | `~/fm_backups/fm_db_YYYYMMDD.sql.gz` on HitM's local machine. 30-day retention with integrity check. |
 | Is backup running on a schedule? | Local cron on HitM's dev machine — see `scripts/local/setup_backup_cron.sh` for the exact crontab entry. |
-| Are backups stored offsite (not just local VPS disk)? | **Yes** — `scripts/server/pull_backup.sh` pulls compressed pg_dump over SSH to local disk daily. Survives S4 (total VPS loss). Gap: only as current as last run while dev machine was on. Acceptable for beta. |
+| Are backups stored offsite (not just local VPS disk)? | **Yes** — `scripts/ops/pull_backup.sh` pulls compressed pg_dump over SSH to local disk daily. Survives S4 (total VPS loss). Gap: only as current as last run while dev machine was on. Acceptable for beta. |
 | What is the Namecheap DNS TTL for the main domain A record? | *Check Namecheap DNS panel* |
 | Where is the local `.secrets/` backup kept? | *Should be in `.secrets/` on HitM's machine — verify before needed* |
 
-> **Backup (decided 2026-06-27, scripts created 2026-06-28):** `scripts/server/pull_backup.sh` — SSH to VPS, `pg_dump | gzip`, stream to `~/fm_backups/fm_db_DATE.sql.gz`. 30-day local retention. Cron setup helper: `scripts/local/setup_backup_cron.sh`.
+> **Backup (decided 2026-06-27, scripts created 2026-06-28):** `scripts/ops/pull_backup.sh` — SSH to VPS, `pg_dump | gzip`, stream to `~/fm_backups/fm_db_DATE.sql.gz`. 30-day local retention. Cron setup helper: `scripts/local/setup_backup_cron.sh`.
 
 ---
 

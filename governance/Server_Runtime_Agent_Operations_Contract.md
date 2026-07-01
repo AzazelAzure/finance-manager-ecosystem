@@ -22,7 +22,7 @@ This contract separates:
    - Runtime hosts execute commands locally based on approved tasks.
    - Do not treat direct cloud-agent SSH as primary operations path.
 2. **Script-first execution**
-   - Use project scripts (`scripts/fm_server_beta.sh`, `scripts/server/*`). (updated 2026-06-30)
+   - Use project scripts (`scripts/ops/fm_server_beta.sh`, `scripts/ops/*`). (updated 2026-06-30)
    - Avoid ad-hoc runtime commands unless incident response requires it.
 3. **Artifact-based deployments**
    - Deploy tested runtime bundles from development/staging workflows.
@@ -37,13 +37,13 @@ This contract separates:
 ## Runtime command policy
 
 ### Allowed
-- `scripts/server/create_runtime_bundle.sh` (build release artifact from approved commit state)
-- `scripts/server/push_runtime_bundle.sh` (upload/extract runtime artifact to VPS target path)
-- `scripts/server/verify_release_manifest.sh`
-- `scripts/server/install_prereqs.sh`
-- `scripts/server/bootstrap_env.sh --validate-only`
-- `scripts/fm_server_beta.sh {status,start,stop,restart,rebuild}` (updated 2026-06-30)
-- `scripts/fm_server_beta.sh {status,check,deploy,smoke,switch,rollback,logs}`
+- `scripts/ops/create_runtime_bundle.sh` (build release artifact from approved commit state)
+- `scripts/ops/push_runtime_bundle.sh` (upload/extract runtime artifact to VPS target path)
+- `scripts/ops/verify_release_manifest.sh`
+- `scripts/ops/install_prereqs.sh`
+- `scripts/ops/bootstrap_env.sh --validate-only`
+- `scripts/ops/fm_server_beta.sh {status,start,stop,restart,rebuild}` (updated 2026-06-30)
+- `scripts/ops/fm_server_beta.sh {status,check,deploy,smoke,switch,rollback,logs}`
 
 ### Disallowed by default
 - Arbitrary shell execution unrelated to deploy/runtime checks.

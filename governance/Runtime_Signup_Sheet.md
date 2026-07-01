@@ -26,7 +26,7 @@ Coordinate a single shared runtime across multiple agents during testing windows
 ### Profile-fix green restage + promotion log (2026-06-30) — PROMOTED
 - Trigger: Web PR **#97** merged to `main` (`9436e3b` — Profile tab black-screen Rules-of-Hooks fix + app/route `ErrorBoundary`). API `main` unchanged (`9938614`, #72); no new migration in this batch.
 - Live status before restage (captured 2026-06-30T07:13+08): active **blue**, inactive **green**; all containers healthy (green stale at F-011 build, up 38h).
-- `scripts/sprint_verify.sh --color green --branch main --repos api,web --smoke --smoke-color inactive --no-cache`: rebuilt inactive **green** (api/web + celery worker/beat); orphan prune `0`; `api-green` healthy in 4s. Checked-out heads: **api-green `9938614`**, **web-green `9436e3b`** (both match `origin/main`).
+- `scripts/ops/sprint_verify.sh --color green --branch main --repos api,web --smoke --smoke-color inactive --no-cache`: rebuilt inactive **green** (api/web + celery worker/beat); orphan prune `0`; `api-green` healthy in 4s. Checked-out heads: **api-green `9938614`**, **web-green `9436e3b`** (both match `origin/main`).
 - Known anomaly observed: `sprint_verify.sh --smoke` skipped the smoke step (SSH heredoc env passthrough drops `DO_SMOKE`; logged anomaly `2026-06-29_BILL-RECURRENCE_sprint-verify-skips-smoke.md`). Ran smoke manually instead.
 - Pre-flip smoke (captured 2026-06-30T07:19+08): `fm_server_beta.sh smoke --color green` **passed**.
 - HitM authorized flip (2026-06-30): `switch --to green` — pre-cutover smoke passed; active color switched **blue -> green**; post-switch `smoke --color green` passed (captured 2026-06-30T07:24+08).
@@ -66,7 +66,7 @@ Coordinate a single shared runtime across multiple agents during testing windows
 ### F-010 deploy log (2026-06-28)
 - Merged API/Web landing PRs to `main`: API F-010 export/share stack and Web Data Hub export/share UI.
 - Pulled `main` on VPS clones: API `defd844`, Web `ac341b6`.
-- `scripts/sprint_verify.sh --color green --branch main --repos api,web --smoke --smoke-color inactive --no-cache`: rebuilt inactive **green**; `api-green` healthy in 4s; script smoke passed.
+- `scripts/ops/sprint_verify.sh --color green --branch main --repos api,web --smoke --smoke-color inactive --no-cache`: rebuilt inactive **green**; `api-green` healthy in 4s; script smoke passed.
 - Migration `0015_export_share_token_f010` shows `[X]` applied on shared DB (additive share-token table; safe for blue rollback).
 - `switch --to green`: pre-cutover smoke passed; active color switched **blue -> green**.
 - Post-switch public origin smokes: API health `200`, CSV export unauth `401`, full backup unauth `401`, unknown share token `404`, web `/app/data` `200`.
@@ -94,15 +94,15 @@ Coordinate a single shared runtime across multiple agents during testing windows
 - Prior restage (2026-06-30T07:19+08): `sprint_verify.sh --color green --branch main --repos api,web --no-cache` + manual green smoke
 - Prior status check (2026-06-30T07:13+08): active **blue**, inactive **green**; all containers healthy before restage
 - Prior status check (2026-06-29T19:03+08):
-  - `scripts/fm_server_beta.sh status`: active **blue**, inactive **green**
+  - `scripts/ops/fm_server_beta.sh status`: active **blue**, inactive **green**
   - `api-blue` / `web-blue`: healthy; `api-green` / `web-green`: healthy (rollback color)
   - `celery-worker` + `celery-beat`: up
   - `proxy`: up on `:8080` / `:8443`
   - active blue smoke: passed
 - Prior status check (2026-06-28T13:27+08):
-  - `scripts/fm_server_beta.sh status`: active **blue**, inactive **green**
+  - `scripts/ops/fm_server_beta.sh status`: active **blue**, inactive **green**
 - Prior status check (2026-06-28T12:32+08):
-  - `scripts/fm_server_beta.sh status`: active **green**, inactive **blue**
+  - `scripts/ops/fm_server_beta.sh status`: active **green**, inactive **blue**
   - `api-green` / `web-green`: healthy; `api-blue` / `web-blue`: healthy (rollback color)
   - `celery-worker` + `celery-beat`: up
   - `proxy`: up on `:8080` / `:8443`
@@ -127,7 +127,7 @@ Coordinate a single shared runtime across multiple agents during testing windows
 - **F-005 deploy complete:** pulled API/Web `main`, rebuilt inactive **blue**, applied additive migration `0016_savings_goal`, smoked blue, switched active color **green -> blue**, origin smoke passed (`/finance/savings-goals/` 401, web `/app/goals` 200), and released ownership. Rollback color: **green** (warm).
 - **S1.B recurrence + inactive polish deploy complete:** pulled API/Web `main`, rebuilt inactive **blue**, verified recurrence and polish on inactive, disabled broken modal-form Joyride auto-tours via Web #96, smoked blue, switched active color **green -> blue**, and released ownership. Rollback color: **green** (warm).
 - **Prior closeout:** CI/CD plan (`PLAN_CROSS_CI_CD`), F-012/F-013/F-014 closeout, secret-redaction deploy, and production-UX promotion completed before this F-004 deploy.
-- **Rollback:** inactive **green** retained (warm); `./scripts/fm_server_beta.sh rollback` if needed.
+- **Rollback:** inactive **green** retained (warm); `./scripts/ops/fm_server_beta.sh rollback` if needed.
 - **Stale orphans:** legacy `finance-manager-db` / `finance-manager-proxy` containers show `Exited (2 weeks ago)` — harmless pre–blue-green names; optional cleanup on a future maintenance pass.
 - **Next agent:** update `Current owner` in this sheet **before** `rebuild-color`, `switch`, `deploy`, or other lifecycle commands. Read-only curls/smoke against public URLs do not require ownership.
 - Mixed runtime allowed? `no`
@@ -194,8 +194,8 @@ Coordinate a single shared runtime across multiple agents during testing windows
 ### Lifecycle Commands (script-only)
 - Last command:
 - Last status check:
-  - `scripts/fm_server_beta.sh status`:
-  - `scripts/fm_services.sh status`:
+  - `scripts/ops/fm_server_beta.sh status`:
+  - `scripts/local-stack/fm_services.sh status`:
 
 ### Queue / Waiting Agents
 - Agent:

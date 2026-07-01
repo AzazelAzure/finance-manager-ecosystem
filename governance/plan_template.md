@@ -100,7 +100,7 @@ manual_gates:
 deployment:
   required: false                  # true if plan ships code to VPS
   target_services: []              # [api] | [reflex] | [js] | [api, reflex] | [infra]
-  bundle_required: false           # true if scripts/server/create_runtime_bundle.sh must run
+  bundle_required: false           # true if scripts/ops/create_runtime_bundle.sh must run
   rollback_plan_id: null           # optional explicit rollback plan_id
   smoke_targets: []                # paths/endpoints validated post-deploy
   notes: ""

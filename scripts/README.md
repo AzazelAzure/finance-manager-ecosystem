@@ -1,5 +1,7 @@
 # Git Workflow Scripts
 
+**Full inventory:** [`SCRIPTS.md`](SCRIPTS.md) (taxonomy buckets, who runs what).
+
 These scripts help manage Git operations across workspace repos listed in:
 
 - `scripts/repos.txt`
@@ -25,7 +27,7 @@ All scripts continue safely when a directory is missing or not initialized as a 
 
 ## Scripts
 
-### `./scripts/schedule_agent_sync.sh`
+### `./scripts/local/schedule_agent_sync.sh`
 
 Writes **`governance/HITM_SCHEDULE_SNAPSHOT.md`** (gitignored) with:
 
@@ -35,8 +37,8 @@ Writes **`governance/HITM_SCHEDULE_SNAPSHOT.md`** (gitignored) with:
 Requires **khal**, **todoman** (`todo` on `PATH`), and **python3**. See **`governance/HITM_SCHEDULE_AND_TASKS.md`** for disk paths (`~/.local/share/calendars/work/`, tasks glob) and agent reading order.
 
 ```bash
-./scripts/schedule_agent_sync.sh
-SCHEDULE_DAYS=120 ./scripts/schedule_agent_sync.sh
+./scripts/local/schedule_agent_sync.sh
+SCHEDULE_DAYS=120 ./scripts/local/schedule_agent_sync.sh
 ```
 
 ### `./scripts/status.sh`

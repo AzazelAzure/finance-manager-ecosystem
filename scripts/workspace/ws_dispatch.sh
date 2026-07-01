@@ -66,6 +66,17 @@ BRANCH=$(printf '%s'  "$TASK_LINE"  | cut -d'|' -f3)
 AGENT=$(printf '%s'   "$TASK_LINE"  | cut -d'|' -f4)
 DISPATCHED_AT="$(date -u +%Y-%m-%dT%H:%M)"
 
+worker_governance_excerpt() {
+  local agents_md="$PRIMARY/AGENTS.md"
+  if [[ ! -f "$agents_md" ]]; then
+    printf '## Governance (live excerpt)\nAGENTS.md not found at primary workspace.\n'
+    return
+  fi
+  printf '## Governance (live excerpt from AGENTS.md)\n\n'
+  sed -n '/^## §0 Three-tool model/,/^## §2 /p' "$agents_md" | head -35
+  printf '\n**Worker scope:** Per-repo execution clone — branch prefix `cur/s1b/`, one PR per task, subrepo CHANGELOG when behavior changes. Do not edit parent governance/plans unless the task requires it.\n'
+}
+
 printf '   task=%s  plan=%s  branch=%s  agent=%s\n' \
   "$TASK_ID" "$PLAN_ID" "$BRANCH" "$AGENT" >&2
 
@@ -108,6 +119,8 @@ a queued task in your workspace (${WORKER_DIR}).
 - Agent     : ${AGENT}
 - Repo      : ${REPO}
 - Dispatched: ${DISPATCHED_AT}
+
+$(worker_governance_excerpt)
 
 ## Your job
 

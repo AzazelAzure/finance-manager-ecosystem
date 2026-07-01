@@ -69,20 +69,20 @@ Execute in order. Each command is run via the Orchestrator CLI (host-local execu
 ```
 1. Confirm runtime owner per governance/Runtime_Signup_Sheet.md
 2. Build runtime bundle (if deployment.bundle_required == true):
-   ./scripts/server/create_runtime_bundle.sh
+   ./scripts/ops/create_runtime_bundle.sh
 3. Push and extract bundle to VPS inactive color:
-   ./scripts/server/push_runtime_bundle.sh \
+   ./scripts/ops/push_runtime_bundle.sh \
      --host {vps_host} --user {ssh_user} \
      --remote-dir {inactive_color_path}
 4. Verify release manifest on VPS (push script does this; confirm output):
    verifies bundle_name, commit SHA, dirty/clean flag, runtime_profile
 5. Deploy to inactive color (first-time bring-up, or after `down`):
-   ./scripts/fm_server_beta.sh deploy {inactive_color}
+   ./scripts/ops/fm_server_beta.sh deploy {inactive_color}
    If you **rebuilt images** on the VPS for that color (Dockerfile / `git pull` + build), use instead:
-   ./scripts/fm_server_beta.sh rebuild-color {inactive_color}
+   ./scripts/ops/fm_server_beta.sh rebuild-color {inactive_color}
    so Podman does not fail removing `api-*` / `web-*` while `proxy` still references them (`depends_on` → `--requires`). Expect a brief shared-proxy restart.
 6. Run smoke against inactive color:
-   ./scripts/fm_server_beta.sh smoke --color {inactive_color}
+   ./scripts/ops/fm_server_beta.sh smoke --color {inactive_color}
 ```
 
 If any step fails:
@@ -124,12 +124,12 @@ Wait condition: agent blocks until reply OR 24h timeout.
 
 ```
 1. Switch proxy:
-   ./scripts/fm_server_beta.sh switch --to {target_color}
+   ./scripts/ops/fm_server_beta.sh switch --to {target_color}
    (script performs pre-cutover smoke and aborts on failure)
 2. Post-cutover smoke against newly-active color:
-   ./scripts/fm_server_beta.sh smoke --color active
+   ./scripts/ops/fm_server_beta.sh smoke --color active
 3. Tail logs briefly:
-   ./scripts/fm_server_beta.sh logs --color active --since 5m
+   ./scripts/ops/fm_server_beta.sh logs --color active --since 5m
 4. Record evidence in plan task thread (IDE Chat or Terminal)
 ```
 
@@ -171,10 +171,10 @@ If automatic rollback triggers: status `in_progress → blocked`, `[HANDOFF: fai
 Manual rollback (HitM-initiated) or automatic rollback (per §7).
 
 ```
-1. Run: ./scripts/fm_server_beta.sh rollback
+1. Run: ./scripts/ops/fm_server_beta.sh rollback
    (proxy switches back to previous active color; previous color is still warm)
 2. Post-rollback smoke:
-   ./scripts/fm_server_beta.sh smoke --color active
+   ./scripts/ops/fm_server_beta.sh smoke --color active
 3. Record manifest identity, timestamp, failure category in plan body §10 Risks log
 4. Status: in_progress → blocked (until root cause identified)
 ```
@@ -213,7 +213,7 @@ HitM action:   none required at deploy time — auto-login is configured on the 
 Use these values in deploy scripts:
 
 ```bash
-./scripts/server/push_runtime_bundle.sh \
+./scripts/ops/push_runtime_bundle.sh \
   --host dev@<VPS_HOST> \
   --user dev \
   --remote-dir /opt/finance_manager
@@ -316,7 +316,7 @@ Until JS pair is production-ready: `target_services: [reflex]` is the production
 
 ## 14) Plans that change deployment infrastructure itself
 
-Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/fm_server_beta.sh`, `scripts/server/*`, or any deploy scaffolding:
+Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/ops/fm_server_beta.sh`, `scripts/ops/*`, or any deploy scaffolding:
 
 ```
 - domain: INFRA or OPS
@@ -335,9 +335,9 @@ Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/fm_server_b
 | -------------------------------------------- | ---------------------------------------------------------------------------------- |
 | Operating model (control vs execution plane) | `governance/Server_Runtime_Agent_Operations_Contract.md`      |
 | Server install runbook                       | `deploy/SERVER_BETA_INSTALL.md`                                                    |
-| Blue-green commands                          | `scripts/fm_server_beta.sh`                                                        |
-| Runtime bundle build/push                    | `scripts/server/create_runtime_bundle.sh`, `scripts/server/push_runtime_bundle.sh` |
-| Manifest verification                        | `scripts/server/verify_release_manifest.sh`                                        |
+| Blue-green commands                          | `scripts/ops/fm_server_beta.sh`                                                        |
+| Runtime bundle build/push                    | `scripts/ops/create_runtime_bundle.sh`, `scripts/ops/push_runtime_bundle.sh` |
+| Manifest verification                        | `scripts/ops/verify_release_manifest.sh`                                        |
 | Compose layout                               | `docker-compose.bluegreen.yml`                                                     |
 | Active color state                           | `proxy/active_color.conf`                                                          |
 | Runtime ownership tracking                   | `governance/Runtime_Signup_Sheet.md`                                  |
