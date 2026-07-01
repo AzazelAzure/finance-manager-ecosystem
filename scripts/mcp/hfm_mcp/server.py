@@ -26,6 +26,36 @@ def session_brief() -> str:
 
 
 @mcp.tool()
+def repo_health() -> str:
+    """Per-repo branch, HEAD, and dirty status for parent/api/web."""
+    return run_script("scripts/dev/repo_health.sh", timeout=60)
+
+
+@mcp.tool()
+def plan_status() -> str:
+    """In-progress, blocked, and draft plan counts from plan_registry.md."""
+    return run_script("scripts/dev/plan_status.sh", timeout=30)
+
+
+@mcp.tool()
+def open_prs() -> str:
+    """Open PRs across parent, api, and web repos."""
+    return run_script("scripts/dev/open_prs.sh", timeout=90)
+
+
+@mcp.tool()
+def submodule_status() -> str:
+    """Submodule pin drift vs parent-pinned SHAs."""
+    return run_script("scripts/dev/submodule_status.sh", timeout=90)
+
+
+@mcp.tool()
+def handover(plan_slug: str) -> str:
+    """Generate a Cursor handover prompt for a plan slug or ID."""
+    return run_script("scripts/dev/handover.sh", plan_slug, timeout=60)
+
+
+@mcp.tool()
 def workspace_brief() -> str:
     """Workspace sign-out sheet, FIFO queues, and local workspace identity."""
     return run_script("scripts/dev/workspace_brief.sh", timeout=60)
@@ -99,6 +129,66 @@ def test_web(mode: str = "build") -> str:
     if mode not in ("build", "lint", "test"):
         return "mode must be build, lint, or test"
     return run_script("scripts/dev/test_web.sh", mode, timeout=600)
+
+
+@mcp.tool()
+def test_rust(locked: bool = False) -> str:
+    """Run cargo test in finance_manager_rust_tools."""
+    args = ["--locked"] if locked else []
+    return run_script("scripts/dev/test_rust.sh", *args, timeout=600)
+
+
+@mcp.tool()
+def submodule_sync(submodule: str = "", dry_run: bool = False) -> str:
+    """Fetch and checkout submodules to parent-pinned SHAs (write op)."""
+    args: list[str] = []
+    if dry_run:
+        args.append("--dry-run")
+    if submodule.strip():
+        args.append(submodule.strip())
+    return run_script("scripts/dev/submodule_sync.sh", *args, timeout=180)
+
+
+@mcp.tool()
+def branch_delta(repo: str = "all", base: str = "main") -> str:
+    """Ahead/behind vs upstream for parent/api/web. repo: all|parent|api|web."""
+    if repo not in ("all", "parent", "api", "web"):
+        return "repo must be all, parent, api, or web"
+    return run_script(
+        "scripts/dev/branch_delta.sh",
+        "--repo",
+        repo,
+        "--base",
+        base,
+        timeout=120,
+    )
+
+
+@mcp.tool()
+def stash_triage() -> str:
+    """List git stashes across parent, api, and web."""
+    return run_script("scripts/dev/stash_triage.sh", timeout=60)
+
+
+@mcp.tool()
+def dependabot_batch(repo: str = "all") -> str:
+    """Open Dependabot PRs for api and/or web. repo: all|api|web."""
+    if repo not in ("all", "api", "web"):
+        return "repo must be all, api, or web"
+    args = ["--repo", repo] if repo != "all" else []
+    return run_script("scripts/dev/dependabot_batch.sh", *args, timeout=90)
+
+
+@mcp.tool()
+def celery_ready() -> str:
+    """Check local Podman stack for running Celery worker/beat containers."""
+    return run_script("scripts/dev/celery_ready.sh", timeout=60)
+
+
+@mcp.tool()
+def env_check() -> str:
+    """Verify repo-root .env contains keys from .env.example."""
+    return run_script("scripts/dev/env_check.sh", timeout=30)
 
 
 # ── Runtime / VPS (read-only or local) ────────────────────────────────────────
@@ -257,6 +347,56 @@ def vps_release(workspace: str) -> str:
 def anomaly_new(plan_slug: str, short_desc: str) -> str:
     """Scaffold strategy/anomalies/ log from template (does not edit anomalous code)."""
     return run_script("scripts/dev/anomaly_new.sh", plan_slug, short_desc, timeout=30)
+
+
+@mcp.tool()
+def changelog_entry(title: str, agent: str, repo: str = "parent") -> str:
+    """Insert [Unreleased] CHANGELOG block (CPPRD document step). repo: parent|api|web."""
+    if repo not in ("parent", "api", "web"):
+        return "repo must be parent, api, or web"
+    return run_script(
+        "scripts/dev/changelog_entry.sh",
+        title,
+        agent,
+        "--repo",
+        repo,
+        timeout=30,
+    )
+
+
+@mcp.tool()
+def new_tp(slug: str, week: int = 0, date: str = "") -> str:
+    """Scaffold strategy/meetings/.../tp-<slug>/ talking-point folder."""
+    args: list[str] = [slug]
+    if week > 0:
+        args.extend(["--week", str(week)])
+    if date.strip():
+        args.extend(["--date", date.strip()])
+    return run_script("scripts/dev/new_tp.sh", *args, timeout=30)
+
+
+@mcp.tool()
+def new_plan(phase: str, stage: str, status: str, slug: str) -> str:
+    """Scaffold plans/<Phase>/<Stage>/<status>/<slug>/ per plan_template."""
+    return run_script(
+        "scripts/dev/new_plan.sh",
+        phase,
+        stage,
+        status,
+        slug,
+        timeout=30,
+    )
+
+
+@mcp.tool()
+def new_meeting_day(week: int = 0, date: str = "") -> str:
+    """Scaffold strategy/meetings/week<N>/meeting<date>/ with agenda/ and anomalies/."""
+    args: list[str] = []
+    if week > 0:
+        args.extend(["--week", str(week)])
+    if date.strip():
+        args.extend(["--date", date.strip()])
+    return run_script("scripts/dev/new_meeting_day.sh", *args, timeout=30)
 
 
 def main() -> None:

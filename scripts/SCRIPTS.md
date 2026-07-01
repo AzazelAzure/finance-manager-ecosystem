@@ -62,6 +62,13 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `new_tp.sh` | Scaffold `strategy/meetings/.../tp-<slug>/` folder |
 | `new_plan.sh` | Scaffold `plans/<Phase>/<Stage>/<status>/<slug>/` per plan_template |
 | `changelog_entry.sh` | Insert `[Unreleased]` block in parent/api/web CHANGELOG |
+| `new_meeting_day.sh` | Scaffold `strategy/meetings/week<N>/meeting<date>/` |
+| `branch_delta.sh` | Ahead/behind vs `origin/main` for parent/api/web |
+| `stash_triage.sh` | List git stashes across parent/api/web |
+| `dependabot_batch.sh` | Open Dependabot PRs (api/web) |
+| `celery_ready.sh` | Local Podman Celery worker/beat presence |
+| `env_check.sh` | Verify `.env` keys against `.env.example` |
+| `test_rust.sh` | `cargo test` in `finance_manager_rust_tools` |
 | `test_api.sh` | `uv run pytest` wrapper for API repo |
 | `test_web.sh` | `npm run build\|lint\|test` with log capture |
 | `submodule_sync.sh` | Fetch + checkout submodules to parent-pinned SHAs (write op) |
@@ -99,7 +106,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | Artifact | What |
 |---|---|
 | `scripts/mcp/run.sh` | Start stdio MCP server for Cursor / Claude Code |
-| `hfm_mcp/server.py` | FastMCP tool definitions wrapping `scripts/dev`, `workspace`, `ops` |
+| `hfm_mcp/server.py` | FastMCP tool definitions — **39 tools** wrapping Tier 1–3 `scripts/dev`, `workspace`, `ops` |
 | `README.md` | IDE setup, tool catalog, smoke test |
 
 Project MCP config: `.cursor/mcp.json` → server name `hfm-scripts`.

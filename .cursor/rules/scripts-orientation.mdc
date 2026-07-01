@@ -13,6 +13,7 @@ Before generating multi-repo `git status`, `gh pr`, or container probe commands:
 3. **Local stack:** `./scripts/dev/local_stack_health.sh` — not raw `podman ps` + `curl` chains.
 4. **VPS read-only state:** `./scripts/ops/vps_state.sh` — not ad-hoc SSH for container lists.
 5. **Containers lifecycle:** `./scripts/local-stack/fm_docker.sh` / `fm_services.sh` per `container-testing-orchestration.mdc`.
-6. **MCP available:** prefer `hfm-scripts` MCP tools (`session_brief`, `workspace_brief`, `pr_readiness`, etc.) when the local server is enabled — see `scripts/mcp/README.md` and `.cursor/mcp.json`.
+6. **MCP available:** prefer `hfm-scripts` MCP tools (`session_brief`, `workspace_brief`, `pr_readiness`, `changelog_entry`, etc.) when the local server is enabled — see `scripts/mcp/README.md` and `.cursor/mcp.json`.
+7. **CPPRD document step:** `./scripts/dev/changelog_entry.sh "<title>" "Cursor"` (or MCP `changelog_entry`) before commit — not hand-edited CHANGELOG headers.
 
 Inventory: `scripts/SCRIPTS.md`.
