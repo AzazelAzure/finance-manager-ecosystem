@@ -20,6 +20,7 @@ echo "45 4 * * * GH_TOKEN=\"\$(cat ~/.config/fm_gh_token 2>/dev/null)\" ${REPO_R
 echo ""
 echo "# 2. VPS database backup (daily pull over SSH)"
 echo "0 6 * * * ${REPO_ROOT}/scripts/ops/pull_backup.sh >> /tmp/fm_backup.log 2>&1"
+echo "#    (Legacy path scripts/server/pull_backup.sh forwards to ops/ if your crontab still uses it.)"
 echo ""
 echo "===== ONE-TIME SETUP REQUIRED ====="
 echo ""
