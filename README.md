@@ -81,8 +81,9 @@ The coordination layer lives in `AGENTS.md`, `.cursor/rules/`, `.cursor/skills/`
 across agents, not just suggested. The result is team-pace output from a one-person
 operation.
 
-The API is approximately 80% hand-coded by the primary author; agent-generated code
-operates within the architecture and conventions established by hand.
+The API's architecture and every line of code are authored and reviewed by the primary
+developer; AI agents operate as coding tools within that architecture and under that
+review discipline — never as autonomous authors.
 
 ---
 
