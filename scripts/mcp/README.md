@@ -67,8 +67,9 @@ Add to Claude Code MCP settings (user or project):
 | `vps_state` / `vps_freshness` | `scripts/ops/vps_state.sh`, `scripts/dev/vps_freshness.sh` |
 | `fm_docker_status` | `scripts/local-stack/fm_docker.sh status` |
 | `ws_claim` / `ws_release` | workspace sign-out |
-| `queue_push` | FIFO enqueue |
+| `queue_push` / `queue_done` | FIFO enqueue / mark DONE or FAILED |
 | `ws_dispatch` | worker dispatch (**default `dry_run=True`**) |
+| `ws_review` | WS3 PR review (`action`: auto, approve, reject) |
 | `vps_claim` / `vps_release` | VPS authority lock |
 | `anomaly_new` | anomaly scaffold |
 
