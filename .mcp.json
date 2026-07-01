@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "hfm-scripts": {
+      "type": "stdio",
+      "command": "bash",
+      "args": [
+        "scripts/mcp/run.sh"
+      ],
+      "env": {
+        "FM_PRIMARY_WORKSPACE": "/home/pproctor/Hive_Financial_Manager/HFM"
+      }
+    }
+  }
+}
