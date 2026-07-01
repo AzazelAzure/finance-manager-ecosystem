@@ -51,27 +51,62 @@ Add to Claude Code MCP settings (user or project):
 }
 ```
 
-## Tools (v0.1)
+## Tools (v0.2 — Tier 1–3 dev scripts + workspace/ops)
+
+### Orientation (Tier 1)
 
 | Tool | Script |
 |------|--------|
-| `session_brief` | `scripts/dev/session_brief.sh` |
-| `workspace_brief` | `scripts/dev/workspace_brief.sh` |
+| `session_brief` | bundled: repo health + plans + PRs + submodules |
+| `repo_health` | `scripts/dev/repo_health.sh` |
+| `plan_status` | `scripts/dev/plan_status.sh` |
+| `open_prs` | `scripts/dev/open_prs.sh` |
+| `submodule_status` | `scripts/dev/submodule_status.sh` |
+| `handover` | `scripts/dev/handover.sh` |
+| `workspace_brief` | sign-out sheet + queues + workspace identity |
 | `ws_status` | `scripts/workspace/ws_status.sh` |
 | `queue_status` | `scripts/workspace/queue_status.sh` |
 | `plan_lookup` | `scripts/dev/plan_lookup.sh` |
+
+### PR / CI / tests (Tier 1–2)
+
+| Tool | Script |
+|------|--------|
 | `pr_readiness` | `scripts/dev/pr_readiness.sh` |
 | `ci_status` | `scripts/dev/ci_status.sh` |
-| `test_api` / `test_web` | `scripts/dev/test_api.sh`, `test_web.sh` |
+| `test_api` / `test_web` / `test_rust` | API pytest, web npm, rust `cargo test` |
+| `submodule_sync` | `scripts/dev/submodule_sync.sh` (**write op**) |
+| `branch_delta` | `scripts/dev/branch_delta.sh` |
+| `stash_triage` | `scripts/dev/stash_triage.sh` |
+| `dependabot_batch` | `scripts/dev/dependabot_batch.sh` |
+
+### Runtime / VPS
+
+| Tool | Script |
+|------|--------|
 | `local_stack_health` | `scripts/dev/local_stack_health.sh` |
-| `vps_state` / `vps_freshness` | `scripts/ops/vps_state.sh`, `scripts/dev/vps_freshness.sh` |
+| `celery_ready` | `scripts/dev/celery_ready.sh` |
+| `env_check` | `scripts/dev/env_check.sh` |
+| `vps_state` / `vps_freshness` | VPS SSH snapshot + SHA drift |
 | `fm_docker_status` | `scripts/local-stack/fm_docker.sh status` |
+
+### Workspace orchestration
+
+| Tool | Script |
+|------|--------|
 | `ws_claim` / `ws_release` | workspace sign-out |
 | `queue_push` / `queue_done` | FIFO enqueue / mark DONE or FAILED |
 | `ws_dispatch` | worker dispatch (**default `dry_run=True`**) |
 | `ws_review` | WS3 PR review (`action`: auto, approve, reject) |
 | `vps_claim` / `vps_release` | VPS authority lock |
-| `anomaly_new` | anomaly scaffold |
+
+### Scaffolding (Tier 1–3)
+
+| Tool | Script |
+|------|--------|
+| `anomaly_new` | `scripts/dev/anomaly_new.sh` |
+| `changelog_entry` | `scripts/dev/changelog_entry.sh` (**CPPRD D step**) |
+| `new_tp` / `new_plan` / `new_meeting_day` | TP, plan, and meeting-day scaffolds |
 
 ## Smoke test (no stdio server)
 

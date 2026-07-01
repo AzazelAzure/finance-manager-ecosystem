@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-01 — MCP Tier 1–3 dev tool catalog (Cursor)
+
+- **Tier 3 scripts (new):** `new_meeting_day.sh`, `branch_delta.sh`, `stash_triage.sh`, `dependabot_batch.sh`, `celery_ready.sh`, `env_check.sh`, `test_rust.sh`.
+- **`scripts/mcp/hfm_mcp/server.py`:** MCP wrappers for all Tier 1–3 dev scripts from `combined_commands_index.md` §4 (39 tools total): orientation (`repo_health`, `plan_status`, `open_prs`, `submodule_status`, `handover`), CPPRD (`changelog_entry`), scaffolding (`new_tp`, `new_plan`, `new_meeting_day`), tests/sync (`submodule_sync`, `test_rust`), triage (`branch_delta`, `stash_triage`, `dependabot_batch`, `celery_ready`, `env_check`).
+- **Docs:** `scripts/mcp/README.md` v0.2 catalog; `scripts/SCRIPTS.md`; `.cursor/rules/scripts-orientation.mdc` — CPPRD → `changelog_entry`.
 
 ### 2026-07-01 — MCP: `queue_done` and `ws_review` tools (Cursor)
 
