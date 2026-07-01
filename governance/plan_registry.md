@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-07-01 (Added bill-tx-linkage-repair (P2) and support-tests-eager-celery (P3) — anomaly repair plans, ready for Cursor dispatch)
+**Last updated:** 2026-07-01 (Added payment-source-linkage-standardization (P1, freeze-exempt, blocks F-009) — resolves API-DESIGN anomaly, ready for Cursor dispatch)
 
 ## Update protocol
 
@@ -35,17 +35,22 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/active/feat-f006-dashboard-widgets-custom/README.md` |
 | `PLAN_CROSS_BILL_TX_LINKAGE_REPAIR_2026-07-01` | P2 | S1.B | `cur/s1b/fix/bill-tx-linkage-repair` | - | - | - | - | Critical bug fix, freeze-exempt: cadence-aware due-date reversal for `Updater._handle_tx_update` (non-monthly bills desync today). F-003 query + deleted-bill policy explicitly out of scope. `plans/S1/S1.B/active/bill-tx-linkage-repair/README.md` |
 | `PLAN_CROSS_SUPPORT_TESTS_EAGER_CELERY_2026-07-01` | P3 | S1.B | `cur/s1b/fix/support-tests-eager-celery` | - | - | - | - | Local-DX fix: autouse `CELERY_TASK_ALWAYS_EAGER` conftest fixture so 4 support-ticket test modules pass without live Redis. `plans/S1/S1.B/active/support-tests-eager-celery/README.md` |
+| `PLAN_CROSS_DEPENDABOT_BATCH_2026-07-01` | P3 | S1.B | `cur/s1b/chore/dependabot-batch-2026-07` | - | - | - | - | 10 open dependabot PRs (5 API, 5 Web) batched into one lockfile pass per repo instead of sequential merges, avoiding the lockfile-conflict pileup. Web side needs an explicit eslint-compat check (unreviewed prior to this plan). `plans/S1/S1.B/active/dependabot-batch-2026-07-01/README.md` |
+| `PLAN_CROSS_PAYMENT_SOURCE_LINKAGE_2026-07-01` | P1 | S1.B | `cur/s1b/fix/payment-source-linkage-standardization` | - | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | - | - | Critical bug fix, freeze-exempt: reverts `SavingsGoal.source` FK to a `source_id`-UUID-keyed CharField (mirrors `tx_id` pattern) across all 4 PaymentSource-linked surfaces (Transaction, BalanceSnapshot, AppProfile.spend_accounts, SavingsGoal) — renames no longer orphan links. Side task: DB-query-count audit sweep on inactive color only (15-hit cap, <10 goal). Scope guardrail: stop and check HitM if implementation needs to go beyond these 4 surfaces. `plans/S1/S1.B/active/payment-source-linkage-standardization/README.md` |
 
 ## Draft / Planning
 
+**2026-07-01 reframe (framework pass, full execution pending tomorrow):** rust-calc-layer and everything gated behind it (F-002, F-003), plus the remaining not-yet-executed proposed plans (F-008, invite-referral-link, quick-pay-bill-design), moved from S1.B → S1.C. Rationale: this is architectural/new-feature scope that no longer fits S1.B's narrowed "close out active plans, ship what's already in flight" reality. `S1_public_beta_position.md` exit criteria and workstreams have **not** been rewritten yet — that's tomorrow's full pass; today only moved plan directories + this registry's phase/path columns. See `plans/archived/S1.B-superseded-by-strategy-research/ARCHIVE_NOTE.md` for the related research-duplicate cleanup done in the same pass.
+
 | plan_id | phase | author | created | notes |
 |---|---|---|---|---|
-| `PLAN_CROSS_INVITE_REFERRAL_LINK_2026-06-30` | S1.B | Claude Code | 2026-06-30 | Invite token generation + public invite landing route; organic beta growth (no referral rewards). `plans/S1/S1.B/proposed/feat-invite-referral-link/README.md`. Stub — HitM markup required before `ready`. |
-| `PLAN_CROSS_RUST_CALC_LAYER_2026-06-30` | S1.B | Claude Code | 2026-06-30 | **Prerequisite for F-002 + F-003.** Adds wasm-pack (WASM/PWA) + PyO3/maturin (Python/API) binding targets to `finance_manager_rust_tools`; CI build matrix; money-precision audit; surface audit checklist. `plans/S1/S1.B/planning/rust-calc-layer/README.md`. Stub — HitM markup required before `ready`. |
+| `PLAN_CROSS_INVITE_REFERRAL_LINK_2026-06-30` | S1.C | Claude Code | 2026-06-30 | Invite token generation + public invite landing route; organic beta growth (no referral rewards). Moved from S1.B 2026-07-01 (reframe). `plans/S1/S1.C/proposed/feat-invite-referral-link/README.md`. Stub — HitM markup required before `ready`. |
+| `PLAN_CROSS_RUST_CALC_LAYER_2026-06-30` | S1.C | Claude Code | 2026-06-30 | **Prerequisite for F-002 + F-003.** Adds wasm-pack (WASM/PWA) + PyO3/maturin (Python/API) binding targets to `finance_manager_rust_tools`; CI build matrix; money-precision audit; surface audit checklist. Moved from S1.B 2026-07-01 (reframe — "massive rework" no longer fits S1.B scope). `plans/S1/S1.C/proposed/rust-calc-layer/README.md`. Stub — HitM markup required before `ready`. |
 | `PLAN_CROSS_RUST_CRYPTO_PROTOTYPE_2026-06-30` | S3 pipeline | Claude Code | 2026-06-30 | **Prototype only — NOT S5 execution.** ZK crypto primitives (Pedersen, range proof, Poseidon) in `finance_manager_rust_middleware`; WASM compat check; benchmark on GAMMA server; ADR for ZK proof system choice. Requires dedicated GAMMA VPS (not blue/green). `plans/pipeline_queue/rust-crypto-prototype-env/README.md`. Pre-execution HitM gate required. |
-| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**: `plans/S1/S1.B/inactive/feat-f002-smart-tag-estimation/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
-| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools: `plans/S1/S1.B/inactive/feat-f003-predictive-budgeting/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
-| `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.B | pproctor | 2026-05-05 | **F-008** household ledger: `plans/S1/S1.B/proposed/feat-f008-family-ledger/README.md`. |
+| `PLAN_CROSS_SMART_TAG_ESTIMATION_F002_2026-05-05` | S1.C | pproctor | 2026-05-05 | **F-002** tag apportioning + **`finance_manager_rust_tools`**. Moved from S1.B 2026-07-01 (reframe). `plans/S1/S1.C/proposed/feat-f002-smart-tag-estimation/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
+| `PLAN_CROSS_PREDICTIVE_BUDGET_F003_2026-05-05` | S1.C | pproctor | 2026-05-05 | **F-003** budgets + projections + rust_tools. Moved from S1.B 2026-07-01 (reframe). `plans/S1/S1.C/proposed/feat-f003-predictive-budgeting/README.md`. ⚠️ **Blocked by PLAN_CROSS_RUST_CALC_LAYER_2026-06-30** — binding layer must be merged first. |
+| `PLAN_CROSS_FAMILY_LEDGER_F008_2026-05-05` | S1.C | pproctor | 2026-05-05 | **F-008** household ledger. Moved from S1.B 2026-07-01 (reframe). `plans/S1/S1.C/proposed/feat-f008-family-ledger/README.md`. |
+| `PLAN_QUICK_PAY_BILL_DESIGN_2026-05-05` | S1.C | pproctor | 2026-05-05 | Quick pay bill (Issue #2 rework) — product semantics locked, staged, no code yet. Moved from S1.B 2026-07-01 (reframe). `plans/S1/S1.C/proposed/quick-pay-bill-design/DESIGN_DECISION.md`. |
 
 ## Paused
 
