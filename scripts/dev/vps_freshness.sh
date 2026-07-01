@@ -2,13 +2,19 @@
 # vps_freshness.sh — compare live VPS submodule SHAs against local main HEAD
 # Usage: ./scripts/dev/vps_freshness.sh
 # Requires: SSH key auth to VPS (no password prompt)
+#
+# Environment (repo-root .env allowlist or export):
+#   FM_SPRINT_SSH, VPS_ORIGIN_IP
 
 set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-VPS_HOST="dev@dev@<VPS_HOST>"
+# shellcheck source=../lib/vps_env.sh
+source "$REPO_ROOT/scripts/lib/vps_env.sh"
+
 VPS_REPO="~/finance_manager"
 
 echo "=== VPS FRESHNESS CHECK — $(date +%Y-%m-%d\ %H:%M) ==="
+echo "SSH: $VPS_SSH_TARGET"
 echo ""
 
 # Local main HEADs
@@ -21,7 +27,7 @@ echo "  web: $LOCAL_WEB"
 echo ""
 
 # VPS live SHAs
-VPS_SHAS=$(ssh "$VPS_HOST" "
+VPS_SHAS=$(ssh "$VPS_SSH_TARGET" "
   echo -n 'api: '; cd ${VPS_REPO}/finance_manager_api && git rev-parse HEAD 2>/dev/null || echo 'unknown'
   echo -n 'web: '; cd ${VPS_REPO}/finance_manager_web && git rev-parse HEAD 2>/dev/null || echo 'unknown'
 ")
@@ -30,18 +36,17 @@ echo "VPS live:"
 echo "$VPS_SHAS" | sed 's/^/  /'
 echo ""
 
-VPS_API=$(echo "$VPS_SHAS" | grep "^api:" | awk '{print $2}')
-VPS_WEB=$(echo "$VPS_SHAS" | grep "^web:" | awk '{print $2}')
+VPS_API=$(echo "$VPS_SHAS" | grep '^api:' | awk '{print $2}')
+VPS_WEB=$(echo "$VPS_SHAS" | grep '^web:' | awk '{print $2}')
 
-echo "Drift:"
 if [[ "$LOCAL_API" == "$VPS_API" ]]; then
-  echo "  api: IN SYNC"
+  echo "api: IN SYNC"
 else
-  echo "  api: BEHIND — VPS at ${VPS_API:0:7}, local at ${LOCAL_API:0:7}"
+  echo "api: DRIFT — local $LOCAL_API vs VPS $VPS_API"
 fi
 
 if [[ "$LOCAL_WEB" == "$VPS_WEB" ]]; then
-  echo "  web: IN SYNC"
+  echo "web: IN SYNC"
 else
-  echo "  web: BEHIND — VPS at ${VPS_WEB:0:7}, local at ${LOCAL_WEB:0:7}"
+  echo "web: DRIFT — local $LOCAL_WEB vs VPS $VPS_WEB"
 fi

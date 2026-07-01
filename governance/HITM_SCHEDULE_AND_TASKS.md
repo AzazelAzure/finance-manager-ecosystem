@@ -15,15 +15,15 @@ Todoman does **not** paste tasks *into* the same ICS files as khal; both are sta
 From the finance_manager repo root:
 
 ```bash
-./scripts/schedule_agent_sync.sh
+./scripts/local/schedule_agent_sync.sh
 ```
 
 Optional:
 
 ```bash
-SCHEDULE_DAYS=120 ./scripts/schedule_agent_sync.sh
-SCHEDULE_SNAPSHOT=/path/to/custom.md ./scripts/schedule_agent_sync.sh
-KHAL_CAL=work ./scripts/schedule_agent_sync.sh
+SCHEDULE_DAYS=120 ./scripts/local/schedule_agent_sync.sh
+SCHEDULE_SNAPSHOT=/path/to/custom.md ./scripts/local/schedule_agent_sync.sh
+KHAL_CAL=work ./scripts/local/schedule_agent_sync.sh
 ```
 
 Output default: `governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored — personal).

@@ -1,0 +1,230 @@
+"""FastMCP server exposing HFM scripts as typed tools."""
+
+from __future__ import annotations
+
+from mcp.server.fastmcp import FastMCP
+
+from hfm_mcp.runner import run_script
+
+mcp = FastMCP(
+    "hfm-scripts",
+    instructions=(
+        "Hive Financial Manager local tooling. Prefer these tools over ad-hoc shell "
+        "for session orientation, PR checks, workspace queues, and VPS read-only state. "
+        "Scripts remain source of truth under scripts/."
+    ),
+)
+
+
+# ── Orientation (read-only) ───────────────────────────────────────────────────
+
+
+@mcp.tool()
+def session_brief() -> str:
+    """Session orientation: repo health, plan status, open PRs, submodule drift."""
+    return run_script("scripts/dev/session_brief.sh", timeout=120)
+
+
+@mcp.tool()
+def workspace_brief() -> str:
+    """Workspace sign-out sheet, FIFO queues, and local workspace identity."""
+    return run_script("scripts/dev/workspace_brief.sh", timeout=60)
+
+
+@mcp.tool()
+def ws_status(vps_only: bool = False, workspace: str = "") -> str:
+    """Read workspace.lock sign-out sheet. Optional: vps_only or single workspace id."""
+    args: list[str] = []
+    if vps_only:
+        args.append("--vps")
+    elif workspace:
+        args.extend(["--ws", workspace])
+    return run_script("scripts/workspace/ws_status.sh", *args, timeout=30)
+
+
+@mcp.tool()
+def queue_status(repos: str = "") -> str:
+    """FIFO task queue state. repos: comma-separated (api,web) or empty for all."""
+    args = [r.strip() for r in repos.split(",") if r.strip()] if repos else []
+    return run_script("scripts/workspace/queue_status.sh", *args, timeout=30)
+
+
+@mcp.tool()
+def plan_lookup(plan_id: str) -> str:
+    """Find a plan by id (e.g. F009 or PLAN_CROSS_CI_CD_2026-06-27)."""
+    return run_script("scripts/dev/plan_lookup.sh", plan_id, timeout=60)
+
+
+# ── PR / CI / tests ───────────────────────────────────────────────────────────
+
+
+@mcp.tool()
+def pr_readiness(
+    repo: str = "",
+    branch: str = "",
+    pr_number: int = 0,
+) -> str:
+    """PR merge-gate snapshot: mergeable, checks, review. repo: parent|api|web."""
+    args: list[str] = []
+    if repo:
+        args.extend(["--repo", repo])
+    if branch:
+        args.extend(["--branch", branch])
+    if pr_number > 0:
+        args.extend(["--pr", str(pr_number)])
+    return run_script("scripts/dev/pr_readiness.sh", *args, timeout=120)
+
+
+@mcp.tool()
+def ci_status(repo: str = "", branch: str = "") -> str:
+    """Latest GitHub Actions runs. repo: parent|api|web."""
+    args: list[str] = []
+    if repo:
+        args.extend(["--repo", repo])
+    if branch:
+        args.extend(["--branch", branch])
+    return run_script("scripts/dev/ci_status.sh", *args, timeout=90)
+
+
+@mcp.tool()
+def test_api(pytest_args: str = "") -> str:
+    """Run API pytest. pytest_args: optional path or -k expression (space-separated)."""
+    args = pytest_args.split() if pytest_args.strip() else []
+    return run_script("scripts/dev/test_api.sh", *args, timeout=600)
+
+
+@mcp.tool()
+def test_web(mode: str = "build") -> str:
+    """Run web npm script: build, lint, or test."""
+    if mode not in ("build", "lint", "test"):
+        return "mode must be build, lint, or test"
+    return run_script("scripts/dev/test_web.sh", mode, timeout=600)
+
+
+# ── Runtime / VPS (read-only or local) ────────────────────────────────────────
+
+
+@mcp.tool()
+def local_stack_health() -> str:
+    """Local Podman stack status and :8443 probes with correct Host headers."""
+    return run_script("scripts/dev/local_stack_health.sh", timeout=90)
+
+
+@mcp.tool()
+def vps_state() -> str:
+    """Live VPS container snapshot via SSH (timestamped, read-only)."""
+    return run_script("scripts/ops/vps_state.sh", timeout=120)
+
+
+@mcp.tool()
+def vps_freshness() -> str:
+    """Compare local API/Web SHAs to VPS deployed SHAs."""
+    return run_script("scripts/dev/vps_freshness.sh", timeout=120)
+
+
+@mcp.tool()
+def fm_docker_status() -> str:
+    """Local docker-compose stack status (scripts/local-stack/fm_docker.sh status)."""
+    return run_script("scripts/local-stack/fm_docker.sh", "status", timeout=60)
+
+
+# ── Workspace mutations (pilot / orchestration) ───────────────────────────────
+
+
+@mcp.tool()
+def ws_claim(
+    workspace: str,
+    agent: str,
+    task: str,
+    branch: str,
+    force: bool = False,
+) -> str:
+    """Claim a workspace in workspace.lock. Writes sign-out sheet."""
+    args: list[str] = []
+    if force:
+        args.append("--force")
+    args.extend([workspace, agent, task, branch])
+    return run_script("scripts/workspace/ws_claim.sh", *args, timeout=30)
+
+
+@mcp.tool()
+def ws_release(workspace: str) -> str:
+    """Release a workspace claim in workspace.lock."""
+    return run_script("scripts/workspace/ws_release.sh", workspace, timeout=30)
+
+
+@mcp.tool()
+def queue_push(
+    repo: str,
+    task_id: str,
+    plan_id: str,
+    branch: str,
+    agent: str,
+) -> str:
+    """Append a PENDING task to a repo FIFO queue (api or web)."""
+    return run_script(
+        "scripts/workspace/queue_push.sh",
+        repo,
+        task_id,
+        plan_id,
+        branch,
+        agent,
+        timeout=30,
+    )
+
+
+@mcp.tool()
+def ws_dispatch(
+    repo: str,
+    dry_run: bool = True,
+    direct: bool = False,
+) -> str:
+    """Dispatch next queued task to WS-API or WS-WEB worker. Default dry_run=True."""
+    args: list[str] = [repo]
+    if dry_run:
+        args.append("--dry-run")
+    elif direct:
+        args.append("--direct")
+    return run_script("scripts/workspace/ws_dispatch.sh", *args, timeout=900)
+
+
+@mcp.tool()
+def vps_claim(
+    workspace: str,
+    operation: str,
+    api_sha: str = "",
+    web_sha: str = "",
+    color: str = "",
+) -> str:
+    """Claim VPS deploy authority (hard block if already held)."""
+    args = [workspace, operation]
+    if api_sha:
+        args.append(api_sha)
+    if web_sha:
+        args.append(web_sha)
+    if color:
+        args.append(color)
+    return run_script("scripts/workspace/vps_claim.sh", *args, timeout=30)
+
+
+@mcp.tool()
+def vps_release(workspace: str) -> str:
+    """Release VPS authority in workspace.lock."""
+    return run_script("scripts/workspace/vps_release.sh", workspace, timeout=30)
+
+
+# ── Scaffolding ───────────────────────────────────────────────────────────────
+
+
+@mcp.tool()
+def anomaly_new(plan_slug: str, short_desc: str) -> str:
+    """Scaffold strategy/anomalies/ log from template (does not edit anomalous code)."""
+    return run_script("scripts/dev/anomaly_new.sh", plan_slug, short_desc, timeout=30)
+
+
+def main() -> None:
+    mcp.run(transport="stdio")
+
+
+if __name__ == "__main__":
+    main()

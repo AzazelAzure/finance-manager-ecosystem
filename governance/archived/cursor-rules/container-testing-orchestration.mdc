@@ -10,15 +10,15 @@ Apply this rule whenever testing involves container runtime operations.
 ## Script-Only Runtime Commands
 
 - Use project scripts from `scripts/` as the default interface:
-  - `scripts/fm_docker.sh {start|stop|restart|rebuild|status|clean}`
-  - `scripts/fm_services.sh {start|stop|restart|status}`
+  - `scripts/local-stack/fm_docker.sh {start|stop|restart|rebuild|status|clean}`
+  - `scripts/local-stack/fm_services.sh {start|stop|restart|status}`
 - Do not use ad-hoc compose/runtime commands unless the script path is broken and that blocker is explicitly reported.
 
 ## Mandatory Lifecycle Sequence
 
 Before implementation testing:
 
-1. Check status: `scripts/fm_docker.sh status` and `scripts/fm_services.sh status`
+1. Check status: `scripts/local-stack/fm_docker.sh status` and `scripts/local-stack/fm_services.sh status`
 2. Confirm runtime mode (containerized vs local services) and avoid mixed mode.
 3. Perform required stop/restart/rebuild via scripts.
 4. Re-check status after action.

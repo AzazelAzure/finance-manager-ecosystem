@@ -59,7 +59,7 @@ that silently swallows the first few tasks in the Celery queue.
 
 ## Where
 
-`scripts/fm_server_beta.sh:87` — the `rebuild-color` function
+`scripts/ops/fm_server_beta.sh:87` — the `rebuild-color` function
 
 ## What agent was doing
 

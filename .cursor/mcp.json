@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "hfm-scripts": {
+      "command": "bash",
+      "args": ["scripts/mcp/run.sh"],
+      "env": {
+        "FM_PRIMARY_WORKSPACE": "${workspaceFolder}"
+      }
+    }
+  }
+}

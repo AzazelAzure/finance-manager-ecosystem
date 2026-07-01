@@ -4,7 +4,7 @@
 # (default container name `finance-manager-db`) and do not publish host
 # 5432/8080/8443.
 #
-# Use with: FM_BG_PARALLEL=1 (see scripts/fm_server_beta.sh) or
+# Use with: FM_BG_PARALLEL=1 (see scripts/ops/fm_server_beta.sh) or
 #  podman-compose -p fm-beta -f docker-compose.bluegreen.parallel.yml
 #
 # Preconditions: finance_manager single-stack (or any stack) is up, Postgres

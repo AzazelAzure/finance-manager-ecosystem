@@ -15,7 +15,7 @@ planning, or strategy. Governance/ops contracts and release templates live in
 | Plan ops / deployment rules / release templates | `governance/` (`plan_registry.md`, `branching_guidelines.md`, `deployment_protocol.md`, handoff templates, `Runtime_Signup_Sheet.md`) | None — moved out |
 | Living strategy state | `strategy/` (`current_status.md`, `anomalies/`, `research/`, `projections/`, `parking_lot/`, etc.) | Cross-link when sync touches sequencing |
 | How the system works | `design_docs/` (this vault) | API/Web/CLI/Rust architecture + active `40_System_Design/` |
-| VPS runtime checkout | `governance/Runtime_Signup_Sheet.md` | Human log; **live** VPS state comes from `scripts/vps_state.sh` (not this file) |
+| VPS runtime checkout | `governance/Runtime_Signup_Sheet.md` | Human log; **live** VPS state comes from `scripts/ops/vps_state.sh` (not this file) |
 
 ## Trigger Conditions
 
