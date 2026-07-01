@@ -4,6 +4,14 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-07-01 — `governance/workspace_protocol.md` authored; TP sequence step 7 closed (Claude Code, admin)
+
+- **New `governance/workspace_protocol.md`:** documents the live multi-workspace checkout/dispatch/review/VPS-authority system as actually implemented — verified against real lockfile/queue state and script source, not just the original design docs. Covers filesystem layout, the `ws_claim`/`ws_release`/`ws_status` checkout model, the `workspace.lock` sign-out sheet, FIFO `*.queue` dispatch, and VPS authority (used alongside `governance/Runtime_Signup_Sheet.md`, not replacing it).
+- **Documented divergences from the original design** (doc §7): `ws_dispatch.sh` and `ws_review.sh` were built beyond the originally scoped Tier 1 script list; no `review.queue` file exists (design gap — `ws_review.sh` takes a PR number directly); per-repo worker occupancy (`WS-API`/`WS-WEB`) is tracked indirectly via the orchestrating `WS1`/`WS2` claim, not its own lockfile row.
+- **Discovered and logged an anomaly, not fixed inline:** `ws_dispatch.sh`/`ws_review.sh` already ran a full smoke pilot today (2026-07-01) against the real `finance_manager_api` (PRs #74–#78 merged) and `finance_manager_web` (PRs #104–#105 merged) repos, including a verified concurrency-lock stress test. Left `smoke_test/*.txt` artifacts on both repos' `main` and one reject-path test PR that merged instead of being rejected. See `strategy/anomalies/2026-07-01_tp-workspace-setup_smoke-pilot-artifacts-and-reject-merge.md`.
+- **`AGENTS.md` §3 + `governance/README.md`:** linked the new doc. **`governance/agent_workspace_isolation.md`:** marked superseded (stale pre-migration paths/roles), kept for history.
+- **TP sequence step 7 (`strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/README.md`) now complete.** Steps 8 (F-006/F-009 real pilot) and 9 (MCP server spec) remain open.
+
 ### 2026-07-01 — Workspace-migration governance closeout + AGPL rollout completion (Claude Code, admin)
 
 - **`tp-workspace-setup` filesystem move + sync closed:** filesystem centralization to `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}` confirmed complete; all 7 design decisions (D1–D7) resolved per `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/decisions.md`. **Governance doc authoring (`governance/workspace_protocol.md`) and the F-006/F-009 queue pilot remain open** — TP not fully closed, see updated TP README sequence.

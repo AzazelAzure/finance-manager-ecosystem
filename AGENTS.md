@@ -101,6 +101,7 @@ Plans live under `plans/<Phase>/<Stage>/<status>/<sub-plan>/` where `<status>` i
 - **PWA research locks:** Advanced tier, D0–D4 under `plans/S1/S1.B/complete/pwa-install-offline-sync-research/`; implementation under `plans/S1/S1.B/complete/pwa-implementation-branch/`.
 - **F-012/F-013:** Support intake (durable API queue); F-013 = Loguru per-UUID diagnostic files on VPS (ops grep/tail), not in-app Activity UI.
 - **Runtime ownership:** `governance/Runtime_Signup_Sheet.md`.
+- **Multi-workspace checkout, dispatch, and VPS-authority protocol:** `governance/workspace_protocol.md` (filesystem layout `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}`, sign-out sheet, FIFO queues, `ws_dispatch.sh`/`ws_review.sh` pipeline — supersedes `governance/agent_workspace_isolation.md`).
 - **Paying-user gate headcounts:** re-indexed per `strategy/strategic-roadmap-reframe-53be/validation_gates.md` and unit-economics doc §2 / §4.1.
 
 ---
