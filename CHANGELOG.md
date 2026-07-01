@@ -4,6 +4,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-07-01 — MCP: `queue_done` and `ws_review` tools (Cursor)
+
+- **`scripts/mcp/hfm_mcp/server.py`:** add typed MCP wrappers for `queue_done.sh` (mark queue entry DONE/FAILED) and `ws_review.sh` (WS3 PR review: auto, approve, reject) so orchestration from HFM can complete the dispatch→review loop without raw shell.
+- **`scripts/mcp/README.md`:** tool catalog updated (22 tools).
+
 ### 2026-07-01 — Scripts taxonomy reorg + Tier 1 dev tooling (Cursor)
 
 - **`scripts/` taxonomy:** new buckets `ops/` (VPS + absorbed `server/`), `local-stack/` (`fm_docker`, `fm_services`), `db/`, `lib/` (`lib_repos.sh`, `vps_env.sh`); archived `hive_worker.py`, `sprint_pipeline_emit_ready.py`, `migrate_hfm_layout.sh`, deprecated systemd unit.

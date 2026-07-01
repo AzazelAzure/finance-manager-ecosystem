@@ -174,6 +174,19 @@ def queue_push(
 
 
 @mcp.tool()
+def queue_done(
+    repo: str,
+    task_id: str,
+    failed: bool = False,
+) -> str:
+    """Mark a queued task DONE or FAILED (failed=True)."""
+    args: list[str] = [repo, task_id]
+    if failed:
+        args.append("--failed")
+    return run_script("scripts/workspace/queue_done.sh", *args, timeout=30)
+
+
+@mcp.tool()
 def ws_dispatch(
     repo: str,
     dry_run: bool = True,
@@ -186,6 +199,30 @@ def ws_dispatch(
     elif direct:
         args.append("--direct")
     return run_script("scripts/workspace/ws_dispatch.sh", *args, timeout=900)
+
+
+@mcp.tool()
+def ws_review(
+    repo: str,
+    pr_number: int,
+    action: str = "auto",
+    reason: str = "",
+) -> str:
+    """Review and optionally merge a PR via WS3. action: auto, approve, or reject."""
+    action_map = {
+        "auto": "--auto",
+        "approve": "--approve",
+        "reject": "--reject",
+    }
+    flag = action_map.get(action)
+    if flag is None:
+        return "action must be auto, approve, or reject"
+    if action == "reject" and not reason.strip():
+        return "reason is required when action is reject"
+    args: list[str] = [repo, str(pr_number), flag]
+    if action == "reject":
+        args.append(reason)
+    return run_script("scripts/workspace/ws_review.sh", *args, timeout=900)
 
 
 @mcp.tool()
