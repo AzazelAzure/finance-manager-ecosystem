@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-07-01 (Daily doc sweep; flagged stale drafts, updated anomaly statuses)
+**Last updated:** 2026-07-01 (Added bill-tx-linkage-repair (P2) and support-tests-eager-celery (P3) — anomaly repair plans, ready for Cursor dispatch)
 
 ## Update protocol
 
@@ -33,6 +33,8 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 |---|---|---|---|---|---|---|---|---|
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** opt-in `auto_deduct` on `UpcomingExpense.source`; Celery-beat due-date eval (profile TZ) + idempotent post; T01–T04 authored; `plans/S1/S1.B/active/feat-f009-recurring-auto-deduct/README.md` |
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/active/feat-f006-dashboard-widgets-custom/README.md` |
+| `PLAN_CROSS_BILL_TX_LINKAGE_REPAIR_2026-07-01` | P2 | S1.B | `cur/s1b/fix/bill-tx-linkage-repair` | - | - | - | - | Critical bug fix, freeze-exempt: cadence-aware due-date reversal for `Updater._handle_tx_update` (non-monthly bills desync today). F-003 query + deleted-bill policy explicitly out of scope. `plans/S1/S1.B/active/bill-tx-linkage-repair/README.md` |
+| `PLAN_CROSS_SUPPORT_TESTS_EAGER_CELERY_2026-07-01` | P3 | S1.B | `cur/s1b/fix/support-tests-eager-celery` | - | - | - | - | Local-DX fix: autouse `CELERY_TASK_ALWAYS_EAGER` conftest fixture so 4 support-ticket test modules pass without live Redis. `plans/S1/S1.B/active/support-tests-eager-celery/README.md` |
 
 ## Draft / Planning
 
