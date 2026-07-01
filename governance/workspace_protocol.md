@@ -195,17 +195,18 @@ vps:STATUS:HOLDER:OPERATION:API_SHA:WEB_SHA:COLOR:CLAIMED_AT
 
 Filesystem move, sign-out sheet, queue stubs, and Tier 1(+dispatch/review) scripts are **live** — this is the current state of the system, not a plan. Still open per the TP sequence (`strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/README.md`):
 
-- **F-006 / F-009 real pilot** (§7.3 covers the smoke-only dry run; real feature tasks haven't been queued yet).
-- **Review-queue wiring** (§7.2).
+- **F-006 / F-009 real pilot — gated (D8, 2026-07-01).** §7.3 covers the smoke-only dry run (real feature tasks still haven't been queued). This step is now explicitly blocked on `tp-scripts-organization/` completing first — see the next bullet. Sequencing reasoning: the pilot should exercise the interface agents will actually use (typed MCP calls), not raw shell that gets replaced immediately after.
+- **Local MCP server — gated (D8, 2026-07-01), reordered ahead of the real pilot.** Originally scoped to be built *after* the pilot validated the shell scripts (per `orchestration_tools.md`); HitM reversed that order 2026-07-01. Now blocked on `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/` (script taxonomy + inventory, then the MCP tool wrap scoped in that TP's Talking Point 3) — build the MCP wrap first, then run the full live pilot through it.
+- **Review-queue wiring** (§7.2) — unblocked, not gated by D8, but still not built.
 - **Tier 2 scripts** (`ws_sync_check.sh`, `ws_pre_pr_check.sh`, `ws_handoff.sh`) — not built.
-- **Local MCP server** wrapping these scripts — scoped in `orchestration_tools.md`, not started; deferred until Tier 1/2 are stable per that doc.
 - **`agent_workspace_isolation.md` cleanup** — that doc still describes the pre-migration `~/agent-workspaces/` layout and old executor names; retained for history, superseded by this doc. Consider archiving it once nothing else links to it.
 
 ---
 
 ## Cross-references
 
-- Design source: `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/` (`decisions.md`, `workspace_protocol_draft.md`, `workspace_checkout_concept.md`, `per_repo_workspace_architecture.md`, `vps_handoff_compare.md`, `orchestration_tools.md`, `planning_protocol_changes.md`)
+- Design source: `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/` (`decisions.md` incl. D8 sequencing gate, `workspace_protocol_draft.md`, `workspace_checkout_concept.md`, `per_repo_workspace_architecture.md`, `vps_handoff_compare.md`, `orchestration_tools.md`, `planning_protocol_changes.md`)
+- Gating dependency: `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/notes.md` — script taxonomy/inventory + MCP tool wrap, blocks the real F-006/F-009 pilot per D8
 - Scripts: `scripts/workspace/*.sh`
 - VPS session log: `governance/Runtime_Signup_Sheet.md`
 - Superseded layout doc: `governance/agent_workspace_isolation.md`

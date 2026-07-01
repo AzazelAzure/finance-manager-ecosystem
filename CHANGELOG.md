@@ -4,6 +4,12 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### 2026-07-01 — Gate F-006/F-009 pilot + MCP spec on tp-scripts-organization (Claude Code, admin)
+
+- **`governance/workspace_protocol.md` §10:** HitM reversed the original build order — the local MCP server (tool-wrap for `scripts/workspace/*.sh`) now must be built *before* the full live F-006/F-009 pilot, not after. Both steps are gated on `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/` completing (script taxonomy + inventory, then the MCP wrap). Rationale: the live pilot should exercise the interface agents will actually use (typed MCP calls) rather than validate a raw-shell interface that gets replaced immediately after.
+- **`tp-workspace-setup/decisions.md`:** logged as D8. **`tp-workspace-setup/README.md`:** sequence steps 8–9 marked gated; added step 7.5 documenting the already-run smoke pilot as unplanned-but-validating (not a substitute for the real pilot).
+- **`tp-scripts-organization/notes.md`:** priority raised from "come back after rust-calc" to active-priority gating dependency; flagged that its MCP scope should cover the actual `ws_dispatch.sh`/`ws_review.sh` interface (discovered during `workspace_protocol.md` authoring), not just the shorter list in the original draft.
+
 ### 2026-07-01 — `governance/workspace_protocol.md` authored; TP sequence step 7 closed (Claude Code, admin)
 
 - **New `governance/workspace_protocol.md`:** documents the live multi-workspace checkout/dispatch/review/VPS-authority system as actually implemented — verified against real lockfile/queue state and script source, not just the original design docs. Covers filesystem layout, the `ws_claim`/`ws_release`/`ws_status` checkout model, the `workspace.lock` sign-out sheet, FIFO `*.queue` dispatch, and VPS authority (used alongside `governance/Runtime_Signup_Sheet.md`, not replacing it).
