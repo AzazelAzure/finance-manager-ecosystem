@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-06-30 (Added RUST_CALC_LAYER and RUST_CRYPTO_PROTOTYPE stubs; F-002 + F-003 now blocked_by RUST_CALC_LAYER)
+**Last updated:** 2026-07-01 (Daily doc sweep; flagged stale drafts, updated anomaly statuses)
 
 ## Update protocol
 

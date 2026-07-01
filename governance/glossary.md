@@ -300,3 +300,18 @@ This glossary is locked at the level of the categories above. Adding or modifyin
 4. Cascading update of any other docs that reference the changed term.
 
 Retired terms stay retired. Re-introducing a retired term requires the same protocol as introducing a new one.
+
+---
+
+## 14) Internal project vocabulary
+
+*Added 2026-07-01 — admin meeting session (HitM).*
+
+| Term | Definition |
+|---|---|
+| **HFM** | **Hive Financial Manager** — the internal project name for the full Finance Manager ecosystem (parent repo + all sub-repos). Used in internal docs, workspace naming, and tooling. Not the public product name. |
+| **HitM** | **Human in the Middle** — the solo operator/founder (Patrick Proctor). The human decision-maker in the three-tool model. |
+| **Three-tool model** | The agent architecture: Claude Code (admin/governance), Cursor (code execution), Antigravity (automation/sweeps). Each tool has a distinct role and branch prefix. |
+| **Workspace** | A local git clone of the HFM ecosystem (or a sub-repo) dedicated to a specific agent or role. Each workspace has its own git identity and branch policy. |
+| **Sign-out sheet** | The `strategy/workspace/workspace.lock` lockfile in the admin workspace. Tracks which workspace is active, on what task, and who holds VPS authority. Local-only, gitignored. |
+| **VPS authority** | The exclusive right to run VPS lifecycle commands (`sprint_verify.sh`, `fm_server_beta.sh` promote/rollback). Only one workspace holds authority at a time. Tracked in the sign-out sheet. |
