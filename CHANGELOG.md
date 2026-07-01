@@ -3,6 +3,12 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-01 — VPS backup + sprint_verify smoke fixes (Cursor)
+
+- **`scripts/ops/pull_backup.sh`:** run `pg_dump` via Podman/docker exec in VPS `fm-beta_db_1`; use `env` for remote var passthrough; min-size + pg_dump header guards; verified **478K** backup 2026-07-01.
+- **`scripts/server/pull_backup.sh`:** compat forwarder for crontab paths pre scripts/ops reorg.
+- **`scripts/ops/sprint_verify.sh`:** `env … bash -s` remote block (fixes OpenSSH smoke skip); fail-loud if `--smoke` without `SPRINT_VERIFY_SMOKE_COMPLETE` / `Smoke checks passed` in evidence log.
+- **Docs:** `scripts/SCRIPTS.md`, `setup_backup_cron.sh`; meeting anomaly matrix + dispatch updated.
 ### 2026-07-01 — MCP Tier 1–3 dev tool catalog (Cursor)
 
 - **Tier 3 scripts (new):** `new_meeting_day.sh`, `branch_delta.sh`, `stash_triage.sh`, `dependabot_batch.sh`, `celery_ready.sh`, `env_check.sh`, `test_rust.sh`.

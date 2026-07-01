@@ -175,9 +175,12 @@ fi
 exec > >(tee -a "$RUN_LOG") 2>&1
 
 log "=== sprint_verify.sh $TS ==="
-log "SSH=$FM_SPRINT_SSH REMOTE_ROOT=$FM_SPRINT_REMOTE_ROOT COLOR=$COLOR BRANCH=$BRANCH REPOS=$REPOS"
+log "SSH=$FM_SPRINT_SSH REMOTE_ROOT=$FM_SPRINT_REMOTE_ROOT COLOR=$COLOR BRANCH=$BRANCH REPOS=$REPOS DO_SMOKE=$DO_SMOKE"
 
+# Use env(1) so OpenSSH exports vars into the remote bash session (prefix
+# assignments before bash -s are not reliably visible inside the heredoc).
 ssh -o BatchMode=yes "$FM_SPRINT_SSH" \
+  env \
   REMOTE_ROOT="$FM_SPRINT_REMOTE_ROOT" \
   FM_REL="$FM_SPRINT_FM_SCRIPT" \
   BRANCH="$BRANCH" \
@@ -186,7 +189,7 @@ ssh -o BatchMode=yes "$FM_SPRINT_SSH" \
   DO_SMOKE="$DO_SMOKE" \
   SMOKE_TARGET="$SMOKE_TARGET" \
   FM_BLUEGREEN_PROJECT="${FM_SPRINT_PROJECT}" \
-  bash -s "${REPO_DIRS[@]}" <<'REMOTE_EOF'
+  bash -s -- "${REPO_DIRS[@]}" <<'REMOTE_EOF'
 set -euo pipefail
 cd "$REMOTE_ROOT"
 [[ -f "$FM_REL" ]] || { echo "missing $FM_REL"; exit 1; }
@@ -211,8 +214,16 @@ else
 fi
 if [[ "$DO_SMOKE" == "1" ]]; then
   "./$FM_REL" smoke --color "$SMOKE_TARGET"
+  echo "SPRINT_VERIFY_SMOKE_COMPLETE=1"
 fi
 REMOTE_EOF
+
+if [[ "$DO_SMOKE" -eq 1 ]]; then
+  if ! grep -qE 'SPRINT_VERIFY_SMOKE_COMPLETE=1|Smoke checks passed' "$RUN_LOG"; then
+    die "--smoke was set but remote smoke did not complete (no success marker in $RUN_LOG)"
+  fi
+  log "Smoke gate: PASS (marker found in evidence log)"
+fi
 
 log "=== sprint_verify complete ==="
 log "Evidence log: $RUN_LOG"
