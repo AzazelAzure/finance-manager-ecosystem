@@ -4,10 +4,10 @@
 
 Defines how messages are **structured**, **routed**, and **owned** across the four-agent pipeline so relays do not silently corrupt intent when multiple executors participate concurrently.
 
-**Canonical path:** `governance/Inter_Agent_Message_Relay_and_Ownership_Contract.md`
+**Canonical path:** `governance/coordination/Inter_Agent_Message_Relay_and_Ownership_Contract.md`
 
 **Related:**
-- `governance/agent_workspace_isolation.md` — directory layout, git identity, concurrency rules
+- `governance/archived/agent_workspace_isolation.md` — directory layout, git identity, concurrency rules
 - `AGENTS.md` §0 — three-tool model: Claude Code / Cursor / Antigravity (canonical; the legacy Slack-bridge design doc was retired 2026-06-30)
 - `scripts/antigravity_slack_runner.py` — deprecated (governance overhaul PR #62) (updated 2026-06-29)
 - `scripts/cursor_headless_slack_agent.py` — deprecated (governance overhaul PR #62) (updated 2026-06-29)

@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-07-01 (Added payment-source-linkage-standardization (P1, freeze-exempt, blocks F-009) — resolves API-DESIGN anomaly, ready for Cursor dispatch)
+**Last updated:** 2026-07-02 (Daily documentation sweep: reconciled completed plans, updated statuses)
 
 ## Update protocol
 
@@ -25,18 +25,15 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | pproctor | - | - | - | 2026-06-30 | Local security audit suite; T01, T02, T04 merged; T03 (weekly cron + prompt) pending |
+| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | pproctor | - | - | - | 2026-07-02 | T01, T02, T04 merged; T03 cron confirmed **live** (2026-07-02 verification: `0 2 * * 0 run_audit.sh` in crontab). But the script it runs is broken — see `PLAN_CROSS_SECURITY_AUDIT_FIXES_2026-07-02` |
 
 ## Ready for Execution
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** opt-in `auto_deduct` on `UpcomingExpense.source`; Celery-beat due-date eval (profile TZ) + idempotent post; T01–T04 authored; `plans/S1/S1.B/active/feat-f009-recurring-auto-deduct/README.md` |
-| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** customizable dashboard: `DashboardLayout` persistence + catalog of existing widgets + DnD reorder/resize + optional device variants; T01–T04 authored; `plans/S1/S1.B/active/feat-f006-dashboard-widgets-custom/README.md` |
-| `PLAN_CROSS_BILL_TX_LINKAGE_REPAIR_2026-07-01` | P2 | S1.B | `cur/s1b/fix/bill-tx-linkage-repair` | - | - | - | - | Critical bug fix, freeze-exempt: cadence-aware due-date reversal for `Updater._handle_tx_update` (non-monthly bills desync today). F-003 query + deleted-bill policy explicitly out of scope. `plans/S1/S1.B/active/bill-tx-linkage-repair/README.md` |
-| `PLAN_CROSS_SUPPORT_TESTS_EAGER_CELERY_2026-07-01` | P3 | S1.B | `cur/s1b/fix/support-tests-eager-celery` | - | - | - | - | Local-DX fix: autouse `CELERY_TASK_ALWAYS_EAGER` conftest fixture so 4 support-ticket test modules pass without live Redis. `plans/S1/S1.B/active/support-tests-eager-celery/README.md` |
-| `PLAN_CROSS_DEPENDABOT_BATCH_2026-07-01` | P3 | S1.B | `cur/s1b/chore/dependabot-batch-2026-07` | - | - | - | - | 10 open dependabot PRs (5 API, 5 Web) batched into one lockfile pass per repo instead of sequential merges, avoiding the lockfile-conflict pileup. Web side needs an explicit eslint-compat check (unreviewed prior to this plan). `plans/S1/S1.B/active/dependabot-batch-2026-07-01/README.md` |
-| `PLAN_CROSS_PAYMENT_SOURCE_LINKAGE_2026-07-01` | P1 | S1.B | `cur/s1b/fix/payment-source-linkage-standardization` | - | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | - | - | Critical bug fix, freeze-exempt: reverts `SavingsGoal.source` FK to a `source_id`-UUID-keyed CharField (mirrors `tx_id` pattern) across all 4 PaymentSource-linked surfaces (Transaction, BalanceSnapshot, AppProfile.spend_accounts, SavingsGoal) — renames no longer orphan links. Side task: DB-query-count audit sweep on inactive color only (15-hit cap, <10 goal). Scope guardrail: stop and check HitM if implementation needs to go beyond these 4 surfaces. `plans/S1/S1.B/active/payment-source-linkage-standardization/README.md` |
+| `PLAN_CROSS_SECURITY_AUDIT_FIXES_2026-07-02` | P1 | S1.B | `cur/s1b/fix/security-audit-fixes-2026-07` | - | - | - | - | Audit script broken (bandit Python-3.14 crash → env-poisoning cascade takes out pip-audit/npm/gitleaks/semgrep) + 33 API CVEs + 13 Web vulns (1 critical, 7 high) found running tools directly. T01 script fix (parent, dispatch routing TBD — no `WS-PARENT`), T02 API dep bumps, T03 Web dep bumps. `plans/S1/S1.B/active/security-audit-fixes-2026-07-02/README.md` |
+| `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** design closed 2026-07-02 (`DESIGN.md`, 3 review rounds); frontend-triggered auto-deduct (Celery model dropped), new `UpcomingExpense` source link + `Transaction.auto_deducted` marker. T01 queued to Cursor (`F009-T01`, `api.queue`); T03/T04 (Web) queue after T01 merges — cross-repo dependency, not auto-sequenced by the queue. `plans/S1/S1.B/active/feat-f009-recurring-auto-deduct/README.md` |
+| `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** design closed 2026-07-02 (`DESIGN.md`, single design walk); `DashboardLayout` per-user-per-device from v1 (core scope, not optional), static catalog, `dnd-kit`. T01 queued to Cursor (`F006-T01`, `api.queue`); T02/T03/T04 (Web) queue after T01 merges. `plans/S1/S1.B/active/feat-f006-dashboard-widgets-custom/README.md` |
 
 ## Draft / Planning
 
@@ -70,6 +67,10 @@ Pre-governance plans closed at huddle as part of Topic 11 reconciliation. They e
 
 | plan_id | phase | completed_date | strategic_impact | pr_url(s) |
 |---|---|---|---|---|
+| `PLAN_CROSS_PAYMENT_SOURCE_LINKAGE_2026-07-01` | S1.B | 2026-07-02 | Reverted SavingsGoal.source to stable UUID CharField to match standard linkage pattern | https://github.com/AzazelAzure/finance-manager-api/pull/82 |
+| `PLAN_CROSS_BILL_TX_LINKAGE_REPAIR_2026-07-01` | S1.B | 2026-07-02 | Cadence-aware due-date reversal for linked transactions on non-monthly bills | https://github.com/AzazelAzure/finance-manager-api/pull/79 |
+| `PLAN_CROSS_SUPPORT_TESTS_EAGER_CELERY_2026-07-01` | S1.B | 2026-07-02 | Autouse conftest fixture for eager Celery tasks, removing local Redis dependency for support-ticket tests | https://github.com/AzazelAzure/finance-manager-api/pull/80 |
+| `PLAN_CROSS_DEPENDABOT_BATCH_2026-07-01` | S1.B | 2026-07-02 | Batched 10 open Dependabot PRs (5 API, 5 Web) to resolve dependency drift and lockfile conflicts | https://github.com/AzazelAzure/finance-manager-api/pull/81 https://github.com/AzazelAzure/finance-manager-web/pull/106 https://github.com/AzazelAzure/finance-manager-ecosystem/pull/93 |
 | `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` | S1.B | 2026-06-29 | Standalone bill recurrence engine — first-class cadence field; API PRs #63, #64, #65 + Web PR #91 merged; deployed to inactive BLUE | https://github.com/AzazelAzure/finance-manager-api/pull/63 https://github.com/AzazelAzure/finance-manager-api/pull/64 https://github.com/AzazelAzure/finance-manager-api/pull/65 https://github.com/AzazelAzure/finance-manager-web/pull/91 |
 | `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` | S1.B | 2026-06-29 | D6 execution (design docs restructure): archived historical Reflex/alpha docs, retired duplicate roadmap/versioning docs, updated sync protocol and dashboard pointers; docs-only sweep; parent PR #80 merged | https://github.com/AzazelAzure/finance-manager-ecosystem/pull/80 |
 | `PLAN_CROSS_PRODUCTION_UX_FIX_2026-06-28` | S1.B | 2026-06-28 | Production UX batch: nav brand link, login redirect, form labels, legal scrub, bill catch-up, onboarding re-enable; promoted active blue | https://github.com/AzazelAzure/finance-manager-api/pull/51 https://github.com/AzazelAzure/finance-manager-web/pull/80 |

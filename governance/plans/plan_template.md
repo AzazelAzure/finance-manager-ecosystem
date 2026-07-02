@@ -63,7 +63,7 @@ to:
 
 ### 1b) Interconnected rollout bars (PWA, i18n, SEO, beta surfaces)
 
-Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
+Slice V-tiers above are **necessary but not sufficient** for “done” in this ecosystem. Authors must read and apply **[`governance/definition_of_done.md`](./definition_of_done.md)** when writing **§2 Scope** and **§9 Completion Criteria**: PWA non-regression / **online-only** class **B**, **localization** requirements (or explicit shelved follow-up), **SEO** alignment with [`strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../../strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md), and **F-011** beta-comms obligations when user-facing promises change.
 
 
 ## 2) Metadata header (YAML, mandatory)
@@ -294,6 +294,7 @@ Run §6 validator. Then:
 [ ] manual_gates match defaults from §5 OR override is justified in body §1
 [ ] plan_registry.md row is added
 [ ] If priority=P0 and pre_execution=required: ready to post manual gate at execution time
+[ ] If the plan introduces a new Django FK to PaymentSource, Category, UpcomingExpense, or another model that conventionally uses stable-id CharField linkage: explicit justification in plan body §2 or §3, or stay in draft
 ```
 
 When all checks pass: set `status: ready`, update `updated:` field, move registry row to "Ready for Execution".

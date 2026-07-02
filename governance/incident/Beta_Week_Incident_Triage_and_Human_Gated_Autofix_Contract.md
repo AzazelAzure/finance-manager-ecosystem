@@ -35,7 +35,7 @@ Automation is **not** allowed to:
 4. Human or headless companion ingests the Slack message (or queue row) and updates the **execution queue** / triage thread.
 5. Incident is routed into a triage lane with severity assignment per rubric below.
 
-**Control plane:** gate templates live in `governance/execution_protocols.md`. (The legacy Slack CLI-bridge design doc was retired 2026-06-30; scheduled automation is now Antigravity-native per `AGENTS.md` §0.) Keep **PR authorization** in `#pull-requests`; use a **separate** incidents channel so bug traffic does not drown task/PR threads.
+**Control plane:** gate templates live in `governance/execution/execution_protocols.md`. (The legacy Slack CLI-bridge design doc was retired 2026-06-30; scheduled automation is now Antigravity-native per `AGENTS.md` §0.) Keep **PR authorization** in `#pull-requests`; use a **separate** incidents channel so bug traffic does not drown task/PR threads.
 
 ## Normalized Incident Envelope
 

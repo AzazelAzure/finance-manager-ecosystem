@@ -50,7 +50,7 @@ cur/s1b/feat/quick-pay-bill/t02-implement-form
 
 ### 2.1 Task slices (`T##.SL#`) — documentation vs branches
 
-Per `governance/plan_template.md` §1a, plans decompose work into **tasks** (`T##`) and **slices** (`T##.SL#`). `**SL`** avoids ambiguity with **Phase/Stage `S`** notation (`S1`, `S1.B`).
+Per `governance/plans/plan_template.md` §1a, plans decompose work into **tasks** (`T##`) and **slices** (`T##.SL#`). `**SL`** avoids ambiguity with **Phase/Stage `S`** notation (`S1`, `S1.B`).
 
 - **Branches stay at the task level by default:** one branch `…/t##-<slug>` per task; multiple slices merge as **sequential commits or PRs** to that same task branch. Name the active slice in commit messages or PR descriptions (`T03.SL2: transactions offline read`).
 - **Optional finer isolation:** HitM may open a short-lived branch such as `…/t03-sl2-<slug>` if two slices must not share a branch; still document parent task `T03` and slice IDs in the plan README.
@@ -154,7 +154,7 @@ If no feature is currently active: open a "maintenance feature branch" (`cur/<ph
 
 ### 4.3 What about S0 production incidents (data corruption, auth breach)?
 
-These follow the incident triage flow per `governance/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md`. Branching follows §4.2 (hotfix path) but with shortened manual gate cadence allowed at HitM discretion.
+These follow the incident triage flow per `governance/incident/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md`. Branching follows §4.2 (hotfix path) but with shortened manual gate cadence allowed at HitM discretion.
 
 ---
 
@@ -261,6 +261,6 @@ If a feature branch has had no commits for >1 week:
 | Plan template metadata                             | `plan_template.md`                                                                              |
 | Status transitions                                 | `plan_lifecycle.md`                                                                             |
 | Vocabulary (Sprint types, etc.)                    | `glossary.md`                                                                                   |
-| Incident triage                                    | `governance/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
+| Incident triage                                    | `governance/incident/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
 
 

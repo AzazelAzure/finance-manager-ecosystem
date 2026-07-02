@@ -8,9 +8,9 @@ Coordinate a single shared runtime across multiple agents during testing windows
 ## Related Coordination Docs
 
 - Git ownership transfer template:
-  - `governance/Git_Owner_Handoff_Template.md`
+  - `governance/deployment/Git_Owner_Handoff_Template.md`
 - Runtime ownership transfer template:
-  - `governance/Runtime_Owner_Handoff_Template.md`
+  - `governance/deployment/Runtime_Owner_Handoff_Template.md`
 
 ## Runtime Session
 - Session ID: `s1b-profile-fix-green-restage-2026-06-30`
@@ -226,4 +226,4 @@ Coordinate a single shared runtime across multiple agents during testing windows
 - Shared runtime is preferred over repeated up/down cycles.
 - Non-owner agents must not run start/stop/rebuild/clean commands.
 - Every ownership transfer must be paired with a runtime handoff record in:
-  - `governance/Runtime_Owner_Handoff_Template.md`
+  - `governance/deployment/Runtime_Owner_Handoff_Template.md`

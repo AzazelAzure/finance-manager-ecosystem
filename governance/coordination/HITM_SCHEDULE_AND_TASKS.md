@@ -26,7 +26,7 @@ SCHEDULE_SNAPSHOT=/path/to/custom.md ./scripts/local/schedule_agent_sync.sh
 KHAL_CAL=work ./scripts/local/schedule_agent_sync.sh
 ```
 
-Output default: `governance/HITM_SCHEDULE_SNAPSHOT.md` (gitignored — personal).
+Output default: `governance/coordination/HITM_SCHEDULE_SNAPSHOT.md` (gitignored — personal).
 
 ## Agent reading order
 

@@ -27,7 +27,7 @@ Every task spec and every plan `README.md` must include a `READ FIRST:` section 
 
 ```text
 READ FIRST:
-- ~/finance_manager/governance/glossary.md (terms)
+- ~/finance_manager/governance/reference/glossary.md (terms)
 - ~/finance_manager/plans/S1/S1.B/<sub-plan>/README.md (plan scope)
 - ~/finance_manager/plans/S1/S1.B/<sub-plan>/runtime_handoff.md (current state)
 - ~/finance_manager/plans/S1/S1.B/<sub-plan>/DECISION_LOG.md (locked decisions)
@@ -43,11 +43,11 @@ Add after the YAML metadata header:
 
 Before writing any code or making any changes, read these files in order:
 
-1. [`governance/glossary.md`](../../governance/glossary.md) — canonical vocabulary
+1. [`governance/reference/glossary.md`](../../governance/reference/glossary.md) — canonical vocabulary
 2. [`DECISION_LOG.md`](./DECISION_LOG.md) — locked decisions for this plan (append-only)
 3. [`runtime_handoff.md`](./runtime_handoff.md) — current deployment and slice state
 4. [Subrepo `CHANGELOG.md`] — what shipped recently in the target repo
-5. [`governance/definition_of_done.md`](../../governance/definition_of_done.md) — completion bars
+5. [`governance/plans/definition_of_done.md`](../../governance/plans/definition_of_done.md) — completion bars
 ```
 
 ### Rules

@@ -11,7 +11,7 @@ Coordinate execution against active plans by delegating to workflow-specific ski
 
 ## Plan root
 
-- **Default:** `plans/<Phase>/<Stage>/<sub-plan>/` (see `governance/branching_guidelines.md`, `plans/README.md`). Read the sub-plan `README.md`, task files, or `execution_manifest.md` inside that folder unless the session overrides the path.
+- **Default:** `plans/<Phase>/<Stage>/<sub-plan>/` (see `governance/execution/branching_guidelines.md`, `plans/README.md`). Read the sub-plan `README.md`, task files, or `execution_manifest.md` inside that folder unless the session overrides the path.
 - Treat that directory as the canonical plan root for batching and delegation.
 
 ## Agent wiring (IDE)
@@ -81,5 +81,5 @@ Do not declare a plan complete until:
 - Prefer deterministic verification over broad reruns.  
 - Use `shared-subagent-handoff` for delegated results when available.  
 - For runtime-dependent tasks, follow single-owner protocol and testing breakpoints in `.cursor/rules/container-testing-orchestration.mdc`.  
-- **PR workflow:** Open PRs from feature branches; send the **PR link in the IDE Chat** (repo, branch, full URL); reconcile **GitHub** mergeability and required checks before merge. Follow `governance/execution_protocols.md` for HitM manual gates where the plan requires them.  
+- **PR workflow:** Open PRs from feature branches; send the **PR link in the IDE Chat** (repo, branch, full URL); reconcile **GitHub** mergeability and required checks before merge. Follow `governance/execution/execution_protocols.md` for HitM manual gates where the plan requires them.  
 - If automation or chat says approved but GitHub reports conflicting or dirty merge state, treat as blocked until resolved.  

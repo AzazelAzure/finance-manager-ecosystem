@@ -2,7 +2,7 @@
 
 Defines how merged code reaches the running VPS. Extends the standard CPPR cycle with a fifth step: **Deploy**.
 
-This protocol assumes the operating model in `governance/Server_Runtime_Agent_Operations_Contract.md`: cloud agents are the **control plane** (planning, PR review, deploy intent); the Orchestrator CLI is the **execution plane** (runs scripted deploy commands with SSH access). Cloud agents do not SSH directly to the VPS.
+This protocol assumes the operating model in `governance/deployment/Server_Runtime_Agent_Operations_Contract.md`: cloud agents are the **control plane** (planning, PR review, deploy intent); the Orchestrator CLI is the **execution plane** (runs scripted deploy commands with SSH access). Cloud agents do not SSH directly to the VPS.
 
 ## 1) CPPR+D cycle
 
@@ -67,7 +67,7 @@ Wait condition: agent blocks until reply OR 24h timeout (timeout → status `pau
 Execute in order. Each command is run via the Orchestrator CLI (host-local execution plane).
 
 ```
-1. Confirm runtime owner per governance/Runtime_Signup_Sheet.md
+1. Confirm runtime owner per governance/deployment/Runtime_Signup_Sheet.md
 2. Build runtime bundle (if deployment.bundle_required == true):
    ./scripts/ops/create_runtime_bundle.sh
 3. Push and extract bundle to VPS inactive color:
@@ -274,7 +274,7 @@ During a deploy:
 - Other agents do not start/stop/rebuild containers on VPS during deploy
 - Other agents may continue read-only ops (status checks, log reads) on the active color only
 - After cutover + monitoring window: ownership returns to whoever was the prior steady-state owner
-- Track in governance/Runtime_Signup_Sheet.md
+- Track in governance/deployment/Runtime_Signup_Sheet.md
 ```
 
 ## 12) Multi-service deploy ordering
@@ -333,14 +333,14 @@ Plans that modify `docker-compose.bluegreen.yml`, `proxy/`, `scripts/ops/fm_serv
 
 | Need                                         | File                                                                               |
 | -------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Operating model (control vs execution plane) | `governance/Server_Runtime_Agent_Operations_Contract.md`      |
+| Operating model (control vs execution plane) | `governance/deployment/Server_Runtime_Agent_Operations_Contract.md`      |
 | Server install runbook                       | `deploy/SERVER_BETA_INSTALL.md`                                                    |
 | Blue-green commands                          | `scripts/ops/fm_server_beta.sh`                                                        |
 | Runtime bundle build/push                    | `scripts/ops/create_runtime_bundle.sh`, `scripts/ops/push_runtime_bundle.sh` |
 | Manifest verification                        | `scripts/ops/verify_release_manifest.sh`                                        |
 | Compose layout                               | `docker-compose.bluegreen.yml`                                                     |
 | Active color state                           | `proxy/active_color.conf`                                                          |
-| Runtime ownership tracking                   | `governance/Runtime_Signup_Sheet.md`                                  |
+| Runtime ownership tracking                   | `governance/deployment/Runtime_Signup_Sheet.md`                                  |
 | Manual gate templates                        | `execution_protocols.md` §1                                            |
 | Status transitions                           | `plan_lifecycle.md`                                                    |
 

@@ -162,7 +162,7 @@ sudo /opt/fm/fm_server_beta.sh switch   # re-route to active
 
 ### 6.5 User notification
 
-If any user data was permanently lost (rows not in the backup), this is a data breach / data loss event. Follow the incident response plan (`governance/incident_response.md`).
+If any user data was permanently lost (rows not in the backup), this is a data breach / data loss event. Follow the incident response plan (`governance/incident/incident_response.md`).
 
 ---
 
@@ -193,7 +193,7 @@ For S4/S5 (multi-hour outages) during beta:
 - [ ] S5: stop writes → restore DB → run migrations → restore service
 - [ ] Run smoke test (`fm_server_beta.sh smoke <color>`)
 - [ ] If S4/S5: send beta tester communication
-- [ ] If data loss: file incident response (`governance/incident_response.md`)
+- [ ] If data loss: file incident response (`governance/incident/incident_response.md`)
 - [ ] Post-recovery: document what happened and how it was fixed (append to §10 below)
 - [ ] Post-recovery: identify root cause; add prevention step or monitoring
 

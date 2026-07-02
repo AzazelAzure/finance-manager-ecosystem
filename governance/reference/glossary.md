@@ -127,7 +127,7 @@ Two distinct scales that look identical. Always include the prefix letter.
 
 | Scale | Range | Domain | Source |
 |---|---|---|---|
-| **Severity** | `S0` / `S1` / `S2` / `S3` | How bad an issue is | `governance/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
+| **Severity** | `S0` / `S1` / `S2` / `S3` | How bad an issue is | `governance/incident/Beta_Week_Incident_Triage_and_Human_Gated_Autofix_Contract.md` |
 | **Priority** | `P0` / `P1` / `P2` | How urgent a piece of work is | `plan_template.md` |
 
 A bug can be `S0` (data integrity broken) **and** `P0` (must be fixed first). They aren't the same: severity describes the issue, priority describes our scheduling decision.
@@ -254,17 +254,17 @@ Huddle template: `README.md`, `TALKING_POINTS.md`, `DECISIONS.md`, `ACTIONS.md`.
 
 ## 12) Definition of done (feature rollout bar)
 
-Normative checklist for **when a governed feature plan may claim complete** relative to PWA, i18n, SEO, and beta surfaces. Full text and links: **[`definition_of_done.md`](./definition_of_done.md)**.
+Normative checklist for **when a governed feature plan may claim complete** relative to PWA, i18n, SEO, and beta surfaces. Full text and links: **[`definition_of_done.md`](../plans/definition_of_done.md)**.
 
 | Pillar | One-line bar |
 |--------|----------------|
 | **PWA** | Advanced PWA sprint is **not** “complete” while known PWA bugs / QoL gaps remain open per PWA plan + registry; feature work must not regress install/offline contracts. |
 | **Localization** | User-visible strings **must** pass localization (i18n) tests before rollout close; documented **shelved** exceptions require HitM signoff + follow-up plan row. |
 | **PWA scope class** | Each feature declares **A** (PWA-safe + shipped compatibly) or **B** (PWA-safe, **online-only** — documented in plan scope + user-facing copy). |
-| **SEO** | Rollout close includes SEO gate per **[`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md)**; new public surfaces should include **P0** matrix items **during** the sprint when they touch those files. |
+| **SEO** | Rollout close includes SEO gate per **[`plans/S1/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md`](../../strategy/research/S1.B/distribution-channel-research/SEO_PRIORITY_MATRIX.md)**; new public surfaces should include **P0** matrix items **during** the sprint when they touch those files. |
 | **Beta comms (F-011)** | Wedge / pipeline transparency for testers rolls up under **F-011** (landing + subpages). |
 
-Sprint **ordering** across F-* plans is set by HitM-led huddle output: **[`strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md`](../strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md)**.
+Sprint **ordering** across F-* plans is set by HitM-led huddle output: **[`strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md`](../../strategy/huddles/2026-05-22-feature-rollout-sprint-order/README.md)**.
 
 ---
 
@@ -284,7 +284,7 @@ Sprint **ordering** across F-* plans is set by HitM-led huddle output: **[`strat
 
 ### Where RCAs live + template
 
-- **Template:** [`rca_template.md`](./rca_template.md) — modeled on the canonical first example, `strategy/audits/2026-06-29_share-link-exposure_rca.md` (Cursor).
+- **Template:** [`rca_template.md`](../incident/rca_template.md) — modeled on the canonical first example, `strategy/audits/2026-06-29_share-link-exposure_rca.md` (Cursor).
 - **Storage:** `strategy/audits/YYYY-MM-DD_<slug>_rca.md` (audits home per the 2026-06-29 doc-structure consolidation).
 - **Relationship:** an RCA *resolves* an anomaly/bug report; link the originating anomaly file from the RCA References, and point the anomaly's `status` note at the RCA.
 

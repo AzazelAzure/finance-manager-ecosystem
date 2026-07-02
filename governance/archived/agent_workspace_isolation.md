@@ -2,7 +2,7 @@
 
 *Locked 2026-05-04 — Emergency Orchestration Huddle.*
 
-> **Superseded 2026-07-01 by `governance/workspace_protocol.md`.** The paths below (`~/Documents/python/finance_manager`, `~/agent-workspaces/*`) and role names are pre-migration. Kept for history only — do not follow for current workspace setup.
+> **Superseded 2026-07-01 by `governance/execution/workspace_protocol.md`.** The paths below (`~/Documents/python/finance_manager`, `~/agent-workspaces/*`) and role names are pre-migration. Kept for history only — do not follow for current workspace setup.
 
 ## Directory Layout
 

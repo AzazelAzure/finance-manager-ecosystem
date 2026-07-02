@@ -53,7 +53,7 @@ This contract separates:
 ## Approval gates
 
 Before runtime execution:
-- Plan/task packet exists under `plans/<Phase>/<Stage>/<sub-plan>/` (active) or a documented path under `plans/archived/` (read-only evidence), and is listed or cross-linked from `governance/plan_registry.md` when the work is governed.
+- Plan/task packet exists under `plans/<Phase>/<Stage>/<sub-plan>/` (active) or a documented path under `plans/archived/` (read-only evidence), and is listed or cross-linked from `governance/plans/plan_registry.md` when the work is governed.
 - Scope and target repo/runtime are explicit.
 - Required environment and manifest are present.
 - If bundle workflow is used, the pushed artifact identity (`bundle_name`, commit SHA, dirty flag) is recorded in task evidence.

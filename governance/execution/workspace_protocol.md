@@ -159,13 +159,13 @@ The sign-out sheet (§3) only tracks `HFM`/`WS1`/`WS2`/`WS3`/`vps`. Per-repo wor
 
 ## 8. VPS runtime authority
 
-VPS deploy authority is tracked in the `vps:` line of `workspace.lock`, **in addition to** (not instead of) `governance/Runtime_Signup_Sheet.md`. Per `vps_handoff_compare.md`'s D5 resolution, these are complementary:
+VPS deploy authority is tracked in the `vps:` line of `workspace.lock`, **in addition to** (not instead of) `governance/deployment/Runtime_Signup_Sheet.md`. Per `vps_handoff_compare.md`'s D5 resolution, these are complementary:
 
 | Concern | Tool |
 |---|---|
 | Real-time "who holds VPS authority right now" + in-flight target SHAs | `workspace.lock` `vps:` line |
 | Claim/release enforcement | `vps_claim.sh` / `vps_release.sh` |
-| Durable session log, smoke results, sublet model, status vocabulary (`loading`/`live`/`sublet`/`shutting_down`/`offline`) | `governance/Runtime_Signup_Sheet.md` (unchanged, keep using) |
+| Durable session log, smoke results, sublet model, status vocabulary (`loading`/`live`/`sublet`/`shutting_down`/`offline`) | `governance/deployment/Runtime_Signup_Sheet.md` (unchanged, keep using) |
 
 ```
 vps:STATUS:HOLDER:OPERATION:API_SHA:WEB_SHA:COLOR:CLAIMED_AT
@@ -208,7 +208,7 @@ Filesystem move, sign-out sheet, queue stubs, and Tier 1(+dispatch/review) scrip
 - Design source: `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/` (`decisions.md` incl. D8 sequencing gate, `workspace_protocol_draft.md`, `workspace_checkout_concept.md`, `per_repo_workspace_architecture.md`, `vps_handoff_compare.md`, `orchestration_tools.md`, `planning_protocol_changes.md`)
 - Gating dependency: `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/notes.md` — script taxonomy/inventory + MCP tool wrap, blocks the real F-006/F-009 pilot per D8
 - Scripts: `scripts/workspace/*.sh`
-- VPS session log: `governance/Runtime_Signup_Sheet.md`
-- Superseded layout doc: `governance/agent_workspace_isolation.md`
-- Glossary terms: `governance/glossary.md` §14 (HFM, HitM, three-tool model, Workspace, Sign-out sheet, VPS authority)
+- VPS session log: `governance/deployment/Runtime_Signup_Sheet.md`
+- Superseded layout doc: `governance/archived/agent_workspace_isolation.md`
+- Glossary terms: `governance/reference/glossary.md` §14 (HFM, HitM, three-tool model, Workspace, Sign-out sheet, VPS authority)
 - Open anomaly from pilot validation: `strategy/anomalies/2026-07-01_tp-workspace-setup_smoke-pilot-artifacts-and-reject-merge.md`

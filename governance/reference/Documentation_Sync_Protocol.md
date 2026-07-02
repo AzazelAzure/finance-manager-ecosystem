@@ -15,7 +15,7 @@ planning, or strategy. Governance/ops contracts and release templates live in
 | Plan ops / deployment rules / release templates | `governance/` (`plan_registry.md`, `branching_guidelines.md`, `deployment_protocol.md`, handoff templates, `Runtime_Signup_Sheet.md`) | None — moved out |
 | Living strategy state | `strategy/` (`current_status.md`, `anomalies/`, `research/`, `projections/`, `parking_lot/`, etc.) | Cross-link when sync touches sequencing |
 | How the system works | `design_docs/` (this vault) | API/Web/CLI/Rust architecture + active `40_System_Design/` |
-| VPS runtime checkout | `governance/Runtime_Signup_Sheet.md` | Human log; **live** VPS state comes from `scripts/ops/vps_state.sh` (not this file) |
+| VPS runtime checkout | `governance/deployment/Runtime_Signup_Sheet.md` | Human log; **live** VPS state comes from `scripts/ops/vps_state.sh` (not this file) |
 
 ## Trigger Conditions
 
@@ -64,8 +64,8 @@ Run documentation sync when any of the following occur:
 - Repos touched: `finance_manager_api` (PR #42), `finance_manager_web` (PRs #66, #67).
 - Branch/PRs: `agy/s1b/feat/legal-pages`, `agy/s1b/feat/signup-clickwrap`.
 - Docs updated:
-  - `governance/Runtime_Signup_Sheet.md` — new session opened post-deploy
-  - `governance/plan_registry.md` — `PLAN_CROSS_LEGAL_PAGES_2026-06-27` and `PLAN_CROSS_SIGNUP_CLICKWRAP_2026-06-27` moved to Recently Completed
+  - `governance/deployment/Runtime_Signup_Sheet.md` — new session opened post-deploy
+  - `governance/plans/plan_registry.md` — `PLAN_CROSS_LEGAL_PAGES_2026-06-27` and `PLAN_CROSS_SIGNUP_CLICKWRAP_2026-06-27` moved to Recently Completed
   - `strategy/current_status.md` §5 — status rows updated to ✅
 - Remaining doc gaps:
   - API architecture doc for `AppProfile` model fields not updated.

@@ -43,7 +43,7 @@ Before launching a subagent, provide:
 - Active repository path and scope boundary.
 - Active branch name and intended PR target branch.
 - Goal and success criteria.
-- When work comes from a governed plan: the **task or slice ID** (`T##` or `T##.SL#` per `governance/plan_template.md` §1a) and instruction to **ask clarifying questions** instead of guessing underspecified scope.
+- When work comes from a governed plan: the **task or slice ID** (`T##` or `T##.SL#` per `governance/plans/plan_template.md` §1a) and instruction to **ask clarifying questions** instead of guessing underspecified scope.
 - Relevant constraints from existing rules (`core-standards`, `git-repo-workflow`, and scoped rules).
 - Expected deliverable format.
 - If runtime testing is needed, identify the current runtime owner and active testing breakpoint.
