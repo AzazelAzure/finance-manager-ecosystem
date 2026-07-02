@@ -37,4 +37,4 @@ This mirrors the Cursor-side rule (`.cursor/rules/scripts-orientation.mdc`) so b
 
 1. `AGENTS.md` + this file
 2. `strategy/current_status.md`
-3. `governance/plan_registry.md`
+3. `governance/plans/plan_registry.md`

@@ -1,6 +1,6 @@
 # Finance Manager — coding and agent guidelines (Gemini-facing)
 
-This file orients parallel assistants (e.g. Gemini) to **how this workspace is actually laid out**, where **authoritative plans** live, and how **product code** is structured. It complements `**AGENTS.md`** (HitM preferences and reading order) and `**governance/glossary.md**` (vocabulary). If anything here disagrees with those, `**AGENTS.md**` and live `**governance/**` files win.
+This file orients parallel assistants (e.g. Gemini) to **how this workspace is actually laid out**, where **authoritative plans** live, and how **product code** is structured. It complements `**AGENTS.md`** (HitM preferences and reading order) and `**governance/reference/glossary.md**` (vocabulary). If anything here disagrees with those, `**AGENTS.md**` and live `**governance/**` files win.
 
 ---
 
@@ -41,7 +41,7 @@ git submodule update --init --recursive
 | **Legacy Gemini templates (archived)** | `**plans/archived/gemini_plan_templates/`**    | Historical copies only; **do not** use for new work.                                                                                                                                                                                                                                                |
 
 
-New governed work: **materialize** a directory under `**plans/<Phase>/<Stage>/<sub-plan>/`**, YAML header in `**README.md**` per `**governance/plan_template.md**`, register in `**governance/plan_registry.md**`, and tie to a `**strategic_link**` under `**strategy/strategic-roadmap-reframe-53be/phases/**` (not the strategic README alone). Multi-surface delivery: author **tasks** `T##` and **slices** `T##.SL#` per `**governance/plan_template.md**` §1a (**`SL`** avoids collision with Phase **S1** / Stage **S1.B**); executors **ask clarifying questions** when specs are silent.
+New governed work: **materialize** a directory under `**plans/<Phase>/<Stage>/<sub-plan>/`**, YAML header in `**README.md**` per `**governance/plans/plan_template.md**`, register in `**governance/plans/plan_registry.md**`, and tie to a `**strategic_link**` under `**strategy/strategic-roadmap-reframe-53be/phases/**` (not the strategic README alone). Multi-surface delivery: author **tasks** `T##` and **slices** `T##.SL#` per `**governance/plans/plan_template.md**` §1a (**`SL`** avoids collision with Phase **S1** / Stage **S1.B**); executors **ask clarifying questions** when specs are silent.
 
 ---
 
@@ -106,7 +106,7 @@ Before overlapping work, scan the relevant `**CHANGELOG.md`** (`**finance_manage
 
 ### 9. CPPRD and production alignment
 
-Follow `**governance/branching_guidelines.md`** (inactive color, one feature at a time where applicable) and `**governance/deployment_protocol.md**` when shipping to VPS. Opening a PR: post the **full URL** in Cursor chat (workspace rule); do not use Slack for PR notification.
+Follow `**governance/execution/branching_guidelines.md`** (inactive color, one feature at a time where applicable) and `**governance/deployment/deployment_protocol.md**` when shipping to VPS. Opening a PR: post the **full URL** in Cursor chat (workspace rule); do not use Slack for PR notification.
 
 ### 10. Root cause fixes
 
@@ -122,7 +122,7 @@ Each submodule is its **own** git repo: **feature branch → PR → merge to tha
 
 ### 13. Plan-based execution
 
-Significant governed work uses `**governance/plan_template.md`**, `**governance/plan_registry.md**`, and `**governance/plan_lifecycle.md**`. For tiny single-file fixes, use the **same** template’s YAML header and a shorter body; do not invent a second plan shape. Completed plan **trees** remain under `**plans/archived/`** (or marked complete in the registry) per governance — not deleted casually.
+Significant governed work uses `**governance/plans/plan_template.md`**, `**governance/plans/plan_registry.md**`, and `**governance/plans/plan_lifecycle.md**`. For tiny single-file fixes, use the **same** template’s YAML header and a shorter body; do not invent a second plan shape. Completed plan **trees** remain under `**plans/archived/`** (or marked complete in the registry) per governance — not deleted casually.
 
 ### 14. Knowledge hierarchy
 
@@ -133,12 +133,16 @@ Significant governed work uses `**governance/plan_template.md`**, `**governance/
 
 `**scripts/hive_worker.py`** and other `**scripts/*.sh**` helpers automate **git operations across `scripts/repos.txt`** (see `**scripts/README.md**`). They are **not** a substitute for governed `**plans/`** metadata; use them for branch/sync hygiene, not as the system of record for plan state.
 
+### 16. Trust but verify (admin-level judgment call)
+
+Tools exist to save time and credits — don't defeat that by re-verifying everything a tool reports as routine. Applies narrowly: before a status claim (`status: ready`, `merged`, `resolved`, a tool's clean/zero-findings output) gates a real decision — dispatching further work, closing a plan, reporting complete to HitM — spot-check it against live state if stakes or confidence warrant it. Primarily an **admin-layer discipline** (Claude Code / HitM review), not a mandate to re-verify Cursor's own execution steps mid-sprint; execution-time credit optimization stays intact. A false claim gets logged to the anomaly queue like any other defect. **Scheduled review: 2026-10-01 (start of Q4)** — confirm this has actually caught problems worth the friction before keeping it as-is. (added 2026-07-02)
+
 ---
 
 ## 6) Where to read next
 
 1. `**AGENTS.md**` — constraints, VPS, PWA bar, reading order.
-2. `**governance/glossary.md**` — terms.
+2. `**governance/reference/glossary.md**` — terms.
 3. `**strategy/strategic-roadmap-reframe-53be/README.md**` — phase map.
 4. `**plans/S1/S1.B/README.md**` — active stage hub (when working S1.B).
 5. Subrepo `**README.md**` / tests for the code you touch.

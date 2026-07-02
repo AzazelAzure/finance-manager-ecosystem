@@ -3,6 +3,37 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-01 — Payment-source governance hardening + F009 T00 investigation (Cursor)
+
+- **`AGENTS.md` / `.cursor/rules/api-architecture.mdc`:** documented the `source_id` stable-linkage pattern (`PaymentSource.source_id` stored in `Transaction.source`, `BalanceSnapshot.source`, `SavingsGoal.source`, `AppProfile.spend_accounts`; API exposes display names at the boundary); added a DB query budget rule (hard cap **15 queries/call**, target **<10**).
+- **`governance/plans/plan_template.md`:** added a pre-`ready` checklist item requiring explicit justification for any new FK to `PaymentSource`/`Category`/`UpcomingExpense` instead of the stable-id CharField convention.
+- **F-009 `DESIGN.md`:** resolved trigger model (frontend-driven check + normal `POST /finance/transactions/`, not a Celery-beat scheduler), corrected `auto_deduct` field location (`UpcomingExpense`, not `Transaction`), and surfaced a previously-unscoped gap — `UpcomingExpense` has no `PaymentSource` link today, needs a new field.
+- **F-009 T00 functional investigation report:** confirmed the linkage gap, validated the bill→transaction progression path F-009 will ride unmodified, found the frontend's `todayIso()` is browser-local (not profile-timezone-aware), and confirmed the PWA outbox path needs no auto-deduct-specific handling. Sorted findings into repurpose/extend/build-new.
+
+### 2026-07-01 — Payment source linkage: stable source_id across four surfaces (Cursor)
+
+- **API PR [#82](https://github.com/AzazelAzure/finance-manager-api/pull/82):** reverted `SavingsGoal.source` from a real FK to a `CharField(max_length=20)` storing the new stable **`PaymentSource.source_id`**, matching the existing `Transaction.source`/`BalanceSnapshot.source` string-linkage convention.
+- Migrated `Transaction.source`, `BalanceSnapshot.source`, and `AppProfile.spend_accounts` to `source_id` storage (migration `0019`); PaymentSource renames no longer orphan links.
+- API serializers continue to expose display **names** at the boundary — no client-facing contract change.
+- Side task: DB query-count audit sweep on inactive color only (15-query cap, <10 target).
+
+### 2026-07-01 — Web dependabot batch: react-dom, react-is, react-query, vite plugin (eslint held) (Cursor)
+
+- **Web PR [#106](https://github.com/AzazelAzure/finance-manager-web/pull/106):** batched `react-dom`, `@vitejs/plugin-react`, `react-is`, and `@tanstack/react-query` bumps in one `npm` pass.
+- Held `eslint` back at 10.2.1 — `main` already carries 13 unresolved lint errors that would block CI if the parser were upgraded in the same batch.
+
+### 2026-07-01 — API dependabot batch: tzdata, coverage, pytest, cryptography, setuptools (Cursor)
+
+- **API PR [#81](https://github.com/AzazelAzure/finance-manager-api/pull/81):** batched `tzdata`, `cryptography`, `coverage`, `setuptools`, and `pytest` bumps in a single `uv lock` pass instead of five sequential merges.
+
+### 2026-07-01 — Support tests: eager Celery in conftest (no local Redis) (Cursor)
+
+- **API PR [#80](https://github.com/AzazelAzure/finance-manager-api/pull/80):** added an autouse `conftest.py` fixture setting `CELERY_TASK_ALWAYS_EAGER`, removing the local live-Redis dependency for 24 support-ticket test cases.
+
+### 2026-07-01 — Bill-tx linkage: cadence-aware due-date reversal on tx edit/delete (Cursor)
+
+- **API PR [#79](https://github.com/AzazelAzure/finance-manager-api/pull/79):** fixed `Updater._handle_tx_update` so editing or deleting a transaction correctly reverses/re-advances the linked bill's due date for non-monthly cadences (previously only monthly bills reversed correctly post-recurrence-engine). Unblocks F-003 predictive-budgeting work.
+
 ### 2026-07-01 — VPS backup + sprint_verify smoke fixes (Cursor)
 
 - **`scripts/ops/pull_backup.sh`:** run `pg_dump` via Podman/docker exec in VPS `fm-beta_db_1`; use `env` for remote var passthrough; min-size + pg_dump header guards; verified **478K** backup 2026-07-01.
@@ -31,22 +62,22 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-07-01 — Gate F-006/F-009 pilot + MCP spec on tp-scripts-organization (Claude Code, admin)
 
-- **`governance/workspace_protocol.md` §10:** HitM reversed the original build order — the local MCP server (tool-wrap for `scripts/workspace/*.sh`) now must be built *before* the full live F-006/F-009 pilot, not after. Both steps are gated on `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/` completing (script taxonomy + inventory, then the MCP wrap). Rationale: the live pilot should exercise the interface agents will actually use (typed MCP calls) rather than validate a raw-shell interface that gets replaced immediately after.
+- **`governance/execution/workspace_protocol.md` §10:** HitM reversed the original build order — the local MCP server (tool-wrap for `scripts/workspace/*.sh`) now must be built *before* the full live F-006/F-009 pilot, not after. Both steps are gated on `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/` completing (script taxonomy + inventory, then the MCP wrap). Rationale: the live pilot should exercise the interface agents will actually use (typed MCP calls) rather than validate a raw-shell interface that gets replaced immediately after.
 - **`tp-workspace-setup/decisions.md`:** logged as D8. **`tp-workspace-setup/README.md`:** sequence steps 8–9 marked gated; added step 7.5 documenting the already-run smoke pilot as unplanned-but-validating (not a substitute for the real pilot).
 - **`tp-scripts-organization/notes.md`:** priority raised from "come back after rust-calc" to active-priority gating dependency; flagged that its MCP scope should cover the actual `ws_dispatch.sh`/`ws_review.sh` interface (discovered during `workspace_protocol.md` authoring), not just the shorter list in the original draft.
 
-### 2026-07-01 — `governance/workspace_protocol.md` authored; TP sequence step 7 closed (Claude Code, admin)
+### 2026-07-01 — `governance/execution/workspace_protocol.md` authored; TP sequence step 7 closed (Claude Code, admin)
 
-- **New `governance/workspace_protocol.md`:** documents the live multi-workspace checkout/dispatch/review/VPS-authority system as actually implemented — verified against real lockfile/queue state and script source, not just the original design docs. Covers filesystem layout, the `ws_claim`/`ws_release`/`ws_status` checkout model, the `workspace.lock` sign-out sheet, FIFO `*.queue` dispatch, and VPS authority (used alongside `governance/Runtime_Signup_Sheet.md`, not replacing it).
+- **New `governance/execution/workspace_protocol.md`:** documents the live multi-workspace checkout/dispatch/review/VPS-authority system as actually implemented — verified against real lockfile/queue state and script source, not just the original design docs. Covers filesystem layout, the `ws_claim`/`ws_release`/`ws_status` checkout model, the `workspace.lock` sign-out sheet, FIFO `*.queue` dispatch, and VPS authority (used alongside `governance/deployment/Runtime_Signup_Sheet.md`, not replacing it).
 - **Documented divergences from the original design** (doc §7): `ws_dispatch.sh` and `ws_review.sh` were built beyond the originally scoped Tier 1 script list; no `review.queue` file exists (design gap — `ws_review.sh` takes a PR number directly); per-repo worker occupancy (`WS-API`/`WS-WEB`) is tracked indirectly via the orchestrating `WS1`/`WS2` claim, not its own lockfile row.
 - **Discovered and logged an anomaly, not fixed inline:** `ws_dispatch.sh`/`ws_review.sh` already ran a full smoke pilot today (2026-07-01) against the real `finance_manager_api` (PRs #74–#78 merged) and `finance_manager_web` (PRs #104–#105 merged) repos, including a verified concurrency-lock stress test. Left `smoke_test/*.txt` artifacts on both repos' `main` and one reject-path test PR that merged instead of being rejected. See `strategy/anomalies/2026-07-01_tp-workspace-setup_smoke-pilot-artifacts-and-reject-merge.md`.
-- **`AGENTS.md` §3 + `governance/README.md`:** linked the new doc. **`governance/agent_workspace_isolation.md`:** marked superseded (stale pre-migration paths/roles), kept for history.
+- **`AGENTS.md` §3 + `governance/README.md`:** linked the new doc. **`governance/archived/agent_workspace_isolation.md`:** marked superseded (stale pre-migration paths/roles), kept for history.
 - **TP sequence step 7 (`strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/README.md`) now complete.** Steps 8 (F-006/F-009 real pilot) and 9 (MCP server spec) remain open.
 
 ### 2026-07-01 — Workspace-migration governance closeout + AGPL rollout completion (Claude Code, admin)
 
-- **`tp-workspace-setup` filesystem move + sync closed:** filesystem centralization to `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}` confirmed complete; all 7 design decisions (D1–D7) resolved per `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/decisions.md`. **Governance doc authoring (`governance/workspace_protocol.md`) and the F-006/F-009 queue pilot remain open** — TP not fully closed, see updated TP README sequence.
-- **`governance/glossary.md` §14 added:** internal project vocabulary — HFM (Hive Financial Manager), HitM, three-tool model, Workspace, Sign-out sheet, VPS authority.
+- **`tp-workspace-setup` filesystem move + sync closed:** filesystem centralization to `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}` confirmed complete; all 7 design decisions (D1–D7) resolved per `strategy/meetings/week27/meeting2026-07-01/tp-workspace-setup/decisions.md`. **Governance doc authoring (`governance/execution/workspace_protocol.md`) and the F-006/F-009 queue pilot remain open** — TP not fully closed, see updated TP README sequence.
+- **`governance/reference/glossary.md` §14 added:** internal project vocabulary — HFM (Hive Financial Manager), HitM, three-tool model, Workspace, Sign-out sheet, VPS authority.
 - **New `scripts/workspace/` tooling:** `ws_claim.sh`/`ws_release.sh`/`ws_status.sh`/`ws_dispatch.sh`/`ws_review.sh` (workspace sign-out + dispatch) and `queue_push.sh`/`queue_pop.sh`/`queue_status.sh`/`queue_done.sh`/`vps_claim.sh`/`vps_release.sh` (FIFO work queue + VPS authority lock), per D3 (simple lockfile) and D4 (advisory claim, hard-block on VPS) resolutions.
 - **`scripts/local/migrate_hfm_layout.sh`:** three-phase migration script (agent workspaces → primary repo → crontab/conf) used to execute the filesystem move; retained for reference.
 - **`scripts/sync_agent_files_to_workspaces.sh`:** mirrors gitignored governance/strategy bundle (`strategy/`, `plans/`, `.cursor/`, `.claude/`, agent doc files) from primary `HFM` workspace to `WS1`/`WS2`/`WS3`, since those paths are scrubbed from GitHub history. Live sync run against all three workspaces as part of this closeout; spot-checked WS1.
@@ -87,7 +118,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-06-29 — Midday touch-up + RCA standard adopted (Claude Code, admin)
 
-- **RCA promoted to a standard:** `governance/glossary.md` §13 (Incident & RCA vocabulary — RCA required for S0/S1) + new `governance/rca_template.md` (generalized from Cursor's F-010 RCA, cited as the canonical example).
+- **RCA promoted to a standard:** `governance/reference/glossary.md` §13 (Incident & RCA vocabulary — RCA required for S0/S1) + new `governance/incident/rca_template.md` (generalized from Cursor's F-010 RCA, cited as the canonical example).
 - **Midday touch-up doc** (`strategy/meetings/midday_touchup_2026-06-29.md`): F-010 RCA dispositioned (shared-blame analysis; real intent was data-portability, not a public/invite link), Topics 2–6 reorientation (single critical path = redeploy blue → checklist → flip, now done).
 - **Tomorrow seeded:** `strategy/meetings/admin_meeting_seed_2026-06-30.md` carries forward F-009/F-006 dispatch, the rust-tools planning session, and the F-010 §1.5 forward items (DoD privacy gate, FEATURE_IDEAS sweep, data-portability + invite-link features).
 
@@ -114,7 +145,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **Plans authored (ready for Cursor):** `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` (T01–T04), `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (T01–T04; first-class `cadence` field; blocks F-009), `PLAN_CHORE_DESIGN_DOCS_RESTRUCTURE_2026-06-29` (T01–T03; submodule docs-only).
 - **D5 spec:** `strategy/automations/specs/vps_state_and_doc_context_spec_2026-06-29.md` (live `vps_state.sh` + `gather_doc_context.sh` refactor; root cause of stale-state false alarms).
 - **D6 doc-structure consolidation (resolved + executed, parent side):** new `strategy/` homes `projections/`, `parking_lot/`, `audits/`, `risk_register.md`; `strategy/README.md` rebuilt as living-state index; `git mv` of success_projection + quarterly_reviews → `projections/`, operational_audit_report + improvement_tracker → `audits/`, with all inbound references (audit automations, legal docs) repointed.
-- **Governance:** `governance/meeting_artifact_protocol.md` added; plan registry updated; two anomalies dispatched (bill-interval → recurrence plan, nginx-check → Cursor chore).
+- **Governance:** `governance/coordination/meeting_artifact_protocol.md` added; plan registry updated; two anomalies dispatched (bill-interval → recurrence plan, nginx-check → Cursor chore).
 - **AGENTS.md:** §1 trust-but-verify + documentation-maintenance tenets added; stale bill-recurrence fact refreshed to point at the new plan.
 - **Prompt hardening (D5):** `daily_summary_prompt.md` + `daily_doc_sweep_prompt.md` now source VPS state live-only (timestamped, UNKNOWN on unavailability, never from the Runtime Signup Sheet/cache) with a trust-but-verify constraint; fixed stale `scripts/dev/gather_doc_context.sh` path. Added `strategy/meetings/cursor_execution_2026-06-29.md` (today's ordered Cursor dispatch list).
 - **F-009 + F-006 task files authored (Draft → Ready):** `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009` (T01–T04: `auto_deduct` flag + idempotency, Celery-beat due-date eval, web toggle, edge cases; bill-recurrence dependency now satisfied) and `PLAN_CROSS_DASHBOARD_WIDGETS_F006` (T01–T04: layout persistence, widget catalog/render, DnD reorder/resize, device variants). Branch prefixes corrected `cursor/` → `cur/`. F-002/F-003 deferred pending rust-tools planning.
@@ -156,7 +187,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **`AGENTS.md`:** Restructured §0–§6 — three-tool model (`cur/` / `cla/` / `agy/`), universal rules inline, branch conventions, per-agent reading order, CPPR/CPPRD discipline, retired daily-status PR pattern.
 - **`CLAUDE.md`:** New Claude Code–specific admin rules.
 - **`governance/README.md`:** Trimmed to router table + enums; reading sequences moved to `AGENTS.md`.
-- **`governance/branching_guidelines.md`:** Branch prefix table updated to `cur/` / `cla/` / `agy/` (new branches only).
+- **`governance/execution/branching_guidelines.md`:** Branch prefix table updated to `cur/` / `cla/` / `agy/` (new branches only).
 - **Archived:** `governance/archived/` — `orchestration.md`, skill mirrors, `agent_context_delivery.md`; index README added.
 - **Cursor rule:** `.cursor/rules/sprint-task-specification.mdc` (from former `governance/sprint_task_specification.md`).
 - **Scripts archived:** Slack bridges + `orchestrator.py` → `scripts/archived/` (see `scripts/archived/README.md`).
@@ -167,11 +198,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-05-22 — Definition of done, F-011 beta subpages, rollout-order huddle
 
-- **Governance:** [`governance/definition_of_done.md`](governance/definition_of_done.md) — PWA completeness note, class **A/B**, mandatory localization vs **shelved** signoff, SEO matrix + in-sprint P0 expectation, F-011 beta comms, completion checklist; §5b + checklist for **`#sprint-queue`** when used. [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md) — normative **`sprint-queue-v1`** post shape (Cursor PA → cursor-agent). Cross-links: [`governance/plan_template.md`](governance/plan_template.md) §1b, [`governance/glossary.md`](governance/glossary.md) §12–§13, [`governance/README.md`](governance/README.md), [`governance/orchestration.md`](governance/orchestration.md) (protocols table), [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md).
+- **Governance:** [`governance/plans/definition_of_done.md`](governance/plans/definition_of_done.md) — PWA completeness note, class **A/B**, mandatory localization vs **shelved** signoff, SEO matrix + in-sprint P0 expectation, F-011 beta comms, completion checklist; §5b + checklist for **`#sprint-queue`** when used. [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md) — normative **`sprint-queue-v1`** post shape (Cursor PA → cursor-agent). Cross-links: [`governance/plans/plan_template.md`](governance/plans/plan_template.md) §1b, [`governance/reference/glossary.md`](governance/reference/glossary.md) §12–§13, [`governance/README.md`](governance/README.md), [`governance/orchestration.md`](governance/orchestration.md) (protocols table), [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md).
 - **Huddle:** [`strategy/huddles/2026-05-22-feature-rollout-sprint-order/`](strategy/huddles/2026-05-22-feature-rollout-sprint-order/) — README (incl. transcript provenance), talking points, `DECISIONS`/`ACTIONS` stubs for product · beta · infra sprint order.
 - **F-011:** [`plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md`](plans/S1/S1.B/feat-f011-wedge-landing-hero/README.md) — beta subpages scope (about, pipeline, release notes + bugfixes).
 - **F-007 polish:** [`plans/S1/S1.B/feat-f007-walkthrough-polish/README.md`](plans/S1/S1.B/feat-f007-walkthrough-polish/README.md) — shelved i18n for tours + `definition_of_done` cross-links; [`SLACK_SPRINT_QUEUE.md`](plans/S1/S1.B/feat-f007-walkthrough-polish/SLACK_SPRINT_QUEUE.md) — examples + slice order (spec lives under `governance/`). **Design:** [`design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md`](design_docs/40_System_Design/12_Cursor_CLI_Slack_Cloud_Agent_Bridge.md) — `#sprint-queue` pointers aligned to governance + `Task Id:` spelling.
-- **`#sprint-queue` first line:** [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md), [`governance/glossary.md`](governance/glossary.md), [`governance/definition_of_done.md`](governance/definition_of_done.md), bridge doc, F-007 polish Slack example — require **`@CursorPA`** (no space); `@Cursor PA` does not trigger the runner mention in HitM’s Slack workspace.
+- **`#sprint-queue` first line:** [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md), [`governance/reference/glossary.md`](governance/reference/glossary.md), [`governance/plans/definition_of_done.md`](governance/plans/definition_of_done.md), bridge doc, F-007 polish Slack example — require **`@CursorPA`** (no space); `@Cursor PA` does not trigger the runner mention in HitM’s Slack workspace.
 - **Sprint pipeline gap (narrowed):** [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md) **Pipeline continuity** + [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md) — `#sprint-queue` intake alone does not post `#review-queue`; run the bridge (and optional local inbox) on the PA host for continuity. Phase 1 manual relay envelopes remain valid without the bridge.
 - **Sprint Slack bridge:** [`scripts/sprint_slack_pipeline_bridge.py`](scripts/sprint_slack_pipeline_bridge.py) — Web API poller for `SPRINT_PIPELINE_JSON` (`READY_FOR_REVIEW` / `REVIEW_VERDICT`), optional **`SPRINT_PIPELINE_LOCAL_INBOX`** JSONL on the same host (no sprint-thread READY required), [`scripts/sprint_pipeline_emit_ready.py`](scripts/sprint_pipeline_emit_ready.py) helper, reviewer-agent verdict mode enabled via **`SPRINT_BRIDGE_REVIEW_AGENT_ENABLED`** + workspace/timeout env, conservative defaults with **`SPRINT_BRIDGE_AUTO_PASS_IF_NON_HITM=0`** and **`SPRINT_BRIDGE_AUTO_PASS_V0=0`**, next-slice file under `SPRINT_BRIDGE_NEXT_MESSAGE_BASEDIR`, and HitM gate routing when `requires_hitm: true`. Spec: [`governance/sprint_queue_message_spec_v1.md`](governance/sprint_queue_message_spec_v1.md) §Machine-readable pipeline.
 - **Cursor PA paths:** [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md) §Runtime layout — `~/CursorAgent/headless-cursor-agent/scripts/cursor_slack_runner.py`, inbox/outbox filenames (`cursor_slack_inbox.jsonl`, `cursor_slack_outbox.jsonl`); sprint bridge docstring + sprint spec cross-link for co-running with Socket Mode.
@@ -185,7 +216,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-05 — Orchestration huddle execution: sprint verify + Cursor PA Slack docs
 
 - **Scripts:** [`scripts/ops/sprint_verify.sh`](scripts/ops/sprint_verify.sh) — SSH to VPS, git update selected subrepos, `fm_server_beta.sh rebuild-color` + optional `smoke`; evidence logs under `--evidence`. [`scripts/jsdevtesting_stack_check.sh`](scripts/jsdevtesting_stack_check.sh) — HTTPS probes for `jsdevtesting` + `api-jsdevtesting`.
-- **Governance:** [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md); [`governance/agent_workspace_isolation.md`](governance/agent_workspace_isolation.md) and [`governance/README.md`](governance/README.md) / [`governance/orchestration.md`](governance/orchestration.md) updated for Cursor PA + JSONL outbox vs IDE MCP; Antigravity runner marked legacy in [`scripts/antigravity_slack_runner.py`](scripts/antigravity_slack_runner.py); note in [`scripts/cursor_headless_slack_agent.py`](scripts/cursor_headless_slack_agent.py).
+- **Governance:** [`governance/cursor_pa_slack_visibility.md`](governance/cursor_pa_slack_visibility.md); [`governance/archived/agent_workspace_isolation.md`](governance/archived/agent_workspace_isolation.md) and [`governance/README.md`](governance/README.md) / [`governance/orchestration.md`](governance/orchestration.md) updated for Cursor PA + JSONL outbox vs IDE MCP; Antigravity runner marked legacy in [`scripts/antigravity_slack_runner.py`](scripts/antigravity_slack_runner.py); note in [`scripts/cursor_headless_slack_agent.py`](scripts/cursor_headless_slack_agent.py).
 - **Huddle:** [`strategy/huddles/2026-05-04-orchestration-overhaul/VERIFICATION_DELTA.md`](strategy/huddles/2026-05-04-orchestration-overhaul/VERIFICATION_DELTA.md); [`implementation_plan.md`](strategy/huddles/2026-05-04-orchestration-overhaul/implementation_plan.md) exit table synced to canonical [`ACTIONS.md`](strategy/huddles/2026-05-04-orchestration-overhaul/ACTIONS.md); [`README.md`](strategy/huddles/2026-05-04-orchestration-overhaul/README.md) pointers.
 - **F-007:** [`plans/S1/S1.B/feat-f007-guided-walkthroughs/evidence/V2_ORCHESTRATION_2026-05-05.md`](plans/S1/S1.B/feat-f007-guided-walkthroughs/evidence/V2_ORCHESTRATION_2026-05-05.md) + `runtime_handoff.md` ACTIONS #7 line.
 
@@ -195,14 +226,14 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-05-04 — Task slices (`T##.SL#`) and clarifying-questions protocol
 
-- **Governance:** [`governance/plan_template.md`](governance/plan_template.md) §1a defines **tasks** `T##` and **slices** `T##.SL#` (**`SL`** distinct from Phase/Stage **S** notation); validator, body template, and execution-order examples updated. [`governance/glossary.md`](governance/glossary.md) §3, [`governance/branching_guidelines.md`](governance/branching_guidelines.md) §2.1, [`governance/plan_registry.md`](governance/plan_registry.md) hierarchy note, [`governance/orchestration.md`](governance/orchestration.md) directives, [`governance/plan_lifecycle.md`](governance/plan_lifecycle.md) §A, [`governance/README.md`](governance/README.md) Sequence A, and skill mirrors [`governance/skill_orchestration_manager.md`](governance/skill_orchestration_manager.md), [`governance/skill_roadmap_rollout_planning.md`](governance/skill_roadmap_rollout_planning.md) aligned.
+- **Governance:** [`governance/plans/plan_template.md`](governance/plans/plan_template.md) §1a defines **tasks** `T##` and **slices** `T##.SL#` (**`SL`** distinct from Phase/Stage **S** notation); validator, body template, and execution-order examples updated. [`governance/reference/glossary.md`](governance/reference/glossary.md) §3, [`governance/execution/branching_guidelines.md`](governance/execution/branching_guidelines.md) §2.1, [`governance/plans/plan_registry.md`](governance/plans/plan_registry.md) hierarchy note, [`governance/orchestration.md`](governance/orchestration.md) directives, [`governance/plans/plan_lifecycle.md`](governance/plans/plan_lifecycle.md) §A, [`governance/README.md`](governance/README.md) Sequence A, and skill mirrors [`governance/skill_orchestration_manager.md`](governance/skill_orchestration_manager.md), [`governance/skill_roadmap_rollout_planning.md`](governance/skill_roadmap_rollout_planning.md) aligned.
 - **Cursor:** [`feature-implementation-loop`](.cursor/skills/feature-implementation-loop/SKILL.md), [`bugfix-investigation-loop`](.cursor/skills/bugfix-investigation-loop/SKILL.md), [`orchestration-manager`](.cursor/skills/orchestration-manager/SKILL.md) (+ [`AGENT_PROMPT_TEMPLATE.md`](.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md)), [`roadmap-rollout-planning`](.cursor/skills/roadmap-rollout-planning/SKILL.md), [`multi-repo-orchestration`](.cursor/skills/multi-repo-orchestration/SKILL.md), [`shared-subagent-handoff`](.cursor/skills/shared-subagent-handoff/SKILL.md); [`.cursor/rules/core-standards.mdc`](.cursor/rules/core-standards.mdc) and [`.cursor/rules/agent-delegation.mdc`](.cursor/rules/agent-delegation.mdc).
 - **Parent docs:** [`AGENTS.md`](AGENTS.md), [`GEMINI.md`](GEMINI.md), [`plans/README.md`](plans/README.md), [`plans/templates/README.md`](plans/templates/README.md), [`plans/S1/S1.B/README.md`](plans/S1/S1.B/README.md).
 - **Stage S1.B plan READMEs:** Task-and-slice section added (or research-oriented variant); **F-007** (`feat-f007-guided-walkthroughs`) received a **shelved** note only pending a future slice pass.
 
 ### 2026-05-04 — Archive `plans/templates/GEMINI_PLAN_TEMPLATE*.md`
 
-- **Moved** `GEMINI_PLAN_TEMPLATE.md`, `GEMINI_PLAN_TEMPLATE_V2.md`, and `GEMINI_PLAN_TEMPLATE_QUICK.md` to [`plans/archived/gemini_plan_templates/`](plans/archived/gemini_plan_templates/) with index README. **`governance/plan_template.md`** is the only active plan schema; [`plans/templates/README.md`](plans/templates/README.md) points authors there. Updated [`governance/plan_template.md`](governance/plan_template.md) intro and [`GEMINI.md`](GEMINI.md).
+- **Moved** `GEMINI_PLAN_TEMPLATE.md`, `GEMINI_PLAN_TEMPLATE_V2.md`, and `GEMINI_PLAN_TEMPLATE_QUICK.md` to [`plans/archived/gemini_plan_templates/`](plans/archived/gemini_plan_templates/) with index README. **`governance/plans/plan_template.md`** is the only active plan schema; [`plans/templates/README.md`](plans/templates/README.md) points authors there. Updated [`governance/plans/plan_template.md`](governance/plans/plan_template.md) intro and [`GEMINI.md`](GEMINI.md).
 
 ### 2026-05-04 — Plans health: `plans/README.md`, remove duplicate `plans/feat/` tree
 
@@ -214,7 +245,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### 2026-05-04 — `GEMINI.md` aligned with ecosystem layout and governance
 
-- **Rewrote** root [`GEMINI.md`](GEMINI.md): parent vs submodules, `governance/` + `strategy/` + hierarchical `plans/`, canonical **`governance/plan_template.md`**, API `finance/` layout, flagship web, Docker/proxy `:8443` and `scripts/` pointers, CPPRD/PR rules, archived Reflex, and archived root Python scratches path.
+- **Rewrote** root [`GEMINI.md`](GEMINI.md): parent vs submodules, `governance/` + `strategy/` + hierarchical `plans/`, canonical **`governance/plans/plan_template.md`**, API `finance/` layout, flagship web, Docker/proxy `:8443` and `scripts/` pointers, CPPRD/PR rules, archived Reflex, and archived root Python scratches path.
 
 ### 2026-05-04 — Archive repo-root one-off Python scripts
 
@@ -239,7 +270,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-21 — Parent CPPRD: submodule pins, PWA pause registry, plans + brand pack
 
 - **Submodules:** `finance_manager_api` → **`main`** (merge **`cb02b24`** — PWA D2 idempotency allowlist for categories/tags/sources). `finance_manager_web` → **`main`** (merge **`e3dc6e1`** — offline outbox lookup allowlist + Workbox navigate fix PR #45).
-- **PWA implementation sprint:** `plans/S1/S1.B/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `governance/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
+- **PWA implementation sprint:** `plans/S1/S1.B/pwa-implementation-branch/runtime_handoff.md` — paused snapshot + **Open issues (paused)** (online transaction network error; offline shell error unchanged post-#45). `validation_gates.md` touch-up. `governance/plans/plan_registry.md` — sprint row moved to **Paused** (deduped from Draft).
 - **Plans / research:** `plans/S1/S1.B/entity-formation-research/ACTION_SEQUENCE.md` (new). `plans/feat/web-reflex-parity-sweep-1/` (parity sweep plan tree). Ongoing edits: `FEATURE_IDEAS.md`, `PRODUCT_FEATURE_BACKLOG_INDEX.md`, `SEO_PRIORITY_MATRIX.md`, `feat-f007-guided-walkthroughs/README.md`.
 - **Brand assets:** `resources/hfm_icon_web/` (F-011 README–referenced HitM icon pack; PNG set for wedge / manifest work).
 - **`AGENTS.md`:** workspace memory / alignment updates.
@@ -248,7 +279,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-06 — `fm_server_beta.sh rebuild-color` (Podman blue/green)
 
 - **`scripts/ops/fm_server_beta.sh`:** New **`rebuild-color [--no-build] <blue|green>`** command: builds `api-*`/`web-*` for one color, stops **proxy** plus that color’s app containers, removes those containers via compose **labels** (no `podman-compose rm`, which does not exist), then `up -d` db/redis/api/web/proxy. Avoids Podman **`--requires`** / `depends_on` failures when replacing inactive backends. Parallel compose file keeps `up -d --force-recreate` only (no proxy). **`wait_api_service_ready`** polls `/api/health/` so immediate `smoke` after `rebuild-color` does not race Django startup.
-- **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`governance/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
+- **`deploy/BLUEGREEN_SWITCHOVER.md`**, **`deploy/SERVER_BETA_INSTALL.md`**, **`governance/deployment/deployment_protocol.md`:** Runbook updated to prefer `rebuild-color` after on-host image changes.
 
 ### 2026-05-05 — KNOWN_ISSUES: P0 #8 source balance after transaction delete
 
@@ -291,7 +322,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 ### 2026-05-03 — PWA implementation + SEO orchestration plan (S1.B)
 
 - **`plans/S1/S1.B/pwa-implementation-branch/`:** Execution-ready plan **`PLAN_CROSS_PWA_IMPLEMENTATION_SPRINT_2026-05-03`** — `README.md` (YAML + phase compass), `validation_gates.md` (BP0–BP_SEO_P1, **SEO P1** gated on **BP_SPRINT_CLOSE**), `runtime_handoff.md`, `CROSS_AGENT_COORDINATION.md`, `governance_validator_run_2026-05-03.md`, tasks **T00–T16** (API D2, web build/manifest/SW, IndexedDB seed, outbox, D3 auth, D4-exec, docs CPPRD, **SEO P0** parallel / **SEO P1** deferred). Host branch: `cursor/s1b/pwa-implementation-branch`. Plan stays **`draft`** until `PLAN_RESEARCH_PWA_INSTALL_OFFLINE_SYNC_2026-05-01` is **`completed`** in registry.
-- **`governance/plan_registry.md`:** Draft row for the implementation sprint plan.
+- **`governance/plans/plan_registry.md`:** Draft row for the implementation sprint plan.
 - **`plans/S1/S1.B/README.md`:** Sub-plan index row + sprint activation index link to `pwa-implementation-branch/README.md`.
 
 ### 2026-05-02 — S1.B entity/payment research governance + continual-learning memory
