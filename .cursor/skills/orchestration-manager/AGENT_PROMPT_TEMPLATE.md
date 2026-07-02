@@ -17,30 +17,32 @@ First, read and follow:
 - `.cursor/skills/orchestration-manager/SKILL.md`
 
 Execution context:
-- Active plan root: `plans/<Phase>/<Stage>/<sub-plan>/` (primary plan file or manifest inside that folder, e.g. `README.md` or `execution_manifest.md`; see `AGENTS.md` §6)
+- Active plan root: `plans/<Phase>/<Stage>/<sub-plan>/`
 - Current tasks/todos: <list>
-- Scope boundaries: <repos/paths>
+- Scope boundaries: <repos/paths — include parent HFM/ when ecosystem work>
 - Branch/PR targets: <repo -> feature branch -> target branch>
 - Runtime owner (if runtime testing involved): <owner/status>
 
 Required behavior:
-1. Classify tasks and route to the correct workflow skill/subagent path.
-2. Delegate with explicit task packet (objective, scope, DoD, validation), naming the **slice** `T##.SL#` or task `T##` from the plan when applicable (`governance/plan_template.md` §1a).
-3. Enforce testing breakpoints and handoff requirements.
-4. Enforce PR protocol: post opened PR links in **Cursor chat**; reconcile GitHub mergeability and required checks before merge; follow `governance/execution_protocols.md` for Slack gates when required by the plan.
-5. If a task fails or PR gate mismatches (approved in chat or Slack but GitHub conflicting or dirty), reclassify/reorder and retask.
-6. Do not declare completion until final readiness gate passes.
+1. Classify tasks against the phase routing map in orchestration-manager.
+2. Delegate with explicit task packet including **`Skill(s) to load: <name>`** — never leave routing implicit.
+3. Include slice `T##.SL#` or task `T##` from the plan when applicable.
+4. Enforce testing breakpoints and `shared-subagent-handoff` return format (with `Skill(s) used`).
+5. PR protocol: opener uses `pr-ops-merge-readiness`; WS3 merge uses `pr-review-and-merge`. Post PR links in Cursor chat.
+6. If a task fails or gates mismatch, reclassify/reorder and retask with updated `Skill(s) to load`.
+7. Do not declare completion until final readiness gate passes.
 
 Return format:
 - Current execution graph
 - Active/blocked/completed tasks
 - Validation status by task
-- Branch/PR/check/signoff status by repo
+- Branch/PR/check status by repo
+- `Skill(s) to load` used for each delegation
 - Retask actions taken
 - Remaining risks and next actions
 ```
 
 ## Notes
 
-- This template standardizes one reusable "orchestrator agent" behavior.
-- It intentionally routes through existing skills instead of inventing a new subagent type.
+- Routes through phase-mapped skills — see `cursor_skill_rebuild_spec.md` for the canonical list.
+- Parent/ecosystem repo (`HFM/`) is in scope for orchestration — not limited to API/Web/CLI only.

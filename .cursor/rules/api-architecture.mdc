@@ -22,6 +22,12 @@ Apply these rules when editing backend API code.
 - Minimize database round trips; prefer bulk loading and set-based operations.
 - Avoid hidden N+1 access patterns; use explicit prefetch/select strategies.
 - Keep transformations close to the most efficient layer (query or logic) to avoid redundant passes.
+- **DB query budget:** hard cap **15 queries per API call**, target **<10** (see `design_docs/00_Coding_Guidelines.md` §6).
+
+## Data Model Linkage (PaymentSource and peers)
+
+- New links to `PaymentSource`, `Category`, `UpcomingExpense`, or user ownership use **stable-id + `uid` CharField** storage (e.g. `source_id` in dependent columns), **not** real Django `ForeignKey`, unless an approved architecture decision documents an exception.
+- **Greenfield models** must flow through **validators + services** — not views-only implementations that skip the layered pipeline.
 
 ## Change Hygiene
 

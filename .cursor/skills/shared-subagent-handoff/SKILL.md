@@ -5,13 +5,27 @@ description: Standardize delegated task outputs into a concise handoff contract.
 
 # Shared Subagent Handoff
 
-## Output Contract
+Return-contract mechanism for all delegated Cursor work.
+
+## Doctrine
+
+None — this is the contract itself.
+
+## Loads
+
+None.
+
+## Tools
+
+None.
+
+## Output contract
 
 Use this exact section order:
 
 ```markdown
 ## Objective
-<what was requested and scope boundary; include plan **task or slice ID** (`T##` / `T##.SL#`) when work came from a governed plan>
+<what was requested and scope boundary; include plan task or slice ID (T## / T##.SL#) when governed>
 
 ## Assumptions and Unknowns
 - ...
@@ -35,9 +49,10 @@ Use this exact section order:
 - Branch:
 - PR URL/status:
 - Required checks/signoffs:
-- Slack notify sent to `#pull-requests`: yes/no
-- Slack authorization state seen: approved | merged | changes_requested | blocked | pending
 - GitHub mergeability reconciliation: clean | conflicting | dirty | unknown
+
+## Skill(s) used
+<every skill actually loaded during this task — required, auditable against delegation packet>
 
 ## Next Action
 - ...
@@ -46,6 +61,7 @@ Use this exact section order:
 ## Rules
 
 - Keep each section compact and concrete.
+- **`Skill(s) used`** is required — list every skill loaded, not just the primary one.
 - Call out blockers immediately instead of hiding uncertainty.
-- If no files changed, explicitly state "Changed: none".
+- If no files changed, state "Changed: none".
 - If verification is partial, explain exactly what remains.

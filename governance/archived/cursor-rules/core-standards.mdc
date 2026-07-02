@@ -33,7 +33,7 @@ Use these defaults for all work unless a more specific scoped rule applies.
 - Ensure required checks and signoffs pass before merge actions.
 - When you open a pull request, **send the PR link(s) to the user in this chat** (repo, branch, full URL) so they can review and merge. Do not rely on Slack for PR notification.
 - Before merge, use **GitHub** mergeability and required checks; `CONFLICTING` or `DIRTY` state remains a blocker until fixed.
-- Governed execution: scope to the assigned **slice** `T##.SL#` when the plan defines one (`governance/plan_template.md` §1a). When specs are silent, **ask clarifying questions** instead of inferring intent.
+- Governed execution: scope to the assigned **slice** `T##.SL#` when the plan defines one (`governance/plans/plan_template.md` §1a). When specs are silent, **ask clarifying questions** instead of inferring intent.
 - Flag better dependency/tool options when they materially improve quality.
 - Validate significant changes in Docker-oriented workflows to catch runtime-only issues early.
 

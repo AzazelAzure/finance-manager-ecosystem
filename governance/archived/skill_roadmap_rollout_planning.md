@@ -13,9 +13,9 @@ Build phased roadmaps and feature rollout plans with clear breakpoints, triggers
 
 When a rollout plan is **ready to execute** (not while brainstorming only in chat), materialize it on disk for the orchestration manager:
 
-- **Path:** `plans/<Phase>/<Stage>/<sub-plan>/` (hierarchical layout locked 2026-04-30; active Stage S1.B: `plans/S1/S1.B/`). See `governance/branching_guidelines.md` and `strategy/strategic-roadmap-reframe-53be/README.md` §8. Example: drift cleanup → `plans/S1/S1.B/drift-cleanup/`. Git branch names may still use `agy/s1b/...` until a rename workstream lands.
+- **Path:** `plans/<Phase>/<Stage>/<sub-plan>/` (hierarchical layout locked 2026-04-30; active Stage S1.B: `plans/S1/S1.B/`). See `governance/execution/branching_guidelines.md` and `strategy/strategic-roadmap-reframe-53be/README.md` §8. Example: drift cleanup → `plans/S1/S1.B/drift-cleanup/`. Git branch names may still use `agy/s1b/...` until a rename workstream lands.
 - Legacy top-level `plans/feat/`, `plans/fix/`, `plans/volatile/` trees live under `plans/archived/`; do not add new execution plans there.
-- Put phased plan bodies, task packets, checkpoints, and manifests **inside** that folder so the orchestrator has a single root. Use `governance/plan_template.md` for required metadata fields.
+- Put phased plan bodies, task packets, checkpoints, and manifests **inside** that folder so the orchestrator has a single root. Use `governance/plans/plan_template.md` for required metadata fields.
 
 Do not leave execution-ready plans only in chat or ad hoc paths.
 
@@ -35,7 +35,7 @@ Do not leave execution-ready plans only in chat or ad hoc paths.
 - [ ] Capture required implementation artifacts and ownership.
 - [ ] Add validation checkpoints for each phase.
 - [ ] Document rollback or mitigation paths for high-risk steps.
-- [ ] When execution-ready, create `plans/<Phase>/<Stage>/<sub-plan>/`, write artifacts there, and register in `governance/plan_registry.md` when promoting past `draft`.
+- [ ] When execution-ready, create `plans/<Phase>/<Stage>/<sub-plan>/`, write artifacts there, and register in `governance/plans/plan_registry.md` when promoting past `draft`.
 
 ## Deliverable format
 

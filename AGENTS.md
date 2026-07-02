@@ -24,7 +24,7 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 
 - **CPPR** — commit, push, pull request.
 - **CPPRD** — CPPR + **document** change (subrepo `CHANGELOG`, `deploy/`, or `design_docs` as appropriate). See `deploy/CPPR_AND_CPPRD.md`.
-- **CPPR+D** — full deploy cycle including blue-green color flip per `governance/deployment_protocol.md`.
+- **CPPR+D** — full deploy cycle including blue-green color flip per `governance/deployment/deployment_protocol.md`.
 
 **CPPRD applies to:** feature merges (subrepo CHANGELOG + relevant design doc); governance doc changes (parent `CHANGELOG.md`).
 
@@ -34,7 +34,7 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 
 ### Deployment and PR discipline
 
-- **One feature at a time on inactive color** (locked 2026-04-30). See `governance/branching_guidelines.md` §1.
+- **One feature at a time on inactive color** (locked 2026-04-30). See `governance/execution/branching_guidelines.md` §1.
 - When opening a pull request, **create it via GitHub CLI** (`gh pr create`). Post the PR URL in Cursor chat — not Slack.
 - Before merge, confirm **GitHub** mergeability and required checks; `CONFLICTING` / failing checks block merge.
 - Prefer **one** production API with a compatibility window and forced client refresh past end-of-support; no parallel API stacks; no Redis as HTTP version router.
@@ -58,8 +58,8 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 
 ### Documentation maintenance
 
-- Keep the **VPS runtime checkout sheet** (`governance/Runtime_Signup_Sheet.md`) current — a known prior drift source. Update it on every deploy/cutover and treat its contents as point-in-time, not authoritative live state (live state comes from an SSH query per trust-but-verify).
-- Doc/governance file lifecycle (what gets saved, updated, or archived — including within meetings) is governed by `governance/meeting_artifact_protocol.md`.
+- Keep the **VPS runtime checkout sheet** (`governance/deployment/Runtime_Signup_Sheet.md`) current — a known prior drift source. Update it on every deploy/cutover and treat its contents as point-in-time, not authoritative live state (live state comes from an SSH query per trust-but-verify).
+- Doc/governance file lifecycle (what gets saved, updated, or archived — including within meetings) is governed by `governance/coordination/meeting_artifact_protocol.md`.
 - Strategy-area navigation: `strategy/README.md` is the index of living-state homes (meetings, anomalies, projections, parking lot, risk register, audits, automations).
 
 ### Product and ops defaults
@@ -85,7 +85,7 @@ cla/s1b/admin/<slug>          ← Claude admin / governance
 agy/s1b/chore/<slug>          ← Antigravity automation
 ```
 
-Feature/task hierarchy and color-cycle workflow: `governance/branching_guidelines.md`.
+Feature/task hierarchy and color-cycle workflow: `governance/execution/branching_guidelines.md`.
 
 Plans live under `plans/<Phase>/<Stage>/<status>/<sub-plan>/` where `<status>` is one of `proposed/`, `planning/`, `active/`, `inactive/`, `complete/` (active S1.B stage root: `plans/S1/S1.B/`). See `plans/S1/S1.B/README.md` for the stage dashboard.
 
@@ -100,8 +100,8 @@ Plans live under `plans/<Phase>/<Stage>/<status>/<sub-plan>/` where `<status>` i
 - **Entity/commercial:** PH spouse-led MoR + US LLC vendor pipeline gates PSP KYB and payment integration (see entity-formation research plans).
 - **PWA research locks:** Advanced tier, D0–D4 under `plans/S1/S1.B/complete/pwa-install-offline-sync-research/`; implementation under `plans/S1/S1.B/complete/pwa-implementation-branch/`.
 - **F-012/F-013:** Support intake (durable API queue); F-013 = Loguru per-UUID diagnostic files on VPS (ops grep/tail), not in-app Activity UI.
-- **Runtime ownership:** `governance/Runtime_Signup_Sheet.md`.
-- **Multi-workspace checkout, dispatch, and VPS-authority protocol:** `governance/workspace_protocol.md` (filesystem layout `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}`, sign-out sheet, FIFO queues, `ws_dispatch.sh`/`ws_review.sh` pipeline — supersedes `governance/agent_workspace_isolation.md`).
+- **Runtime ownership:** `governance/deployment/Runtime_Signup_Sheet.md`.
+- **Multi-workspace checkout, dispatch, and VPS-authority protocol:** `governance/execution/workspace_protocol.md` (filesystem layout `~/Hive_Financial_Manager/{HFM,WS1,WS2,WS3,WS-API,WS-WEB}`, sign-out sheet, FIFO queues, `ws_dispatch.sh`/`ws_review.sh` pipeline — supersedes `governance/archived/agent_workspace_isolation.md`).
 - **Paying-user gate headcounts:** re-indexed per `strategy/strategic-roadmap-reframe-53be/validation_gates.md` and unit-economics doc §2 / §4.1.
 
 ---
@@ -137,23 +137,23 @@ Deploy: blue-green Docker/Podman; proxy on host **:8443**. Web is its own git su
 ### Cursor (code execution)
 
 1. `AGENTS.md`
-2. `governance/plan_registry.md`
+2. `governance/plans/plan_registry.md`
 3. `plans/S1/S1.B/<status>/<target-sub-plan>/README.md` (see `plans/S1/S1.B/README.md` for status bucket locations)
 4. READ FIRST files listed in that README (`DECISION_LOG.md`, `runtime_handoff.md`, subrepo `CHANGELOG`)
 
-Pull `governance/glossary.md`, `deployment_protocol.md`, `definition_of_done.md` only when the task requires them.
+Pull `governance/reference/glossary.md`, `deployment_protocol.md`, `definition_of_done.md` only when the task requires them.
 
 ### Claude Code (admin)
 
 1. `AGENTS.md` + `CLAUDE.md`
 2. `strategy/current_status.md` (admin snapshot — not required for Cursor executors)
-3. `governance/plan_registry.md`
+3. `governance/plans/plan_registry.md`
 
 ### Antigravity (automation / first session)
 
 1. `AGENTS.md`
-2. `governance/glossary.md`
-3. `governance/plan_registry.md`
+2. `governance/reference/glossary.md`
+3. `governance/plans/plan_registry.md`
 4. `governance/README.md`
 
 Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md` → `00_strategic_context.md` → active stage README → sub-plan README.
@@ -166,26 +166,26 @@ Strategic depth when needed: `strategy/strategic-roadmap-reframe-53be/README.md`
 - Resolve standby-queue PRs and partial code before VPS inactive-color deploy/test.
 - Re-validate features already marked "completed" against definition of done; confirm claimed implementation actually exists before trusting completion status.
 - Verify UI fixes on `jsdevtesting.thehivemanager.com` (inactive color) before rebuilding/flipping active production.
-- When multiple agents share VPS access, enforce runtime signup-sheet ownership and handoff (`governance/Runtime_Signup_Sheet.md`) to avoid cross-contamination.
+- When multiple agents share VPS access, enforce runtime signup-sheet ownership and handoff (`governance/deployment/Runtime_Signup_Sheet.md`) to avoid cross-contamination.
 - Legacy S1.B plans using the old schema: use branch prefix `cur/s1b/feat/<slug>` per §2 and treat `slack_gates.pre_merge: required` as `manual_gates.pre_merge: required`.
 - One agent per sub-repo at a time: avoid two agents concurrently modifying the same sub-repo (especially API); pause or revert one side to prevent code collisions.
-- CPPR per task: open one PR per plan task and do not batch multiple tasks into a single PR; provide PRs in explicit merge order when several are ready.
+- CPPR per task: open one PR per plan task and do not batch multiple tasks into a single PR; provide PRs in explicit merge order when several are ready; after squash-merging a PR that edits subrepo `CHANGELOG`, re-sync each open PR's `[Unreleased]` against `main` before merging them in order (seen across #62/#64/#65/#89).
+- API/Web queue execution must use `WS-API`/`WS-WEB` worker checkouts via `queue_pop`/`ws_dispatch.sh` per `governance/execution/workspace_protocol.md` — not the shared admin `HFM/` checkout.
 - New feature/task work must include PWA/offline functionality AND guided-tour/guide-mode coverage as part of done, not deferred — extend the guided walkthrough and guide mode to every new feature, view, and form (including quick-add forms) site-wide.
 - Product/UX invariants: route already-authenticated users straight to the dashboard (no interstitial "already logged in" page) and trigger the onboarding wizard only on new-user creation, not for existing users; never surface or manipulate the internal-only "Unknown" balance/transaction source (failsafe only — keep it out of balance trends and all user-facing views).
 - Treat VPS deploy/cutover (inactive-color rebuild, smoke, color switch) and parent-repo governance closeout (plan registry, parent CHANGELOG, submodule pointers) as separate handoffs unless explicitly combined.
-- Squash-merging a PR that edits a subrepo `CHANGELOG` recurrently breaks the `[Unreleased]` section on remaining stacked/open PRs (seen across #62/#64/#65/#89); re-sync each open PR's CHANGELOG against `main` before merging them in order.
 
 ## Learned Workspace Facts
 
 - VPS production blue-green ops use `scripts/ops/fm_server_beta.sh` on the VPS (`status`, `rebuild-color`, `smoke`, `switch`); from the parent repo use `scripts/ops/sprint_verify.sh` to SSH, pull API/Web, and rebuild inactive color (does not flip active color) — then run `fm_server_beta.sh smoke --color <inactive>` manually to verify; `sprint_verify.sh --smoke` may skip the remote smoke step. Local dev uses `scripts/local-stack/fm_docker.sh` and `scripts/local-stack/fm_services.sh`. Primary admin checkout is `~/Hive_Financial_Manager/HFM` (legacy `~/Documents/python/finance_manager` retired; Cursor may still have transcripts under both project paths). Planned local HFM MCP server (Point 2) ships as `scripts/mcp/` + `.cursor/mcp.json` (`hfm-scripts`); reload Cursor MCP after pull. Until connected, use `./scripts/dev/session_brief.sh` and `scripts/SCRIPTS.md`. Local cron after scripts reorg: `scripts/ops/pull_backup.sh`, `scripts/gather_doc_context.sh`, optional `scripts/local/schedule_agent_sync.sh` — refresh via `./scripts/local/setup_backup_cron.sh` then manual `crontab -e`.
-- Django REST routes are mounted under `/finance/` (e.g. `/finance/savings-goals/`), not `/api/finance/` — VPS origin smokes must use the correct prefix with `curl --resolve` on `:8443`. The API is service-oriented (project `finance_api`, single `finance` app): flat routes in `finance_api/urls.py` (no `finance/urls.py`), hand-written `APIView` subclasses (no routers/viewsets), denormalized `uid` CharFields instead of real FKs, and logic flowing views → serializers → validators → services → logic/updaters → calculators.
+- Django REST routes are mounted under `/finance/` (e.g. `/finance/savings-goals/`), not `/api/finance/` — VPS origin smokes must use the correct prefix with `curl --resolve` on `:8443`. The API is service-oriented (project `finance_api`, single `finance` app): flat routes in `finance_api/urls.py` (no `finance/urls.py`), hand-written `APIView` subclasses (no routers/viewsets), denormalized `uid` CharFields instead of real FKs, and logic flowing views → serializers → validators → services → logic/updaters → calculators. **PaymentSource linkage:** dependent surfaces store **display names** (lowercase) in `Transaction.source`, `BalanceSnapshot.source`, `SavingsGoal.source`, and `AppProfile.spend_accounts` — not Django FK and not internal `source_id` keys; validators verify names per user `uid`; renames propagate via `Updater.source_changed()` like category/bill. Greenfield models must use validators + services — views-only slices bypass linkage conventions.
 - Blue-green rebuild scripts must include Celery workers and actively tear down orphaned/outdated containers (recurring orphaned-container problem during color switches).
-- Production hostnames: web `thehivemanager.com`, API `api.thehivemanager.com`; public HTTPS via blue-green proxy on host `:8443`.
+- `ws_dispatch.sh` runs API/Web work in `WS-API`/`WS-WEB` while sign-out claims `WS1`/`WS2`; parent-repo Cursor tasks still use shared `HFM/` (no `WS-PARENT` yet) — collision risk with Claude Code admin sessions per `workspace_protocol.md` §7.4.
 - VPS `~/finance_manager` deploys from standalone `finance_manager_api/` and `finance_manager_web/` git clones — parent submodule pointers do not drive VPS pulls.
 - VPS `docker-compose.bluegreen.yml` and `scripts/ops/fm_server_beta.sh` are manually maintained on the host (with `.bak` backups), not auto-synced from parent `main`; `podman-compose` can echo interpolated `--env` secrets to stderr on any compose path (smoke/exec/build/config/logs), not only `up` — all compose invocations need stderr redaction.
 - API repo uses `uv` + `pyproject.toml` + `uv.lock` for dependencies (not `requirements.txt`/pip); CI should use `uv sync --frozen`.
 - GitHub Actions workflows should pin third-party actions to full commit SHAs and set least-privilege `permissions` (e.g. `contents: read`).
-- Public hostnames are proxied through Cloudflare; GitHub Actions curls to those URLs can get edge `403` from datacenter IPs — VPS uptime checks should hit origin on `:8443` via `curl --resolve` (and `-k` for internal TLS). The scheduled Health Check workflow and local `scripts/ops/vps_state.sh`/`scripts/ops/sprint_verify.sh` read the origin IP from a `VPS_ORIGIN_IP` GitHub secret / repo-root `.env` (allowlisted, not shell-sourced); the previously committed IP was scrubbed during the make-repos-public cleanup, which broke the cron healthcheck until the secret/env were set.
+- Production hostnames web `thehivemanager.com` and API `api.thehivemanager.com` use HTTPS via blue-green proxy `:8443`; Cloudflare edge can `403` GitHub Actions datacenter curls — uptime checks hit origin `:8443` via `curl --resolve` (and `-k`). Health Check / `vps_state.sh` / `sprint_verify.sh` read `VPS_ORIGIN_IP` from a GitHub secret or repo-root `.env` (allowlisted, not shell-sourced).
 - `main` branch protection is waived while repos stay private without GitHub Pro (explicit HitM decision); the parent ecosystem repo is `github.com/AzazelAzure/finance-manager-ecosystem`.
 - Bill recurrence: the historical stopgap inferred cadence from `start_date`/`due_date` deltas (`bill_recurrence.py`); the first-class `cadence` field engine is implemented via `PLAN_CROSS_BILL_RECURRENCE_ENGINE_2026-06-29` (`plans/S1/S1.B/complete/feat-bill-recurrence-engine/`), landing on the inactive color ahead of F-009.
 - Currently a closed loop with one beta tester; secret rotation is deferred — scrub leaked secrets from logs and clear terminal history instead, with rotation enforced later.

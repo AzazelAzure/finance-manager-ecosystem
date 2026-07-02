@@ -51,7 +51,7 @@ intended_branch: cur/s1b/feat/${SLUG}
 
 ## Scope
 
-(TBD — see governance/plan_template.md and definition_of_done.md)
+(TBD — see governance/plans/plan_template.md and definition_of_done.md)
 
 ## Tasks
 

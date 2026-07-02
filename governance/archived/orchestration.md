@@ -10,8 +10,8 @@
 
 | Layer | Path | Role |
 | --- | --- | --- |
-| **Vocabulary** | `governance/glossary.md` | Phase / Stage / Sprint; product launch states; retired terms. |
-| **Portfolio** | `governance/plan_registry.md` | Plan IDs, status, dependencies, hierarchical plan paths. |
+| **Vocabulary** | `governance/reference/glossary.md` | Phase / Stage / Sprint; product launch states; retired terms. |
+| **Portfolio** | `governance/plans/plan_registry.md` | Plan IDs, status, dependencies, hierarchical plan paths. |
 | **Strategic roadmap** | `strategy/strategic-roadmap-reframe-53be/` | Multi-year anchor; `design_docs/20_Roadmap/` is historical where they conflict. |
 | **Active tactical plans** | `plans/<Phase>/<Stage>/<sub-plan>/` | Example: `plans/S1/S1.B/`. Stage umbrella: `plans/S1/S1.B/README.md`. |
 | **Archives** | `plans/archived/` | Closed umbrellas, `feat/` / `fix/` / `volatile*` trees, `cursor-layout-era/`, huddles. |
@@ -64,13 +64,13 @@
 
 ## 5) Suggested read order (execution session)
 
-1. `governance/glossary.md`
-2. `governance/plan_registry.md`
+1. `governance/reference/glossary.md`
+2. `governance/plans/plan_registry.md`
 3. `strategy/strategic-roadmap-reframe-53be/README.md`
 4. Active stage `plans/S1/S1.B/README.md` (or current Stage path)
 5. Target sub-plan `README.md` / task files
 6. `governance/skill_orchestration_manager.md` or `governance/skill_roadmap_rollout_planning.md` as needed
-7. `governance/execution_protocols.md` when producing HitM-facing gates
+7. `governance/execution/execution_protocols.md` when producing HitM-facing gates
 
 ---
 
@@ -81,7 +81,7 @@ Treat **`plan_registry.md`**, **`strategy/.../README.md`**, **`plans/S1/S1.B/REA
 - **Phase / stage:** Forward-looking execution is **S1.B** (distribution readiness; flagship **web**; PH-only new acquisition unless plan says otherwise).
 - **PWA / offline:** Research locks under `plans/S1/S1.B/pwa-install-offline-sync-research/`; implementation sprint hub `plans/S1/S1.B/pwa-implementation-branch/` — follow registry row for **paused** vs active.
 - **Git:** One commit scope per sub-repo; feature branches, not default `main` for feature work; changelogs in touched sub-repo; when opening a PR, send the **PR link in the Antigravity chat** (repo, branch, URL) per workspace rules; reconcile **GitHub** mergeability and required checks before merge.
-- **Tasks and slices:** Delegation uses **slice IDs** `T##.SL#` when plans split work (see `governance/plan_template.md` §1a, `glossary.md` §3). Agents **ask clarifying questions** instead of guessing when specs are silent.
+- **Tasks and slices:** Delegation uses **slice IDs** `T##.SL#` when plans split work (see `governance/plans/plan_template.md` §1a, `glossary.md` §3). Agents **ask clarifying questions** instead of guessing when specs are silent.
 - **Reflex:** Archived product stream — not production architecture.
 - **D0 browser matrix:** See `AGENTS.md` (Chrome desktop + Chrome Android for certified exit smoke).
 

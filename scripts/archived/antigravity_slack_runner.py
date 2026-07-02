@@ -2,7 +2,7 @@
 """
 DEPRECATED for orchestration (2026-05-05): HitM standard is Cursor + **Cursor PA**
 (JSONL outbox → Slack). Do not onboard new sprint traffic to this bridge; see
-`governance/cursor_pa_slack_visibility.md` and `governance/agent_workspace_isolation.md`.
+`governance/cursor_pa_slack_visibility.md` and `governance/archived/agent_workspace_isolation.md`.
 
 Antigravity CLI Slack Runner — bridge between Slack channels and `antigravity chat`.
 

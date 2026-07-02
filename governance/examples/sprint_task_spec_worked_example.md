@@ -91,7 +91,7 @@ When a user navigates to `/transactions` for the first time (no `hfm_tour_transa
 - Decision Log: `plans/S1/S1.B/feat-f007-walkthrough-polish/DECISION_LOG.md`
 - Sprint Queue Messages: `plans/pipeline_queue/` (drafted for SL1→SL4)
 - Related prior work: `finance_manager_web/CHANGELOG.md` — F-007 initial implementation
-- DoD checklist: `governance/definition_of_done.md`
+- DoD checklist: `governance/plans/definition_of_done.md`
 
 ---
 
@@ -106,7 +106,7 @@ BRANCH: cursor/s1b/feat/f007-walkthrough-polish (checkout required)
 SLICE: T01.SL1 — Component scaffold and types
 
 READ FIRST:
-- ~/finance_manager/governance/glossary.md
+- ~/finance_manager/governance/reference/glossary.md
 - ~/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/README.md
 - ~/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/DECISION_LOG.md
 - ~/finance_manager/plans/S1/S1.B/feat-f007-walkthrough-polish/runtime_handoff.md

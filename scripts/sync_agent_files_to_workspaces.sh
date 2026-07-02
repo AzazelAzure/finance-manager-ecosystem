@@ -21,7 +21,7 @@
 #   .cursorignore, .antigravityignore
 #   .cursor/  (rules, skills, settings, hooks/state)
 #   .claude/
-#   governance/HITM_SCHEDULE_SNAPSHOT.md
+#   governance/coordination/HITM_SCHEDULE_SNAPSHOT.md
 #   strategy/   (gitignored — full tree, --delete on target)
 #   plans/        (gitignored — full tree, --delete on target)
 #
@@ -105,10 +105,10 @@ sync_one() {
     "$SRC/.antigravityignore" \
     "$dst/"
 
-  if [[ -f "$SRC/governance/HITM_SCHEDULE_SNAPSHOT.md" ]]; then
-    run cp -p "$SRC/governance/HITM_SCHEDULE_SNAPSHOT.md" "$dst/governance/"
+  if [[ -f "$SRC/governance/coordination/HITM_SCHEDULE_SNAPSHOT.md" ]]; then
+    run cp -p "$SRC/governance/coordination/HITM_SCHEDULE_SNAPSHOT.md" "$dst/governance/"
   else
-    printf '  warn: missing %s/governance/HITM_SCHEDULE_SNAPSHOT.md (run schedule_agent_sync.sh?)\n' "$SRC" >&2
+    printf '  warn: missing %s/governance/coordination/HITM_SCHEDULE_SNAPSHOT.md (run schedule_agent_sync.sh?)\n' "$SRC" >&2
   fi
 
   run rsync -a "${DRY_RUN:+--dry-run}" --delete "$SRC/.cursor/" "$dst/.cursor/"

@@ -17,7 +17,7 @@ QUERY="${1}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PLANS_DIR="$REPO_ROOT/plans"
-REGISTRY="$REPO_ROOT/governance/plan_registry.md"
+REGISTRY="$REPO_ROOT/governance/plans/plan_registry.md"
 
 # Normalize: uppercase for ID match, keep original for dir match
 QUERY_UPPER="${QUERY^^}"

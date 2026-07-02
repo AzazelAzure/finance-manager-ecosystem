@@ -1,51 +1,65 @@
-# Skills and Delegation Map
+# Cursor Skills — Deploy Lifecycle Map
 
-This project uses shared skills in `.cursor/skills/` plus delegation rules in `.cursor/rules/agent-delegation.mdc`.
+Ground-up rebuild per `strategy/meetings/week27/meeting2026-07-02/tp-skill-generation/cursor_skill_rebuild_spec.md` (2026-07-02). Governing architecture: `skill_architecture.md`.
 
-## Guideline Alignment Matrix
+Delegation routing also lives in `.cursor/rules/agent-delegation.mdc` (always-applied). Skills cite always-applied rules as doctrine — they are not migrated into skills.
 
-- `core-standards.mdc` -> global quality defaults; every workflow skill inherits correctness-first, root-cause fixes, and maintainability.
-- `git-repo-workflow.mdc` -> repo boundaries, feature-branch + PR defaults, and changelog discipline; all execution-oriented skills include explicit repo/branch confirmation.
-- `api-architecture.mdc` -> backend layering constraints; referenced by `feature-implementation-loop` and `bugfix-investigation-loop` when working in API paths.
-- `reflex-frontend.mdc` -> **legacy** Reflex paths only (archived product). For active UI work, follow `finance_manager_web/` conventions and `feature-implementation-loop` / `bugfix-investigation-loop` in that repo.
-- `agent-delegation.mdc` -> task classification, routing defaults, handoff contract, and verification expectations.
+## Skill taxonomy in this directory
 
-## Task Routing Defaults
+| Type | Skills |
+|---|---|
+| Session doctrine (load at start) | `session-orientation`, `anomaly-registration`, `trust-but-verify`, `skill-gap-detection` |
+| Phase / workflow | See phase table below |
+| Handoff contract | `shared-subagent-handoff` |
+| Out-of-lifecycle (kept) | `huddle-facilitation` |
 
-- Code review -> `code-review-risk-triage` -> subagent: `generalPurpose` (or `explore` for readonly triage).
-- Bug investigation/fix -> `bugfix-investigation-loop` -> subagent: `generalPurpose`.
-- Feature/refactor implementation -> `feature-implementation-loop` -> subagent: `generalPurpose`.
-- Test/CI failures -> `ci-test-triage` -> subagent: `shell` for command-heavy diagnosis, then `generalPurpose` for code edits.
-- PR merge-readiness and hygiene -> `pr-ops-merge-readiness` -> subagent: `shell` for git/gh workflows.
-- Codebase exploration and context briefs -> `repo-exploration-briefing` -> subagent: `explore`.
-- Cross-repo dependency execution -> `multi-repo-orchestration` -> subagent sequence: `explore` then `generalPurpose` by repo.
-- Design documentation updates -> `design-docs-sync` -> subagent sequence: `explore` doc targeting then `generalPurpose`.
-- Roadmap/feature rollout planning -> `roadmap-rollout-planning` -> subagent sequence: `explore` then `generalPurpose`.
-- Container/runtime failure triage -> `container-runtime-podman-triage` -> subagent sequence: `shell` (diagnose with scripts) then `generalPurpose` (durable fix).
-- Plan execution coordination -> `orchestration-manager` -> subagent sequence: `generalPurpose` coordinator delegating to specialized workflow skills.
-- Security review and hardening -> `security-audit-hardening` -> subagent sequence: `explore` (surface map) then `generalPurpose`/`shell` (fix and verify).
+## Phase routing (execution order for deploy cycle)
 
-## New Workflow Notes
+```text
+session-orientation
+  → pickup-and-claim (Phase 2)
+  → Phase 3 implementation skill
+  → pr-ops-merge-readiness (Phase 4 — open PR)
+  → pr-review-and-merge (Phase 5 — WS3 merge)
+  → deploy-execution (Phase 6a/6b — inactive deploy + smoke)
+  → [HitM V3 verify] → [Claude/HFM cutover] → [Claude close]
+```
 
-- Multi-repo routine enforces repo-by-repo sequencing and explicit cross-repo handoffs.
-- Git workflow defaults are branch-first with PR/check/signoff merge gates (no direct feature work on `main`/`master`).
-- PR coordination is Slack-first: announce PRs in `#pull-requests`, wait/read automation authorization, then reconcile with GitHub mergeability/check state before merge.
-- Any Slack-vs-GitHub mismatch (for example Slack approved but GitHub `CONFLICTING`/`DIRTY`) is treated as a blocker until resolved.
-- Documentation routine keeps `design_docs` aligned with behavioral, architectural, and rollout changes.
-- Planning routine standardizes phases, breakpoints, triggers, dependencies, and validation gates.
-- Container routine standardizes Linux Podman-first script workflows for image/runtime failures and crash-loop bottlenecks.
-- Container orchestration rule enforces single runtime owner and mandatory testing breakpoints in larger plans.
-- Orchestration manager enforces plan-driven delegation, retasking on failures, and final readiness gates before declaring complete.
-- Security routine enforces severity-based findings, exploitability prioritization, and verification before release readiness.
+## Phase table
 
-## Shared Handoff Contract
+| Phase | Skill | Notes |
+|---|---|---|
+| 0 | `session-orientation` | Branch prefix, `ws_status`, reading order pointer |
+| 1 feeder | `functional-investigation-report` | T00-style facts for design gates |
+| 2 | `pickup-and-claim` | `ws_claim`, `pre_execution` gate |
+| 3 | `feature-implementation-loop` | Default implementation |
+| 3 | `bugfix-investigation-loop` | Bugs/regressions |
+| 3 | `ci-test-triage` | CI/test failures |
+| 3 | `code-review-risk-triage` | Pre-PR self-review |
+| 3 | `container-runtime-podman-triage` | Script-first runtime |
+| 3 | `repo-exploration-briefing` | Unknown-ownership mapping |
+| 4 | `pr-ops-merge-readiness` | Opener only — does not merge |
+| 5 | `pr-review-and-merge` | WS3; loads TBV + security audit; `disable-model-invocation` |
+| 6a/6b | `deploy-execution` | Inactive deploy + smoke; no cutover; `disable-model-invocation` |
+| — | `orchestration-manager` | Coordinator across phases and repos (incl. parent `HFM/`) |
+| — | `security-audit-hardening` | Loaded imperatively at merge gate |
+| — | `shared-subagent-handoff` | Return contract with `Skill(s) used` |
 
-Every delegated workflow should return this structure:
+## Handoff fields (required)
 
-1. Objective and scope boundary
-2. Assumptions and unknowns
-3. Evidence gathered (commands/searches/tests)
-4. Files touched or candidate files
-5. Risks/regressions
-6. Verification status
-7. Next action recommendation
+1. Delegation packets: **`Skill(s) to load: <name(s)`**
+2. Return contracts: **`Skill(s) used: <name(s)`**
+
+## Retired skills (removed in rebuild)
+
+- `multi-repo-orchestration` — absorbed into `orchestration-manager` (parent repo scope fixed).
+- `design-docs-sync` — deferred to Gemini.
+- `roadmap-rollout-planning` — Claude `design-first-gate` owns plan authoring.
+
+## MCP tools (common across Phase 3–6)
+
+Prefer `hfm-scripts` MCP: `session_brief`, `ws_status`, `ws_claim`, `pr_readiness`, `ci_status`, `test_api`/`test_web`/`test_rust`, `local_stack_health`, `fm_docker_status`, `changelog_entry`, `vps_state`, `ws_review`. See `scripts/mcp/README.md`.
+
+## Always-applied rules (cited, not skills)
+
+`core-standards`, `git-repo-workflow`, `scripts-orientation`, `container-testing-orchestration`, `anomaly-log`, `agent-delegation`.

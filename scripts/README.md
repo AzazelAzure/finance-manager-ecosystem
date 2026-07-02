@@ -29,12 +29,12 @@ All scripts continue safely when a directory is missing or not initialized as a 
 
 ### `./scripts/local/schedule_agent_sync.sh`
 
-Writes **`governance/HITM_SCHEDULE_SNAPSHOT.md`** (gitignored) with:
+Writes **`governance/coordination/HITM_SCHEDULE_SNAPSHOT.md`** (gitignored) with:
 
 - `khal list` for the next **90** days (override with `SCHEDULE_DAYS`)
 - `todo list` (todoman) across configured task lists
 
-Requires **khal**, **todoman** (`todo` on `PATH`), and **python3**. See **`governance/HITM_SCHEDULE_AND_TASKS.md`** for disk paths (`~/.local/share/calendars/work/`, tasks glob) and agent reading order.
+Requires **khal**, **todoman** (`todo` on `PATH`), and **python3**. See **`governance/coordination/HITM_SCHEDULE_AND_TASKS.md`** for disk paths (`~/.local/share/calendars/work/`, tasks glob) and agent reading order.
 
 ```bash
 ./scripts/local/schedule_agent_sync.sh
