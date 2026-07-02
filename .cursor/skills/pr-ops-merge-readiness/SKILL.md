@@ -1,33 +1,55 @@
 ---
 name: pr-ops-merge-readiness
-description: Keep pull requests merge-ready with commit hygiene, clear summaries, and unresolved-risk tracking. Use when preparing commits, opening PRs, triaging review comments, or validating merge readiness.
+description: Open PRs, update CHANGELOG, post PR link, and wait for HitM merge authorization — opener side only. Does not merge. Use when preparing commits, opening PRs, or triaging review comments before WS3 merge.
 ---
 
 # PR Ops Merge Readiness
 
-## Workflow Checklist
+Phase 4 skill — **opener side only**. Merge is `pr-review-and-merge` (WS3, Phase 5).
 
-- [ ] Confirm current branch and target repo boundary.
-- [ ] Confirm work is on a feature branch (not `main`/`master`).
-- [ ] Inspect status/diff/log to understand full change intent.
-- [ ] Validate commit grouping and message quality.
-- [ ] Push branch and verify remote tracking state.
-- [ ] Ensure changelog/docs updates match behavior changes.
-- [ ] Draft PR summary with concise test plan.
-- [ ] Open/update PR and record URL/status.
-- [ ] Post Slack message to `#pull-requests` announcing PR open (`repo`, `branch`, `PR URL`).
-- [ ] Wait/read `#pull-requests` for automation authorization state (`approved`, `merged`, `changes_requested`, `blocked`).
-- [ ] Reconcile Slack authorization with live GitHub PR state before merge.
-- [ ] If Slack approval conflicts with GitHub mergeability (`CONFLICTING`/`DIRTY`), record blocker and resolve conflicts first.
-- [ ] Confirm required checks and signoffs/approvals state.
-- [ ] List unresolved risks/blockers explicitly.
+## Doctrine
+
+- `deploy/CPPR_AND_CPPRD.md` — CPPRD documentation obligation.
+- `.cursor/rules/git-repo-workflow.mdc` — branch/PR/changelog discipline.
+- `governance/execution/branching_guidelines.md` §3.2/§3.4.
+- `governance/execution/execution_protocols.md` §1.2 (`pre_merge` gate).
+
+## Loads
+
+None. Gate-protocol mechanics inlined below — resolved 2026-07-02, doctrine citation above was
+sufficient across all 3 gate-using skills; no separate reference skill needed.
+
+## Tools
+
+- `gh pr create` — open PR via GitHub CLI.
+- `pr_readiness` — checks and mergeability before handoff to WS3.
+- `ci_status` — pipeline state.
+- `branch_delta` — full change scope for PR body.
+- `changelog_entry` — CPPRD `[Unreleased]` stub.
+
+## Procedure
+
+- [ ] Confirm feature branch and target repo (`cur/s1b/*`, not `main`).
+- [ ] Inspect status/diff/log for full change intent.
+- [ ] Update subrepo `CHANGELOG.md` `[Unreleased]` via `changelog_entry`.
+- [ ] Push branch; verify remote tracking.
+- [ ] Draft PR summary with test plan; open via `gh pr create`.
+- [ ] **Post PR link in Cursor chat** (repo, branch, URL) — not Slack.
+- [ ] Post `[PR]` / `pre_merge` gate per `execution_protocols.md` §1.2; wait for HitM merge authorization.
+- [ ] Run `pr_readiness` and `ci_status` before handoff to WS3.
+- [ ] **Do not merge** — hand off to WS3 with `Skill(s) to load: pr-review-and-merge`.
+- [ ] Return via `shared-subagent-handoff` with `Skill(s) used: pr-ops-merge-readiness`.
+
+## Handoff to Phase 5
+
+Delegation packet to WS3 must include:
+
+`Skill(s) to load: pr-review-and-merge`
+
+Plus: PR URL, branch, plan ID, validation summary, unresolved risks.
 
 ## Guidance
 
-- Prefer small, coherent commits.
-- Include why-oriented commit/PR messaging, not only what changed.
-- Do not hide failing checks; surface them with next steps.
-- Do not merge while required checks/signoffs are pending or failing.
-- Use Slack `#pull-requests` automation replies as the PR lifecycle coordination signal.
-- Resume paused PR workflows when Slack reaches final authorization state and GitHub gate conditions are satisfied.
-- Use `shared-subagent-handoff` for final readiness report.
+- Small coherent commits; why-oriented messages.
+- Do not hide failing checks — surface with next steps.
+- If GitHub `CONFLICTING`/`DIRTY`, record blocker and resolve before WS3 handoff.

@@ -1,93 +1,86 @@
 ---
 name: orchestration-manager
-description: Coordinate execution against active plans by delegating tasks to workflow-specific skills/subagents, enforcing validation gates, and retasking when failures occur. Use when managing multi-step implementation plans, parallel agent work, or final readiness checks before completion.
+description: Coordinate execution against active plans by delegating to phase-mapped skills with explicit Skill(s) to load fields, enforcing validation gates, and retasking on failures. Use when managing multi-step plans, parallel agent work, or execution coordination across repos including parent HFM.
 ---
 
 # Orchestration Manager
 
-## Mission
+Fresh coordinator scoped to the deploy-lifecycle phase map (`tp-deploy-lifecycle-skills/notes.md`).
+Absorbs parent-repo scope from the retired `multi-repo-orchestration` — repo list includes
+`finance_manager_api/`, `finance_manager_web/`, `finance_manager_cli/`, and **parent `HFM/`**
+(ecosystem/governance/submodule work).
 
-Act as the execution manager over active plans:
+## Doctrine
 
-- **Plan root:** execution-ready plans from `roadmap-rollout-planning` live under `plans/<Phase>/<Stage>/<sub-plan>/` (see that skill and `AGENTS.md` §6). Treat that directory as the canonical plan root unless explicitly overridden.
-- read current plan scope and todo state
-- assign work to the correct skill/subagent pathway
-- enforce testing and handoff gates
-- retask/replan when failures or blockers appear
-- only mark complete when readiness checks pass
+- `governance/plans/plan_lifecycle.md`, `governance/execution/execution_protocols.md`.
+- `.cursor/rules/agent-delegation.mdc` — always-applied routing (cited, not migrated).
+- `strategy/meetings/week27/meeting2026-07-02/tp-skill-generation/cursor_skill_rebuild_spec.md` — phase routing map.
 
-## Agent Wiring
+## Loads (imperative)
 
-Treat orchestration as a dedicated reusable agent profile:
+**First, read this skill file.** Then load whichever Phase 2–6b skill matches the task — always
+named explicitly in the delegation packet.
 
-- Launch as `generalPurpose` subagent with description: `Plan orchestration manager`
-- Use `.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md` as the launch prompt base
-- First step must always read this skill file before delegating tasks
+## Tools
 
-## Primary Routing Map
+- `plan_lookup` — active plan context.
+- `queue_status` — FIFO queue state.
+- `ws_status` — workspace claims.
 
-- Code review/risk checks -> `code-review-risk-triage`
-- Bug failures/regressions -> `bugfix-investigation-loop`
-- Feature delivery/refactor -> `feature-implementation-loop`
-- CI/test failures -> `ci-test-triage`
-- PR readiness/changelog/hygiene -> `pr-ops-merge-readiness`
-- Codebase discovery/unknown ownership -> `repo-exploration-briefing`
-- Multi-repo dependencies -> `multi-repo-orchestration`
-- Design docs updates -> `design-docs-sync`
-- Phase/rollout planning -> `roadmap-rollout-planning`
-- Runtime/container incidents -> `container-runtime-podman-triage`
+## Phase routing map
 
-## Orchestration Workflow
+| Phase | Skill |
+|---|---|
+| 0 Session | `session-orientation` |
+| 1 Feeder | `functional-investigation-report` |
+| 2 Pickup | `pickup-and-claim` |
+| 3 Implement | `feature-implementation-loop`, `bugfix-investigation-loop`, `ci-test-triage`, `code-review-risk-triage`, `container-runtime-podman-triage`, `repo-exploration-briefing` |
+| 4 Open PR | `pr-ops-merge-readiness` |
+| 5 Merge | `pr-review-and-merge` (WS3) |
+| 6a/6b Deploy | `deploy-execution` |
 
-- [ ] Locate the active plan under `plans/<Phase>/<Stage>/<sub-plan>/` (or the path given at launch) and read scope/todos.
-- [ ] Prefer delegating **slice** units (`T##.SL#`) per `governance/plan_template.md` §1a when the plan defines them.
-- [ ] Read active plan and identify executable task batches.
-- [ ] Classify each task into the routing map above.
-- [ ] Delegate with explicit scope, success criteria, and expected handoff format.
-- [ ] Enforce breakpoint validation before opening the next batch.
-- [ ] If a task fails, retask to the correct skill path and update the execution order.
-- [ ] Require final cross-check before completion declaration.
+**Not Cursor:** Phase 7 (HitM verify), 6c/6d (cutover — Claude/HFM), Phase 8 close (Claude/HitM).
 
-## Required Delegation Packet
+## Agent wiring
+
+- Launch as `generalPurpose` subagent, description: `Plan orchestration manager`.
+- Use `.cursor/skills/orchestration-manager/AGENT_PROMPT_TEMPLATE.md` as launch prompt base.
+- First step: read this skill file.
+
+## Orchestration workflow
+
+- [ ] Locate active plan under `plans/<Phase>/<Stage>/<status>/<sub-plan>/`.
+- [ ] Prefer slice units (`T##.SL#`) per `plan_template.md` §1a.
+- [ ] Classify each task into phase routing map above.
+- [ ] Delegate with full packet including **`Skill(s) to load: <name>`**.
+- [ ] Enforce testing breakpoints before next batch.
+- [ ] On failure, retask with updated `Skill(s) to load`.
+- [ ] Require final readiness gate before completion declaration.
+
+## Required delegation packet
 
 Every delegated task must include:
 
-1. Plan **task or slice ID** (`T##` or `T##.SL#`) and current objective
-2. Scope boundary (repo/path/system boundary)
+1. Plan task or slice ID (`T##` / `T##.SL#`) and objective
+2. Scope boundary — **include parent `HFM/` when ecosystem/governance/submodules involved**
 3. Definition of done
-4. Required verification command/checklist
-5. Known constraints (rules, contracts, runtime owner if applicable)
-6. Branch/PR expectations (feature branch, target branch, required checks/signoffs when applicable)
+4. Required verification commands/checklist
+5. Known constraints (rules, contracts, runtime owner)
+6. Branch/PR expectations
+7. **`Skill(s) to load: <name(s)`** — mandatory, never implicit
 
-## Failure and Retask Protocol
+## Failure and retask
 
-When a delegated task fails or returns partial validation:
+Per `execution_protocols.md` §2.3 — reclassify, route with new `Skill(s) to load`, re-run failed gate.
 
-1. Capture blocker category:
-   - implementation defect
-   - contract mismatch
-   - runtime/test instability
-   - missing context/ownership
-2. Reclassify and route to the right skill.
-3. Reorder remaining tasks if dependency chain changed.
-4. Re-run failed validation gate before progressing.
+## Final readiness gate
 
-## Final Readiness Gate (Pre-Completion Authority)
-
-Do not declare a plan complete until all are true:
-
-- task-level validations are passed or explicitly accepted as deferred
-- cross-repo dependencies are resolved or documented as handoff
-- changelog/docs updates are in place where behavior changed
-- runtime/testing checks for touched systems are complete
-- PR/check/signoff gates are satisfied for branches intended to merge
-- unresolved risks are listed with concrete next actions
+Do not declare complete until: validations passed, cross-repo deps resolved, changelog/docs in place,
+runtime checks done, PR gates satisfied for merge-intended branches, risks listed.
 
 ## Guardrails
 
-- Preserve repository boundaries and avoid cross-repo commit mixing.
-- Prefer deterministic verification over broad reruns.
+- Preserve repo boundaries — no cross-repo commits in one step.
 - Use `shared-subagent-handoff` for every delegated result.
-- For runtime-dependent tasks, follow single-owner protocol and testing breakpoints.
-- For PR workflows: send the **PR link in the Cursor chat** (repo, branch, URL); reconcile live **GitHub** mergeability, conflicts, and required checks before merge. Follow `governance/execution_protocols.md` for HitM Slack gates when the plan requires them.
-- If any approval signal conflicts with GitHub (`mergeable=CONFLICTING` or dirty checks), classify as `blocked` and require resolution before merge.
+- PR links in Cursor chat; GitHub reconciliation before merge.
+- `design-docs-sync` is **not** a Cursor skill — deferred to Gemini.

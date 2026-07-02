@@ -1,42 +1,42 @@
 ---
 name: security-audit-hardening
-description: Audit code and configuration for security risks, prioritize exploitability, and propose concrete hardening fixes. Use when reviewing auth, secrets, input handling, permissions, API exposure, dependency risk, or pre-release security readiness.
+description: Audit code and configuration for security risks, prioritize exploitability, and propose concrete hardening fixes. Loaded imperatively by pr-review-and-merge — not auto-triggered broadly. Use for auth, secrets, input handling, dependency risk, or pre-release security readiness.
 ---
 
 # Security Audit and Hardening
 
-## Mission
+Tool-mechanism-adjacent skill — invoked imperatively by `pr-review-and-merge`, not broad auto-trigger.
 
-Identify security weaknesses early, rank them by real risk, and drive actionable fixes without breaking product velocity.
+## Doctrine
 
-## Focus Areas
+- `governance/incident/security_protocols.md`.
 
-- Authentication/session/token handling
-- Authorization and access control checks
-- Input validation and injection surfaces
-- Sensitive data handling (PII, secrets, logs)
-- API/proxy exposure and transport security
-- Dependency and supply-chain risk
-- Container/runtime hardening baseline
-- Future crypto boundary readiness (for Rust/ZK integration)
+## Loads
 
-## Audit Workflow
+None — other skills load this one.
 
-- [ ] Define audit scope (repo/path/feature and threat assumptions).
-- [ ] Gather evidence from code, config, and runtime behavior.
-- [ ] Identify findings with severity and exploitability context.
-- [ ] Propose concrete fixes and minimum verification tests.
+## Tools
+
+- `scripts/security/run_audit.sh` — preferred when T01 fix lands.
+- Interim: direct `pip-audit` / `npm audit` per repo scope (TBV: confirm tool actually ran).
+
+## Procedure
+
+- [ ] Define audit scope (repo/path/feature, threat assumptions).
+- [ ] Run audit tooling; **TBV the output** — confirm checks executed, not silent crash → "0 findings".
+- [ ] Identify findings with severity and exploitability.
+- [ ] Propose concrete fixes and minimum verification for High/Critical.
 - [ ] Re-check high-severity findings after fixes.
-- [ ] Publish residual risks and next hardening actions.
+- [ ] Report residual risks.
 
-## Severity Model
+## Severity model
 
-- `Critical`: likely exploit path with high impact; must fix before release.
-- `High`: meaningful exposure; prioritize in current execution wave.
-- `Medium`: important hardening gap; schedule in near-term backlog.
-- `Low`: low-impact/defense-in-depth improvement.
+- **Critical** — likely exploit, high impact; block merge.
+- **High** — meaningful exposure; fix or explicit accept-with-risk before merge.
+- **Medium** — schedule near-term.
+- **Low** — defense-in-depth.
 
-## Required Output Format
+## Required output
 
 ```markdown
 ## Security Findings
@@ -51,20 +51,16 @@ Identify security weaknesses early, rank them by real risk, and drive actionable
 ## Residual Risk
 - ...
 
-## Next Hardening Slice
-- ...
+## Audit pass
+pass | fail | partial — with TBV notes on tooling
 ```
 
-## Delegation Defaults
+## Handoff
 
-- Use `explore` subagent for broad discovery and threat-surface mapping.
-- Use `generalPurpose` subagent for targeted code-level remediation planning.
-- Use `shell` subagent for dependency/runtime/security command checks.
-- Use `design-docs-sync` when security behavior/policy expectations change.
+When loaded by `pr-review-and-merge`, include in parent handoff:
+`Skill(s) used: security-audit-hardening` plus pass/fail.
 
 ## Guardrails
 
-- Prioritize exploitability and impact over style concerns.
-- Do not log secrets or sensitive tokens in findings.
-- Keep recommendations reproducible and verification-oriented.
-- For release readiness, block completion on unresolved Critical findings.
+- Do not log secrets in findings.
+- Block release readiness on unresolved Critical findings.

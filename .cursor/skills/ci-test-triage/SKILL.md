@@ -5,25 +5,38 @@ description: Triage test and CI failures quickly by classifying failure type, na
 
 # CI and Test Triage
 
-## Failure Classification
+Phase 3 slice implementation skill.
 
-- Environment/setup failure
-- Test logic regression
-- Flaky/non-deterministic behavior
-- Contract/data fixture drift
-- Tooling/lint/type enforcement
+## Doctrine
 
-## Workflow Checklist
+- `governance/plans/plan_template.md` §1a.
+- `governance/plans/definition_of_done.md`.
+- `.cursor/rules/anomaly-log.mdc` → `strategy/anomalies/anomaly_template.md`.
 
-- [ ] Capture failing command and exact error output.
-- [ ] Reproduce in the narrowest scope possible.
-- [ ] Classify failure type and likely owner layer.
-- [ ] Apply minimal fix and rerun targeted checks.
-- [ ] Run broader confidence checks as needed.
-- [ ] Report confidence level and remaining uncertainty.
+## Loads
+
+None.
+
+## Tools
+
+- `ci_status` — pipeline state and failure signals.
+- `test_api` / `test_web` / `test_rust` — local reproduction.
+- `changelog_entry` — when fix changes behavior or test infrastructure.
+
+## Procedure
+
+- [ ] Capture failing command and exact error via `ci_status` or local rerun.
+- [ ] Reproduce in narrowest scope (`test_*` targeted to failing area).
+- [ ] Classify: environment/setup | test regression | flake | fixture drift | lint/type.
+- [ ] Distinguish flake from deterministic failure before code edits.
+- [ ] Apply minimal fix; rerun targeted checks before full suite.
+- [ ] Return via `shared-subagent-handoff` with `Skill(s) used: ci-test-triage`.
+
+## Cross-plan handoff
+
+Per `execution_protocols.md` §2.2 with `Skill(s) to load` when failure reveals separate plan work.
 
 ## Guidance
 
 - Avoid full-suite reruns until targeted failures pass.
-- Distinguish flaky from deterministic failures before code edits.
-- Use `shared-subagent-handoff` for result reporting.
+- Escalate infra/auth flakes with evidence rather than masking.

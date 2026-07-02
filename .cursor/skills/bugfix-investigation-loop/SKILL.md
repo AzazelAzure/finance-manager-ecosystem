@@ -5,19 +5,43 @@ description: Run a reproduce-isolate-fix-verify loop focused on root cause and m
 
 # Bugfix Investigation Loop
 
-## Workflow Checklist
+Phase 3 slice implementation skill.
 
-- [ ] Confirm active sub-repo and scope boundary.
-- [ ] If work is tied to a governed plan, respect the assigned **task or slice** (`T##` / `T##.SL#` per `governance/plan_template.md` §1a); ask clarifying questions when reproduction scope is ambiguous instead of expanding to “whole app.”
-- [ ] Reproduce the failure with a concrete command or scenario.
-- [ ] Isolate root cause (not only symptom path).
+## Doctrine
+
+- `governance/plans/plan_template.md` §1a — slice granularity, V-tier evidence.
+- `.cursor/rules/sprint-task-specification.mdc`.
+- `governance/plans/definition_of_done.md`.
+- `governance/execution/branching_guidelines.md` §4 — bug-severity path (hotfix vs feature branch).
+- `.cursor/rules/anomaly-log.mdc` → `strategy/anomalies/anomaly_template.md`.
+- `.cursor/rules/api-architecture.mdc` — when working in API paths.
+
+## Loads
+
+None at skill entry.
+
+## Tools
+
+- `test_api` / `test_web` / `test_rust` — reproduction and regression checks.
+- `local_stack_health`, `fm_docker_status`, `env_check`.
+- `changelog_entry` — when behavior changes.
+
+## Procedure
+
+- [ ] Confirm sub-repo scope and branch (hotfix path per §4 if production-impacting).
+- [ ] Confirm task/slice ID; ask clarifying questions if reproduction scope is ambiguous.
+- [ ] Reproduce with a concrete command or scenario.
+- [ ] Isolate root cause — not symptom-only patches.
 - [ ] Apply minimal coherent fix.
-- [ ] Verify with targeted tests and sanity checks.
-- [ ] Document cause, fix, and residual risk in handoff format.
+- [ ] Verify with targeted tests; confirm regression closed.
+- [ ] Log anomalies if out-of-scope issues found.
+- [ ] Return via `shared-subagent-handoff` with `Skill(s) used: bugfix-investigation-loop`.
+
+## Cross-plan handoff
+
+Per `execution_protocols.md` §2.2 with `Skill(s) to load` for discovered cross-plan work.
 
 ## Guidance
 
 - Prefer deterministic reproductions over speculative fixes.
-- Maintain architecture boundaries from scoped rules.
-- If fix requires cross-repo changes, stop and provide handoff/follow-up plan.
-- Use `shared-subagent-handoff` for final output.
+- Cross-repo fixes require explicit handoff — do not expand scope silently.
