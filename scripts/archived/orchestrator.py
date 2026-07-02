@@ -77,7 +77,7 @@ Execute slice {slice_id} from task spec: {task_file}
 
 # PROTOCOL
 1. Read these files IN ORDER before doing anything:
-   - governance/glossary.md (terms)
+   - governance/reference/glossary.md (terms)
    - {decision_log.relative_to(REPO_ROOT)} (locked decisions)
    - {handoff.relative_to(REPO_ROOT)} (current state)
    - {task_file} (the task spec)

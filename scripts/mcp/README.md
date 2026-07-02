@@ -119,5 +119,5 @@ uv run python -c "from hfm_mcp.runner import run_script; print(run_script('scrip
 ## Related
 
 - Tool catalog draft: `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/common_commands.md`
-- Gating: `governance/workspace_protocol.md` §10, D8
+- Gating: `governance/execution/workspace_protocol.md` §10, D8
 - Inventory: `scripts/SCRIPTS.md`

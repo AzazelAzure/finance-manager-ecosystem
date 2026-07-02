@@ -9,7 +9,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-REGISTRY="$REPO_ROOT/governance/plan_registry.md"
+REGISTRY="$REPO_ROOT/governance/plans/plan_registry.md"
 OUTPUT_DIR="$REPO_ROOT/strategy/standby"
 OUTPUT="$OUTPUT_DIR/plan_stall_check.md"
 STALE_DAYS=7
@@ -65,7 +65,7 @@ echo "# Plan Stall Check"
 echo ""
 echo "**Generated:** $TODAY  "
 echo "**Stale threshold:** no commits in last ${STALE_DAYS} days  "
-echo "**Source:** \`governance/plan_registry.md\`"
+echo "**Source:** \`governance/plans/plan_registry.md\`"
 echo ""
 echo "---"
 echo ""

@@ -6,7 +6,7 @@ alwaysApply: false
 # P2: Sprint Task Specification Standard
 
 **Status:** `normative` (governance). **Locked:** 2026-05-21 — Admin Huddle Session 5 deliverable.  
-**Related:** [`agent_context_delivery.md`](../governance/archived/agent_context_delivery.md) (P1), [`plan_template.md`](../governance/plan_template.md), [`definition_of_done.md`](../governance/definition_of_done.md)
+**Related:** [`agent_context_delivery.md`](../governance/archived/agent_context_delivery.md) (P1), [`plan_template.md`](../governance/plans/plan_template.md), [`definition_of_done.md`](../governance/plans/definition_of_done.md)
 
 ---
 

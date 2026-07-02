@@ -4,7 +4,7 @@
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REGISTRY="$SCRIPT_DIR/../../governance/plan_registry.md"
+REGISTRY="$SCRIPT_DIR/../../governance/plans/plan_registry.md"
 
 [[ -f "$REGISTRY" ]] || { echo "plan_registry.md not found"; exit 1; }
 

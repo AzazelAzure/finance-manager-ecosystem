@@ -75,12 +75,12 @@ DATE=$(date +%Y-%m-%d)
   echo ""
 
   echo "## Plan Registry — Draft/Planning Section"
-  awk '/^## Draft \/ Planning/,/^## Paused/' "$REPO_ROOT/governance/plan_registry.md" 2>/dev/null \
+  awk '/^## Draft \/ Planning/,/^## Paused/' "$REPO_ROOT/governance/plans/plan_registry.md" 2>/dev/null \
     || echo "(plan_registry.md not found)"
   echo ""
 
   echo "## Plan Registry — In Progress Section"
-  awk '/^## In Progress/,/^## Ready for Execution/' "$REPO_ROOT/governance/plan_registry.md" 2>/dev/null \
+  awk '/^## In Progress/,/^## Ready for Execution/' "$REPO_ROOT/governance/plans/plan_registry.md" 2>/dev/null \
     || echo "(not found)"
   echo ""
 
@@ -104,7 +104,7 @@ DATE=$(date +%Y-%m-%d)
   echo ""
   echo "_Human-authored intent/changelog. For current runtime facts use the live block above._"
   echo ""
-  head -40 "$REPO_ROOT/governance/Runtime_Signup_Sheet.md" 2>/dev/null \
+  head -40 "$REPO_ROOT/governance/deployment/Runtime_Signup_Sheet.md" 2>/dev/null \
     || echo "(Runtime_Signup_Sheet.md not found)"
   echo ""
 

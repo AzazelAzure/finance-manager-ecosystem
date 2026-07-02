@@ -124,4 +124,4 @@ VPS SSH scripts read allowlisted keys from repo-root `.env`: `FM_SPRINT_SSH`, `V
 ## Related
 
 - Build queue: `strategy/meetings/week27/meeting2026-07-01/tp-scripts-organization/combined_commands_index.md`
-- Workspace protocol: `governance/workspace_protocol.md`
+- Workspace protocol: `governance/execution/workspace_protocol.md`
