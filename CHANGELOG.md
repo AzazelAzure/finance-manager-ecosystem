@@ -8,6 +8,11 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **`scripts/ops/fm_server_beta.sh`:** `rebuild-color` no longer stops/recreates the proxy before inactive API health is confirmed; tags last-known-good images and rolls back app containers on compose-up or health-check failure (proxy keeps serving active color).
 - **`scripts/ops/sprint_verify.sh`:** default `FM_SPRINT_FM_SCRIPT` is now `scripts/fm_server_beta.sh` (VPS path under `~/finance_manager/scripts/`, not `scripts/ops/`).
 - **`AGENTS.md`:** document VPS vs parent-repo `fm_server_beta.sh` paths and `FM_SPRINT_FM_SCRIPT` default.
+### 2026-07-06 — Fix security audit suite: bandit 1.9.4 + stop env-poisoning in lib_anomaly_write (Cursor)
+
+- **`scripts/security/TOOL_VERSIONS`:** bump `bandit` to **1.9.4** — fixes Python 3.14 `ast.Num` crash that prevented real findings.
+- **`scripts/security/lib_anomaly_write.sh`:** pass large tool output to embedded Python via temp files instead of `export` env vars — stops the env-poisoning cascade (`Argument list too long` / gitleaks false skips) for the rest of `run_audit.sh`.
+- **Verified:** `./scripts/security/run_audit.sh` completes end-to-end (bandit findings, pip-audit, npm audit, gitleaks on all three repos, semgrep).
 ### 2026-07-01 — Payment-source governance hardening + F009 T00 investigation (Cursor)
 
 - **`AGENTS.md` / `.cursor/rules/api-architecture.mdc`:** documented the `source_id` stable-linkage pattern (`PaymentSource.source_id` stored in `Transaction.source`, `BalanceSnapshot.source`, `SavingsGoal.source`, `AppProfile.spend_accounts`; API exposes display names at the boundary); added a DB query budget rule (hard cap **15 queries/call**, target **<10**).
