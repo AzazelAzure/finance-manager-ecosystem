@@ -16,6 +16,7 @@ Use this rule to decide when and how to delegate work through skills and subagen
 - `bug`, `failure`, `broken`, `regression` intent -> use `bugfix-investigation-loop`.
 - `build`, `add`, `implement`, `refactor` intent -> use `feature-implementation-loop`.
 - `tests failing`, `CI red`, `pipeline error` intent -> use `ci-test-triage`.
+- Dependabot batch, `pip-audit`, `uv lock` dependency PR volume intent -> use `dependabot-batch-triage`.
 - `PR open`, `changelog`, branch hygiene (opener) intent -> use `pr-ops-merge-readiness`.
 - `PR merge`, `WS3 review` intent -> use `pr-review-and-merge`.
 - `where/how does this work`, architecture discovery intent -> use `repo-exploration-briefing`.
