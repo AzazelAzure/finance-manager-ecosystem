@@ -45,6 +45,10 @@ Use this exact section order:
 - Status: pass | partial | blocked
 - What was verified:
 
+## Anomaly disposition
+- **Required:** `none found` **or** list of paths under `strategy/anomalies/` filed this session.
+- If triggers fired (see `anomaly-registration`) but this says `none found`, the handoff is invalid.
+
 ## Branch/PR Status
 - Branch:
 - PR URL/status:
@@ -61,6 +65,7 @@ Use this exact section order:
 ## Rules
 
 - Keep each section compact and concrete.
+- **`Anomaly disposition`** is required — same rule as `orchestration-manager` final readiness gate.
 - **`Skill(s) used`** is required — list every skill loaded, not just the primary one.
 - Call out blockers immediately instead of hiding uncertainty.
 - If no files changed, state "Changed: none".
