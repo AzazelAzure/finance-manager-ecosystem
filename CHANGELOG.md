@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — Parent governance sync: WS-PARENT wording, VPS cutover log, submodule pins (Claude)
+
+- **`AGENTS.md`:** documented `parent.queue`/`review.queue` FIFOs, `ws_dispatch.sh` `api`/`web`/`parent` routing, and auto-continue through CPPRD → `review_push.sh` → WS3 on green implementation.
+- **`governance/deployment/Runtime_Signup_Sheet.md`:** logged 2026-07-06 queue-drain blue promotion (active green → blue, HitM-verified, rollback color green warm).
+- **Submodule pins:** `finance_manager_api` `dc7092a` → `2a19c8f`, `finance_manager_web` `cb6da26` → `f7f3632` (both already-merged `origin/main` heads; parent pin was stale).
 ### 2026-07-06 — Worker checkout orientation in pickup-and-claim (Cursor)
 
 
