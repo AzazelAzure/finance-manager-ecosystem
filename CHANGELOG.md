@@ -8,6 +8,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 - **`AGENTS.md`:** documented `parent.queue`/`review.queue` FIFOs, `ws_dispatch.sh` `api`/`web`/`parent` routing, and auto-continue through CPPRD → `review_push.sh` → WS3 on green implementation.
 - **`governance/deployment/Runtime_Signup_Sheet.md`:** logged 2026-07-06 queue-drain blue promotion (active green → blue, HitM-verified, rollback color green warm).
 - **Submodule pins:** `finance_manager_api` `dc7092a` → `2a19c8f`, `finance_manager_web` `cb6da26` → `f7f3632` (both already-merged `origin/main` heads; parent pin was stale).
+### 2026-07-06 — Parent dispatch dirty-worktree gate (T07) (Cursor)
+
+- **`scripts/workspace/ws_dispatch.sh`:** refuse `parent` dispatch when the primary checkout has uncommitted changes; add `--force-dirty` override for HitM-confirmed safe cases; `--dry-run` unchanged.
+- **`governance/execution/workspace_protocol.md`:** document the gate (replaces advisory-only collision note in §5).
 ### 2026-07-06 — Worker checkout orientation in pickup-and-claim (Cursor)
 
 
