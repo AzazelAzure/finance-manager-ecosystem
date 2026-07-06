@@ -3,6 +3,9 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — Codex review dry-run temp-dir cleanup (T2B) (Cursor)
+
+- **`scripts/ops/codex_review.sh`:** `cleanup_work` guard replaces quoted EXIT trap so `set -u` never trips on unbound `work`; dry-run preserves temp dir via `preserve_work` flag.
 ### 2026-07-06 — Codex review KB8 NEEDS_HITM gate (T2A) (Cursor)
 
 - **`scripts/ops/codex_review.sh`:** failing/pending CI checks short-circuit to `NEEDS_HITM` before Codex invocation; prompt rules updated so KB8 never maps to `REQUEST_CHANGES`.
