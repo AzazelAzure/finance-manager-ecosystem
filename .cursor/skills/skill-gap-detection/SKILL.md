@@ -23,10 +23,10 @@ None fixed — reviews session activity, not a specific external tool.
 ## Scheduling — resolved 2026-07-02
 
 HitM: each agent self-schedules independently rather than routing through Antigravity or staying
-purely on-demand. For this instance: a Cursor-side recurring trigger — likely a
-`scripts/local/`-style cron installer (matching `scripts/local/schedule_agent_sync.sh`'s existing
-pattern for a different job) invoking `cursor agent` on this skill. Not yet built as a live cron
-job — this records the design decision; the actual installer script is a separate task.
+purely on-demand. For this instance: **`scripts/local/schedule_skill_gap.sh`** (cron installer via
+`--print-cron`) runs `transcript_pattern_scan` weekly and writes
+`strategy/automations/reports/skill_gap_scan_<date>.md`. Live cron is opt-in — paste the printed
+line into `crontab -e` after review.
 
 ## Procedure
 
