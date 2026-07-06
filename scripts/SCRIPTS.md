@@ -66,6 +66,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `branch_delta.sh` | Ahead/behind vs `origin/main` for parent/api/web |
 | `stash_triage.sh` | List git stashes across parent/api/web |
 | `dependabot_batch.sh` | Open Dependabot PRs (api/web) |
+| `transcript_pattern_scan.sh` | Count recurring patterns in Cursor agent transcripts |
 | `celery_ready.sh` | Local Podman Celery worker/beat presence |
 | `env_check.sh` | Verify `.env` keys against `.env.example` |
 | `test_rust.sh` | `cargo test` in `finance_manager_rust_tools` |
