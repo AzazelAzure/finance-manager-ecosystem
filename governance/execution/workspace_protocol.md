@@ -98,6 +98,8 @@ scripts/workspace/ws_status.sh --ws WS1     # single workspace line
 
 **Planning-session deliverable (per `planning_protocol_changes.md`):** a dispatching planning session closes by having Claude Code write queue entries directly via `queue_push.sh`, not just narrate tasks. Enqueuing **is** the approval — HitM already said "dispatch X" by deciding the task belongs in the session output.
 
+**Opener → WS3 handoff:** after `gh pr create`, the opener runs `review_push.sh` (see §6) so WS3 can drain `review.queue` via `ws_review.sh --next` instead of requiring an explicit `<repo> <pr_number>` per PR.
+
 ---
 
 ## 5. Dispatch pipeline (`ws_dispatch.sh`)
@@ -127,20 +129,39 @@ Flow: `queue_pop.sh <repo>` → resolve real task file (`plans/.../tasks/T##_*.m
 
 ---
 
-## 6. Review pipeline (`ws_review.sh`)
+## 6. Review pipeline (`ws_review.sh` + `review.queue`)
 
-**Also not in the original Tier 1 list.** Operates on GitHub PR numbers directly — see §7.2 for how this diverges from the `review.queue` design in `planning_protocol_changes.md`.
+**Also not in the original Tier 1 list.** WS3 reviews PRs from a FIFO `review.queue` (gitignored at `strategy/workspace/review.queue`) or via explicit PR number.
 
 ```
 ws_review.sh <repo> <pr_number> --auto
 ws_review.sh <repo> <pr_number> --approve
 ws_review.sh <repo> <pr_number> --reject "reason"
+ws_review.sh --next [--auto|--approve|--reject "reason"]
 ```
 
-Always claims `WS3` for the duration of the review, releases after.
+| Script | Does |
+|---|---|
+| `review_push.sh <target_repo> <pr_number> <task_id> <agent>` | Append a `PENDING` review entry. `target_repo ∈ {api, web, parent}`. Rejects duplicate `review_key` (`<repo>-<pr>`). |
+| `review_pop.sh` | Claim oldest `PENDING` entry (flock-protected), mark `CLAIMED`, print `TARGET_REPO\|PR_NUMBER\|TASK_ID\|AGENT`. |
+| `review_done.sh <review_key> [--failed]` | Mark `DONE` or `FAILED`, stamp `RELEASED_AT`. |
+| `review_status.sh` | Print `review.queue` as a table. |
+
+**Queue format:** `REVIEW_KEY|TARGET_REPO|PR_NUMBER|TASK_ID|AGENT|STATUS|ENQUEUED_AT|CLAIMED_AT|RELEASED_AT`, `STATUS ∈ {PENDING, CLAIMED, DONE, FAILED}`.
+
+**Opener contract:** `pr-ops-merge-readiness` enqueues via `review_push.sh` immediately after `gh pr create`. WS3 drains with `ws_review.sh --next`.
+
+Always claims `WS3` for the duration of the review, releases after. `repo` / `target_repo` map:
+
+| repo | GitHub |
+|---|---|
+| `api` | `AzazelAzure/finance-manager-api` |
+| `web` | `AzazelAzure/finance-manager-web` |
+| `parent` | `AzazelAzure/finance-manager-ecosystem` |
 
 - **`--approve` / `--reject`:** manual override. Since `gh pr review --approve`/`--request-changes` fail on PRs authored by the same account, both paths use `gh pr comment` + (`--approve` only) `gh pr merge --squash --delete-branch`.
 - **`--auto`:** pulls the PR diff via `gh pr diff`. Hard-rejects (comment + leave open) if the diff contains a `FIXME` marker. Otherwise, if `WS3/` exists and the `claude` CLI is available, hands the diff to a Claude sub-agent in `WS3` with a fixed review brief (reject on FIXME/TODO/HACK, incoherent diff vs. title, secrets in diff, or a smoke deliverable not showing `status: PASS`) and acts on its `REVIEW_DECISION: APPROVE | REQUEST_CHANGES` line. If neither `WS3/` nor `claude` is available, falls back to heuristic-only approval (comment + merge) — **no FIXME found is treated as sufficient to merge** in that fallback path.
+- **`--next`:** pops from `review.queue`, runs the chosen action, then `review_done.sh` (`DONE` on merge, `FAILED` on changes requested).
 
 ---
 
@@ -149,8 +170,8 @@ Always claims `WS3` for the duration of the review, releases after.
 ### 7.1 Concurrency — verified, not just designed
 `ws_claim.sh` and `queue_pop.sh` both take an exclusive `flock` on a sidecar `.lock` file before reading/writing. This was tested under real contention (`CONCUR-001/002/003` in `api.queue`, all correctly `FAILED` against a held claim) — the advisory-claim model (D4) plus `flock` exclusivity holds.
 
-### 7.2 No `review.queue` file exists
-`planning_protocol_changes.md` designed a `strategy/workspace/review.queue` that `WS3` would pop from. The implemented `ws_review.sh` instead takes an explicit `<repo> <pr_number>` argument — there is no review queue file, and nothing currently signals `WS3` that a PR is ready. In practice, review has been invoked directly by whoever dispatched the task. **Open gap:** if the queue-driven planning model in §4 is meant to include automatic review hand-off, `queue_push.sh` needs a `review` repo target wired up, or `ws_dispatch.sh` needs to auto-enqueue a review entry on successful dispatch. Not yet built.
+### 7.2 Review queue — implemented (2026-07-06)
+`planning_protocol_changes.md` designed `strategy/workspace/review.queue` for WS3. Previously only explicit `ws_review.sh <repo> <pr>` worked. **`review_push.sh` / `review_pop.sh` / `ws_review.sh --next`** now close the opener→WS3 handoff gap; see §6.
 
 ### 7.3 Smoke pilot already ran — end-to-end, against real repos
 Both `ws_dispatch.sh` and `ws_review.sh` were exercised today (2026-07-01, 04:08–05:27 UTC) with synthetic `SMOKE-*` tasks against the **actual** `finance_manager_api` (PRs #74–#78, all merged) and `finance_manager_web` (PRs #104–#105, merged) repos — not a sandbox. This validates the dispatch→review→merge loop end-to-end, including a real `cursor` CLI invocation (`CURSOR-TEST-001`, PR #78). Two loose ends from that pilot are logged as an anomaly rather than fixed inline here: leftover `smoke_test/*.txt` files committed to both repos' `main`, and a reject-path test (`SMOKE-API-REJECT-001`, PR #77) that shows `MERGED` instead of rejected. See `strategy/anomalies/2026-07-01_tp-workspace-setup_smoke-pilot-artifacts-and-reject-merge.md`. **This pilot activity substantially de-risks the F-006/F-009 pilot** (§9) but the two loose ends should be resolved before real feature dispatch begins.
