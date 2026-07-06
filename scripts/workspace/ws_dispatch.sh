@@ -14,6 +14,7 @@
 #   ws_dispatch.sh <repo>              # api | web | parent  (cursor mode)
 #   ws_dispatch.sh <repo> --direct     # in-process execution (smoketest/fallback)
 #   ws_dispatch.sh <repo> --dry-run    # show task brief without executing
+#   ws_dispatch.sh <repo> --force-dirty  # parent only: bypass dirty-worktree gate
 
 set -euo pipefail
 
@@ -28,22 +29,47 @@ SCRIPTS_DIR="$PRIMARY/scripts/workspace"
 ROOT_DIR="$(dirname "$PRIMARY")"
 
 # ── args ───────────────────────────────────────────────────────────────────────
-[[ $# -lt 1 ]] && { printf 'Usage: ws_dispatch.sh <repo> [--direct|--dry-run]\n' >&2; exit 1; }
-REPO="$1"; MODE="cursor"; DRY_RUN=0
-case "${2:-}" in
-  --direct)  MODE="direct" ;;
-  --dry-run) DRY_RUN=1 ;;
-esac
+[[ $# -lt 1 ]] && { printf 'Usage: ws_dispatch.sh <repo> [--direct|--dry-run|--force-dirty]\n' >&2; exit 1; }
+REPO="$1"; shift
+MODE="cursor"; DRY_RUN=0; FORCE_DIRTY=0
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --direct)      MODE="direct" ;;
+    --dry-run)     DRY_RUN=1 ;;
+    --force-dirty) FORCE_DIRTY=1 ;;
+    *)
+      printf 'Usage: ws_dispatch.sh <repo> [--direct|--dry-run|--force-dirty]\n' >&2
+      printf 'Error: unknown option %q\n' "$1" >&2
+      exit 1
+      ;;
+  esac
+  shift
+done
 
 # ── repo → workspace + worker directory map ────────────────────────────────────
-# parent runs in-place on HFM (not an isolated worker clone). Advisory claim only —
-# confirm no concurrent Claude Code admin session is mid-edit before dispatching.
+# parent runs in-place on HFM (not an isolated worker clone). Dirty-worktree gate
+# blocks dispatch unless --force-dirty (see assert_parent_worktree_clean_for_dispatch).
 case "$REPO" in
   api)    WORKSPACE="WS1"; WORKER_DIR="$ROOT_DIR/WS-API" ;;
   web)    WORKSPACE="WS2"; WORKER_DIR="$ROOT_DIR/WS-WEB" ;;
   parent) WORKSPACE="HFM"; WORKER_DIR="$PRIMARY" ;;
   *) printf 'Error: unknown repo %q. Expected: api | web | parent\n' "$REPO" >&2; exit 1 ;;
 esac
+
+assert_parent_worktree_clean_for_dispatch() {
+  [[ "$REPO" == "parent" ]] || return 0
+  [[ "$DRY_RUN" -eq 0 ]] || return 0
+  [[ "$FORCE_DIRTY" -eq 0 ]] || return 0
+  local dirty
+  dirty="$(git -C "$PRIMARY" status --porcelain)"
+  if [[ -n "$dirty" ]]; then
+    printf 'Error: parent checkout has uncommitted changes — commit, stash, or pass --force-dirty after confirming no concurrent admin session before dispatching parent-scoped work.\n' >&2
+    git -C "$PRIMARY" status --short >&2
+    exit 1
+  fi
+}
+
+assert_parent_worktree_clean_for_dispatch
 
 [[ ! -d "$WORKER_DIR" ]] && {
   printf 'Error: worker directory not found: %s\n' "$WORKER_DIR" >&2; exit 1
@@ -113,7 +139,7 @@ worker_governance_excerpt() {
   printf '## Governance (live excerpt from AGENTS.md)\n\n'
   sed -n '/^## §0 Three-tool model/,/^## §2 /p' "$agents_md" | head -35
   if [[ "$REPO" == "parent" ]]; then
-    printf '\n**Worker scope:** Parent-repo execution in HFM primary checkout — branch prefix `cur/s1b/`, one PR per task, parent CHANGELOG when behavior changes. Same directory Claude Code may use for admin; confirm no concurrent admin edit before dispatch.\n'
+    printf '\n**Worker scope:** Parent-repo execution in HFM primary checkout — branch prefix `cur/s1b/`, one PR per task, parent CHANGELOG when behavior changes. `ws_dispatch.sh parent` refuses when the worktree is dirty unless `--force-dirty` is passed.\n'
   else
     printf '\n**Worker scope:** Per-repo execution clone — branch prefix `cur/s1b/`, one PR per task, subrepo CHANGELOG when behavior changes. Do not edit parent governance/plans unless the task requires it.\n'
   fi

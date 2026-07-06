@@ -107,7 +107,7 @@ scripts/workspace/ws_status.sh --ws WS1     # single workspace line
 **Not in the original Tier 1 script list in `orchestration_tools.md` — built and validated beyond the original design scope.** This is the actual execution path from queue entry to merged PR.
 
 ```
-ws_dispatch.sh <repo> [--direct | --dry-run]     # repo ∈ {api, web, parent}
+ws_dispatch.sh <repo> [--direct | --dry-run | --force-dirty]     # repo ∈ {api, web, parent}
 ```
 
 Repo → orchestrator workspace → worker directory mapping (hardcoded in the script):
@@ -118,7 +118,7 @@ Repo → orchestrator workspace → worker directory mapping (hardcoded in the s
 | `web` | `WS2` | `WS-WEB` |
 | `parent` | `HFM` | `HFM` (primary checkout — **in-place**, not an isolated clone) |
 
-**`parent` dispatch risk:** unlike `WS-API`/`WS-WEB`, `parent` runs in the same directory Claude Code may use for admin/governance work. `ws_claim.sh HFM` is advisory-only (warns, does not hard-block). Confirm no concurrent Claude Code session is mid-edit before `ws_dispatch.sh parent`.
+**`parent` dispatch gate:** unlike `WS-API`/`WS-WEB`, `parent` runs in the same directory Claude Code may use for admin/governance work. Before `queue_pop`, `ws_dispatch.sh parent` **refuses** when `git status --porcelain` is non-empty in the primary checkout (lists dirty paths). Pass `--force-dirty` only after a human confirms no concurrent admin edit. `--dry-run` is not gated (peek only). `ws_claim.sh HFM` remains advisory-only.
 
 Flow: `queue_pop.sh <repo>` → resolve real task file (`plans/.../tasks/T##_*.md` from `PLAN_ID` + `TASK_ID`; **fail loudly** if not found) → `ws_claim.sh` → execute → `queue_done.sh` (`DONE` or `--failed`) → `ws_release.sh`.
 
@@ -126,6 +126,7 @@ Flow: `queue_pop.sh <repo>` → resolve real task file (`plans/.../tasks/T##_*.m
 - **`cursor` (default):** invokes `cursor agent --print --workspace <worker-dir> --trust --force` with a generated brief that **embeds the resolved task file verbatim** plus CPPR execution steps (sync `main`, create task branch, implement per task file, commit, push, `gh pr create`, print `DISPATCH_RESULT: SUCCESS|FAILED`). Requires the `cursor` CLI. Replaces the earlier smoke-test-only brief.
 - **`--direct`:** retained for smoke pilot only; real queued tasks with resolved task files require `cursor` mode (direct mode refuses rather than silently falling back to smoke stubs).
 - **`--dry-run`:** peeks the next `PENDING` task, resolves the task file, prints brief preview; no queue or lockfile mutation.
+- **`--force-dirty`:** (`parent` only) bypass the dirty-worktree gate when HitM has confirmed no concurrent admin session.
 
 ---
 
