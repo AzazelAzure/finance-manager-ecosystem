@@ -7,10 +7,11 @@
 # Modes:
 #   cursor (default) — invoke a headless Cursor agent in the worker directory
 #                      via: cursor agent --print --workspace <dir> --trust --force
-#   direct           — execute git/PR work in-process (smoketest / no Cursor available)
+#   direct           — in-process smoke fallback (pilot only; real tasks use cursor)
+#   --dry-run        — show task brief without executing
 #
 # Usage:
-#   ws_dispatch.sh <repo>              # api | web  (cursor mode)
+#   ws_dispatch.sh <repo>              # api | web | parent  (cursor mode)
 #   ws_dispatch.sh <repo> --direct     # in-process execution (smoketest/fallback)
 #   ws_dispatch.sh <repo> --dry-run    # show task brief without executing
 
@@ -35,14 +36,129 @@ case "${2:-}" in
 esac
 
 # ── repo → workspace + worker directory map ────────────────────────────────────
+# parent runs in-place on HFM (not an isolated worker clone). Advisory claim only —
+# confirm no concurrent Claude Code admin session is mid-edit before dispatching.
 case "$REPO" in
-  api) WORKSPACE="WS1"; WORKER_DIR="$ROOT_DIR/WS-API" ;;
-  web) WORKSPACE="WS2"; WORKER_DIR="$ROOT_DIR/WS-WEB" ;;
-  *) printf 'Error: unknown repo %q. Expected: api | web\n' "$REPO" >&2; exit 1 ;;
+  api)    WORKSPACE="WS1"; WORKER_DIR="$ROOT_DIR/WS-API" ;;
+  web)    WORKSPACE="WS2"; WORKER_DIR="$ROOT_DIR/WS-WEB" ;;
+  parent) WORKSPACE="HFM"; WORKER_DIR="$PRIMARY" ;;
+  *) printf 'Error: unknown repo %q. Expected: api | web | parent\n' "$REPO" >&2; exit 1 ;;
 esac
 
 [[ ! -d "$WORKER_DIR" ]] && {
   printf 'Error: worker directory not found: %s\n' "$WORKER_DIR" >&2; exit 1
+}
+
+# ── task file resolution (plan_lookup mirror + README plan_id fallback) ─────────
+resolve_plan_dir() {
+  local plan_id="$1"
+  local short="${plan_id#PLAN_}"
+  local found readme
+  found="$(find "$PRIMARY/plans" -maxdepth 4 -type d -iname "*${short}*" 2>/dev/null | head -1)"
+  if [[ -n "$found" ]]; then
+    printf '%s\n' "$found"
+    return 0
+  fi
+  # Directory slug often differs from PLAN_ID (e.g. security-audit-fixes vs CROSS_SECURITY_AUDIT_FIXES)
+  readme="$(grep -ril "plan_id:[[:space:]]*${plan_id}" "$PRIMARY/plans" 2>/dev/null | grep '/README\.md$' | head -1)"
+  if [[ -n "$readme" && -f "$readme" ]]; then
+    dirname "$readme"
+    return 0
+  fi
+  return 1
+}
+
+resolve_task_num() {
+  local task_id="$1"
+  if [[ "$task_id" =~ (T[0-9]+)$ ]]; then
+    printf '%s\n' "${BASH_REMATCH[1]}"
+    return 0
+  fi
+  return 1
+}
+
+resolve_task_file() {
+  local plan_dir="$1"
+  local task_num="$2"
+  [[ -d "$plan_dir/tasks" ]] || return 1
+  find "$plan_dir/tasks" -maxdepth 1 -iname "${task_num}_*.md" 2>/dev/null | head -1
+}
+
+fail_task_resolution() {
+  local reason="$1"
+  printf 'Error: %s\n' "$reason" >&2
+  if [[ "$DRY_RUN" -eq 0 && -n "${TASK_ID:-}" ]]; then
+    "$SCRIPTS_DIR/queue_done.sh" "$REPO" "$TASK_ID" --failed >&2
+  fi
+  exit 1
+}
+
+resolve_task_context() {
+  PLAN_DIR=""
+  TASK_NUM=""
+  TASK_FILE=""
+  PLAN_DIR="$(resolve_plan_dir "$PLAN_ID")"
+  [[ -n "$PLAN_DIR" ]] || fail_task_resolution "plan directory not found for PLAN_ID=${PLAN_ID} (task ${TASK_ID})"
+  TASK_NUM="$(resolve_task_num "$TASK_ID")" || fail_task_resolution "could not extract task number from TASK_ID=${TASK_ID}"
+  TASK_FILE="$(resolve_task_file "$PLAN_DIR" "$TASK_NUM")"
+  [[ -n "$TASK_FILE" && -f "$TASK_FILE" ]] || fail_task_resolution "task file not found for ${TASK_ID} under ${PLAN_DIR}/tasks (not dispatching)"
+}
+
+worker_governance_excerpt() {
+  local agents_md="$PRIMARY/AGENTS.md"
+  if [[ ! -f "$agents_md" ]]; then
+    printf '## Governance (live excerpt)\nAGENTS.md not found at primary workspace.\n'
+    return
+  fi
+  printf '## Governance (live excerpt from AGENTS.md)\n\n'
+  sed -n '/^## §0 Three-tool model/,/^## §2 /p' "$agents_md" | head -35
+  if [[ "$REPO" == "parent" ]]; then
+    printf '\n**Worker scope:** Parent-repo execution in HFM primary checkout — branch prefix `cur/s1b/`, one PR per task, parent CHANGELOG when behavior changes. Same directory Claude Code may use for admin; confirm no concurrent admin edit before dispatch.\n'
+  else
+    printf '\n**Worker scope:** Per-repo execution clone — branch prefix `cur/s1b/`, one PR per task, subrepo CHANGELOG when behavior changes. Do not edit parent governance/plans unless the task requires it.\n'
+  fi
+}
+
+build_cursor_brief() {
+  local changelog_note
+  if [[ "$REPO" == "parent" ]]; then
+    changelog_note="update parent \`CHANGELOG.md\` \`[Unreleased]\` if behavior changed"
+  else
+    changelog_note="update the subrepo \`CHANGELOG.md\` \`[Unreleased]\` if behavior changed"
+  fi
+
+  cat <<ENDBRIEF
+# HFM Worker Task
+
+You are a Cursor agent worker for the Hive Financial Manager project executing
+a queued task in your workspace (${WORKER_DIR}).
+
+## Task metadata
+- Task ID   : ${TASK_ID}
+- Plan ID   : ${PLAN_ID}
+- Branch    : ${BRANCH}
+- Agent     : ${AGENT}
+- Repo      : ${REPO}
+- Dispatched: ${DISPATCHED_AT}
+- Task file : ${TASK_FILE}
+
+$(worker_governance_excerpt)
+
+## Your actual task
+
+$(cat "$TASK_FILE")
+
+## Execution requirements
+
+1. Sync to latest main, create the task branch (\`${BRANCH}\`).
+2. Do the work described above — the task file is the authoritative spec, not this brief.
+3. Follow standard CPPR discipline (\`deploy/CPPR_AND_CPPRD.md\`,
+   \`governance/execution/execution_protocols.md\` §1.2): commit, push, ${changelog_note}, open a PR via \`gh pr create\`.
+4. Print the PR URL.
+5. Print exactly: DISPATCH_RESULT: SUCCESS ${TASK_ID}
+
+If any step fails, print: DISPATCH_RESULT: FAILED ${TASK_ID} <reason>
+ENDBRIEF
 }
 
 # ── pop (or peek) next PENDING task ───────────────────────────────────────────
@@ -66,93 +182,42 @@ BRANCH=$(printf '%s'  "$TASK_LINE"  | cut -d'|' -f3)
 AGENT=$(printf '%s'   "$TASK_LINE"  | cut -d'|' -f4)
 DISPATCHED_AT="$(date -u +%Y-%m-%dT%H:%M)"
 
-worker_governance_excerpt() {
-  local agents_md="$PRIMARY/AGENTS.md"
-  if [[ ! -f "$agents_md" ]]; then
-    printf '## Governance (live excerpt)\nAGENTS.md not found at primary workspace.\n'
-    return
-  fi
-  printf '## Governance (live excerpt from AGENTS.md)\n\n'
-  sed -n '/^## §0 Three-tool model/,/^## §2 /p' "$agents_md" | head -35
-  printf '\n**Worker scope:** Per-repo execution clone — branch prefix `cur/s1b/`, one PR per task, subrepo CHANGELOG when behavior changes. Do not edit parent governance/plans unless the task requires it.\n'
-}
-
 printf '   task=%s  plan=%s  branch=%s  agent=%s\n' \
   "$TASK_ID" "$PLAN_ID" "$BRANCH" "$AGENT" >&2
 
-# ── claim workspace (real mode only) ──────────────────────────────────────────
-[[ "$DRY_RUN" -eq 0 ]] && "$SCRIPTS_DIR/ws_claim.sh" "$WORKSPACE" "$AGENT" "$TASK_ID" "$BRANCH" >&2
+resolve_task_context
+printf '   plan_dir=%s  task_file=%s\n' "$PLAN_DIR" "$TASK_FILE" >&2
 
-# ── dry run: exit early ────────────────────────────────────────────────────────
+# ── dry run: show brief preview, exit early ────────────────────────────────────
 if [[ "$DRY_RUN" -eq 1 ]]; then
   printf '\nTask: %s | Plan: %s | Branch: %s | Agent: %s\n' \
     "$TASK_ID" "$PLAN_ID" "$BRANCH" "$AGENT"
   printf 'Worker dir: %s\n' "$WORKER_DIR"
+  printf 'Workspace claim: %s\n' "$WORKSPACE"
   printf 'Mode: %s\n' "$MODE"
-  printf '[DRY RUN] No queue or workspace state changed.\n'
+  printf 'Resolved task file: %s\n' "$TASK_FILE"
+  printf '\n── Brief preview (first 40 lines) ──\n'
+  build_cursor_brief | head -40
+  printf '\n[DRY RUN] No queue or workspace state changed.\n'
   exit 0
 fi
+
+# ── claim workspace (real mode only) ──────────────────────────────────────────
+"$SCRIPTS_DIR/ws_claim.sh" "$WORKSPACE" "$AGENT" "$TASK_ID" "$BRANCH" >&2
 
 # ── execute ────────────────────────────────────────────────────────────────────
 FINAL_STATUS="FAILED"
 PR_URL=""
 
 if [[ "$MODE" == "cursor" ]]; then
-  # ── cursor mode: headless Cursor agent executes in the worker directory ───────
-  # cursor agent --print gives full tool access (read + write + shell).
-  # --trust skips workspace trust prompts in headless mode.
-  # --force allows all commands without per-command confirmation.
   command -v cursor &>/dev/null || {
-    printf 'Error: cursor CLI not found. Install Cursor or use --direct mode.\n' >&2; exit 1
+    printf 'Error: cursor CLI not found. Install Cursor or use --direct mode.\n' >&2
+    "$SCRIPTS_DIR/queue_done.sh" "$REPO" "$TASK_ID" --failed >&2
+    "$SCRIPTS_DIR/ws_release.sh" "$WORKSPACE" >&2
+    exit 1
   }
 
-  BRIEF="$(cat <<ENDBRIEF
-# HFM Worker Task
-
-You are a Cursor agent worker for the Hive Financial Manager project executing
-a queued task in your workspace (${WORKER_DIR}).
-
-## Task metadata
-- Task ID   : ${TASK_ID}
-- Plan ID   : ${PLAN_ID}
-- Branch    : ${BRANCH}
-- Agent     : ${AGENT}
-- Repo      : ${REPO}
-- Dispatched: ${DISPATCHED_AT}
-
-$(worker_governance_excerpt)
-
-## Your job
-
-Execute each step and report results. Shell access is enabled.
-
-1. Verify you are in the correct repo: run \`git status\`
-2. Sync to latest main:
-   git fetch origin
-   git checkout main
-   git pull --ff-only origin main
-3. Create task branch:
-   git checkout -b ${BRANCH}
-4. Create the task deliverable file \`smoke_test/${TASK_ID}.txt\`:
-   smoke_test: ${TASK_ID}
-   plan: ${PLAN_ID}
-   branch: ${BRANCH}
-   agent: ${AGENT}
-   dispatched: ${DISPATCHED_AT}
-   status: PASS
-5. Stage, commit, push:
-   git add smoke_test/${TASK_ID}.txt
-   git commit -m "smoke: ${TASK_ID} - add smoke test deliverable"
-   git push -u origin ${BRANCH}
-6. Open a GitHub PR:
-   gh pr create --title "[SMOKE] ${TASK_ID}: ${BRANCH}" \
-     --body "Smoke test task ${TASK_ID} (plan ${PLAN_ID}, agent ${AGENT})"
-7. Print the PR URL.
-8. Print exactly: DISPATCH_RESULT: SUCCESS ${TASK_ID}
-
-If any step fails, print: DISPATCH_RESULT: FAILED ${TASK_ID} <reason>
-ENDBRIEF
-)"
+  BRIEF="$(build_cursor_brief)"
 
   printf '── Invoking Cursor agent in %s ──\n' "$WORKER_DIR" >&2
   AGENT_OUTPUT=""
@@ -169,36 +234,9 @@ ENDBRIEF
   fi
 
 else
-  # ── direct mode: git/PR work executed in-process (smoketest / fallback) ───────
-  printf '── Executing task directly in %s ──\n' "$WORKER_DIR" >&2
-  (
-    set -euo pipefail
-    cd "$WORKER_DIR"
-
-    git fetch origin >&2
-    git checkout main >&2
-    git pull --ff-only origin main >&2
-    git checkout -b "$BRANCH" >&2
-
-    mkdir -p smoke_test
-    printf 'smoke_test: %s\nplan: %s\nbranch: %s\nagent: %s\ndispatched: %s\nstatus: PASS\n' \
-      "$TASK_ID" "$PLAN_ID" "$BRANCH" "$AGENT" "$DISPATCHED_AT" > "smoke_test/${TASK_ID}.txt"
-
-    git add "smoke_test/${TASK_ID}.txt" >&2
-    git commit -m "smoke: ${TASK_ID} - add smoke test deliverable" >&2
-    git push -u origin "$BRANCH" >&2
-
-    PR_BODY="$(printf 'Automated smoke test PR.\n\nTask: %s\nPlan: %s\nAgent: %s\nDispatched: %s\n\nCreated by ws_dispatch.sh (direct mode).' \
-      "$TASK_ID" "$PLAN_ID" "$AGENT" "$DISPATCHED_AT")"
-
-    PR_URL_OUT=$(gh pr create \
-      --repo "$(git remote get-url origin | sed 's|.*github.com[:/]\(.*\)\.git|\1|')" \
-      --title "[SMOKE] ${TASK_ID}: ${BRANCH}" \
-      --body "$PR_BODY" \
-      --head "$BRANCH" 2>&1)
-    printf 'PR: %s\n' "$PR_URL_OUT" >&2
-    printf 'DISPATCH_RESULT: SUCCESS %s\nPR_URL: %s\n' "$TASK_ID" "$PR_URL_OUT"
-  ) && FINAL_STATUS="DONE" || FINAL_STATUS="FAILED"
+  # direct mode retained for smoke pilot only — real queued tasks require cursor mode
+  printf 'Error: --direct mode cannot execute real task files. Use cursor mode (default).\n' >&2
+  FINAL_STATUS="FAILED"
 fi
 
 # ── mark task done/failed ──────────────────────────────────────────────────────

@@ -85,13 +85,13 @@ scripts/workspace/ws_status.sh --ws WS1     # single workspace line
 
 ## 4. FIFO task queues
 
-**Location:** `strategy/workspace/<repo>.queue` — gitignored, admin workspace only. Live queues: `api.queue`, `web.queue`.
+**Location:** `strategy/workspace/<repo>.queue` — gitignored, admin workspace only. Live queues: `api.queue`, `web.queue`, `parent.queue`.
 
 **Format:** `TASK_ID|PLAN_ID|BRANCH|AGENT|STATUS|ENQUEUED_AT|CLAIMED_AT|RELEASED_AT`, `STATUS ∈ {PENDING, CLAIMED, DONE, FAILED}`.
 
 | Script | Does |
 |---|---|
-| `queue_push.sh <repo> <task_id> <plan_id> <branch> <agent>` | Append a `PENDING` entry. Rejects duplicate `task_id`. |
+| `queue_push.sh <repo> <task_id> <plan_id> <branch> <agent>` | Append a `PENDING` entry. Rejects duplicate `task_id`. `repo` ∈ `{api, web, parent}`. |
 | `queue_pop.sh <repo>` | Claim the oldest `PENDING` entry (flock-protected), mark `CLAIMED`, print `TASK_ID\|PLAN_ID\|BRANCH\|AGENT` to stdout. |
 | `queue_done.sh <repo> <task_id> [--failed]` | Mark `DONE` or `FAILED`, stamp `RELEASED_AT`. |
 | `queue_status.sh [repo...]` | Print one or all queues as a table. No args = all. |
@@ -105,7 +105,7 @@ scripts/workspace/ws_status.sh --ws WS1     # single workspace line
 **Not in the original Tier 1 script list in `orchestration_tools.md` — built and validated beyond the original design scope.** This is the actual execution path from queue entry to merged PR.
 
 ```
-ws_dispatch.sh <repo> [--direct | --dry-run]     # repo ∈ {api, web}
+ws_dispatch.sh <repo> [--direct | --dry-run]     # repo ∈ {api, web, parent}
 ```
 
 Repo → orchestrator workspace → worker directory mapping (hardcoded in the script):
@@ -114,13 +114,16 @@ Repo → orchestrator workspace → worker directory mapping (hardcoded in the s
 |---|---|---|
 | `api` | `WS1` | `WS-API` |
 | `web` | `WS2` | `WS-WEB` |
+| `parent` | `HFM` | `HFM` (primary checkout — **in-place**, not an isolated clone) |
 
-Flow: `queue_pop.sh <repo>` → `ws_claim.sh <WS1\|WS2>` → execute (see modes below) → `queue_done.sh` (`DONE` or `--failed`) → `ws_release.sh`.
+**`parent` dispatch risk:** unlike `WS-API`/`WS-WEB`, `parent` runs in the same directory Claude Code may use for admin/governance work. `ws_claim.sh HFM` is advisory-only (warns, does not hard-block). Confirm no concurrent Claude Code session is mid-edit before `ws_dispatch.sh parent`.
+
+Flow: `queue_pop.sh <repo>` → resolve real task file (`plans/.../tasks/T##_*.md` from `PLAN_ID` + `TASK_ID`; **fail loudly** if not found) → `ws_claim.sh` → execute → `queue_done.sh` (`DONE` or `--failed`) → `ws_release.sh`.
 
 **Modes:**
-- **`cursor` (default):** invokes `cursor agent --print --workspace <worker-dir> --trust --force` with a generated task brief (sync to `main`, create task branch, do the work, commit, push, `gh pr create`, print a `DISPATCH_RESULT: SUCCESS|FAILED` sentinel line). Requires the `cursor` CLI.
-- **`--direct`:** in-process fallback — the script itself runs `git fetch/checkout/pull/branch`, writes a `smoke_test/<TASK_ID>.txt` deliverable, commits, pushes, and opens the PR via `gh pr create`. Used for pilot/smoke validation without a live Cursor agent.
-- **`--dry-run`:** peeks the next `PENDING` task and prints what would happen; no queue or lockfile mutation.
+- **`cursor` (default):** invokes `cursor agent --print --workspace <worker-dir> --trust --force` with a generated brief that **embeds the resolved task file verbatim** plus CPPR execution steps (sync `main`, create task branch, implement per task file, commit, push, `gh pr create`, print `DISPATCH_RESULT: SUCCESS|FAILED`). Requires the `cursor` CLI. Replaces the earlier smoke-test-only brief.
+- **`--direct`:** retained for smoke pilot only; real queued tasks with resolved task files require `cursor` mode (direct mode refuses rather than silently falling back to smoke stubs).
+- **`--dry-run`:** peeks the next `PENDING` task, resolves the task file, prints brief preview; no queue or lockfile mutation.
 
 ---
 
