@@ -3,6 +3,12 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — WS-PARENT queue + real-task dispatch briefs in ws_dispatch.sh (Cursor)
+
+- **`scripts/workspace/ws_dispatch.sh`:** add `parent` repo routing (`HFM` in-place checkout); resolve `plans/.../tasks/T##_*.md` from queue `PLAN_ID`/`TASK_ID` and embed verbatim in cursor-mode brief (no silent smoke fallback); README `plan_id` fallback when directory slug diverges from `PLAN_ID`.
+- **`governance/execution/workspace_protocol.md`:** document `parent.queue`, in-place dispatch risk, and real-brief generation (§4–§5).
+- **`scripts/mcp/hfm_mcp/server.py`:** `queue_push` docstring includes `parent`.
+- **Verified:** `ws_dispatch.sh api --dry-run` resolves `SECURITY-AUDIT-FIXES-T04`; `ws_dispatch.sh parent --dry-run` routes to `HFM`.
 ### 2026-07-06 — Harden inactive rebuild: proxy-safe sequencing + sprint_verify VPS script path (Cursor)
 
 - **`scripts/ops/fm_server_beta.sh`:** `rebuild-color` no longer stops/recreates the proxy before inactive API health is confirmed; tags last-known-good images and rolls back app containers on compose-up or health-check failure (proxy keeps serving active color).
