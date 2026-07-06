@@ -28,11 +28,20 @@ already sufficient; no separate reference skill needed, not building one proacti
 ## Procedure
 
 1. Run `ws_status`; confirm target workspace is available.
-2. Claim via `ws_claim` for the correct worker checkout (`WS-API`, `WS-WEB`, or parent `HFM` for ecosystem work).
-3. Post `[GATE: pre_execution]` per `execution_protocols.md` §1.1 with plan ID, branch, repos, scope.
-4. Block until HitM replies 👍 or 24h timeout (timeout → plan status `paused`).
-5. On approval, classify the task and produce a delegation packet to the correct Phase-3 skill with **`Skill(s) to load: <phase-3-skill-name>`** explicitly named.
-6. Do not begin implementation in this skill — hand off immediately after gate approval.
+2. **Worker checkout orientation** (WS-API / WS-WEB / parent `HFM`):
+   - Confirm `FM_PRIMARY_WORKSPACE` and worker path via `session_brief` or `ws_status`.
+   - `cd` to the **worker directory** (not the orchestrator clone): `~/Hive_Financial_Manager/WS-API` or `WS-WEB`; parent-repo tasks stay in `HFM/`.
+   - `git fetch origin && git status && git branch --show-current` — report drift before branching.
+   - Create or checkout task branch: `git checkout -b cur/s1b/<type>/<slug>` from updated `main` (or reuse existing task branch if resuming).
+   - Do **not** open implementation until `ws_claim` succeeds for the orchestrating workspace (`WS1`/`WS2` or `HFM` for parent).
+3. Claim via `ws_claim` for the correct orchestrating workspace (`WS1` for API dispatch, `WS2` for web, `HFM` is implicit for parent — no `WS-PARENT` row).
+4. Post `[GATE: pre_execution]` per `execution_protocols.md` §1.1 with plan ID, branch, repos, scope.
+5. Block until HitM replies 👍 or 24h timeout (timeout → plan status `paused`).
+6. On approval, classify the task and produce a delegation packet to the correct Phase-3 skill with **`Skill(s) to load: <phase-3-skill-name>`** explicitly named.
+7. Do not begin implementation in this skill — hand off immediately after gate approval.
+
+> **Why not a separate skill?** The ritual is identical across plans — only paths and branch slug change.
+> Extending `pickup-and-claim` keeps one Phase-2 entry point instead of a thin duplicate skill.
 
 ## Gate inline (kept inline by design — see Loads)
 
