@@ -1,6 +1,6 @@
 # Pinned versions for reproducible local security audits.
 # Update when intentionally upgrading audit tooling.
-bandit==1.8.3
+bandit==1.9.4
 pip-audit==2.9.0
 semgrep==1.79.0
 gitleaks==8.24.2
