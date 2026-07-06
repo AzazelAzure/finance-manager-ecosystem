@@ -13,15 +13,23 @@ Coordinate a single shared runtime across multiple agents during testing windows
   - `governance/deployment/Runtime_Owner_Handoff_Template.md`
 
 ## Runtime Session
-- Session ID: `s1b-profile-fix-green-restage-2026-06-30`
+- Session ID: `s1b-queue-drain-blue-promotion-2026-07-06`
 - Current owner: _(released — unassigned)_
 - Runtime mode: `containerized` (VPS blue-green, fm-beta)
-- Current status: `live` (active **GREEN** after Web #97 promotion; inactive **BLUE** warm rollback)
-- Started at: `2026-06-30T07:14:00+08:00`
-- Last updated at: `2026-06-30T07:24:00+08:00`
+- Current status: `live` (active **BLUE** after HitM walkthrough verify; inactive **GREEN** warm rollback)
+- Started at: `2026-07-06T16:50:00+08:00`
+- Last updated at: `2026-07-06T16:50:00+08:08`
 
 ### Current Users
-- Owner: _(released — unassigned)_ — green promotion complete
+- Owner: _(released — unassigned)_ — blue promotion complete (HitM authorized)
+
+### Queue-drain blue promotion log (2026-07-06) — PROMOTED
+- Trigger: API **#86** (migration 0019 dedup), Web **#113–#116** (README paths, React align, F-006 edit mode, mobile header, landing refresh). HitM verified auto-deduct + mobile on inactive **blue** before flip.
+- Pre-flip: active **green**, inactive **blue** (rebuilt from `main`); `smoke --color blue` **passed**.
+- HitM authorized flip: `switch --to blue` — active **green → blue**; post-switch `smoke --color active` **passed** (captured 2026-07-06T16:50+08).
+- Deployed heads at cutover: API `e79a6bc`, Web `e74057b`; migration `0019_payment_source_source_id` applied on active API.
+- Public origin: `thehivemanager.com` + `api.thehivemanager.com` → **200**; `jsdevtesting` stack check **OK** (now serves inactive **green**).
+- Rollback color: **green** (warm).
 
 ### Profile-fix green restage + promotion log (2026-06-30) — PROMOTED
 - Trigger: Web PR **#97** merged to `main` (`9436e3b` — Profile tab black-screen Rules-of-Hooks fix + app/route `ErrorBoundary`). API `main` unchanged (`9938614`, #72); no new migration in this batch.
