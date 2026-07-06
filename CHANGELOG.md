@@ -3,6 +3,9 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — test_api.sh exports local pytest env defaults (Cursor)
+
+- **`scripts/dev/test_api.sh`:** export `SECRET_KEY`, `DEBUG`, and `REDIS_URL` when unset so `test_api` MCP and direct invocation match agent session defaults without per-run boilerplate.
 ### 2026-07-06 — Harden inactive rebuild: proxy-safe sequencing + sprint_verify VPS script path (Cursor)
 
 - **`scripts/ops/fm_server_beta.sh`:** `rebuild-color` no longer stops/recreates the proxy before inactive API health is confirmed; tags last-known-good images and rolls back app containers on compose-up or health-check failure (proxy keeps serving active color).
