@@ -2,7 +2,7 @@
 
 Single source of truth for plan status. Update on every status transition.
 
-**Last updated:** 2026-07-02 (Daily documentation sweep: reconciled completed plans, updated statuses)
+**Last updated:** 2026-07-06 (T01/T05 merged — WS3 #96/#97)
 
 ## Update protocol
 
@@ -25,13 +25,13 @@ Active strategic phase: **S1**, Stage **S1.B** (per `strategy/strategic-roadmap-
 
 | plan_id | priority | phase | branch | owner | depends_on | blocks | parallel_safe_with | updated | notes |
 |---|---|---|---|---|---|---|---|---|---|
-| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | pproctor | - | - | - | 2026-07-02 | T01, T02, T04 merged; T03 cron confirmed **live** (2026-07-02 verification: `0 2 * * 0 run_audit.sh` in crontab). But the script it runs is broken — see `PLAN_CROSS_SECURITY_AUDIT_FIXES_2026-07-02` |
+| `PLAN_LOCAL_SECURITY_AUDIT_SUITE_2026-06-29` | P1 | S1.B | `cur/s1b/chore/local-security-audit-suite` | pproctor | - | - | - | 2026-07-06 | T01, T02, T04 merged; T03 cron **live** (`0 2 * * 0 run_audit.sh`). Audit script **fixed** 2026-07-06 (parent #96 — bandit 1.9.4 + env-poisoning fix); weekly cron should produce real findings on next run. |
+| `PLAN_CROSS_SECURITY_AUDIT_FIXES_2026-07-02` | P1 | S1.B | `cur/s1b/fix/security-audit-fixes-2026-07` | pproctor | - | - | - | 2026-07-06 | **T01** merged parent [#96](https://github.com/AzazelAzure/finance-manager-ecosystem/pull/96); **T02/T03** merged API/Web (queue DONE); **T05** merged parent [#97](https://github.com/AzazelAzure/finance-manager-ecosystem/pull/97). **T04** `PENDING` in `api.queue` — VPS re-stage unblocked after T05; HitM go-ahead required for inactive-color deploy. `plans/S1/S1.B/active/security-audit-fixes-2026-07-02/README.md` |
 
 ## Ready for Execution
 
 | plan_id | priority | phase | branch | depends_on | blocks | parallel_safe_with | conflicts_with | notes |
 |---|---|---|---|---|---|---|---|---|
-| `PLAN_CROSS_SECURITY_AUDIT_FIXES_2026-07-02` | P1 | S1.B | `cur/s1b/fix/security-audit-fixes-2026-07` | - | - | - | - | Audit script broken (bandit Python-3.14 crash → env-poisoning cascade takes out pip-audit/npm/gitleaks/semgrep) + 33 API CVEs + 13 Web vulns (1 critical, 7 high) found running tools directly. T01 script fix (parent, dispatch routing TBD — no `WS-PARENT`), T02 API dep bumps, T03 Web dep bumps. `plans/S1/S1.B/active/security-audit-fixes-2026-07-02/README.md` |
 | `PLAN_CROSS_RECURRING_AUTO_DEDUCT_F009_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f009-recurring-auto-deduct` | bill-recurrence (✅ shipped) | - | - | - | **F-009** design closed 2026-07-02 (`DESIGN.md`, 3 review rounds); frontend-triggered auto-deduct (Celery model dropped), new `UpcomingExpense` source link + `Transaction.auto_deducted` marker. T01 queued to Cursor (`F009-T01`, `api.queue`); T03/T04 (Web) queue after T01 merges — cross-repo dependency, not auto-sequenced by the queue. `plans/S1/S1.B/active/feat-f009-recurring-auto-deduct/README.md` |
 | `PLAN_CROSS_DASHBOARD_WIDGETS_F006_2026-05-05` | P2 | S1.B | `cur/s1b/feat/f006-dashboard-widgets-custom` | - | - | - | - | **F-006** design closed 2026-07-02 (`DESIGN.md`, single design walk); `DashboardLayout` per-user-per-device from v1 (core scope, not optional), static catalog, `dnd-kit`. T01 queued to Cursor (`F006-T01`, `api.queue`); T02/T03/T04 (Web) queue after T01 merges. `plans/S1/S1.B/active/feat-f006-dashboard-widgets-custom/README.md` |
 
