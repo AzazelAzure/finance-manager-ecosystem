@@ -75,8 +75,16 @@ Per `execution_protocols.md` §2.3 — reclassify, route with new `Skill(s) to l
 
 ## Final readiness gate
 
-Do not declare complete until: validations passed, cross-repo deps resolved, changelog/docs in place,
-runtime checks done, PR gates satisfied for merge-intended branches, risks listed.
+Do not declare complete until:
+
+- Validations passed, cross-repo deps resolved, changelog/docs in place, runtime checks done,
+  PR gates satisfied for merge-intended branches, risks listed.
+- **Anomaly disposition stated explicitly** — required field, not optional narrative:
+  - `none found` (session ran; triggers in `anomaly-registration` were actively checked), **or**
+  - list of anomaly file paths filed this session via `anomaly_new` (even if `status: unreviewed`).
+- If a trigger fired but no file was written, **do not declare complete** — file first, then close.
+
+Subagent returns must include the same **Anomaly disposition** field per `shared-subagent-handoff`.
 
 ## Guardrails
 
