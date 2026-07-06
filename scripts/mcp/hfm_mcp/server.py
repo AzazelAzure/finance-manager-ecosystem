@@ -251,7 +251,7 @@ def queue_push(
     branch: str,
     agent: str,
 ) -> str:
-    """Append a PENDING task to a repo FIFO queue (api or web)."""
+    """Append a PENDING task to a repo FIFO queue (api, web, or parent)."""
     return run_script(
         "scripts/workspace/queue_push.sh",
         repo,
