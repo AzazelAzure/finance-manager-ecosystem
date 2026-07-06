@@ -292,13 +292,38 @@ def ws_dispatch(
 
 
 @mcp.tool()
-def ws_review(
-    repo: str,
+def review_push(
+    target_repo: str,
     pr_number: int,
+    task_id: str,
+    agent: str = "cursor",
+) -> str:
+    """Enqueue a PR for WS3 review (api, web, or parent)."""
+    return run_script(
+        "scripts/workspace/review_push.sh",
+        target_repo,
+        str(pr_number),
+        task_id,
+        agent,
+        timeout=30,
+    )
+
+
+@mcp.tool()
+def review_status() -> str:
+    """Print the WS3 review.queue table."""
+    return run_script("scripts/workspace/review_status.sh", timeout=30)
+
+
+@mcp.tool()
+def ws_review(
+    repo: str = "",
+    pr_number: int = 0,
     action: str = "auto",
     reason: str = "",
+    next_in_queue: bool = False,
 ) -> str:
-    """Review and optionally merge a PR via WS3. action: auto, approve, or reject."""
+    """Review and optionally merge a PR via WS3. action: auto, approve, or reject. Set next_in_queue=True to pop review.queue."""
     action_map = {
         "auto": "--auto",
         "approve": "--approve",
@@ -307,9 +332,18 @@ def ws_review(
     flag = action_map.get(action)
     if flag is None:
         return "action must be auto, approve, or reject"
+    if next_in_queue:
+        args: list[str] = ["--next", flag]
+        if action == "reject":
+            if not reason.strip():
+                return "reason is required when action is reject"
+            args.append(reason)
+        return run_script("scripts/workspace/ws_review.sh", *args, timeout=900)
+    if not repo.strip() or pr_number <= 0:
+        return "repo and pr_number are required unless next_in_queue is True"
     if action == "reject" and not reason.strip():
         return "reason is required when action is reject"
-    args: list[str] = [repo, str(pr_number), flag]
+    args = [repo, str(pr_number), flag]
     if action == "reject":
         args.append(reason)
     return run_script("scripts/workspace/ws_review.sh", *args, timeout=900)

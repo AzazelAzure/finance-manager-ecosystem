@@ -35,6 +35,9 @@ sufficient across all 3 gate-using skills; no separate reference skill needed.
 - [ ] Push branch; verify remote tracking.
 - [ ] Draft PR summary with test plan; open via `gh pr create`.
 - [ ] **Post PR link in Cursor chat** (repo, branch, URL) — not Slack.
+- [ ] **Enqueue WS3 review:** `./scripts/workspace/review_push.sh <target_repo> <pr_number> <task_id> cursor`
+  where `target_repo` is `api`, `web`, or `parent` (ecosystem PRs). Capture `pr_number` from
+  `gh pr create` output or `gh pr view --json number`. This signals WS3 via `review.queue`.
 - [ ] Post `[PR]` / `pre_merge` gate per `execution_protocols.md` §1.2; wait for HitM merge authorization.
 - [ ] Run `pr_readiness` and `ci_status` before handoff to WS3.
 - [ ] **Do not merge** — hand off to WS3 with `Skill(s) to load: pr-review-and-merge`.
@@ -47,6 +50,9 @@ Delegation packet to WS3 must include:
 `Skill(s) to load: pr-review-and-merge`
 
 Plus: PR URL, branch, plan ID, validation summary, unresolved risks.
+
+WS3 can drain the FIFO with `./scripts/workspace/ws_review.sh --next --auto` (or `review_status.sh`
+to inspect pending entries first).
 
 ## Guidance
 

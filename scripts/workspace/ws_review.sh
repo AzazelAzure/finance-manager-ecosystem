@@ -8,8 +8,10 @@
 #   ws_review.sh <repo> <pr_number> --auto
 #   ws_review.sh <repo> <pr_number> --approve
 #   ws_review.sh <repo> <pr_number> --reject "reason"
+#   ws_review.sh --next [--auto|--approve|--reject "reason"]
 #
-# Repo map: api → finance-manager-api, web → finance-manager-web
+# Repo map: api → finance-manager-api, web → finance-manager-web,
+#           parent → finance-manager-ecosystem
 
 set -euo pipefail
 
@@ -24,18 +26,47 @@ SCRIPTS_DIR="$PRIMARY/scripts/workspace"
 ROOT_DIR="$(dirname "$PRIMARY")"
 WS3_DIR="$ROOT_DIR/WS3"
 
-# ── args ───────────────────────────────────────────────────────────────────────
-if [[ $# -lt 3 ]]; then
-  printf 'Usage: ws_review.sh <repo> <pr_number> --auto|--approve|--reject "reason"\n' >&2
-  exit 1
-fi
-REPO="$1"; PR_NUM="$2"; ACTION="$3"; REASON="${4:-}"
+resolve_gh_repo() {
+  case "$1" in
+    api) printf '%s' "AzazelAzure/finance-manager-api" ;;
+    web) printf '%s' "AzazelAzure/finance-manager-web" ;;
+    parent) printf '%s' "AzazelAzure/finance-manager-ecosystem" ;;
+    *) printf 'Error: unknown repo %q. Expected: api | web | parent\n' "$1" >&2; return 1 ;;
+  esac
+}
 
-case "$REPO" in
-  api) GH_REPO="AzazelAzure/finance-manager-api" ;;
-  web) GH_REPO="AzazelAzure/finance-manager-web" ;;
-  *) printf 'Error: unknown repo %q. Expected: api | web\n' "$REPO" >&2; exit 1 ;;
-esac
+FROM_QUEUE=0
+REVIEW_KEY=""
+
+# ── args ───────────────────────────────────────────────────────────────────────
+if [[ "${1:-}" == "--next" ]]; then
+  FROM_QUEUE=1
+  ACTION="${2:-}"
+  REASON="${3:-}"
+  if [[ -z "$ACTION" ]]; then
+    ACTION="--auto"
+  elif [[ "$ACTION" == "--reject" && -z "$REASON" && -n "${4:-}" ]]; then
+    REASON="$4"
+  fi
+  if [[ "$ACTION" != --auto && "$ACTION" != --approve && "$ACTION" != --reject ]]; then
+    printf 'Usage: ws_review.sh --next [--auto|--approve|--reject "reason"]\n' >&2
+    exit 1
+  fi
+  if ! REVIEW_LINE="$("$SCRIPTS_DIR/review_pop.sh")"; then
+    exit 1
+  fi
+  REPO="$(printf '%s' "$REVIEW_LINE" | cut -d'|' -f1)"
+  PR_NUM="$(printf '%s' "$REVIEW_LINE" | cut -d'|' -f2)"
+  REVIEW_KEY="${REPO}-${PR_NUM}"
+elif [[ $# -lt 3 ]]; then
+  printf 'Usage: ws_review.sh <repo> <pr_number> --auto|--approve|--reject "reason"\n' >&2
+  printf '       ws_review.sh --next [--auto|--approve|--reject "reason"]\n' >&2
+  exit 1
+else
+  REPO="$1"; PR_NUM="$2"; ACTION="$3"; REASON="${4:-}"
+fi
+
+GH_REPO="$(resolve_gh_repo "$REPO")" || exit 1
 
 # ── claim WS3 ──────────────────────────────────────────────────────────────────
 "$SCRIPTS_DIR/ws_claim.sh" WS3 "claude-ws3" "PR-REVIEW" "pr/${PR_NUM}" >&2
@@ -155,5 +186,16 @@ do_review
 
 # ── release WS3 ───────────────────────────────────────────────────────────────
 "$SCRIPTS_DIR/ws_release.sh" WS3 >&2
+
+if [[ "$FROM_QUEUE" -eq 1 && -n "$REVIEW_KEY" ]]; then
+  case "$REVIEW_RESULT" in
+    APPROVED_AND_MERGED)
+      "$SCRIPTS_DIR/review_done.sh" "$REVIEW_KEY"
+      ;;
+    CHANGES_REQUESTED)
+      "$SCRIPTS_DIR/review_done.sh" "$REVIEW_KEY" --failed
+      ;;
+  esac
+fi
 
 printf 'Review complete: PR #%s → %s\n' "$PR_NUM" "$REVIEW_RESULT"
