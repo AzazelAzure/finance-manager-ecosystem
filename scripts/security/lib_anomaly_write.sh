@@ -103,17 +103,30 @@ PY
   echo "[anomaly] Filed: $filename"
 }
 
+# Pass large tool output to embedded Python via a temp file — never export as env
+# (export poisons the shell for subsequent subprocesses; see T01 / lib_anomaly_write.sh:109).
+_audit_parse_input_file() {
+  local input="$1"
+  local tmp
+  tmp="$(mktemp)"
+  chmod 600 "$tmp"
+  printf '%s' "$input" >"$tmp"
+  echo "$tmp"
+}
+
 parse_bandit_anomalies() {
   local bandit_out="$1"
   [[ -z "$bandit_out" ]] && return 0
-  export _AUDIT_PARSE_INPUT="$bandit_out"
+  local tmp
+  tmp="$(_audit_parse_input_file "$bandit_out")"
   while IFS=$'\t' read -r severity slug finding_b64; do
     [[ -z "$severity" ]] && continue
     finding=$(printf '%s' "$finding_b64" | base64 -d 2>/dev/null || true)
     write_security_anomaly "bandit" "$severity" "$slug" "$finding" "$REPO_ROOT"
-  done < <(python3 <<'PY'
-import os, re, base64
-text = os.environ.get("_AUDIT_PARSE_INPUT", "")
+  done < <(python3 - "$tmp" <<'PY'
+import re, base64, sys
+from pathlib import Path
+text = Path(sys.argv[1]).read_text()
 blocks = re.split(r"(?=>> Issue:)", text)
 for block in blocks:
     if not block.strip():
@@ -133,19 +146,22 @@ for block in blocks:
     print(f"{sev}\t{slug}\t{finding}")
 PY
   )
+  rm -f "$tmp"
 }
 
 parse_pipaudit_anomalies() {
   local json_in="$1"
   [[ -z "$json_in" ]] && return 0
-  export _AUDIT_PARSE_INPUT="$json_in"
+  local tmp
+  tmp="$(_audit_parse_input_file "$json_in")"
   while IFS=$'\t' read -r severity slug finding; do
     [[ -z "$severity" ]] && continue
     write_security_anomaly "pip-audit" "$severity" "$slug" "$finding" "$REPO_ROOT"
-  done < <(python3 <<'PY'
-import json, os, re
+  done < <(python3 - "$tmp" <<'PY'
+import json, re, sys
+from pathlib import Path
 try:
-    data = json.loads(os.environ.get("_AUDIT_PARSE_INPUT", ""))
+    data = json.loads(Path(sys.argv[1]).read_text())
 except json.JSONDecodeError:
     raise SystemExit(0)
 for dep in data.get("dependencies", []):
@@ -161,19 +177,22 @@ for dep in data.get("dependencies", []):
         print(f"{sev}\t{slug}\t{finding}")
 PY
   )
+  rm -f "$tmp"
 }
 
 parse_npm_anomalies() {
   local json_in="$1"
   [[ -z "$json_in" ]] && return 0
-  export _AUDIT_PARSE_INPUT="$json_in"
+  local tmp
+  tmp="$(_audit_parse_input_file "$json_in")"
   while IFS=$'\t' read -r severity slug finding; do
     [[ -z "$severity" ]] && continue
     write_security_anomaly "npm-audit" "$severity" "$slug" "$finding" "$REPO_ROOT"
-  done < <(python3 <<'PY'
-import json, os, re
+  done < <(python3 - "$tmp" <<'PY'
+import json, re, sys
+from pathlib import Path
 try:
-    data = json.loads(os.environ.get("_AUDIT_PARSE_INPUT", ""))
+    data = json.loads(Path(sys.argv[1]).read_text())
 except json.JSONDecodeError:
     raise SystemExit(0)
 vulns = data.get("vulnerabilities", {})
@@ -194,6 +213,7 @@ for key, v in vulns.items():
     print(f"{sev}\t{slug}\t{finding}")
 PY
   )
+  rm -f "$tmp"
 }
 
 parse_gitleaks_sarif_anomalies() {
@@ -222,14 +242,16 @@ PY
 parse_semgrep_anomalies() {
   local json_in="$1"
   [[ -z "$json_in" ]] && return 0
-  export _AUDIT_PARSE_INPUT="$json_in"
+  local tmp
+  tmp="$(_audit_parse_input_file "$json_in")"
   while IFS=$'\t' read -r severity slug finding; do
     [[ -z "$severity" ]] && continue
     write_security_anomaly "semgrep" "$severity" "$slug" "$finding" "$REPO_ROOT"
-  done < <(python3 <<'PY'
-import json, os, re
+  done < <(python3 - "$tmp" <<'PY'
+import json, re, sys
+from pathlib import Path
 try:
-    data = json.loads(os.environ.get("_AUDIT_PARSE_INPUT", ""))
+    data = json.loads(Path(sys.argv[1]).read_text())
 except json.JSONDecodeError:
     raise SystemExit(0)
 for r in data.get("results", []):
@@ -257,4 +279,5 @@ for r in data.get("results", []):
     print(f"{sev}\t{slug}\t{finding}")
 PY
   )
+  rm -f "$tmp"
 }
