@@ -135,6 +135,10 @@ prune_orphan_containers() {
 
 # After (re)creating an API container, Django may need a few seconds before :8000 listens.
 wait_api_service_ready() {
+  wait_api_service_ready_soft "$1" || die "$1 did not respond to /api/health/ within ~120s (check logs: $0 logs $1)"
+}
+
+wait_api_service_ready_soft() {
   local svc="$1"
   local i
   log "Waiting for $svc /api/health/ ..."
@@ -145,7 +149,63 @@ wait_api_service_ready() {
     fi
     sleep 2
   done
-  die "$svc did not respond to /api/health/ within ~120s (check logs: $0 logs $svc)"
+  log "ERROR: $svc did not respond to /api/health/ within ~120s"
+  return 1
+}
+
+service_container_image_id() {
+  local svc="$1"
+  local cid
+  cid=$("$RUNTIME_BIN" ps -q \
+    --filter "label=com.docker.compose.project=${PROJECT_NAME}" \
+    --filter "label=com.docker.compose.service=${svc}" 2>/dev/null | head -1)
+  [[ -n "$cid" ]] || return 1
+  "$RUNTIME_BIN" inspect -f '{{.Image}}' "$cid"
+}
+
+tag_last_known_good_image() {
+  local svc="$1"
+  local img tag
+  img="$(service_container_image_id "$svc")" || return 0
+  tag="${PROJECT_NAME}_${svc}-lastgood"
+  if "$RUNTIME_BIN" tag "$img" "$tag" 2>/dev/null; then
+    log "Tagged last-known-good image for $svc: $tag"
+  fi
+}
+
+compose_built_image_ref() {
+  local svc="$1"
+  printf '%s_%s\n' "$PROJECT_NAME" "$svc"
+}
+
+rollback_color_service_to_lastgood() {
+  local svc="$1"
+  local lkg primary
+  lkg="${PROJECT_NAME}_${svc}-lastgood"
+  primary="$(compose_built_image_ref "$svc")"
+  if ! "$RUNTIME_BIN" image inspect "$lkg" &>/dev/null; then
+    log "rollback: no last-known-good tag $lkg for $svc"
+    return 1
+  fi
+  log "rollback: restoring $svc from $lkg"
+  compose_cmd_safe stop "$svc" || true
+  remove_compose_service_container "$svc"
+  "$RUNTIME_BIN" tag "$lkg" "$primary" 2>/dev/null \
+    || "$RUNTIME_BIN" tag "$lkg" "localhost/$primary" 2>/dev/null \
+    || true
+  compose_cmd_quiet_up -d --no-build "$svc"
+}
+
+rollback_failed_color_rebuild() {
+  local api_service="$1"
+  local web_service="$2"
+  local svc
+  log "Attempting last-known-good rollback for $api_service / $web_service (proxy left running)."
+  compose_cmd_safe stop "$api_service" "$web_service" "${CELERY_SERVICES[@]}" || true
+  for svc in "$api_service" "$web_service" "${CELERY_SERVICES[@]}"; do
+    remove_compose_service_container "$svc"
+    rollback_color_service_to_lastgood "$svc" || true
+  done
 }
 
 using_parallel_compose() {
@@ -444,9 +504,12 @@ rebuild_color_cmd() {
   fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
-    log "dry-run: would stop proxy + $api_service + $web_service + ${CELERY_SERVICES[*]}, rm those containers, prune orphans, build (if enabled), up db/redis/$api_service/$web_service/${CELERY_SERVICES[*]}/proxy"
+    log "dry-run: would tag last-known-good images, stop/recreate $api_service + $web_service + ${CELERY_SERVICES[*]} only (proxy left running), wait for API health, rollback on failure, then reload proxy if healthy"
     return 0
   fi
+
+  tag_last_known_good_image "$api_service"
+  tag_last_known_good_image "$web_service"
 
   if [[ "$do_build" -eq 1 ]]; then
     local build_args=(build)
@@ -456,10 +519,8 @@ rebuild_color_cmd() {
     compose_cmd_safe "${build_args[@]}"
   fi
 
-  log "Recreating $api_service, $web_service, and ${CELERY_SERVICES[*]} with fresh containers."
-  log "Note: proxy shares :8443/:8080 for both colors — it will restart briefly (typically a few seconds)."
-  compose_cmd_safe stop proxy "$api_service" "$web_service" "${CELERY_SERVICES[@]}" || true
-  remove_compose_service_container "proxy"
+  log "Recreating $api_service, $web_service, and ${CELERY_SERVICES[*]} (proxy left running)."
+  compose_cmd_safe stop "$api_service" "$web_service" "${CELERY_SERVICES[@]}" || true
   remove_compose_service_container "$api_service"
   remove_compose_service_container "$web_service"
   local svc
@@ -467,15 +528,27 @@ rebuild_color_cmd() {
     remove_compose_service_container "$svc"
   done
 
-  # Clear any leftover containers from removed/renamed services before bringing the stack back up.
   prune_orphan_containers
 
-  # NOTE: do NOT pass --remove-orphans here. With podman-compose, --remove-orphans on a
-  # partial "up" recreates the whole project (including the active color), causing a
-  # full-stack bounce. prune_orphan_containers (above) already cleared true orphans safely.
-  log "Starting db, redis, $api_service, $web_service, ${CELERY_SERVICES[*]}, proxy..."
-  compose_cmd_quiet_up -d db redis "$api_service" "$web_service" "${CELERY_SERVICES[@]}" proxy
-  wait_api_service_ready "$api_service"
+  log "Starting db, redis, $api_service, $web_service, ${CELERY_SERVICES[*]} (proxy unchanged)..."
+  if ! compose_cmd_quiet_up -d db redis "$api_service" "$web_service" "${CELERY_SERVICES[@]}"; then
+    rollback_failed_color_rebuild "$api_service" "$web_service"
+    die "rebuild-color failed during compose up for $color; rolled back app containers (proxy untouched)"
+  fi
+
+  if ! wait_api_service_ready_soft "$api_service"; then
+    rollback_failed_color_rebuild "$api_service" "$web_service"
+    die "$api_service failed health check after rebuild; rolled back to last-known-good (proxy still serving active color)"
+  fi
+
+  if proxy_container_running; then
+    log "Inactive color healthy — reloading proxy (no container recreate)."
+    reload_proxy
+  else
+    log "Proxy not running — starting proxy after confirmed $api_service health."
+    compose_cmd_quiet_up -d proxy
+  fi
+
   log "Rebuild complete for $color. Run: $0 smoke --color $color"
 }
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # sprint_verify.sh — remote color rebuild + smoke + evidence capture (orchestration huddle Phase 2b).
 #
-# Runs on your machine; uses SSH to the VPS ecosystem root and invokes scripts/ops/fm_server_beta.sh there.
+# Runs on your machine; uses SSH to the VPS ecosystem root and invokes scripts/fm_server_beta.sh there.
 # Does NOT flip active color or run switch.
 #
 # Required:
@@ -20,7 +20,7 @@
 #   FM_SPRINT_SSH            SSH target (for example: dev@203.0.113.10).
 #   VPS_ORIGIN_IP            VPS IP only; used as dev@$VPS_ORIGIN_IP when FM_SPRINT_SSH is unset.
 #   FM_SPRINT_REMOTE_ROOT    Absolute path to ecosystem root on VPS (default: /home/dev/finance_manager).
-#   FM_SPRINT_FM_SCRIPT      Path to fm_server_beta.sh relative to remote root (default: scripts/ops/fm_server_beta.sh).
+#   FM_SPRINT_FM_SCRIPT      Path to fm_server_beta.sh relative to remote root (default: scripts/fm_server_beta.sh).
 #   FM_SPRINT_PROJECT        If set, exported as FM_BLUEGREEN_PROJECT on the remote for compose -p.
 #
 # The variables above may also be placed in the repo-root `.env`. Only this
@@ -62,7 +62,7 @@ load_local_env
 FM_SPRINT_SSH="${FM_SPRINT_SSH:-${VPS_ORIGIN_IP:+dev@$VPS_ORIGIN_IP}}"
 FM_SPRINT_SSH="${FM_SPRINT_SSH:-dev@<VPS_HOST_OR_IP>}"
 FM_SPRINT_REMOTE_ROOT="${FM_SPRINT_REMOTE_ROOT:-/home/dev/finance_manager}"
-FM_SPRINT_FM_SCRIPT="${FM_SPRINT_FM_SCRIPT:-scripts/ops/fm_server_beta.sh}"
+FM_SPRINT_FM_SCRIPT="${FM_SPRINT_FM_SCRIPT:-scripts/fm_server_beta.sh}"
 FM_SPRINT_PROJECT="${FM_SPRINT_PROJECT:-}"
 
 COLOR=""

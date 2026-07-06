@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — Harden inactive rebuild: proxy-safe sequencing + sprint_verify VPS script path (Cursor)
+
+- **`scripts/ops/fm_server_beta.sh`:** `rebuild-color` no longer stops/recreates the proxy before inactive API health is confirmed; tags last-known-good images and rolls back app containers on compose-up or health-check failure (proxy keeps serving active color).
+- **`scripts/ops/sprint_verify.sh`:** default `FM_SPRINT_FM_SCRIPT` is now `scripts/fm_server_beta.sh` (VPS path under `~/finance_manager/scripts/`, not `scripts/ops/`).
+- **`AGENTS.md`:** document VPS vs parent-repo `fm_server_beta.sh` paths and `FM_SPRINT_FM_SCRIPT` default.
 ### 2026-07-06 — Fix security audit suite: bandit 1.9.4 + stop env-poisoning in lib_anomaly_write (Cursor)
 
 - **`scripts/security/TOOL_VERSIONS`:** bump `bandit` to **1.9.4** — fixes Python 3.14 `ast.Num` crash that prevented real findings.
