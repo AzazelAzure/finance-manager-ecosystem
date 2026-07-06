@@ -3,6 +3,21 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — test_api.sh exports local pytest env defaults (Cursor)
+
+
+- **`scripts/dev/test_api.sh`:** export `SECRET_KEY`, `DEBUG`, and `REDIS_URL` when unset so `test_api` MCP and direct invocation match agent session defaults without per-run boilerplate.
+### 2026-07-06 — Harden inactive rebuild: proxy-safe sequencing + sprint_verify VPS script path (Cursor)
+
+- **`scripts/ops/fm_server_beta.sh`:** `rebuild-color` no longer stops/recreates the proxy before inactive API health is confirmed; tags last-known-good images and rolls back app containers on compose-up or health-check failure (proxy keeps serving active color).
+- **`scripts/ops/sprint_verify.sh`:** default `FM_SPRINT_FM_SCRIPT` is now `scripts/fm_server_beta.sh` (VPS path under `~/finance_manager/scripts/`, not `scripts/ops/`).
+- **`AGENTS.md`:** document VPS vs parent-repo `fm_server_beta.sh` paths and `FM_SPRINT_FM_SCRIPT` default.
+### 2026-07-06 — Fix security audit suite: bandit 1.9.4 + stop env-poisoning in lib_anomaly_write (Cursor)
+
+- **`scripts/security/TOOL_VERSIONS`:** bump `bandit` to **1.9.4** — fixes Python 3.14 `ast.Num` crash that prevented real findings.
+- **`scripts/security/lib_anomaly_write.sh`:** pass large tool output to embedded Python via temp files instead of `export` env vars — stops the env-poisoning cascade (`Argument list too long` / gitleaks false skips) for the rest of `run_audit.sh`.
+- **Verified:** `./scripts/security/run_audit.sh` completes end-to-end (bandit findings, pip-audit, npm audit, gitleaks on all three repos, semgrep).
+### 2026-07-01 — Payment-source governance hardening + F009 T00 investigation (Cursor)
 ### 2026-07-06 — WS-PARENT queue + real-task dispatch briefs in ws_dispatch.sh (Cursor)
 
 - **`scripts/workspace/ws_dispatch.sh`:** add `parent` repo routing (`HFM` in-place checkout); resolve `plans/.../tasks/T##_*.md` from queue `PLAN_ID`/`TASK_ID` and embed verbatim in cursor-mode brief (no silent smoke fallback); README `plan_id` fallback when directory slug diverges from `PLAN_ID`.
