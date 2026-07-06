@@ -4,6 +4,8 @@
 
 This doc describes the **live, running system** — not just the design. Where implementation diverges from the original design docs, the divergence is called out explicitly (see §7).
 
+> **KB5 test seed (T3, do not merge):** dispatch queues may optionally carry a `priority` integer — not yet implemented in `queue_push.sh`.
+
 ---
 
 ## 1. Filesystem layout

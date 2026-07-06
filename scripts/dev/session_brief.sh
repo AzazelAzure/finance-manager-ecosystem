@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # session_brief.sh — zero-SSH quick orientation for agent sessions
+# KB7 scope-creep seed (T3): unrelated touch for codex known-bad grading — remove before merge.
 # Combines repo health + active plan state + open PRs
 # Usage: ./scripts/dev/session_brief.sh
 

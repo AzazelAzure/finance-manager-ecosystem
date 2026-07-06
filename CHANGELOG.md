@@ -3,6 +3,9 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — Known-bad codex review test fixture (T3) (Cursor)
+
+- (fill bullets)
 ### 2026-07-06 — Parent governance sync: WS-PARENT wording, VPS cutover log, submodule pins (Claude)
 
 - **`AGENTS.md`:** documented `parent.queue`/`review.queue` FIFOs, `ws_dispatch.sh` `api`/`web`/`parent` routing, and auto-continue through CPPRD → `review_push.sh` → WS3 on green implementation.

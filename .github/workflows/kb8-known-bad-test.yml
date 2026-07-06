@@ -1,0 +1,20 @@
+# KB8 — intentional failing check for codex_review T3/T4 validation. Do not merge.
+name: KB8 Known-Bad Test (intentional fail)
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/ops/kb_known_bad_fixture.sh'
+      - '.github/workflows/kb8-known-bad-test.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  kb8-intentional-fail:
+    runs-on: ubuntu-latest
+    steps:
+      - name: KB8 — PR readiness failure seed
+        run: |
+          echo "Intentional failure for PLAN_PARENT_CODEX_REVIEW_INTEGRATION T3 KB8"
+          exit 1
