@@ -520,11 +520,18 @@ PY
 main() {
   parse_args "$@"
 
-  local gh_r repo_cd work
+  local gh_r repo_cd work preserve_work=0
   gh_r="$(gh_repo)"
   repo_cd="$(repo_path)"
+  work=""
+
+  cleanup_work() {
+    [[ "$preserve_work" -eq 1 ]] && return 0
+    [[ -n "${work:-}" && -d "${work:-}" ]] && rm -rf "$work"
+  }
+  trap cleanup_work EXIT
+
   work="$(mktemp -d "${TMPDIR:-/tmp}/codex_review.XXXXXX")"
-  trap 'rm -rf "$work"' EXIT
 
   local metadata_file="$work/metadata.json"
   local diff_file="$work/diff.patch"
@@ -585,7 +592,7 @@ main() {
     head -80 "$prompt_file"
     echo '--- end prompt head ---'
     log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":true,\"diff_bytes\":$diff_bytes,\"plan_id\":\"${plan_id:-}\"}")"
-    # Preserve prompt for inspection during dry-run
+    preserve_work=1
     trap - EXIT
     printf 'DRY-RUN: temp dir preserved at %s\n' "$work"
     exit 0
