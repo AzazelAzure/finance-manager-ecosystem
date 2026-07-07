@@ -3,6 +3,10 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Submodule bump automation + Stage 10 gate (OPS-REVAMP-T08) (Cursor)
+
+- **`scripts/workspace/submodule_bump.sh`:** open submodule-only parent PR, enqueue `review.queue` for Codex `submodule-bump` mode.
+- **`governance/execution/gate_override_log.md`:** Stage-10 waiver log template (closeout requires bump PR merged or logged override).
 ### 2026-07-07 — Stage 7 migration preflight + deploy invariants (OPS-REVAMP-T07) (Cursor)
 
 - **`scripts/dev/migration_preflight.sh`:** static migration risk summary for deploy evidence (constraint/data patterns).

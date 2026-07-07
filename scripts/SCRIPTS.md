@@ -104,6 +104,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `ws_status.sh` / `ws_claim.sh` / `ws_release.sh` | Sign-out sheet |
 | `vps_claim.sh` / `vps_release.sh` | VPS authority lock |
 | `queue_push.sh` … `queue_status.sh` | Per-repo FIFO task queues |
+| `submodule_bump.sh` | Open submodule pin bump PR + enqueue Codex submodule-bump review (Stage 10) |
 | `review_push.sh` … `review_status.sh` | WS3 review FIFO queue |
 | `ws_dispatch.sh` / `ws_review.sh` | Dispatch task to worker + PR review loop |
 
