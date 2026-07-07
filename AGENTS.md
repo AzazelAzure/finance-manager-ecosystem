@@ -51,6 +51,11 @@ Cursor-specific sprint task format: `.cursor/rules/sprint-task-specification.mdc
 - **i18n** is part of done; deferred coverage must be tracked as a follow-up slice.
 - Governed scope: one slice per agent turn when possible; **ask clarifying questions** instead of guessing underspecified product scope. Bias slices to **one web route/page or one API model/domain** per pass.
 
+**Pipeline gate discipline (D3):** no stage begins while the prior stage's gate is open.
+Specifically: `review.queue` PENDING blocks `queue_done`, task completion, and status report
+completion language. Deploy (Stage 7) does not begin while `review.queue` has PENDING entries
+for merged PRs from the same task. This applies to all agents.
+
 ### Trust but verify
 
 - Any agent or automation with live-access capability (SSH, GitHub API, VPS, repo) **must verify flagged state against ground truth before escalating** — do not present cached or prior-context state as current. Even when a cached doc is available: query live, then report.

@@ -286,6 +286,17 @@ Sweep results are filed in `plans/S1/S1.B/qa-sweeps/<date>/` and any findings be
 
 ---
 
+## Pipeline final gate (D2 — mandatory WS3 drain)
+
+WS3 review drain is a mandatory pipeline gate, not a follow-up. Cursor may not call
+`queue_done`, mark a task complete, or produce a status report implying merge-readiness while
+any PR opened for that task remains PENDING in `review.queue`. Run `ws_review.sh` (or
+`codex_review.sh` directly) before closing the task. Stage N does not start while Stage N-1
+gate is open. Status reports must label Cursor-owned blocking work as **BLOCKING**, not as
+"follow-up for HitM."
+
+---
+
 ## Adoption
 
 - **Immediate:** All new task specs must follow §1 format.
