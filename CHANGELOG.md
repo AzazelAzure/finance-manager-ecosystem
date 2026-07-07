@@ -3,6 +3,10 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Stage 7 migration preflight + deploy invariants (OPS-REVAMP-T07) (Cursor)
+
+- **`scripts/dev/migration_preflight.sh`:** static migration risk summary for deploy evidence (constraint/data patterns).
+- **`scripts/ops/fm_server_beta.sh`:** refuse active-color rebuild without override; verify active containers unchanged during inactive rebuild; require inactive smoke before proxy reload.
 ### 2026-07-07 — Wire ws_review.sh to codex_review.sh (CODEX-REVIEW-T2) (Cursor)
 
 - **`scripts/workspace/ws_review.sh`:** `--auto` invokes `codex_review.sh` with mode from `codex_review_resolve_mode.sh`; reads verdict from `codex_review_last_result.sh`.
