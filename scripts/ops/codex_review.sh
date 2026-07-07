@@ -344,11 +344,13 @@ WEB (if user-facing web changes)
 [ ] No accidental product/governance scope creep
 [ ] CHANGELOG when user-visible or protocol-impacting
 [ ] Anomaly disposition stated when required by repo convention""",
-    "dependabot": """DEPENDABOT MODE (stub — full chain in T5-DEPENDABOT)
-[ ] Semver risk assessed (major bump needs scrutiny)
-[ ] Package not in security-sensitive area without justification (auth, crypto, DB, HTTP parsing)
-[ ] CVE/advisory severity from PR body reviewed
-[ ] Routine patch/minor with no security flag may APPROVE""",
+    "dependabot": """DEPENDABOT MODE (tier-2 — after dependabot_check.sh escalation)
+[ ] Semver risk assessed: major bumps need explicit breaking-change rationale
+[ ] Package not in security-sensitive area without justification (auth, crypto, DB driver, HTTP parsing)
+[ ] CVE/advisory severity from PR body reviewed — critical/high → NEEDS_HITM not APPROVE
+[ ] Lockfile-only or routine patch/minor with green CI may APPROVE
+[ ] No accidental scope creep beyond the dependency bump
+[ ] CHANGELOG not required for raw Dependabot merges unless protocol-impacting""",
 }
 
 prompt = f"""You are the PR reviewer for the Hive Financial Manager project. Review the following pull request and output a structured plain-text verdict.
@@ -647,17 +649,23 @@ main() {
 
   build_prompt "$metadata_file" "$diff_file" "$readiness_file" "$plan_file" "$submodule_file" "$prompt_file"
 
+  local known_bad_kb8=0
   if [[ "$(is_known_bad_kb8_pr "$metadata_file" "$diff_file")" == "yes" ]]; then
-    post_needs_hitm_for_checks "$started_at" "known-bad KB8 seed PR (intentional infra failure)"
-    exit 0
+    known_bad_kb8=1
   fi
 
   local gate_verdict
   gate_verdict="$(classify_pr_readiness_gate "$readiness_file" "$metadata_file")"
+  if [[ "$known_bad_kb8" -eq 1 ]]; then
+    gate_verdict="needs_hitm"
+  fi
   case "$gate_verdict" in
     needs_hitm)
-      post_needs_hitm_for_checks "$started_at" "non-fixable check or merge state in pr_readiness"
-      exit 0
+      if [[ "$known_bad_kb8" -eq 0 ]]; then
+        post_needs_hitm_for_checks "$started_at" "non-fixable check or merge state in pr_readiness"
+        exit 0
+      fi
+      printf 'Known-bad KB8 seed: proceeding to Codex for T4 defect grading (final verdict floor NEEDS_HITM).\n' >&2
       ;;
     request_changes)
       post_request_changes_for_checks "$started_at" "fixable-in-PR check failure or merge conflict"
@@ -695,6 +703,16 @@ main() {
 
   local parsed_json
   parsed_json="$(parse_codex_output "$codex_stdout")"
+  if [[ "$known_bad_kb8" -eq 1 ]]; then
+    parsed_json="$(KNOWN_BAD_KB8=1 python3 - "$parsed_json" <<'PY'
+import json, sys
+p = json.loads(sys.argv[1])
+p["verdict"] = "NEEDS_HITM"
+p["merge_ok"] = False
+print(json.dumps(p))
+PY
+)"
+  fi
   printf '%s' "$parsed_json" > "$parsed_file"
 
   local verdict merge_ok
