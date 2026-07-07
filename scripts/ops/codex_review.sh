@@ -596,7 +596,7 @@ main() {
   work=""
 
   cleanup_work() {
-    [[ "$preserve_work" -eq 1 ]] && return 0
+    [[ "${preserve_work:-0}" -eq 1 ]] && return 0
     [[ -n "${work:-}" && -d "${work:-}" ]] && rm -rf "$work"
   }
   trap cleanup_work EXIT
