@@ -3,6 +3,10 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Pipeline gate rules D2/D3 (OPS-REVAMP-T02) (Cursor)
+
+- **`.cursor/rules/sprint-task-specification.mdc`:** mandatory WS3 drain final gate (D2).
+- **`AGENTS.md`:** pipeline gate discipline — review.queue PENDING blocks queue_done and deploy (D3).
 ### 2026-07-07 — D1 codex-review pending label mechanism (OPS-REVAMP-T01) (Cursor)
 
 - **`.github/workflows/codex-review-label.yml`:** auto-add `codex-review:pending` on PR open/reopen/sync.
