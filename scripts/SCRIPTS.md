@@ -28,6 +28,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `vps_state.sh` | Live VPS snapshot (SSH, timestamped) | HitM, Antigravity, automations |
 | `fm_server_beta.sh` | Blue-green deploy/smoke/switch/rollback | HitM (VPS) |
 | `pull_backup.sh` | Daily pg_dump pull to `~/fm_backups/` (via Podman exec on VPS) | Cron via `local/setup_backup_cron.sh` |
+| `backup_admin.sh` | Daily tar of gitignored `strategy/`, queues, skills → `~/fm_admin_backups/` | Cron via `local/setup_admin_backup_cron.sh` |
 | `tag_release.sh` | Tag release across repos in `repos.txt` | HitM |
 | `bootstrap_env.sh` | Server env template copy/validate | Deploy |
 | `create_runtime_bundle.sh` | Lean VPS runtime tarball | Deploy |
