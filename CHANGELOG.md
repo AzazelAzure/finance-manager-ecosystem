@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Wire ws_review.sh to codex_review.sh (CODEX-REVIEW-T2) (Cursor)
+
+- **`scripts/workspace/ws_review.sh`:** `--auto` invokes `codex_review.sh` with mode from `codex_review_resolve_mode.sh`; reads verdict from `codex_review_last_result.sh`.
+- **`scripts/lib/codex_review_resolve_mode.sh`**, **`codex_review_last_result.sh`:** mode selection and log-based result mapping.
+- **`governance/execution/workspace_protocol.md`:** WS3 description updated to automated Codex review (D10).
 ### 2026-07-07 — Codex review skills + static scan scripts (CODEX-REVIEW-T7) (Cursor)
 
 - **`scripts/ops/codex_review_skills/`:** 25 numbered reviewer skill files per Codex wishlist (mode-selected loading).
