@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Codex review skills + static scan scripts (CODEX-REVIEW-T7) (Cursor)
+
+- **`scripts/ops/codex_review_skills/`:** 25 numbered reviewer skill files per Codex wishlist (mode-selected loading).
+- **`scripts/ops/codex_review.sh`:** load skills by mode; inject `SKILLS_LOADED` header; route `NEEDS_HITM` when required skill missing; inject static pre-scan outputs.
+- **`scripts/dev/golden_rule_static_scan.sh`**, **`migration_summary.sh`**, **`i18n_pwa_tour_scan.sh`**, **`dependabot_pr_context.sh`:** new wrapper pre-run signals (complements T04/T05 scripts).
 ### 2026-07-07 — T4 KB8 revalidation script + plan_export queue fix (CODEX-REVIEW-T4) (Cursor)
 
 - **`scripts/ops/codex_review_t4_kb8_validate.sh`:** automated KB8 gate check against known-bad PR #110; dry-run PASS after T2A-REVISED.

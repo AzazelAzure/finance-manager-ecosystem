@@ -278,26 +278,91 @@ post_needs_hitm_for_checks() {
   log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":false,\"verdict\":\"NEEDS_HITM\",\"reason\":\"kb8_pr_checks\",\"merged\":false}")"
 }
 
+SKILLS_DIR="$REPO_ROOT/scripts/ops/codex_review_skills"
+
+skill_numbers_for_mode() {
+  case "$1" in
+    implementation) printf '%s\n' 00 01 02 03 10 20 21 22 23 24 25 30 31 32 45 ;;
+    governance) printf '%s\n' 00 01 02 03 11 20 21 22 23 25 45 ;;
+    submodule-bump) printf '%s\n' 00 01 02 03 12 20 21 23 24 45 ;;
+    chore) printf '%s\n' 00 01 02 03 10 20 21 25 45 ;;
+    dependabot) printf '%s\n' 00 01 02 03 13 22 25 45 ;;
+    *) return 1 ;;
+  esac
+}
+
+load_review_skills() {
+  local mode="$1" out_file="$2"
+  local num match loaded=()
+  : > "$out_file"
+  while IFS= read -r num; do
+    [[ -z "$num" ]] && continue
+    match="$(find "$SKILLS_DIR" -maxdepth 1 -name "${num}_*.md" -print -quit 2>/dev/null || true)"
+    if [[ -z "$match" || ! -f "$match" ]]; then
+      printf 'missing skill file for prefix %s\n' "$num" >&2
+      return 1
+    fi
+    loaded+=("$(basename "$match" .md)")
+    {
+      printf '## %s\n\n' "$(basename "$match")"
+      cat "$match"
+      printf '\n\n---\n\n'
+    } >> "$out_file"
+  done < <(skill_numbers_for_mode "$mode")
+  (IFS=,; printf '%s' "${loaded[*]}")
+}
+
+collect_static_scans() {
+  local out_file="$1"
+  {
+    echo "## pr_body_contract"
+    "$REPO_ROOT/scripts/dev/pr_body_contract.sh" --repo "$REPO_SLUG" --pr "$PR_NUM" 2>&1 || true
+    echo "## changelog_check"
+    "$REPO_ROOT/scripts/dev/changelog_check.sh" --repo "$REPO_SLUG" --pr "$PR_NUM" 2>&1 || true
+    echo "## changed_file_classify"
+    "$REPO_ROOT/scripts/dev/changed_file_classify.sh" --repo "$REPO_SLUG" --pr "$PR_NUM" 2>&1 || true
+    echo "## golden_rule_static_scan"
+    "$REPO_ROOT/scripts/dev/golden_rule_static_scan.sh" --repo "$REPO_SLUG" --pr "$PR_NUM" 2>&1 || true
+    if [[ "$REPO_SLUG" == "api" ]]; then
+      echo "## migration_summary"
+      "$REPO_ROOT/scripts/dev/migration_summary.sh" --repo api --pr "$PR_NUM" 2>&1 || true
+    fi
+    if [[ "$REPO_SLUG" == "web" ]]; then
+      echo "## i18n_pwa_tour_scan"
+      "$REPO_ROOT/scripts/dev/i18n_pwa_tour_scan.sh" --repo web --pr "$PR_NUM" 2>&1 || true
+    fi
+    if [[ "$REVIEW_MODE" == "dependabot" ]]; then
+      echo "## dependabot_pr_context"
+      "$REPO_ROOT/scripts/dev/dependabot_pr_context.sh" --repo "$REPO_SLUG" --pr "$PR_NUM" 2>&1 || true
+    fi
+  } >"$out_file"
+}
+
 build_prompt() {
   local metadata_json="$1"
   local diff_file="$2"
   local readiness_file="$3"
   local plan_file="$4"
   local submodule_file="$5"
-  local out_file="$6"
+  local skills_file="$6"
+  local static_file="$7"
+  local skills_loaded="$8"
+  local out_file="$9"
 
   python3 - "$metadata_json" "$diff_file" "$readiness_file" "$plan_file" "$submodule_file" \
-    "$REPO_SLUG" "$REVIEW_MODE" "$out_file" <<'PY'
+    "$skills_file" "$static_file" "$skills_loaded" "$REPO_SLUG" "$REVIEW_MODE" "$out_file" <<'PY'
 import json
 import sys
 from pathlib import Path
 
-meta_path, diff_path, readiness_path, plan_path, submod_path, repo_slug, mode, out_path = sys.argv[1:9]
+meta_path, diff_path, readiness_path, plan_path, submod_path, skills_path, static_path, skills_loaded, repo_slug, mode, out_path = sys.argv[1:12]
 meta = json.loads(Path(meta_path).read_text())
 diff_content = Path(diff_path).read_text(errors="replace")
 readiness = Path(readiness_path).read_text(errors="replace")
 plan_ctx = Path(plan_path).read_text(errors="replace")
 submod_ctx = Path(submod_path).read_text(errors="replace")
+skills_content = Path(skills_path).read_text(errors="replace")
+static_scans = Path(static_path).read_text(errors="replace")
 labels = ", ".join(l.get("name", "") for l in meta.get("labels") or [])
 plan_id = ""
 body = meta.get("body") or ""
@@ -313,51 +378,11 @@ for pat in (
         break
 
 criteria = {
-    "implementation": """GOVERNANCE
-[ ] CHANGELOG entry present and non-stub (no "(fill bullets)" placeholder)
-[ ] Anomaly disposition stated in PR body: "none found" or filed path
-[ ] Scope matches plan task — no out-of-scope additions without anomaly note
-
-CORRECTNESS
-[ ] Tests/checks are green or PR provides scoped reason they were not run
-[ ] No obvious logic inversion, off-by-one, or missing null check in diff
-[ ] Migration files (if any): reversible, no data-destructive default
-
-SECURITY
-[ ] No new secrets/credentials hardcoded
-[ ] No new SQL string interpolation (parameterize)
-[ ] No new eval/exec on user-supplied input
-
-HFM INVARIANTS
-[ ] No user-facing use of internal "Unknown" source
-[ ] PaymentSource linkage uses display names, not internal source IDs
-[ ] Greenfield API work uses validators/services — not views-only bypass
-
-WEB (if user-facing web changes)
-[ ] PWA/offline, guided tour, i18n: evidence or explicit not-applicable rationale""",
-    "governance": """GOVERNANCE (strict — parent/Claude-authored docs)
-[ ] Parent CHANGELOG.md entry when governance docs changed (CPPRD)
-[ ] Anomaly disposition stated in PR body
-[ ] Plan registry/status consistency when plan touched
-[ ] No stale path references or resurrection of archived Slack/legacy workflow
-[ ] Runtime signup sheet updates only when reflecting a verified event
-[ ] Meeting artifact protocol compliance when meeting files change""",
-    "submodule-bump": """SUBMODULE SAFETY (parent PR)
-[ ] Submodule pin changes reference merged subrepo PRs
-[ ] Pinned SHAs exist on subrepo main and match intended heads
-[ ] Parent CHANGELOG documents pin bump
-[ ] Anomaly disposition stated in PR body""",
-    "chore": """CHORE MODE
-[ ] No accidental product/governance scope creep
-[ ] CHANGELOG when user-visible or protocol-impacting
-[ ] Anomaly disposition stated when required by repo convention""",
-    "dependabot": """DEPENDABOT MODE (tier-2 — after dependabot_check.sh escalation)
-[ ] Semver risk assessed: major bumps need explicit breaking-change rationale
-[ ] Package not in security-sensitive area without justification (auth, crypto, DB driver, HTTP parsing)
-[ ] CVE/advisory severity from PR body reviewed — critical/high → NEEDS_HITM not APPROVE
-[ ] Lockfile-only or routine patch/minor with green CI may APPROVE
-[ ] No accidental scope creep beyond the dependency bump
-[ ] CHANGELOG not required for raw Dependabot merges unless protocol-impacting""",
+    "implementation": "Apply loaded implementation mode skill and lens skills below.",
+    "governance": "Apply loaded governance mode skill and lens skills below.",
+    "submodule-bump": "Apply loaded submodule-bump mode skill and lens skills below.",
+    "chore": "Apply loaded chore mode skill and lens skills below.",
+    "dependabot": "Apply loaded dependabot mode skill and lens skills below.",
 }
 
 prompt = f"""You are the PR reviewer for the Hive Financial Manager project. Review the following pull request and output a structured plain-text verdict.
@@ -370,6 +395,7 @@ prompt = f"""You are the PR reviewer for the Hive Financial Manager project. Rev
 - Labels: {labels or '(none)'}
 - Plan ID (from body): {plan_id or '(not found)'}
 - Review mode: {mode}
+- Skills loaded by wrapper: {skills_loaded}
 
 ## PR readiness (scripts/dev/pr_readiness.sh)
 {readiness}
@@ -380,11 +406,16 @@ prompt = f"""You are the PR reviewer for the Hive Financial Manager project. Rev
 ## Submodule status (parent PRs only)
 {submod_ctx}
 
+## Static pre-scan outputs (scripts/dev/)
+{static_scans}
+
 ## PR body
 {body}
 
-## Review criteria — apply all; flag violations as REQUEST_CHANGES
+## Review skills (scripts/ops/codex_review_skills/)
 {criteria.get(mode, criteria['implementation'])}
+
+{skills_content}
 
 ## PR readiness gate (KB8 revised — 2026-07-07)
 Classify check failures by whether the author can fix them in this PR:
@@ -408,6 +439,7 @@ VERDICT: APPROVE|REQUEST_CHANGES|NEEDS_HITM
 CONFIDENCE: high|medium|low
 REVIEW_MODE: {mode}
 CONTEXT_LOADED: diff=yes pr_metadata=yes plan_context=yes pr_readiness=yes
+SKILLS_LOADED: {skills_loaded}
 
 FINDINGS:
 - CATEGORY | severity | path:line | summary
@@ -422,6 +454,7 @@ Rules:
 - NEEDS_HITM for insufficient context, ambiguous governance, deploy-risk, review mode mismatch, or **infra/non-fixable check failures**.
 - KB8 revised: code-test failures → REQUEST_CHANGES; infra/deploy/KB8-intentional → NEEDS_HITM; PENDING alone is not a failure.
 - Set CONTEXT_LOADED fields to no when that context was missing or unusable.
+- Echo SKILLS_LOADED exactly as listed above.
 """
 Path(out_path).write_text(prompt)
 PY
@@ -649,17 +682,26 @@ main() {
     exit 0
   fi
 
-  local plan_id readiness_file plan_file submodule_file
+  local plan_id readiness_file plan_file submodule_file skills_file static_file skills_loaded
   readiness_file="$work/pr_readiness.txt"
   plan_file="$work/plan_context.txt"
   submodule_file="$work/submodule_context.txt"
+  skills_file="$work/skills.md"
+  static_file="$work/static_scans.txt"
 
   plan_id="$(extract_plan_id "$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1])).get("body") or "")' "$metadata_file")")"
   collect_pr_readiness > "$readiness_file"
   collect_plan_context "$plan_id" > "$plan_file"
   collect_submodule_context > "$submodule_file"
 
-  build_prompt "$metadata_file" "$diff_file" "$readiness_file" "$plan_file" "$submodule_file" "$prompt_file"
+  if ! skills_loaded="$(load_review_skills "$REVIEW_MODE" "$skills_file")"; then
+    post_needs_hitm_for_checks "$started_at" "required codex_review_skills file missing for mode ${REVIEW_MODE}"
+    exit 0
+  fi
+  collect_static_scans "$static_file"
+
+  build_prompt "$metadata_file" "$diff_file" "$readiness_file" "$plan_file" "$submodule_file" \
+    "$skills_file" "$static_file" "$skills_loaded" "$prompt_file"
 
   local known_bad_kb8=0
   if [[ "$(is_known_bad_kb8_pr "$metadata_file" "$diff_file")" == "yes" ]]; then
