@@ -52,4 +52,8 @@ ENQUEUED_AT="$(date -u +%Y-%m-%dT%H:%M)"
 printf '%s|%s|%s|%s|%s|PENDING|%s|null|null\n' \
   "$REVIEW_KEY" "$TARGET_REPO" "$PR_NUMBER" "$TASK_ID" "$AGENT" "$ENQUEUED_AT" >> "$QFILE"
 
+# shellcheck source=../lib/codex_review_label.sh
+source "$(dirname "$0")/../lib/codex_review_label.sh"
+codex_review_add_pending_label "$TARGET_REPO" "$PR_NUMBER" || true
+
 printf 'Queued for review: [%s] PR #%s (%s) → review.queue (PENDING)\n' "$TASK_ID" "$PR_NUMBER" "$TARGET_REPO"

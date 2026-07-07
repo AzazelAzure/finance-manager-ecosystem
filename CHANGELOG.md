@@ -3,6 +3,13 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — D1 codex-review pending label mechanism (OPS-REVAMP-T01) (Cursor)
+
+- **`.github/workflows/codex-review-label.yml`:** auto-add `codex-review:pending` on PR open/reopen/sync.
+- **`scripts/lib/codex_review_label.sh`:** shared add/remove/check helpers.
+- **`scripts/workspace/review_push.sh`:** belt-and-suspenders label on enqueue.
+- **`scripts/workspace/ws_review.sh` / `scripts/ops/codex_review.sh`:** remove label on verdict; fail-closed if label missing on live runs.
+- **`scripts/workspace/review_queue_pr_guard.sh`:** cross-check queue vs GitHub label vs merge state (P7 desync detection).
 ### 2026-07-07 — Local admin backup cron (LOCAL-ADMIN-BACKUP-T01) (Cursor)
 
 - **`scripts/ops/backup_admin.sh`:** daily tar of gitignored `strategy/`, `governance/plans/`, `scripts/workspace/` queues, `.cursor/skills/`, `.claude/skills/` → `~/fm_admin_backups/` (30-day retention).
