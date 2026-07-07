@@ -69,6 +69,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `migration_summary.sh` | API migration file/operation summary from PR diff |
 | `i18n_pwa_tour_scan.sh` | Web PWA/tour/i18n change signals |
 | `dependabot_pr_context.sh` | Dependabot PR package/advisory context |
+| `migration_preflight.sh` | Pre-deploy migration risk summary (static + optional live) |
 | `workspace_brief.sh` | Sign-out sheet + FIFO queues + workspace identity |
 | `local_stack_health.sh` | Containers + local `:8443` probes (correct Host headers) |
 | `anomaly_new.sh` | Scaffold `strategy/anomalies/` log from template |

@@ -481,6 +481,12 @@ rebuild_color_cmd() {
   done
   [[ -n "$color" ]] || die "rebuild-color requires a color: blue|green (after optional --no-build/--no-cache)"
 
+  local active
+  active="$(current_active_color)"
+  if [[ "$color" == "$active" && "${FM_ALLOW_ACTIVE_REBUILD:-0}" != "1" ]]; then
+    die "refusing rebuild of active color '$active' (set FM_ALLOW_ACTIVE_REBUILD=1 to override)"
+  fi
+
   local api_service="api-$color"
   local web_service="web-$color"
 
@@ -504,12 +510,20 @@ rebuild_color_cmd() {
   fi
 
   if [[ "$DRY_RUN" -eq 1 ]]; then
-    log "dry-run: would tag last-known-good images, stop/recreate $api_service + $web_service + ${CELERY_SERVICES[*]} only (proxy left running), wait for API health, rollback on failure, then reload proxy if healthy"
+    log "dry-run: would tag last-known-good images, stop/recreate $api_service + $web_service + ${CELERY_SERVICES[*]} only (proxy left running), wait for API health, verify active color unchanged, smoke inactive color, then reload proxy"
     return 0
   fi
 
   tag_last_known_good_image "$api_service"
   tag_last_known_good_image "$web_service"
+
+  local active_api active_web
+  active="$(current_active_color)"
+  active_api="api-$active"
+  active_web="web-$active"
+  local pre_active_api_img pre_active_web_img
+  pre_active_api_img="$(service_container_image_id "$active_api" 2>/dev/null || true)"
+  pre_active_web_img="$(service_container_image_id "$active_web" 2>/dev/null || true)"
 
   if [[ "$do_build" -eq 1 ]]; then
     local build_args=(build)
@@ -539,6 +553,25 @@ rebuild_color_cmd() {
   if ! wait_api_service_ready_soft "$api_service"; then
     rollback_failed_color_rebuild "$api_service" "$web_service"
     die "$api_service failed health check after rebuild; rolled back to last-known-good (proxy still serving active color)"
+  fi
+
+  if [[ -n "$pre_active_api_img" ]]; then
+    local post_active_api_img
+    post_active_api_img="$(service_container_image_id "$active_api" 2>/dev/null || true)"
+    [[ "$post_active_api_img" == "$pre_active_api_img" ]] \
+      || die "proxy isolation violation: active $active_api container image changed during inactive rebuild"
+  fi
+  if [[ -n "$pre_active_web_img" ]]; then
+    local post_active_web_img
+    post_active_web_img="$(service_container_image_id "$active_web" 2>/dev/null || true)"
+    [[ "$post_active_web_img" == "$pre_active_web_img" ]] \
+      || die "proxy isolation violation: active $active_web container image changed during inactive rebuild"
+  fi
+
+  log "Pre-reload smoke for inactive color $color (active $active untouched)..."
+  if ! smoke_cmd "$color"; then
+    rollback_failed_color_rebuild "$api_service" "$web_service"
+    die "inactive color $color failed smoke — proxy not reloaded; active color $active still serving"
   fi
 
   if proxy_container_running; then
