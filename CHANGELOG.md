@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — T4 KB8 revalidation script + plan_export queue fix (CODEX-REVIEW-T4) (Cursor)
+
+- **`scripts/ops/codex_review_t4_kb8_validate.sh`:** automated KB8 gate check against known-bad PR #110; dry-run PASS after T2A-REVISED.
+- **`scripts/dev/plan_export.sh`:** stop leaking absolute path to stdout on `--print-path` (fixed corrupt `parent.queue` rows).
+- **`governance/execution/codex_review_t4_kb8_revalidation_2026-07-07.md`:** revalidation record and D12 gate clearance for KB8.
 ### 2026-07-07 — Cross-workspace doc read, plan export, codex review pack (OPS-REVAMP-T05) (Cursor)
 
 - **`scripts/dev/read_parent_doc.sh`:** resolve parent `HFM/` root (`HFM_ROOT`, `FM_PRIMARY_WORKSPACE`, or `AGENTS.md` anchor); stdout read; fails closed.

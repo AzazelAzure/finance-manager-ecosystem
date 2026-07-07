@@ -30,6 +30,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `pull_backup.sh` | Daily pg_dump pull to `~/fm_backups/` (via Podman exec on VPS) | Cron via `local/setup_backup_cron.sh` |
 | `backup_admin.sh` | Daily tar of gitignored `strategy/`, queues, skills → `~/fm_admin_backups/` | Cron via `local/setup_admin_backup_cron.sh` |
 | `codex_review_pack.sh` | Assemble Codex review packet (diff, readiness, plan export, static checks) | WS3, Codex |
+| `codex_review_t4_kb8_validate.sh` | KB8 gate re-validation against known-bad PR #110 (T4) | Cursor, HitM |
 | `tag_release.sh` | Tag release across repos in `repos.txt` | HitM |
 | `bootstrap_env.sh` | Server env template copy/validate | Deploy |
 | `create_runtime_bundle.sh` | Lean VPS runtime tarball | Deploy |
