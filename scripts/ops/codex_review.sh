@@ -344,11 +344,13 @@ WEB (if user-facing web changes)
 [ ] No accidental product/governance scope creep
 [ ] CHANGELOG when user-visible or protocol-impacting
 [ ] Anomaly disposition stated when required by repo convention""",
-    "dependabot": """DEPENDABOT MODE (stub — full chain in T5-DEPENDABOT)
-[ ] Semver risk assessed (major bump needs scrutiny)
-[ ] Package not in security-sensitive area without justification (auth, crypto, DB, HTTP parsing)
-[ ] CVE/advisory severity from PR body reviewed
-[ ] Routine patch/minor with no security flag may APPROVE""",
+    "dependabot": """DEPENDABOT MODE (tier-2 — after dependabot_check.sh escalation)
+[ ] Semver risk assessed: major bumps need explicit breaking-change rationale
+[ ] Package not in security-sensitive area without justification (auth, crypto, DB driver, HTTP parsing)
+[ ] CVE/advisory severity from PR body reviewed — critical/high → NEEDS_HITM not APPROVE
+[ ] Lockfile-only or routine patch/minor with green CI may APPROVE
+[ ] No accidental scope creep beyond the dependency bump
+[ ] CHANGELOG not required for raw Dependabot merges unless protocol-impacting""",
 }
 
 prompt = f"""You are the PR reviewer for the Hive Financial Manager project. Review the following pull request and output a structured plain-text verdict.

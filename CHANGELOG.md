@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Dependabot three-tier review chain (T5-DEPENDABOT) (Cursor)
+
+- **`scripts/ops/dependabot_check.sh`:** tier-1 Dependabot triage — semver major bumps and security-sensitive packages escalate to Codex; routine patch/minor may APPROVE; critical/high CVE → NEEDS_HITM.
+- **`scripts/workspace/ws_review.sh`:** `--auto` routes `dependabot/*` head branches through tier-1 → `codex_review.sh --mode dependabot` → operator gate.
+- **`scripts/ops/codex_review.sh`:** full `--mode dependabot` review criteria (replaces T2A stub).
 ### 2026-07-07 — Codex review KB8 revised routing (T2A-REVISED) (Cursor)
 
 - **`scripts/ops/codex_review.sh`:** replace blanket `pr_checks_need_hitm` with `classify_pr_readiness_gate` — code/test/lint failures and CONFLICTING/DIRTY → `REQUEST_CHANGES`; deploy/smoke/infra/KB8-intentional → `NEEDS_HITM`; PENDING/IN_PROGRESS no longer force operator gate.

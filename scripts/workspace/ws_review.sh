@@ -109,8 +109,67 @@ do_review() {
 
     # ── auto: inspect diff, decide, act ───────────────────────────────────────
     --auto)
-      PR_TITLE=$(gh pr view "$PR_NUM" --repo "$GH_REPO" --json title --jq '.title')
+      PR_META=$(gh pr view "$PR_NUM" --repo "$GH_REPO" --json title,headRefName)
+      PR_TITLE=$(printf '%s' "$PR_META" | python3 -c 'import json,sys; print(json.load(sys.stdin)["title"])')
+      PR_HEAD=$(printf '%s' "$PR_META" | python3 -c 'import json,sys; print(json.load(sys.stdin)["headRefName"])')
       PR_DIFF=$(gh pr diff "$PR_NUM" --repo "$GH_REPO" 2>/dev/null || printf '(no diff)')
+
+      # Dependabot three-tier chain (T5): tier-1 script → Codex dependabot mode → NEEDS_HITM
+      if [[ "$PR_HEAD" == dependabot/* ]]; then
+        DEP_CHECK="$PRIMARY/scripts/ops/dependabot_check.sh"
+        if [[ -x "$DEP_CHECK" ]]; then
+          set +e
+          DEP_OUT="$("$DEP_CHECK" --repo "$REPO" --pr "$PR_NUM" 2>&1)"
+          DEP_CODE=$?
+          set -e
+          DEP_VERDICT="$(printf '%s' "$DEP_OUT" | awk -F': ' '/^VERDICT:/{print $2; exit}')"
+          DEP_REASON="$(printf '%s' "$DEP_OUT" | awk -F': ' '/^REASON:/{sub(/^REASON: /,""); print; exit}')"
+          printf 'Dependabot tier-1: %s (%s)\n' "${DEP_VERDICT:-unknown}" "${DEP_REASON:-}" >&2
+
+          case "${DEP_VERDICT:-}" in
+            APPROVE)
+              if "$PRIMARY/scripts/dev/pr_readiness.sh" --repo "$REPO" --pr "$PR_NUM" 2>&1 | grep -qE 'Check\s*:\s*.+=\s*(FAILURE|FAILED)'; then
+                comment_pr "$PR_NUM" "$GH_REPO" \
+                  "❌ Dependabot tier-1 APPROVE blocked: failing CI checks. Fix or escalate."
+                REVIEW_RESULT="CHANGES_REQUESTED"
+                return 0
+              fi
+              comment_pr "$PR_NUM" "$GH_REPO" \
+                "✓ Dependabot tier-1: APPROVE — ${DEP_REASON}. Merging."
+              merge_pr "$PR_NUM" "$GH_REPO" "chore(deps): dependabot tier-1 merge PR #${PR_NUM}"
+              REVIEW_RESULT="APPROVED_AND_MERGED"
+              return 0
+              ;;
+            ESCALATE_CODEX)
+              CODEX_REVIEW="$PRIMARY/scripts/ops/codex_review.sh"
+              if [[ -x "$CODEX_REVIEW" ]]; then
+                printf 'Dependabot tier-2: invoking codex_review.sh --mode dependabot\n' >&2
+                if "$CODEX_REVIEW" --repo "$REPO" --pr "$PR_NUM" --mode dependabot; then
+                  REVIEW_RESULT="APPROVED_AND_MERGED"
+                else
+                  REVIEW_RESULT="CHANGES_REQUESTED"
+                fi
+                return 0
+              fi
+              comment_pr "$PR_NUM" "$GH_REPO" \
+                "⚠ Dependabot tier-1 ESCALATE_CODEX but codex_review.sh unavailable — ${DEP_REASON}"
+              REVIEW_RESULT="CHANGES_REQUESTED"
+              return 0
+              ;;
+            NEEDS_HITM)
+              comment_pr "$PR_NUM" "$GH_REPO" \
+                "⚠ Dependabot tier-1: NEEDS_HITM — ${DEP_REASON}. Operator review required."
+              REVIEW_RESULT="CHANGES_REQUESTED"
+              return 0
+              ;;
+            *)
+              printf 'Warning: dependabot_check unexpected exit %s; falling through to standard review.\n' "$DEP_CODE" >&2
+              ;;
+          esac
+        else
+          printf 'Warning: dependabot_check.sh not executable; falling through to standard review.\n' >&2
+        fi
+      fi
 
       # Real signal: reject if diff contains FIXME marker
       if printf '%s' "$PR_DIFF" | grep -q "FIXME"; then
