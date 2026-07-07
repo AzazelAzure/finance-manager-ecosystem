@@ -31,6 +31,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `backup_admin.sh` | Daily tar of gitignored `strategy/`, queues, skills → `~/fm_admin_backups/` | Cron via `local/setup_admin_backup_cron.sh` |
 | `codex_review_pack.sh` | Assemble Codex review packet (diff, readiness, plan export, static checks) | WS3, Codex |
 | `codex_review_t4_kb8_validate.sh` | KB8 gate re-validation against known-bad PR #110 (T4) | Cursor, HitM |
+| `codex_review_skills/` | Numbered reviewer skill files loaded by mode in `codex_review.sh` | Codex wrapper |
 | `tag_release.sh` | Tag release across repos in `repos.txt` | HitM |
 | `bootstrap_env.sh` | Server env template copy/validate | Deploy |
 | `create_runtime_bundle.sh` | Lean VPS runtime tarball | Deploy |
@@ -64,6 +65,10 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `changed_file_classify.sh` | Area labels from PR diff (auth/migration/deploy) |
 | `read_parent_doc.sh` | Read parent HFM doc by relative path from any workspace |
 | `plan_export.sh` | YAML plan summary → `strategy/workspace/exports/` |
+| `golden_rule_static_scan.sh` | Static GR/security heuristics on PR diff |
+| `migration_summary.sh` | API migration file/operation summary from PR diff |
+| `i18n_pwa_tour_scan.sh` | Web PWA/tour/i18n change signals |
+| `dependabot_pr_context.sh` | Dependabot PR package/advisory context |
 | `workspace_brief.sh` | Sign-out sheet + FIFO queues + workspace identity |
 | `local_stack_health.sh` | Containers + local `:8443` probes (correct Host headers) |
 | `anomaly_new.sh` | Scaffold `strategy/anomalies/` log from template |
