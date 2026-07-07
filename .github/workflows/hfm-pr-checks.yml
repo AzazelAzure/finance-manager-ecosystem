@@ -1,0 +1,53 @@
+name: HFM PR Checks
+
+# OPS-REVAMP-T04 — static structural gates before Codex semantic review.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  pr-body:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PR body contract
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/dev/pr_body_contract.sh --repo parent --pr "${{ github.event.pull_request.number }}"
+
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: CHANGELOG non-stub check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/dev/changelog_check.sh --repo parent --pr "${{ github.event.pull_request.number }}"
+
+  branch-prefix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch prefix
+        run: |
+          BRANCH="${{ github.head_ref }}"
+          case "$BRANCH" in
+            cur/*|cla/*|agy/*|cdx/*|dependabot/*) echo "OK: $BRANCH" ;;
+            *) echo "FAIL: branch must match cur/*, cla/*, agy/*, cdx/*, or dependabot/*" >&2; exit 1 ;;
+          esac
+
+  classify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Changed file classification
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/dev/changed_file_classify.sh --repo parent --pr "${{ github.event.pull_request.number }}"
