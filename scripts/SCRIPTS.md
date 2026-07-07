@@ -57,6 +57,9 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `submodule_status.sh` | Submodule pin drift |
 | `vps_freshness.sh` | Local vs VPS API/Web SHA compare |
 | `pr_readiness.sh` | PR mergeable / checks / review snapshot |
+| `pr_body_contract.sh` | PR body Plan ID / anomaly disposition / test plan gate |
+| `changelog_check.sh` | CHANGELOG non-stub check for PRs |
+| `changed_file_classify.sh` | Area labels from PR diff (auth/migration/deploy) |
 | `workspace_brief.sh` | Sign-out sheet + FIFO queues + workspace identity |
 | `local_stack_health.sh` | Containers + local `:8443` probes (correct Host headers) |
 | `anomaly_new.sh` | Scaffold `strategy/anomalies/` log from template |

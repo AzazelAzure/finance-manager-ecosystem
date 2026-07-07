@@ -3,6 +3,10 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — GH Actions PR checks + static scripts (OPS-REVAMP-T04) (Cursor)
+
+- **`.github/workflows/hfm-pr-checks.yml`:** PR body contract, CHANGELOG stub check, branch prefix, file classification jobs.
+- **`scripts/dev/pr_body_contract.sh`**, **`changelog_check.sh`**, **`changed_file_classify.sh`:** static gates moved out of Codex semantic path.
 ### 2026-07-07 — Pipeline gate rules D2/D3 (OPS-REVAMP-T02) (Cursor)
 
 - **`.cursor/rules/sprint-task-specification.mdc`:** mandatory WS3 drain final gate (D2).
