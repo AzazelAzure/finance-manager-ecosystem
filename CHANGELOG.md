@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Codex review KB8 revised routing (T2A-REVISED) (Cursor)
+
+- **`scripts/ops/codex_review.sh`:** replace blanket `pr_checks_need_hitm` with `classify_pr_readiness_gate` — code/test/lint failures and CONFLICTING/DIRTY → `REQUEST_CHANGES`; deploy/smoke/infra/KB8-intentional → `NEEDS_HITM`; PENDING/IN_PROGRESS no longer force operator gate.
+- **Known-bad T3:** detect `[KNOWN-BAD TEST]` + `kb8-known-bad-test.yml` in diff when PR is closed (no live KB8 check rollup).
+- **`--mode dependabot`:** criteria stub added (full `dependabot_check.sh` chain deferred to T5).
 ### 2026-07-06 — Codex review dry-run temp-dir cleanup (T2B) (Cursor)
 
 - **`scripts/ops/codex_review.sh`:** `cleanup_work` guard replaces quoted EXIT trap so `set -u` never trips on unbound `work`; dry-run preserves temp dir via `preserve_work` flag.
