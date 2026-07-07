@@ -3,6 +3,12 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Cross-workspace doc read, plan export, codex review pack (OPS-REVAMP-T05) (Cursor)
+
+- **`scripts/dev/read_parent_doc.sh`:** resolve parent `HFM/` root (`HFM_ROOT`, `FM_PRIMARY_WORKSPACE`, or `AGENTS.md` anchor); stdout read; fails closed.
+- **`scripts/dev/plan_export.sh`:** compact YAML plan summary → `strategy/workspace/exports/<plan_id>.yaml` with `export_sha256`.
+- **`scripts/ops/codex_review_pack.sh`:** deterministic review packet (metadata, diff, readiness, plan export, static checks); hash drift → `NEEDS_HITM`.
+- **`scripts/workspace/queue_push.sh`:** 9th field `PLAN_EXPORT_PATH` populated at enqueue via `plan_export.sh`.
 ### 2026-07-07 — GH Actions PR checks + static scripts (OPS-REVAMP-T04) (Cursor)
 
 - **`.github/workflows/hfm-pr-checks.yml`:** PR body contract, CHANGELOG stub check, branch prefix, file classification jobs.

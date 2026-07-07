@@ -9,7 +9,7 @@
 #     cur/s1b/feat/f009-t01-auto-deduct-field-api cursor
 #
 # Queue file: $FM_PRIMARY_WORKSPACE/strategy/workspace/<repo>.queue
-# Format: TASK_ID|PLAN_ID|BRANCH|AGENT|STATUS|ENQUEUED_AT|CLAIMED_AT|RELEASED_AT
+# Format: TASK_ID|PLAN_ID|BRANCH|AGENT|STATUS|ENQUEUED_AT|CLAIMED_AT|RELEASED_AT|PLAN_EXPORT_PATH
 
 set -euo pipefail
 
@@ -40,7 +40,11 @@ if grep -q "^${TASK_ID}|" "$QFILE" 2>/dev/null; then
 fi
 
 ENQUEUED_AT="$(date -u +%Y-%m-%dT%H:%M)"
-printf '%s|%s|%s|%s|PENDING|%s|null|null\n' \
-  "$TASK_ID" "$PLAN_ID" "$BRANCH" "$AGENT" "$ENQUEUED_AT" >> "$QFILE"
+PLAN_EXPORT_PATH=""
+if [[ -n "$PLAN_ID" && "$PLAN_ID" != "null" ]]; then
+  PLAN_EXPORT_PATH="$("$PRIMARY/scripts/dev/plan_export.sh" --plan "$PLAN_ID" --print-path 2>/dev/null || true)"
+fi
+printf '%s|%s|%s|%s|PENDING|%s|null|null|%s\n' \
+  "$TASK_ID" "$PLAN_ID" "$BRANCH" "$AGENT" "$ENQUEUED_AT" "${PLAN_EXPORT_PATH:-}" >> "$QFILE"
 
 printf 'Queued: [%s] %s → %s.queue (PENDING)\n' "$PLAN_ID" "$TASK_ID" "$REPO"
