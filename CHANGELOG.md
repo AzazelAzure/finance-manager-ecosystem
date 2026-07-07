@@ -3,6 +3,10 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-07 — Local admin backup cron (LOCAL-ADMIN-BACKUP-T01) (Cursor)
+
+- **`scripts/ops/backup_admin.sh`:** daily tar of gitignored `strategy/`, `governance/plans/`, `scripts/workspace/` queues, `.cursor/skills/`, `.claude/skills/` → `~/fm_admin_backups/` (30-day retention).
+- **`scripts/local/setup_admin_backup_cron.sh`:** prints 2am cron line (complements 6am `pull_backup.sh` VPS DB backup).
 ### 2026-07-07 — Dependabot three-tier review chain (T5-DEPENDABOT) (Cursor)
 
 - **`scripts/ops/dependabot_check.sh`:** tier-1 Dependabot triage — semver major bumps and security-sensitive packages escalate to Codex; routine patch/minor may APPROVE; critical/high CVE → NEEDS_HITM.
