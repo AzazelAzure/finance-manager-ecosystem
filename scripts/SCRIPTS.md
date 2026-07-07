@@ -29,6 +29,7 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `fm_server_beta.sh` | Blue-green deploy/smoke/switch/rollback | HitM (VPS) |
 | `pull_backup.sh` | Daily pg_dump pull to `~/fm_backups/` (via Podman exec on VPS) | Cron via `local/setup_backup_cron.sh` |
 | `backup_admin.sh` | Daily tar of gitignored `strategy/`, queues, skills → `~/fm_admin_backups/` | Cron via `local/setup_admin_backup_cron.sh` |
+| `codex_review_pack.sh` | Assemble Codex review packet (diff, readiness, plan export, static checks) | WS3, Codex |
 | `tag_release.sh` | Tag release across repos in `repos.txt` | HitM |
 | `bootstrap_env.sh` | Server env template copy/validate | Deploy |
 | `create_runtime_bundle.sh` | Lean VPS runtime tarball | Deploy |
@@ -60,6 +61,8 @@ Authoritative map after taxonomy reorg (2026-07-01). See `strategy/meetings/week
 | `pr_body_contract.sh` | PR body Plan ID / anomaly disposition / test plan gate |
 | `changelog_check.sh` | CHANGELOG non-stub check for PRs |
 | `changed_file_classify.sh` | Area labels from PR diff (auth/migration/deploy) |
+| `read_parent_doc.sh` | Read parent HFM doc by relative path from any workspace |
+| `plan_export.sh` | YAML plan summary → `strategy/workspace/exports/` |
 | `workspace_brief.sh` | Sign-out sheet + FIFO queues + workspace identity |
 | `local_stack_health.sh` | Containers + local `:8443` probes (correct Host headers) |
 | `anomaly_new.sh` | Scaffold `strategy/anomalies/` log from template |
