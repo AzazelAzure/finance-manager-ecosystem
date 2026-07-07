@@ -170,6 +170,52 @@ collect_submodule_context() {
   "$REPO_ROOT/scripts/dev/submodule_status.sh" 2>&1 || true
 }
 
+# KB8: failing/pending checks → NEEDS_HITM (wrapper + prompt; grading sheet special rule).
+pr_checks_need_hitm() {
+  local readiness_file="$1"
+  local metadata_file="$2"
+  python3 - "$readiness_file" "$metadata_file" <<'PY'
+import json
+import re
+import sys
+from pathlib import Path
+
+readiness = Path(sys.argv[1]).read_text(errors="replace")
+meta = json.loads(Path(sys.argv[2]).read_text())
+
+blocking_states = {
+    "FAILURE", "FAILED", "PENDING", "IN_PROGRESS",
+    "CANCELLED", "TIMED_OUT", "ACTION_REQUIRED",
+}
+for line in readiness.splitlines():
+    m = re.search(r"Check\s*:\s*.+=\s*(\S+)", line)
+    if m and m.group(1).upper() in blocking_states:
+        print("yes")
+        raise SystemExit(0)
+
+merge_state = (meta.get("mergeStateStatus") or "").upper()
+mergeable = (meta.get("mergeable") or "").upper()
+if merge_state in ("BLOCKED", "BEHIND", "DIRTY") or mergeable == "CONFLICTING":
+    print("yes")
+    raise SystemExit(0)
+
+print("no")
+PY
+}
+
+post_needs_hitm_for_checks() {
+  local started_at="$1"
+  local reason="$2"
+  local note="PR readiness gate (KB8): ${reason}"
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    printf 'DRY-RUN: would post NEEDS_HITM — %s\n' "$note"
+    log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":true,\"verdict\":\"NEEDS_HITM\",\"reason\":\"kb8_pr_checks\"}")"
+    return 0
+  fi
+  post_pr_comment "$(format_comment "NEEDS_HITM" '{"verdict":"NEEDS_HITM","findings":[],"summary":""}' "" "$note")"
+  log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":false,\"verdict\":\"NEEDS_HITM\",\"reason\":\"kb8_pr_checks\",\"merged\":false}")"
+}
+
 build_prompt() {
   local metadata_json="$1"
   local diff_file="$2"
@@ -271,8 +317,10 @@ prompt = f"""You are the PR reviewer for the Hive Financial Manager project. Rev
 ## Review criteria — apply all; flag violations as REQUEST_CHANGES
 {criteria.get(mode, criteria['implementation'])}
 
-## PR readiness gate
-A PR with failing or pending required checks cannot receive VERDICT: APPROVE. Route to NEEDS_HITM or REQUEST_CHANGES as appropriate.
+## PR readiness gate (KB8 — mandatory)
+If `pr_readiness` shows any check with conclusion/status FAILURE, FAILED, PENDING, or IN_PROGRESS,
+or mergeState is BLOCKED/BEHIND/DIRTY, you MUST output `VERDICT: NEEDS_HITM` — **never**
+`REQUEST_CHANGES` and never `APPROVE`. KB8 is an operator/CI gate, not an author-fixable PR defect.
 
 ## Diff
 {diff_content}
@@ -294,7 +342,8 @@ SUMMARY:
 Rules:
 - APPROVE only when all required context was present, no blocking findings, and checks/mergeability acceptable.
 - REQUEST_CHANGES when PR defects found; author can fix without HitM.
-- NEEDS_HITM for insufficient context, ambiguous governance, deploy-risk, or review mode mismatch.
+- NEEDS_HITM for insufficient context, ambiguous governance, deploy-risk, review mode mismatch, **or KB8 failing/pending CI checks**.
+- KB8: failing/pending required checks → NEEDS_HITM only (not REQUEST_CHANGES).
 - Set CONTEXT_LOADED fields to no when that context was missing or unusable.
 """
 Path(out_path).write_text(prompt)
@@ -471,11 +520,18 @@ PY
 main() {
   parse_args "$@"
 
-  local gh_r repo_cd work
+  local gh_r repo_cd work preserve_work=0
   gh_r="$(gh_repo)"
   repo_cd="$(repo_path)"
+  work=""
+
+  cleanup_work() {
+    [[ "$preserve_work" -eq 1 ]] && return 0
+    [[ -n "${work:-}" && -d "${work:-}" ]] && rm -rf "$work"
+  }
+  trap cleanup_work EXIT
+
   work="$(mktemp -d "${TMPDIR:-/tmp}/codex_review.XXXXXX")"
-  trap 'rm -rf "$work"' EXIT
 
   local metadata_file="$work/metadata.json"
   local diff_file="$work/diff.patch"
@@ -523,6 +579,11 @@ main() {
 
   build_prompt "$metadata_file" "$diff_file" "$readiness_file" "$plan_file" "$submodule_file" "$prompt_file"
 
+  if [[ "$(pr_checks_need_hitm "$readiness_file" "$metadata_file")" == "yes" ]]; then
+    post_needs_hitm_for_checks "$started_at" "failing or pending required check(s) in pr_readiness output"
+    exit 0
+  fi
+
   if [[ "$DRY_RUN" -eq 1 ]]; then
     printf 'DRY-RUN: context collected (diff=%s bytes, plan_id=%s)\n' "$diff_bytes" "${plan_id:-none}"
     printf 'DRY-RUN: prompt written to %s (%s bytes)\n' "$prompt_file" "$(wc -c < "$prompt_file" | tr -d ' ')"
@@ -531,7 +592,7 @@ main() {
     head -80 "$prompt_file"
     echo '--- end prompt head ---'
     log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":true,\"diff_bytes\":$diff_bytes,\"plan_id\":\"${plan_id:-}\"}")"
-    # Preserve prompt for inspection during dry-run
+    preserve_work=1
     trap - EXIT
     printf 'DRY-RUN: temp dir preserved at %s\n' "$work"
     exit 0

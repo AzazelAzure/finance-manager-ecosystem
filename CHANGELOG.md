@@ -3,6 +3,12 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+### 2026-07-06 — Codex review dry-run temp-dir cleanup (T2B) (Cursor)
+
+- **`scripts/ops/codex_review.sh`:** `cleanup_work` guard replaces quoted EXIT trap so `set -u` never trips on unbound `work`; dry-run preserves temp dir via `preserve_work` flag.
+### 2026-07-06 — Codex review KB8 NEEDS_HITM gate (T2A) (Cursor)
+
+- **`scripts/ops/codex_review.sh`:** failing/pending CI checks short-circuit to `NEEDS_HITM` before Codex invocation; prompt rules updated so KB8 never maps to `REQUEST_CHANGES`.
 ### 2026-07-06 — Add codex_review.sh PR reviewer wrapper (T1) (Cursor)
 
 - **`scripts/ops/codex_review.sh`:** Codex CLI PR reviewer wrapper — assembles context from `gh pr diff/view`, `pr_readiness.sh`, and `plan_lookup.sh`; invokes `codex exec --sandbox read-only` via stdin temp file; parses `VERDICT` / `CONFIDENCE` / `CONTEXT_LOADED`; acts on APPROVE (squash merge when gate passes), REQUEST_CHANGES (comment only), or NEEDS_HITM (operator note); appends audit lines to `logs/codex_review_log.jsonl`.
