@@ -87,7 +87,6 @@ known_anomalies: []
 export_sha256: pending
 """
 Path(out_path).write_text(yaml)
-print(out_path)
 PY
 
 if [[ "$PRINT_PATH" -eq 1 ]]; then
