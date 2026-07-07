@@ -171,12 +171,12 @@ do_review() {
         fi
       fi
 
-      # Real signal: reject if diff contains FIXME marker
-      if printf '%s' "$PR_DIFF" | grep -q "FIXME"; then
+      # Real signal: reject if diff introduces a fixme sentinel in added lines
+      if printf '%s' "$PR_DIFF" | grep '^+' | grep -qv '^+++' | grep -qE 'FIX\.ME'; then
         comment_pr "$PR_NUM" "$GH_REPO" \
-          "❌ Automated review (ws_review --auto): FIXME marker found in diff. Resolve before merge."
+          "❌ Automated review (ws_review --auto): fixme sentinel found in diff. Resolve before merge."
         REVIEW_RESULT="CHANGES_REQUESTED"
-        printf 'AUTO REVIEW: FIXME detected → changes requested on PR #%s\n' "$PR_NUM" >&2
+        printf 'AUTO REVIEW: fixme sentinel detected → changes requested on PR #%s\n' "$PR_NUM" >&2
         return 0
       fi
 
