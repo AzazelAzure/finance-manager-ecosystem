@@ -75,6 +75,35 @@ remove_pending_label() {
   codex_review_remove_pending_label "$REPO" "$PR_NUM" || true
 }
 
+map_codex_to_review_result() {
+  local result verdict merged
+  result="$("$PRIMARY/scripts/lib/codex_review_last_result.sh" --repo "$REPO" --pr "$PR_NUM")"
+  verdict="$(printf '%s' "$result" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("verdict","NEEDS_HITM"))')"
+  merged="$(printf '%s' "$result" | python3 -c 'import json,sys; print(json.load(sys.stdin).get("merged",False))')"
+  if [[ "$merged" == "True" || "$merged" == "true" ]]; then
+    REVIEW_RESULT="APPROVED_AND_MERGED"
+  elif [[ "$verdict" == "APPROVE" ]]; then
+    comment_pr "$PR_NUM" "$GH_REPO" \
+      "⚠ Codex APPROVE but auto-merge gate not satisfied (confidence/context/mode). Operator review required."
+    REVIEW_RESULT="CHANGES_REQUESTED"
+  else
+    REVIEW_RESULT="CHANGES_REQUESTED"
+  fi
+  printf 'Codex review: verdict=%s merged=%s → %s\n' "$verdict" "$merged" "$REVIEW_RESULT" >&2
+}
+
+invoke_codex_review() {
+  local mode="$1"
+  local codex="$PRIMARY/scripts/ops/codex_review.sh"
+  [[ -x "$codex" ]] || return 1
+  printf 'Invoking codex_review.sh --repo %s --pr %s --mode %s\n' "$REPO" "$PR_NUM" "$mode" >&2
+  set +e
+  "$codex" --repo "$REPO" --pr "$PR_NUM" --mode "$mode"
+  set -e
+  map_codex_to_review_result
+  return 0
+}
+
 # ── claim WS3 ──────────────────────────────────────────────────────────────────
 "$SCRIPTS_DIR/ws_claim.sh" WS3 "claude-ws3" "PR-REVIEW" "pr/${PR_NUM}" >&2
 
@@ -148,14 +177,7 @@ do_review() {
               return 0
               ;;
             ESCALATE_CODEX)
-              CODEX_REVIEW="$PRIMARY/scripts/ops/codex_review.sh"
-              if [[ -x "$CODEX_REVIEW" ]]; then
-                printf 'Dependabot tier-2: invoking codex_review.sh --mode dependabot\n' >&2
-                if "$CODEX_REVIEW" --repo "$REPO" --pr "$PR_NUM" --mode dependabot; then
-                  REVIEW_RESULT="APPROVED_AND_MERGED"
-                else
-                  REVIEW_RESULT="CHANGES_REQUESTED"
-                fi
+              if invoke_codex_review dependabot; then
                 return 0
               fi
               comment_pr "$PR_NUM" "$GH_REPO" \
@@ -178,7 +200,17 @@ do_review() {
         fi
       fi
 
-      # Real signal: reject if diff introduces a fixme sentinel in added lines
+      # Codex primary review path (CODEX-REVIEW-T2 — replaces WS3 Claude agent)
+      RESOLVE_MODE="$PRIMARY/scripts/lib/codex_review_resolve_mode.sh"
+      if [[ -x "$RESOLVE_MODE" ]]; then
+        REVIEW_MODE="$("$RESOLVE_MODE" --repo "$REPO" --pr "$PR_NUM" --head "$PR_HEAD")"
+        if invoke_codex_review "$REVIEW_MODE"; then
+          return 0
+        fi
+        printf 'Warning: codex_review.sh unavailable after mode=%s; using heuristic fallback.\n' "$REVIEW_MODE" >&2
+      fi
+
+      # Heuristic fallback when Codex wrapper unavailable
       if printf '%s' "$PR_DIFF" | grep '^+' | grep -qv '^+++' | grep -qE 'FIX\.ME'; then
         comment_pr "$PR_NUM" "$GH_REPO" \
           "❌ Automated review (ws_review --auto): fixme sentinel found in diff. Resolve before merge."

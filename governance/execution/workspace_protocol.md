@@ -42,7 +42,7 @@ Per D1/D2 resolution, workspaces are **generic pooled slots**, not permanently b
 | `HFM` | Admin — HitM + Claude Code. **Not pooled.** | `main`, or short-lived `cla/s1b/admin/*` | Governance PRs, submodule-bump PRs, VPS flip authority |
 | `WS1` | Cursor sprint executor / API-task orchestrator | `cur/s1b/*` feature branches; never a long-lived stay on `main` | Ecosystem submodule-bump PRs after sub-repo PRs merge |
 | `WS2` | Cursor 2 / AGY automation / Web-task orchestrator | `cur/s1b/*` or `agy/s1b/*` | Same as WS1, scoped to its dispatch |
-| `WS3` | PR reviewer/triage (default) — becomes Gemini executor if Gemini coding is retested (then WS3→Gemini, WS4→reviewer) | `main` only, pull-only | **Never pushes feature code; never opens PRs.** Reviews and merges/rejects via `ws_review.sh`. |
+| `WS3` | Automated Codex PR reviewer/triage via `ws_review.sh` → `codex_review.sh` | `main` only, pull-only | **Never pushes feature code; never opens PRs.** Reviews and merges/rejects via `ws_review.sh` (Codex primary; heuristic fallback if wrapper unavailable). |
 | `WS-API` | Per-repo worker — `finance_manager_api` execution only | task branch (e.g. `cur/s1b/feat/...`, or `smoke/*` for pilot tasks) | Opens PRs against `finance-manager-api` directly (no ecosystem superproject) |
 | `WS-WEB` | Per-repo worker — `finance_manager_web` execution only | same pattern | Opens PRs against `finance-manager-web` directly |
 
@@ -151,6 +151,8 @@ ws_review.sh --next [--auto|--approve|--reject "reason"]
 **Queue format:** `REVIEW_KEY|TARGET_REPO|PR_NUMBER|TASK_ID|AGENT|STATUS|ENQUEUED_AT|CLAIMED_AT|RELEASED_AT`, `STATUS ∈ {PENDING, CLAIMED, DONE, FAILED}`.
 
 **Opener contract:** `pr-ops-merge-readiness` enqueues via `review_push.sh` immediately after `gh pr create`. WS3 drains with `ws_review.sh --next`.
+
+**`--auto` path (2026-07-07):** Dependabot PRs use `dependabot_check.sh` tier-1 then Codex `--mode dependabot` on escalation. All other PRs resolve mode via `codex_review_resolve_mode.sh` and invoke `codex_review.sh`. Verdict/merge state is read from `logs/codex_review_log.jsonl` via `codex_review_last_result.sh`. Claude WS3 agent is heuristic fallback only when the Codex wrapper is unavailable.
 
 Always claims `WS3` for the duration of the review, releases after. `repo` / `target_repo` map:
 
