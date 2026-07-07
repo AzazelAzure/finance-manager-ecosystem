@@ -68,6 +68,13 @@ fi
 
 GH_REPO="$(resolve_gh_repo "$REPO")" || exit 1
 
+# shellcheck source=../lib/codex_review_label.sh
+source "$SCRIPTS_DIR/../lib/codex_review_label.sh"
+
+remove_pending_label() {
+  codex_review_remove_pending_label "$REPO" "$PR_NUM" || true
+}
+
 # ── claim WS3 ──────────────────────────────────────────────────────────────────
 "$SCRIPTS_DIR/ws_claim.sh" WS3 "claude-ws3" "PR-REVIEW" "pr/${PR_NUM}" >&2
 
@@ -239,6 +246,7 @@ ENDBRIEF
       exit 1
       ;;
   esac
+  remove_pending_label
 }
 
 do_review

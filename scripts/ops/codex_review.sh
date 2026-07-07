@@ -18,6 +18,9 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 LOG_DIR="$REPO_ROOT/logs"
 LOG_FILE="$LOG_DIR/codex_review_log.jsonl"
 
+# shellcheck source=../lib/codex_review_label.sh
+source "$SCRIPT_DIR/../lib/codex_review_label.sh"
+
 # Fail closed when diff exceeds this many bytes (chunking is T6+).
 readonly MAX_DIFF_BYTES=400000
 
@@ -255,6 +258,7 @@ post_request_changes_for_checks() {
     return 0
   fi
   post_pr_comment "$(format_comment "REQUEST_CHANGES" '{"verdict":"REQUEST_CHANGES","findings":["DOD | blocking | pr_readiness | '"$reason"'"],"summary":""}' "" "")"
+  codex_review_remove_pending_label "$REPO_SLUG" "$PR_NUM" || true
   log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":false,\"verdict\":\"REQUEST_CHANGES\",\"reason\":\"kb8_pr_checks_fixable\",\"merged\":false}")"
 }
 
@@ -268,6 +272,9 @@ post_needs_hitm_for_checks() {
     return 0
   fi
   post_pr_comment "$(format_comment "NEEDS_HITM" '{"verdict":"NEEDS_HITM","findings":[],"summary":""}' "" "$note")"
+  if [[ "$reason" != *"label missing"* ]]; then
+    codex_review_remove_pending_label "$REPO_SLUG" "$PR_NUM" || true
+  fi
   log_jsonl "$(write_log_record "$started_at" "{\"dry_run\":false,\"verdict\":\"NEEDS_HITM\",\"reason\":\"kb8_pr_checks\",\"merged\":false}")"
 }
 
@@ -622,6 +629,11 @@ main() {
   collect_pr_metadata > "$metadata_file" || die "Failed to fetch PR metadata"
   collect_diff "$diff_file" || die "Failed to fetch PR diff"
 
+  if [[ "$DRY_RUN" -eq 0 ]] && ! codex_review_has_pending_label "$REPO_SLUG" "$PR_NUM"; then
+    post_needs_hitm_for_checks "$started_at" "codex-review:pending label missing (queue desync — D1)"
+    exit 0
+  fi
+
   local diff_bytes
   diff_bytes="$(wc -c < "$diff_file" | tr -d ' ')"
   if [[ "$diff_bytes" -gt "$MAX_DIFF_BYTES" ]]; then
@@ -723,6 +735,7 @@ PY
   local comment_body
   comment_body="$(format_comment "$verdict" "$parsed_json" "$(cat "$codex_stdout")" "")"
   post_pr_comment "$comment_body"
+  codex_review_remove_pending_label "$REPO_SLUG" "$PR_NUM" || true
 
   if [[ "$merge_ok" == "True" ]]; then
     maybe_merge
