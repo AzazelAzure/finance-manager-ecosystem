@@ -32,6 +32,24 @@ moment. We should have protocols on what files get saved, updated, or archived w
 5. **Index, don't duplicate.** `strategy/README.md` indexes the homes. Don't re-list contents
    inside multiple files (that's how drift starts).
 
+## MINUTES.md — live session state (anti-compaction artifact)
+
+Every meeting day folder must have a `MINUTES.md`. It is the canonical "where we are right now"
+document and the first thing read after any context compaction.
+
+**Update triggers (Claude updates immediately, not batched):**
+- Topic opened — set as current topic
+- Topic completed — move to completed list, update open items
+- Topic parked — move to open with PARKED note
+- Queue state changes (task pushed, Cursor reports done)
+- Key decision made — add to decisions table
+
+**Format:** Current topic → Completed → Open (priority order) → Queue state → Key decisions → Update log
+
+**Rule:** If MINUTES.md is stale (current topic wrong, completed list behind), update it before
+doing any other work. A stale MINUTES.md is worse than no MINUTES.md because it gives false
+context after compaction.
+
 ## Quick checklist (end of each meeting)
 
 - [ ] Decisions written into the durable consolidated note
