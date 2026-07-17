@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "profile_id": "profile.hfm.skill-gap-detection",
+  "domain": "hfm",
+  "skill_id": "skill.skill-gap-detection",
+  "compatible_versions": ["0.2.x"],
+  "policy": {
+    "evidence_sources": [
+      "current task tool and command summaries",
+      "active plan handoffs",
+      "workspace queue and review friction",
+      "repeated product-development procedures"
+    ],
+    "excluded_sources": [
+      "prior skill-gap candidates and wishlist rows",
+      "secrets or raw environment values",
+      "archived transcripts as current-state evidence",
+      "unrelated product repositories"
+    ],
+    "sensitivity_floor": "internal",
+    "candidate_output": ".local/skill-gap/",
+    "domain_vocabulary": ["workspace", "queue", "subrepo", "CPPRD", "VPS", "blue-green"],
+    "review_roles": ["proposer", "independent-reviewer", "hitm-approver"]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "bundle_id": "bundle.hfm.agentic",
+  "base_bundles": ["bundle.orchestrator.core", "bundle.orchestrator.extended"],
+  "profiles": ["profile.hfm.skill-gap-detection"]
+}
