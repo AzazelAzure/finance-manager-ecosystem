@@ -39,7 +39,7 @@ EOF
   echo "wrote ${DIR}/${name}.pem"
 }
 
-gen_cert thedirectorate.dev api.thedirectorate.dev www.thedirectorate.dev
+gen_cert thedirectorate.app api.thedirectorate.app www.thedirectorate.app
 gen_cert pproctor.com www.pproctor.com
 
 echo "Done. Mount proxy/certs into the proxy container and reload nginx."

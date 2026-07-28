@@ -7,15 +7,15 @@ Additive nginx configuration for non-HFM hostnames routed through the shared `:8
 | File | Role |
 |---|---|
 | `conf.d/ecosystem-hosts.conf` | `server_name` blocks for ecosystem hostnames only |
-| `certs/thedirectorate.dev.pem` | Origin TLS cert (Cloudflare origin or self-signed for smoke) |
+| `certs/thedirectorate.app.pem` | Origin TLS cert (Cloudflare origin or self-signed for smoke) |
 | `certs/pproctor.com.pem` | Origin TLS cert for www.pproctor.com |
 
 ## Hostnames
 
 | Host | Upstream (host loopback) | Service |
 |---|---|---|
-| `api.thedirectorate.dev` | `host.containers.internal:8000` | Orchestrator DRF API |
-| `www.thedirectorate.dev` | `host.containers.internal:8081` | Orchestrator ops console |
+| `api.thedirectorate.app` | `host.containers.internal:8000` | Orchestrator DRF API |
+| `www.thedirectorate.app` | `host.containers.internal:8081` | Orchestrator ops console |
 | `www.pproctor.com` | `host.containers.internal:3000` | External adapter status stub |
 
 ## Extraction note
@@ -25,8 +25,8 @@ During HFM restructure, move `conf.d/ecosystem-hosts.conf` and ecosystem TLS cer
 ## Smoke verification
 
 ```bash
-curl -kfsS -H "Host: api.thedirectorate.dev" https://127.0.0.1:8443/health/
-curl -kfsS -H "Host: www.thedirectorate.dev" https://127.0.0.1:8443/
+curl -kfsS -H "Host: api.thedirectorate.app" https://127.0.0.1:8443/health/
+curl -kfsS -H "Host: www.thedirectorate.app" https://127.0.0.1:8443/
 curl -kfsS -H "Host: www.pproctor.com" https://127.0.0.1:8443/health
 ```
 
