@@ -1,13 +1,13 @@
 # Ecosystem hostnames — additive vhosts for Orchestrator, ops console, and external adapter stub.
 # Mounted separately for future extraction to standalone edge-proxy. Does not modify HFM blue/green maps.
-# Local default: 127.0.0.1 — regenerate for VPS via scripts/ops/render_ecosystem_hosts.sh
+# Orchestrator upstream host is rendered from ORCH_PUBLISH_HOST via render_ecosystem_hosts.sh.
 
     upstream orch_api_upstream {
-        server 127.0.0.1:8000;
+        server @ORCH_PUBLISH_HOST@:8000;
     }
 
     upstream orch_console_upstream {
-        server 127.0.0.1:8081;
+        server @ORCH_PUBLISH_HOST@:8081;
     }
 
     upstream external_adapter_upstream {
