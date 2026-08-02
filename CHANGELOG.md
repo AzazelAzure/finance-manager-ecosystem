@@ -3,6 +3,11 @@
 Notable changes to this **parent** repository: submodule pins, `governance/`, `plans/`, `deploy/`, and cross-cutting docs. Product changelogs live in each component repository.
 
 ## [Unreleased]
+
+### Added
+
+- **HFM-ORCH-EDGE-BG-01** — Orchestrator per-app edge selector (`proxy/conf.d/orch_active_color.conf`, default **blue**); Orchestrator-only API/console upstream maps in `ecosystem-hosts.conf` (blue `8000`/`8081`, green `8010`/`8091`); proxy read-only mount; `fm_server_beta.sh check` throwaway nginx mounts extended for Orchestrator selector and ecosystem maps. HFM `$fm_active_color` maps and Portfolio upstream unchanged. Pairs with Orchestrator `deploy/vps/BLUEGREEN.md` (PR #28).
+
 ### 2026-07-07 — Submodule bump automation + Stage 10 gate (OPS-REVAMP-T08) (Cursor)
 
 - **`scripts/workspace/submodule_bump.sh`:** open submodule-only parent PR, enqueue `review.queue` for Codex `submodule-bump` mode.

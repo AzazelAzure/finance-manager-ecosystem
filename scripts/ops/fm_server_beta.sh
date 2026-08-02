@@ -418,6 +418,8 @@ check_nginx_config_syntax() {
   "$RUNTIME_BIN" run --rm \
     -v "$BASE_DIR/proxy/nginx.bluegreen.conf:/etc/nginx/nginx.conf:ro,z" \
     -v "$BASE_DIR/proxy/active_color.conf:/etc/nginx/conf.d/active_color.conf:ro,z" \
+    -v "$BASE_DIR/proxy/conf.d/orch_active_color.conf:/etc/nginx/conf.d/orch_active_color.conf:ro,z" \
+    -v "$BASE_DIR/proxy/conf.d/ecosystem-hosts.conf:/etc/nginx/conf.d/ecosystem-hosts.conf:ro,z" \
     -v "$resolver_stub:/etc/nginx/conf.d/00-resolver.conf:ro,z" \
     -v "$BASE_DIR/proxy/certs:/etc/nginx/certs:ro,z" \
     nginx:alpine nginx -t >/dev/null
@@ -430,7 +432,7 @@ check_cmd() {
   compose_cmd_safe config >/dev/null
   log "Compose config: ok"
 
-  log "Checking nginx blue/green config syntax..."
+  log "Checking nginx blue/green + ecosystem Orchestrator selector config syntax..."
   check_nginx_config_syntax
   log "Nginx config: ok"
 }
