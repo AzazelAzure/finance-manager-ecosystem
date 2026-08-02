@@ -212,6 +212,7 @@ services:
       - ./proxy/certs:/etc/nginx/certs:ro,z
       - ./proxy/nginx.bluegreen.conf:/etc/nginx/nginx.conf:ro,z
       - ./proxy/active_color.conf:/etc/nginx/conf.d/active_color.conf:ro,z
+      - ./proxy/conf.d/orch_active_color.conf:/etc/nginx/conf.d/orch_active_color.conf:ro,z
       - ./proxy/conf.d/ecosystem-hosts.conf:/etc/nginx/conf.d/ecosystem-hosts.conf:ro,z
     depends_on:
       - api-blue
