@@ -1,17 +1,17 @@
 # Ecosystem hostnames — additive vhosts for Orchestrator, ops console, and external adapter stub.
 # Mounted separately for future extraction to standalone edge-proxy. Does not modify HFM blue/green maps.
-# Local dev canonical file (127.0.0.1). VPS deploy renders ecosystem-hosts.deploy.conf — never overwrite this file.
+# Render via scripts/ops/render_ecosystem_hosts.sh → ecosystem-hosts.deploy.conf (not this tracked file).
 
     map $orch_active_color $orch_api_loopback {
-        default 127.0.0.1:8000;
-        blue    127.0.0.1:8000;
-        green   127.0.0.1:8010;
+        default @ORCH_PUBLISH_HOST@:8000;
+        blue    @ORCH_PUBLISH_HOST@:8000;
+        green   @ORCH_PUBLISH_HOST@:8010;
     }
 
     map $orch_active_color $orch_console_loopback {
-        default 127.0.0.1:8081;
-        blue    127.0.0.1:8081;
-        green   127.0.0.1:8091;
+        default @ORCH_PUBLISH_HOST@:8081;
+        blue    @ORCH_PUBLISH_HOST@:8081;
+        green   @ORCH_PUBLISH_HOST@:8091;
     }
 
     upstream external_adapter_upstream {

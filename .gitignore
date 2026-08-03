@@ -8,6 +8,7 @@ governance/coordination/HITM_SCHEDULE_SNAPSHOT.md
 .secrets/
 deploy/server.env
 deploy/*.env
+proxy/conf.d/ecosystem-hosts.deploy.conf
 # Ad-hoc secret handoff files (e.g. SMTP token drops)
 *.secret
 smtp.secret
