@@ -4,7 +4,9 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 TEMPLATE="${REPO_ROOT}/proxy/conf.d/ecosystem-hosts.conf.template"
-OUT="${1:-${REPO_ROOT}/proxy/conf.d/ecosystem-hosts.conf}"
+CANONICAL="${REPO_ROOT}/proxy/conf.d/ecosystem-hosts.conf"
+DEPLOY_ARTIFACT="${REPO_ROOT}/proxy/conf.d/ecosystem-hosts.deploy.conf"
+OUT="${1:-$DEPLOY_ARTIFACT}"
 
 load_publish_host() {
   if [[ -n "${ORCH_PUBLISH_HOST:-}" ]]; then
@@ -51,7 +53,9 @@ usage() {
   cat <<'EOF'
 usage: render_ecosystem_hosts.sh [OUTPUT_PATH]
 
-Renders proxy/conf.d/ecosystem-hosts.conf from ecosystem-hosts.conf.template.
+Renders ecosystem-hosts.conf.template to a deployment artifact (default:
+proxy/conf.d/ecosystem-hosts.deploy.conf). Does not write the tracked local
+canonical proxy/conf.d/ecosystem-hosts.conf.
 Requires ORCH_PUBLISH_HOST in the environment or repo .env / .secrets/server.env.
 EOF
 }
@@ -68,6 +72,12 @@ if ! load_publish_host; then
   exit 1
 fi
 validate_host
+
+if [[ "$OUT" == "$CANONICAL" ]]; then
+  echo "refusing to render over tracked canonical file: $CANONICAL" >&2
+  echo "use default deploy artifact or an explicit staging path" >&2
+  exit 1
+fi
 
 mkdir -p "$(dirname "$OUT")"
 sed "s/@ORCH_PUBLISH_HOST@/${ORCH_PUBLISH_HOST}/g" "$TEMPLATE" >"$OUT"

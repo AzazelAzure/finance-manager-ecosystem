@@ -7,7 +7,8 @@ Additive nginx configuration for non-HFM hostnames routed through the shared `:8
 | File | Role |
 |---|---|
 | `conf.d/ecosystem-hosts.conf.template` | Source template with `@ORCH_PUBLISH_HOST@` placeholder |
-| `conf.d/ecosystem-hosts.conf` | Rendered nginx include (local default `127.0.0.1`; VPS via render script) |
+| `conf.d/ecosystem-hosts.conf` | Tracked local-dev canonical (`127.0.0.1`, `$orch_active_color` maps) — **never** overwritten by render |
+| `conf.d/ecosystem-hosts.deploy.conf` | Rendered VPS deploy artifact (gitignored; default `render_ecosystem_hosts.sh` output) |
 | `scripts/ops/render_ecosystem_hosts.sh` | Renders template from `ORCH_PUBLISH_HOST` |
 | `certs/thedirectorate.app.pem` | Origin TLS cert (Cloudflare origin or self-signed for smoke) |
 | `certs/pproctor.com.pem` | Origin TLS cert for www.pproctor.com |

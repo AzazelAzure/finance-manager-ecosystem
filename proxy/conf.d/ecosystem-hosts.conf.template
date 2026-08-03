@@ -1,13 +1,17 @@
 # Ecosystem hostnames — additive vhosts for Orchestrator, ops console, and external adapter stub.
 # Mounted separately for future extraction to standalone edge-proxy. Does not modify HFM blue/green maps.
-# Orchestrator upstream host is rendered from ORCH_PUBLISH_HOST via render_ecosystem_hosts.sh.
+# Render via scripts/ops/render_ecosystem_hosts.sh → ecosystem-hosts.deploy.conf (not this tracked file).
 
-    upstream orch_api_upstream {
-        server @ORCH_PUBLISH_HOST@:8000;
+    map $orch_active_color $orch_api_loopback {
+        default @ORCH_PUBLISH_HOST@:8000;
+        blue    @ORCH_PUBLISH_HOST@:8000;
+        green   @ORCH_PUBLISH_HOST@:8010;
     }
 
-    upstream orch_console_upstream {
-        server @ORCH_PUBLISH_HOST@:8081;
+    map $orch_active_color $orch_console_loopback {
+        default @ORCH_PUBLISH_HOST@:8081;
+        blue    @ORCH_PUBLISH_HOST@:8081;
+        green   @ORCH_PUBLISH_HOST@:8091;
     }
 
     upstream external_adapter_upstream {
@@ -22,7 +26,7 @@
         ssl_certificate_key /etc/nginx/certs/thedirectorate.app-key.pem;
 
         location / {
-            proxy_pass http://orch_api_upstream;
+            proxy_pass http://$orch_api_loopback;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -40,7 +44,7 @@
         ssl_certificate_key /etc/nginx/certs/thedirectorate.app-key.pem;
 
         location / {
-            proxy_pass http://orch_console_upstream;
+            proxy_pass http://$orch_console_loopback;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

@@ -8,9 +8,9 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 - **HFM-ORCH-PUBLISH-HOST-01** — `ecosystem-hosts.conf.template` and
   `scripts/ops/render_ecosystem_hosts.sh` render Orchestrator nginx upstreams from
-  `ORCH_PUBLISH_HOST` instead of `host.containers.internal` public resolution; local
-  default `127.0.0.1` in tracked `ecosystem-hosts.conf`; `deploy/server.env.example`
-  documents the contract.
+  `ORCH_PUBLISH_HOST` instead of `host.containers.internal` public resolution;
+  preserves PR #128 `$orch_active_color` port maps; tracked local canonical
+  `ecosystem-hosts.conf` unchanged by render (deploy artifact / staging only).
 
 ### Added
 
