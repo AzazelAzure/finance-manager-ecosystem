@@ -400,7 +400,37 @@ proxy_container_running() {
   compose_cmd ps --status running --services proxy 2>/dev/null | grep -qx 'proxy'
 }
 
+resolve_ecosystem_hosts_conf() {
+  if [[ -f "$BASE_DIR/proxy/conf.d/ecosystem-hosts.deploy.conf" ]]; then
+    echo "$BASE_DIR/proxy/conf.d/ecosystem-hosts.deploy.conf"
+  else
+    echo "$BASE_DIR/proxy/conf.d/ecosystem-hosts.conf"
+  fi
+}
+
+sync_orchestrator_edge_routing() {
+  local render="$BASE_DIR/scripts/ops/render_ecosystem_hosts.sh"
+  local attach="$BASE_DIR/scripts/ops/attach_orchestrator_proxy_networks.sh"
+  [[ -x "$render" && -x "$attach" ]] || {
+    log "skip orchestrator edge sync — render/attach scripts missing"
+    return 0
+  }
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    log "dry-run: would render ecosystem-hosts, attach proxy networks, reload nginx"
+    return 0
+  fi
+  log "Rendering Orchestrator ecosystem nginx artifact..."
+  bash "$render"
+  cp "$BASE_DIR/proxy/conf.d/ecosystem-hosts.deploy.conf" "$BASE_DIR/proxy/conf.d/ecosystem-hosts.conf"
+  log "Attaching proxy to Orchestrator presentation networks..."
+  bash "$attach" attach
+  reload_proxy
+  log "Orchestrator edge routing synced (DNS upstream maps + proxy network attach)"
+}
+
 check_nginx_config_syntax() {
+  local ecosystem_conf
+  ecosystem_conf="$(resolve_ecosystem_hosts_conf)"
   if proxy_container_running; then
     compose_cmd_safe exec -T proxy nginx -t >/dev/null
     return 0
@@ -419,7 +449,7 @@ check_nginx_config_syntax() {
     -v "$BASE_DIR/proxy/nginx.bluegreen.conf:/etc/nginx/nginx.conf:ro,z" \
     -v "$BASE_DIR/proxy/active_color.conf:/etc/nginx/conf.d/active_color.conf:ro,z" \
     -v "$BASE_DIR/proxy/conf.d/orch_active_color.conf:/etc/nginx/conf.d/orch_active_color.conf:ro,z" \
-    -v "$BASE_DIR/proxy/conf.d/ecosystem-hosts.conf:/etc/nginx/conf.d/ecosystem-hosts.conf:ro,z" \
+    -v "$ecosystem_conf:/etc/nginx/conf.d/ecosystem-hosts.conf:ro,z" \
     -v "$resolver_stub:/etc/nginx/conf.d/00-resolver.conf:ro,z" \
     -v "$BASE_DIR/proxy/certs:/etc/nginx/certs:ro,z" \
     nginx:alpine nginx -t >/dev/null
@@ -457,6 +487,9 @@ deploy_cmd() {
 
   compose_cmd_quiet_up "${command[@]:1}"
   log "Deployed candidate color: $color"
+  if [[ " ${command[*]} " == *" proxy "* ]]; then
+    sync_orchestrator_edge_routing || die "Orchestrator edge routing sync failed after proxy deploy"
+  fi
   log "Note: DB migrations should be run via repo migration workflow before switch if required."
 }
 

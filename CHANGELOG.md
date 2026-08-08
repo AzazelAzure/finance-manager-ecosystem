@@ -6,6 +6,23 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### Added
 
+- **HFM-ORCH-NET-ATTACH-01** — Rootless-native Orchestrator edge routing: nginx upstream maps use
+  per-color Podman DNS aliases (`orch-api-{color}`, `orch-console-{color}`) on
+  `orchestrator-console-{color}` networks; `attach_orchestrator_proxy_networks.sh`
+  idempotently connects `fm-beta` proxy (fail closed on missing/ambiguous networks/containers);
+  `render_ecosystem_hosts.sh` copies static template (no `ORCH_PUBLISH_HOST`);
+  `fm_server_beta.sh deploy` renders, installs deploy artifact, attaches networks, validates
+  nginx before reload. Supersedes HFM-ORCH-PUBLISH-HOST-01 bridge-gateway contract.
+- **HFM-ORCH-NET-ATTACH-01 (review)** — Document `ORCH_EDGE_PROXY_PRE_RELOAD_CMD` for
+  Orchestrator bootstrap hook; contract tests assert `fm_server_beta.sh deploy` attaches
+  proxy networks before nginx reload.
+
+### Removed
+
+- **HFM-ORCH-PUBLISH-HOST-01** — `ORCH_PUBLISH_HOST` render/bind contract (nonviable on rootless VPS).
+
+### Added
+
 - **HFM-ORCH-PUBLISH-HOST-01** — `ecosystem-hosts.conf.template` and
   `scripts/ops/render_ecosystem_hosts.sh` render Orchestrator nginx upstreams from
   `ORCH_PUBLISH_HOST` instead of `host.containers.internal` public resolution;
