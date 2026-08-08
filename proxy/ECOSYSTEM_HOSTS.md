@@ -37,6 +37,8 @@ bash scripts/ops/attach_orchestrator_proxy_networks.sh attach
 
 `fm_server_beta.sh deploy` runs render + attach + validated reload automatically when the proxy service is (re)started.
 
+Orchestrator `vps_bootstrap.sh` / `orch_color.sh` invoke the installation hook `ORCH_EDGE_PROXY_PRE_RELOAD_CMD` (set in `.env.vps` or this repo's `server.env`) before nginx validation/reload so proxy network attach runs on the standard cross-repo bootstrap path.
+
 ## Rollback / detach
 
 ```bash
