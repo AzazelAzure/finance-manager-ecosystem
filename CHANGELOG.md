@@ -6,6 +6,16 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### Added
 
+- **HFM-PORTFOLIO-EDGE-SL6B** — Portfolio three-host edge contract in ecosystem nginx maps:
+  canonical `pproctor.com` and `preview.pproctor.com` proxy to
+  `host.containers.internal:3000`; `www.pproctor.com` issues permanent redirect to apex
+  (path/query preserved, no application proxy); preview adds defensive
+  `X-Robots-Tag: noindex, nofollow`. Certificate SAN coverage extended for apex/www/preview.
+  Operator docs (`proxy/ECOSYSTEM_HOSTS.md`) document upstream, Cloudflare Access precondition,
+  verification/rollback, and explicit no-deployment status. Executable contract test
+  (`scripts/ops/ecosystem_hosts_contract_test.sh`) wired into `hfm-pr-checks.yml`.
+  Config/docs/tests only — no proxy reload, cert rotation on host, DNS, or color flip.
+
 - **HFM-ORCH-NET-ATTACH-01** — Rootless-native Orchestrator edge routing: nginx upstream maps use
   per-color Podman DNS aliases (`orch-api-{color}`, `orch-console-{color}`) on
   `orchestrator-console-{color}` networks; `attach_orchestrator_proxy_networks.sh`

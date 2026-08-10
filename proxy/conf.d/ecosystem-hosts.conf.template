@@ -1,4 +1,4 @@
-# Ecosystem hostnames — additive vhosts for Orchestrator, ops console, and external adapter stub.
+# Ecosystem hostnames — additive vhosts for Orchestrator, ops console, and Portfolio edge.
 # Mounted separately for future extraction to standalone edge-proxy. Does not modify HFM blue/green maps.
 # Render via scripts/ops/render_ecosystem_hosts.sh → ecosystem-hosts.deploy.conf (not this tracked file).
 # Upstreams use per-color Podman DNS aliases on orchestrator-console-{color} networks (proxy must attach).
@@ -57,7 +57,7 @@
 
     server {
         listen 443 ssl;
-        server_name www.pproctor.com;
+        server_name pproctor.com;
 
         ssl_certificate     /etc/nginx/certs/pproctor.com.pem;
         ssl_certificate_key /etc/nginx/certs/pproctor.com-key.pem;
@@ -74,7 +74,43 @@
     }
 
     server {
+        listen 443 ssl;
+        server_name preview.pproctor.com;
+
+        ssl_certificate     /etc/nginx/certs/pproctor.com.pem;
+        ssl_certificate_key /etc/nginx/certs/pproctor.com-key.pem;
+
+        add_header X-Robots-Tag "noindex, nofollow" always;
+
+        location / {
+            proxy_pass http://external_adapter_upstream;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $forwarded_proto;
+            proxy_set_header X-Forwarded-Host $host;
+            proxy_set_header X-Forwarded-Port 443;
+        }
+    }
+
+    server {
+        listen 443 ssl;
+        server_name www.pproctor.com;
+
+        ssl_certificate     /etc/nginx/certs/pproctor.com.pem;
+        ssl_certificate_key /etc/nginx/certs/pproctor.com-key.pem;
+
+        return 301 https://pproctor.com$request_uri;
+    }
+
+    server {
         listen 80;
-        server_name api.thedirectorate.app www.thedirectorate.app www.pproctor.com;
+        server_name www.pproctor.com;
+        return 301 https://pproctor.com$request_uri;
+    }
+
+    server {
+        listen 80;
+        server_name api.thedirectorate.app www.thedirectorate.app pproctor.com preview.pproctor.com;
         return 301 https://$host$request_uri;
     }

@@ -14,7 +14,7 @@ jobs:
   pr-body:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: PR body contract
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -24,7 +24,7 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: CHANGELOG non-stub check
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,9 +45,16 @@ jobs:
   classify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - name: Changed file classification
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./scripts/dev/changed_file_classify.sh --repo parent --pr "${{ github.event.pull_request.number }}"
+
+  ecosystem-hosts-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Ecosystem hosts contract (Portfolio Slice 6-B)
+        run: ./scripts/ops/ecosystem_hosts_contract_test.sh

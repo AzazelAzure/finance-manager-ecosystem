@@ -40,6 +40,6 @@ EOF
 }
 
 gen_cert thedirectorate.app api.thedirectorate.app www.thedirectorate.app
-gen_cert pproctor.com www.pproctor.com
+gen_cert pproctor.com pproctor.com www.pproctor.com preview.pproctor.com
 
 echo "Done. Mount proxy/certs into the proxy container and reload nginx."
