@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### Security
+
+- **Loopback-only VPS publishes (2026-08-12)** — `docker-compose.bluegreen.yml` binds Postgres/proxy to `127.0.0.1` only; `scripts/security/check_compose_publish.sh`, `scan_vps_ports.sh` + allowlist, `run_audit.sh` scope banner, and `fm_server_beta.sh` publish preflight so a future recreate cannot reintroduce all-interface `5432`/`8080`/`8443`.
+
 ### Added
 
 - **HFM-PORTFOLIO-EDGE-SL6B** — Portfolio three-host edge contract in ecosystem nginx maps:
