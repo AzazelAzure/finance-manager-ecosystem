@@ -29,21 +29,51 @@ source "$SCRIPT_DIR/lib_anomaly_write.sh"
 
 mkdir -p "$SECURITY_DIR"
 
-BANDIT_COUNT=0
-PIPAUDIT_COUNT=0
-NPM_COUNT=0
-SEMGREP_COUNT=0
-GITLEAKS_TOTAL=0
-
 {
   echo "# Security Audit Report — $(date +%Y-%m-%d)"
   echo ""
   echo "**Generated:** $(date '+%Y-%m-%d %H:%M %Z')"
   echo "**Repos scanned:** finance_manager_api, finance_manager_web, parent"
   echo ""
+  echo "## Scope banner (what this suite does NOT cover)"
+  echo ""
+  echo "- Host firewall / nftables / cloud provider security groups"
+  echo "- Live off-host port reachability (run \`scripts/security/scan_vps_ports.sh\` separately)"
+  echo "- Cloudflare tunnel ingress / Access / WAF configuration"
+  echo "- Runtime secret file modes on the VPS"
+  echo "- Container image CVE scanning beyond pip-audit/npm audit"
+  echo ""
+  echo "A green run of this script is **not** assurance of network or IaC posture."
+  echo ""
   echo "---"
   echo ""
 } > "$REPORT"
+
+# --- compose publish posture (IaC) ---
+COMPOSE_OUT=""
+COMPOSE_RC=0
+if [[ -x "$SCRIPT_DIR/check_compose_publish.sh" ]]; then
+  COMPOSE_OUT=$("$SCRIPT_DIR/check_compose_publish.sh" "$REPO_ROOT/docker-compose.bluegreen.yml" 2>&1) || COMPOSE_RC=$?
+else
+  COMPOSE_OUT="check_compose_publish.sh missing"
+  COMPOSE_RC=2
+fi
+{
+  echo "## compose publish posture (exit $COMPOSE_RC)"
+  echo '```'
+  echo "$COMPOSE_OUT"
+  echo '```'
+  echo ""
+} >> "$REPORT"
+if [[ "$COMPOSE_RC" -ne 0 ]]; then
+  echo "WARNING: compose publish posture check failed (rc=$COMPOSE_RC)" >&2
+fi
+
+BANDIT_COUNT=0
+PIPAUDIT_COUNT=0
+NPM_COUNT=0
+SEMGREP_COUNT=0
+GITLEAKS_TOTAL=0
 
 # --- bandit (Python SAST) ---
 BANDIT_OUT=""

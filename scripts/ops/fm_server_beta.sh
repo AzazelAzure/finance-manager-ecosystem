@@ -462,6 +462,15 @@ check_cmd() {
   compose_cmd_safe config >/dev/null
   log "Compose config: ok"
 
+  local publish_check="$BASE_DIR/scripts/security/check_compose_publish.sh"
+  if [[ -x "$publish_check" ]]; then
+    log "Checking compose host-publish posture (loopback-only for guarded ports)..."
+    "$publish_check" "$COMPOSE_FILE"
+    log "Compose publish posture: ok"
+  else
+    log "WARN: publish posture check missing at $publish_check"
+  fi
+
   log "Checking nginx blue/green + ecosystem Orchestrator selector config syntax..."
   check_nginx_config_syntax
   log "Nginx config: ok"
@@ -515,6 +524,12 @@ rebuild_color_cmd() {
     shift || true
   done
   [[ -n "$color" ]] || die "rebuild-color requires a color: blue|green (after optional --no-build/--no-cache)"
+
+  local publish_check="$BASE_DIR/scripts/security/check_compose_publish.sh"
+  if [[ -x "$publish_check" ]]; then
+    log "Preflight: compose host-publish posture..."
+    "$publish_check" "$COMPOSE_FILE"
+  fi
 
   local active
   active="$(current_active_color)"
