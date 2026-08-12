@@ -5,8 +5,9 @@ services:
       POSTGRES_DB: ${DB_NAME:-finance_db}
       POSTGRES_USER: ${DB_USER:-finance_user}
       POSTGRES_PASSWORD: ${DB_PASSWORD:-finance_password}
+    # Loopback-only: Cloudflare tunnel / local admin. Never publish 0.0.0.0 on VPS.
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       # Reuse live single-stack data on cutover: name must match `podman volume ls` (e.g. finance_manager_postgres_data)
       - postgres_data:/var/lib/postgresql/data
@@ -203,9 +204,10 @@ services:
   proxy:
     build:
       context: ./proxy
+    # Loopback-only: cloudflared ingress targets 127.0.0.1:8443. Never 0.0.0.0 on VPS.
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "127.0.0.1:8080:80"
+      - "127.0.0.1:8443:443"
     extra_hosts:
       - "host.containers.internal:host-gateway"
     volumes:

@@ -1,0 +1,6 @@
+# VPS external port allowlist (off-host TCP that may accept connections).
+# Anything else reachable from the public internet is a finding.
+# Format: port  # justification
+22    # SSH admin
+# 443 is terminated at Cloudflare edge; origin should NOT publish 443/8443 publicly.
+# Intended origin path: cloudflared -> 127.0.0.1:8443 (loopback only).
