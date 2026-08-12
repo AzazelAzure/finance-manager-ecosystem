@@ -256,42 +256,19 @@ compose_cmd() {
 # Mask secret values in compose output. podman-compose echoes the fully
 # interpolated `podman ... --env KEY=value` invocation (values sourced from
 # .secrets/server.env) on most subcommands, and `config` prints the resolved
-# YAML with secrets inline. This filter masks any value whose env-var NAME looks
-# sensitive (PASSWORD/SECRET/TOKEN/KEY/CREDENTIAL/AUTH...), in KEY=value, KEY:
-# value, and --env/-e KEY=value forms, plus inline URL credentials.
+# YAML with secrets inline. Shared redactor: scripts/ops/redact_compose_output.py
+# (HQ scripts/vps/redact_compose_output.py is the canonical copy).
 #
 # Reads from a file path argument when given (back-compat); otherwise streams
 # stdin line-by-line so it can be used as a pipe filter, including for `logs -f`.
-# The program is passed via `-c` (not `python3 -`) and the optional file path via
-# an env var, so stdin stays free for piped data.
 redact_compose_output() {
-  FM_REDACT_FILE="${1:-}" python3 -c '
-import os
-import re
-import sys
-from pathlib import Path
-
-# Mask the value of any env var whose NAME looks sensitive, plus inline URL creds.
-_SENSITIVE = r"[A-Za-z0-9_]*(?:PASSWORD|PASSWD|SECRET|TOKEN|APIKEY|API_KEY|ACCESS_KEY|PRIVATE_KEY|CREDENTIAL|CREDENTIALS|AUTH|_KEY)"
-_P1 = re.compile(r"(?i)(\b" + _SENSITIVE + r"\b\s*[:=]\s*)(\S+)")
-_P2 = re.compile(r"(://[^:/?#@\s]+:)([^@/?#\s]+)(@)")
-
-
-def _redact(line):
-    line = _P1.sub(lambda m: m.group(1) + "<redacted>", line)
-    line = _P2.sub(lambda m: m.group(1) + "<redacted>" + m.group(3), line)
-    return line
-
-
-arg = os.environ.get("FM_REDACT_FILE", "")
-if arg:
-    text = Path(arg).read_text(errors="replace")
-    sys.stdout.write("".join(_redact(l) for l in text.splitlines(keepends=True)))
-else:
-    for line in sys.stdin:
-        sys.stdout.write(_redact(line))
-        sys.stdout.flush()
-'
+  local redactor="${FM_COMPOSE_REDACTOR:-$BASE_DIR/scripts/ops/redact_compose_output.py}"
+  [[ -f "$redactor" ]] || die "compose redactor missing: $redactor"
+  if [[ $# -ge 1 && -n "${1:-}" ]]; then
+    FM_REDACT_FILE="$1" python3 "$redactor"
+  else
+    python3 "$redactor"
+  fi
 }
 
 # Run any compose subcommand with combined stdout+stderr streamed through the

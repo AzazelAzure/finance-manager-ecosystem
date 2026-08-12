@@ -6,6 +6,8 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### Security
 
+- **Compose output redaction (2026-08-12)** — `fm_server_beta.sh` uses shared `scripts/ops/redact_compose_output.py` (same rules as HQ `scripts/vps/`) so podman-compose interpolated `-e KEY=value` lines never reach the terminal.
+
 - **Loopback-only VPS publishes (2026-08-12)** — `docker-compose.bluegreen.yml` binds Postgres/proxy to `127.0.0.1` only; `scripts/security/check_compose_publish.sh`, `scan_vps_ports.sh` + allowlist, `run_audit.sh` scope banner, and `fm_server_beta.sh` publish preflight so a future recreate cannot reintroduce all-interface `5432`/`8080`/`8443`.
 
 ### Added
