@@ -1,16 +1,12 @@
 name: Health Check
 
-# Self-hosted uptime monitor. Runs on GitHub's infrastructure (external from
-# the VPS), so it detects VPS-down scenarios independently. On failure the run
-# exits non-zero and GitHub emails the repo owner.
+# External uptime monitor. Runs on GitHub-hosted runners so it is independent
+# of the VPS. On failure the run exits non-zero and GitHub emails the repo owner.
 #
-# IMPORTANT: thehivemanager.com / api.thehivemanager.com sit behind Cloudflare.
-# Cloudflare blocks GitHub-hosted runner IPs (datacenter / bot reputation) with a
-# 403 before the request ever reaches the VPS, so checking the public Cloudflare
-# edge produces false failures. To get a true "is the origin up?" signal we pin
-# the hostname to the VPS origin IP with --resolve and bypass Cloudflare. The
-# origin terminates TLS with an internal cert, so -k (insecure) is expected here:
-# we are verifying reachability/health of the origin, not the public CA chain.
+# Origin :8443 is loopback-only (cloudflared → 127.0.0.1:8443). Public uptime is
+# the Cloudflare edge on 443. Probe production hostnames over the public CA
+# chain (no --resolve, no -k). A 403 still means the edge blocked the runner
+# (WAF / bot reputation), not that the VPS is down.
 
 on:
   schedule:
@@ -18,53 +14,40 @@ on:
   workflow_dispatch:           # manual trigger for verification
 
 env:
-  VPS_IP: ${{ secrets.VPS_ORIGIN_IP }}
-  WEB_HOST: thehivemanager.com
-  API_HOST: api.thehivemanager.com
-  PORT: '8443'
+  WEB_URL: https://thehivemanager.com/
+  API_HEALTH_URL: https://api.thehivemanager.com/api/health/
 
 jobs:
   ping:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
-      - name: Validate VPS origin secret
+      - name: Check web app (Cloudflare edge)
         run: |
-          if [ -z "${VPS_IP}" ]; then
-            echo "::error::Missing required repository secret VPS_ORIGIN_IP"
-            exit 1
-          fi
-          case "${VPS_IP}" in
-            *"@"*|*"<"*|*">"*)
-              echo "::error::VPS_ORIGIN_IP must be an IP address only, not an SSH target or placeholder"
-              exit 1
-              ;;
-          esac
-
-      - name: Check web app (origin, bypass Cloudflare)
-        run: |
-          url="https://${WEB_HOST}:${PORT}"
           code=""
           for attempt in 1 2 3; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -k --max-time 15 \
-              --resolve "${WEB_HOST}:${PORT}:${VPS_IP}" "$url" || echo "000")
-            echo "Attempt ${attempt}: web origin response ${code}"
+            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 \
+              -A "Mozilla/5.0 (compatible; HFM-HealthCheck/1.0; +https://github.com/AzazelAzure/finance-manager-ecosystem)" \
+              "$WEB_URL") || code="000"
+            echo "Attempt ${attempt}: web edge response ${code}"
             case "$code" in
               200|301|302) break ;;
             esac
             [ "$attempt" -lt 3 ] && sleep 10
           done
           case "$code" in
-            200|301|302) echo "OK: web origin reachable ($code)" ;;
-            *) echo "FAIL: web origin returned $code"; exit 1 ;;
+            200|301|302) echo "OK: web edge reachable ($code)" ;;
+            *) echo "FAIL: web edge returned $code"; exit 1 ;;
           esac
 
-      - name: Check API health endpoint (origin, bypass Cloudflare)
+      - name: Check API health endpoint (Cloudflare edge)
         run: |
-          url="https://${API_HOST}:${PORT}/api/health/"
           code=""
           for attempt in 1 2 3; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -k --max-time 15 \
-              --resolve "${API_HOST}:${PORT}:${VPS_IP}" "$url" || echo "000")
+            code=$(curl -sS -o /dev/null -w "%{http_code}" --max-time 15 \
+              -A "Mozilla/5.0 (compatible; HFM-HealthCheck/1.0; +https://github.com/AzazelAzure/finance-manager-ecosystem)" \
+              "$API_HEALTH_URL") || code="000"
             echo "Attempt ${attempt}: api health response ${code}"
             [ "$code" = "200" ] && break
             [ "$attempt" -lt 3 ] && sleep 10

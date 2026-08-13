@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### Fixed
+
+- **Health Check Cloudflare edge (2026-08-13)** — `.github/workflows/health-check.yml` probes public `https://thehivemanager.com/` and `https://api.thehivemanager.com/api/health/` instead of origin `:8443` via `VPS_ORIGIN_IP` `--resolve`. Loopback-only proxy publish (PR #134) made the origin probe time out from GitHub-hosted runners; Cloudflare tunnel remains the public ingress.
+
 ### Security
 
 - **Compose output redaction (2026-08-12)** — `fm_server_beta.sh` uses shared `scripts/ops/redact_compose_output.py` (same rules as HQ `scripts/vps/`) so podman-compose interpolated `-e KEY=value` lines never reach the terminal.
