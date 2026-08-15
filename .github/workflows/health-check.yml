@@ -1,16 +1,17 @@
 name: Health Check
 
 # Self-hosted uptime monitor. Runs on GitHub's infrastructure (external from
-# the VPS), so it detects VPS-down scenarios independently. On failure the run
-# exits non-zero and GitHub emails the repo owner.
+# the VPS), so it detects public outage scenarios independently. On failure the
+# run exits non-zero and GitHub emails the repo owner.
 #
 # IMPORTANT: thehivemanager.com / api.thehivemanager.com sit behind Cloudflare.
-# Cloudflare blocks GitHub-hosted runner IPs (datacenter / bot reputation) with a
-# 403 before the request ever reaches the VPS, so checking the public Cloudflare
-# edge produces false failures. To get a true "is the origin up?" signal we pin
-# the hostname to the VPS origin IP with --resolve and bypass Cloudflare. The
-# origin terminates TLS with an internal cert, so -k (insecure) is expected here:
-# we are verifying reachability/health of the origin, not the public CA chain.
+# The VPS origin proxy on :8443 is bound to loopback only (security containment),
+# so external runners cannot reach the origin directly — curl returns 000 even
+# when the public service is healthy. External monitoring must probe the public
+# HTTPS Cloudflare edge, not bypass it with --resolve or origin IP pinning.
+# GitHub-hosted datacenter curls with the default curl User-Agent are often
+# blocked (HTTP 403); probes therefore send an explicit honest monitoring
+# User-Agent and normal Accept headers while keeping public HTTPS and cert checks.
 
 on:
   schedule:
@@ -18,60 +19,119 @@ on:
   workflow_dispatch:           # manual trigger for verification
 
 env:
-  VPS_IP: ${{ secrets.VPS_ORIGIN_IP }}
-  WEB_HOST: thehivemanager.com
-  API_HOST: api.thehivemanager.com
-  PORT: '8443'
+  WEB_URL: https://thehivemanager.com/
+  API_URL: https://api.thehivemanager.com/api/health/
+  PROBE_USER_AGENT: >-
+    Mozilla/5.0 (compatible; HiveFinancialManager-Uptime/1.0;
+    +https://github.com/AzazelAzure/finance-manager-ecosystem)
+  WEB_ACCEPT: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+  API_ACCEPT: application/json,text/plain,*/*;q=0.8
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Validate VPS origin secret
+      - name: Check web app (public Cloudflare edge)
         run: |
-          if [ -z "${VPS_IP}" ]; then
-            echo "::error::Missing required repository secret VPS_ORIGIN_IP"
-            exit 1
-          fi
-          case "${VPS_IP}" in
-            *"@"*|*"<"*|*">"*)
-              echo "::error::VPS_ORIGIN_IP must be an IP address only, not an SSH target or placeholder"
-              exit 1
-              ;;
-          esac
+          log_probe_diagnostics() {
+            local label="$1"
+            local url="$2"
+            local accept="$3"
+            local header_file
+            header_file="$(mktemp)"
+            local code
+            code=$(curl -sS -o /dev/null -D "$header_file" -w "%{http_code}" \
+              --max-time 15 \
+              -A "${PROBE_USER_AGENT}" \
+              -H "Accept: ${accept}" \
+              "$url" || echo "000")
+            echo "--- ${label} failure diagnostics (status + selected headers) ---"
+            echo "HTTP status: ${code}"
+            awk 'BEGIN{IGNORECASE=1}
+              /^HTTP\// {print; next}
+              /^date:/ {print; next}
+              /^content-type:/ {print; next}
+              /^server:/ {print; next}
+              /^cf-ray:/ {print; next}
+              /^cf-cache-status:/ {print; next}
+              /^cache-control:/ {print; next}
+              /^retry-after:/ {print; next}
+              ' "$header_file" || true
+            rm -f "$header_file"
+            echo "--- end diagnostics ---"
+          }
 
-      - name: Check web app (origin, bypass Cloudflare)
-        run: |
-          url="https://${WEB_HOST}:${PORT}"
+          url="${WEB_URL}"
+          accept="${WEB_ACCEPT}"
           code=""
           for attempt in 1 2 3; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -k --max-time 15 \
-              --resolve "${WEB_HOST}:${PORT}:${VPS_IP}" "$url" || echo "000")
-            echo "Attempt ${attempt}: web origin response ${code}"
+            code=$(curl -sS -o /dev/null -w "%{http_code}" \
+              --max-time 15 \
+              -A "${PROBE_USER_AGENT}" \
+              -H "Accept: ${accept}" \
+              "$url" || echo "000")
+            echo "Attempt ${attempt}: web public response ${code}"
             case "$code" in
               200|301|302) break ;;
             esac
             [ "$attempt" -lt 3 ] && sleep 10
           done
           case "$code" in
-            200|301|302) echo "OK: web origin reachable ($code)" ;;
-            *) echo "FAIL: web origin returned $code"; exit 1 ;;
+            200|301|302) echo "OK: web public reachable ($code)" ;;
+            *)
+              echo "FAIL: web public returned $code"
+              log_probe_diagnostics "web" "$url" "$accept"
+              exit 1
+              ;;
           esac
 
-      - name: Check API health endpoint (origin, bypass Cloudflare)
+      - name: Check API health endpoint (public Cloudflare edge)
         run: |
-          url="https://${API_HOST}:${PORT}/api/health/"
+          log_probe_diagnostics() {
+            local label="$1"
+            local url="$2"
+            local accept="$3"
+            local header_file
+            header_file="$(mktemp)"
+            local code
+            code=$(curl -sS -o /dev/null -D "$header_file" -w "%{http_code}" \
+              --max-time 15 \
+              -A "${PROBE_USER_AGENT}" \
+              -H "Accept: ${accept}" \
+              "$url" || echo "000")
+            echo "--- ${label} failure diagnostics (status + selected headers) ---"
+            echo "HTTP status: ${code}"
+            awk 'BEGIN{IGNORECASE=1}
+              /^HTTP\// {print; next}
+              /^date:/ {print; next}
+              /^content-type:/ {print; next}
+              /^server:/ {print; next}
+              /^cf-ray:/ {print; next}
+              /^cf-cache-status:/ {print; next}
+              /^cache-control:/ {print; next}
+              /^retry-after:/ {print; next}
+              ' "$header_file" || true
+            rm -f "$header_file"
+            echo "--- end diagnostics ---"
+          }
+
+          url="${API_URL}"
+          accept="${API_ACCEPT}"
           code=""
           for attempt in 1 2 3; do
-            code=$(curl -s -o /dev/null -w "%{http_code}" -k --max-time 15 \
-              --resolve "${API_HOST}:${PORT}:${VPS_IP}" "$url" || echo "000")
-            echo "Attempt ${attempt}: api health response ${code}"
+            code=$(curl -sS -o /dev/null -w "%{http_code}" \
+              --max-time 15 \
+              -A "${PROBE_USER_AGENT}" \
+              -H "Accept: ${accept}" \
+              "$url" || echo "000")
+            echo "Attempt ${attempt}: api health public response ${code}"
             [ "$code" = "200" ] && break
             [ "$attempt" -lt 3 ] && sleep 10
           done
           if [ "$code" = "200" ]; then
-            echo "OK: API health reachable (200)"
+            echo "OK: API health public reachable (200)"
           else
-            echo "FAIL: API health returned $code"
+            echo "FAIL: API health public returned $code"
+            log_probe_diagnostics "api health" "$url" "$accept"
             exit 1
           fi
