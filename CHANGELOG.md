@@ -4,6 +4,10 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ## [Unreleased]
 
+### Fixed
+
+- **Health-check workflow (2026-08-15)** — `.github/workflows/health-check.yml` probes public HTTPS Cloudflare edge URLs (`thehivemanager.com`, `api.thehivemanager.com/api/health/`) with an explicit monitoring `User-Agent` and normal `Accept` headers so GitHub-hosted runners are not blocked by Cloudflare bot rules; removed origin `:8443` `VPS_ORIGIN_IP`/`--resolve`/`-k` bypass (origin proxy remains loopback-only); failures retain curl's native `000` status without aborting the retry and selected-header diagnostic paths.
+
 ### Security
 
 - **Compose output redaction (2026-08-12)** — `fm_server_beta.sh` uses shared `scripts/ops/redact_compose_output.py` (same rules as HQ `scripts/vps/`) so podman-compose interpolated `-e KEY=value` lines never reach the terminal.
