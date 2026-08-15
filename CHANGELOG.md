@@ -6,7 +6,7 @@ Notable changes to this **parent** repository: submodule pins, `governance/`, `p
 
 ### Fixed
 
-- **Health-check workflow (2026-08-15)** — `.github/workflows/health-check.yml` probes public HTTPS Cloudflare edge URLs (`thehivemanager.com`, `api.thehivemanager.com/api/health/`) with an explicit monitoring `User-Agent` and normal `Accept` headers so GitHub-hosted runners are not blocked by Cloudflare bot rules; removed origin `:8443` `VPS_ORIGIN_IP`/`--resolve`/`-k` bypass (origin proxy remains loopback-only); failures log HTTP status and selected non-sensitive response headers only.
+- **Health-check workflow (2026-08-15)** — `.github/workflows/health-check.yml` probes public HTTPS Cloudflare edge URLs (`thehivemanager.com`, `api.thehivemanager.com/api/health/`) with an explicit monitoring `User-Agent` and normal `Accept` headers so GitHub-hosted runners are not blocked by Cloudflare bot rules; removed origin `:8443` `VPS_ORIGIN_IP`/`--resolve`/`-k` bypass (origin proxy remains loopback-only); failures log HTTP status and selected non-sensitive response headers only (curl's native `000` on connection failure, not a duplicated `000000`).
 
 ### Security
 

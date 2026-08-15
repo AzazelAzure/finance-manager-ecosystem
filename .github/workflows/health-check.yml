@@ -44,7 +44,7 @@ jobs:
               --max-time 15 \
               -A "${PROBE_USER_AGENT}" \
               -H "Accept: ${accept}" \
-              "$url" || echo "000")
+              "$url")
             echo "--- ${label} failure diagnostics (status + selected headers) ---"
             echo "HTTP status: ${code}"
             awk 'BEGIN{IGNORECASE=1}
@@ -69,7 +69,7 @@ jobs:
               --max-time 15 \
               -A "${PROBE_USER_AGENT}" \
               -H "Accept: ${accept}" \
-              "$url" || echo "000")
+              "$url")
             echo "Attempt ${attempt}: web public response ${code}"
             case "$code" in
               200|301|302) break ;;
@@ -98,7 +98,7 @@ jobs:
               --max-time 15 \
               -A "${PROBE_USER_AGENT}" \
               -H "Accept: ${accept}" \
-              "$url" || echo "000")
+              "$url")
             echo "--- ${label} failure diagnostics (status + selected headers) ---"
             echo "HTTP status: ${code}"
             awk 'BEGIN{IGNORECASE=1}
@@ -123,7 +123,7 @@ jobs:
               --max-time 15 \
               -A "${PROBE_USER_AGENT}" \
               -H "Accept: ${accept}" \
-              "$url" || echo "000")
+              "$url")
             echo "Attempt ${attempt}: api health public response ${code}"
             [ "$code" = "200" ] && break
             [ "$attempt" -lt 3 ] && sleep 10
